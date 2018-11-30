@@ -574,6 +574,21 @@ you .[#0B5C92].> helloworld_web
 Example settings:
 
 ```bash
+#!/usr/bin/env bash
+
+# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+# run in shell via
+#
+# ```
+# . ./set_env.sh
+# ```
+
 export PROXY=http://gatekeeper.mitre.org:80
 export proxy=$PROXY
 export https_proxy=$PROXY
@@ -581,9 +596,10 @@ export http_proxy=$PROXY
 export HTTP_PROXY=$PROXY
 export ALL_PROXY=$PROXY
 export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,$(echo 192.168.0.{1..255} | sed 's/ /,/g')"
+#,172.30.1.1"
 export no_proxy=${NO_PROXY}
 
-export CA_CERTIFICATES=http://pki.mitre.org/MITRE%20BA%20ROOT.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-3%281%29.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-4.crt
+export CA_CERTIFICATES=https://raw.githubusercontent.com/nemonik/hands-on-DevOps/master/certs/MITRE%20BA%20NPE%20CA-3(1).crt,https://raw.githubusercontent.com/nemonik/hands-on-DevOps/master/certs/MITRE%20BA%20ROOT.crt
 
 export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
 ```
@@ -602,7 +618,7 @@ Example settings:
 | http_proxy                         | http://gatekeeper.mitre.org:80                                   |
 | https_proxy                        | http://gatekeeper.mitre.org:80                                   |
 | no_proxy                           | 127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11  |
-| CA_CERTIFICATES                    | http://pki.mitre.org/MITRE%20BA%20ROOT.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-3%281%29.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-4.crt
+| CA_CERTIFICATES                    | https://raw.githubusercontent.com/nemonik/hands-on-DevOps/master/certs/MITRE%20BA%20NPE%20CA-3(1).crt,https://raw.githubusercontent.com/nemonik/hands-on-DevOps/master/certs/MITRE%20BA%20ROOT.crt
  |
 | VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS | 0                                                                |
 **NOTE**
@@ -651,16 +667,16 @@ If you are on Windows or on a lab computer, you'll need to install `git`.
 
 If you are reading this on paper and have nothing else, you only have a small portion of the class material. You will need to download the class project containing all the automation to spin up a DevOps toolchain and development, etc.
 
-In a shell, for the purposes of the class, this means in `Git Bash`, clone the project from [https://gitlab.mitre.org/mjwalsh/hands-on-DevOps.git](https://gitlab.mitre.org/mjwalsh/hands-on-DevOps.git) via git like so:
+In a shell, for the purposes of the class, this means in `Git Bash`, clone the project from [https://github.com/nemonik/hands-on-DevOps.git](https://github.com/nemonik/hands-on-DevOps.git) via git like so:
 
 ```
-git -c http.sslVerify=false clone https://gitlab.mitre.org/mjwalsh/hands-on-DevOps.git
+git -c http.sslVerify=false clone https://github.com/nemonik/hands-on-DevOps.git
 ```
 
 Output will resemble:
 
 ```
-$ git -c http.sslVerify=false clone https://gitlab.mitre.org/mjwalsh/hands-on-DevOps.git
+$ git -c http.sslVerify=false clone https://github.com/nemonik/hands-on-DevOps.git
 Cloning into 'hands-on-DevOps'...
 remote: Counting objects: 1184, done.
 remote: Compressing objects: 100% (203/203), done.
