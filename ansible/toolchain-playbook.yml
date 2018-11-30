@@ -15,10 +15,8 @@
     - docker
     - docker-compose 
     - docker-registry
-
-# K8s
     - golang
-#    - golint
+    - golint
 
 # CI/CD Tools
     - taiga
