@@ -1,0 +1,56 @@
+---
+# tasks file for python-container-image
+
+# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: "create /home/{{ ansible_user_id }}/python-container-image"
+  become: yes
+  file:
+    path: "/home/{{ ansible_user_id }}/python-container-image"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  tags:
+    - python-container-image
+
+- name: "template files into /home/{{ ansible_user_id }}/python-container-image"
+  become: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}" 
+    force: yes 
+  with_items:
+    - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/python-container-image/Dockerfile" }
+    - { src: "templates/dockerfile_build.j2", dest: "/home/{{ ansible_user_id }}/python-container-image/dockerfile_build.sh" }
+    - { src: "templates/push_into_private_repo.j2", dest: "/home/{{ ansible_user_id }}/python-container-image/push_into_private_repo.sh" }
+  tags:
+    - python-container-image
+
+- name: ensure scripts are executable
+  become: yes
+  file: 
+    path: "{{ item.path }}"
+    mode: "u=rwx,g=r,o=r"
+  with_items:
+    - { path: "/home/{{ ansible_user_id }}/python-container-image/dockerfile_build.sh" }
+    - { path: "/home/{{ ansible_user_id }}/python-container-image/push_into_private_repo.sh" }
+  tags:
+    - python-container-image
+
+- name: build python image and push into private registry
+  become: yes
+  docker_image:
+    path: "/home/{{ ansible_user_id }}/python-container-image"
+    name: nemonik/python
+    repository: "{{ hostvars['toolchain']['ansible_host'] }}:5000/nemonik/python"
+    push: yes
+    tag: "{{ python_version }}"
+  tags:
+    - python-container-image

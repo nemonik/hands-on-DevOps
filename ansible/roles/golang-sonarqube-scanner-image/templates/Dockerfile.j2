@@ -1,0 +1,13 @@
+FROM {{ hostvars['toolchain']['ansible_host'] }}:5000/nemonik/golang:{{ golang_version }}
+MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
+
+RUN apt-get -y update
+RUN apt-get -y install unzip
+
+RUN wget -O /usr/local/sonar-scanner-cli-{{ sonar_scanner_cli_version }}-linux.zip --no-check-certificate --no-cookies https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-{{ sonar_scanner_cli_version }}-linux.zip; \
+	unzip /usr/local/sonar-scanner-cli-{{ sonar_scanner_cli_version }}-linux.zip -d /usr/local; \
+        mkdir -p /usr/local/sonar-scanner-{{ sonar_scanner_cli_version }}-linux//conf/; \
+        echo "http://{{ hostvars['toolchain']['ansible_host'] }}:9000" > /usr/local/sonar-scanner-{{ sonar_scanner_cli_version }}-linux//conf/sonar-scanner.properties; \
+	rm /usr/local/sonar-scanner-cli-{{ sonar_scanner_cli_version }}-linux.zip
+
+ENV PATH /usr/local/sonar-scanner-{{ sonar_scanner_cli_version }}-linux/bin:$PATH

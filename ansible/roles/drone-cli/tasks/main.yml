@@ -1,0 +1,34 @@
+---
+# tasks file for drone-cli
+
+# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: is drone cli installed?
+  stat: path=/usr/local/bin/drone
+  register: drone_cli
+
+# Ignore `[WARNING]: Consider using get_url or uri module rather than running 
+# wget` when running as the URL is a redirect, so Ansible chokes using its 
+# default modules to retrieve.
+- name: download and install drone-cli
+  become: yes
+  block:
+    - command: "wget https://github.com/drone/drone-cli/releases/download/v{{ drone_cli_version }}/drone_linux_amd64.tar.gz"
+      args:
+        chdir: /tmp
+        warn: false
+    - unarchive:
+        src: /tmp/drone_linux_amd64.tar.gz
+        dest: /usr/local/bin
+        remote_src: yes
+    - file:
+        path: /tmp/drone_linux_amd64.tar.gz
+        state: absent 
+  when: drone_cli.stat.exists == False
+  tags:
+    - drone-cli 

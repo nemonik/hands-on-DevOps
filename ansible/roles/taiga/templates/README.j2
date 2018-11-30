@@ -1,0 +1,63 @@
+# Taiga
+
+Taiga is an Open Source project management platform for agile development.
+
+To spin up:
+
+```
+docker-compose build
+docker-compose up
+```
+
+Monitor the logs via
+
+```
+docker logs -f taiga_taiga_1
+```
+
+Wait for the list line of log output:
+
+```
+<snip>
+Trying import local.py settings...
+processing file django.po in /usr/src/taiga-back/taiga/locale/es/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/it/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/ko/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/ca/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/nb/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/pl/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/en/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/tr/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/zh-Hans/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/zh-Hant/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/ja/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/sv/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/nl/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/de/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/ru/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/fi/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/pt_BR/LC_MESSAGES
+processing file django.po in /usr/src/taiga-back/taiga/locale/fr/LC_MESSAGES
+```
+
+Then access via
+
+[http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:8080](http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:8080)
+
+To stop:
+
+```
+docker_compose stop
+```
+
+To remove:
+
+```
+docker_compose rm
+```
+
+If you ever need to shell into the container to debug:
+
+```
+docker exec -i -t taiga_taiga_1 /bin/bash
+```

@@ -1,0 +1,26 @@
+# SonarQube
+
+SonarQube, an open source platform for continuous inspection of code quality. Permits static analysis of code to detect bugs, code smells and security vulnerabilities on 20+ programming languages including Java (including Android), C#, PHP, JavaScript, C/C++, COBOL, PL/SQL ...
+
+To spin up:
+
+```
+docker-compose build
+docker-compose up
+```
+
+Then access via
+
+[http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:9000](http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:9000)
+
+To stop:
+
+```
+docker-compose stop
+```
+
+To remove:
+
+```
+docker-compose rm
+```

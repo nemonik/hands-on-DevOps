@@ -1,0 +1,32 @@
+---
+# tasks file for chrome
+
+# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: add Google Chrome repository
+  become: yes
+  blockinfile:
+    path: /etc/yum.repos.d/google-chrome.repo
+    create: yes
+    block: |
+      [google-chrome]
+      name=google-chrome
+      baseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
+  tags:
+    - chrome
+
+- name: yum install Google Chrome
+  become: yes
+  yum: 
+    name: google-chrome-stable
+    state: latest 
+  tags:
+    - chrome

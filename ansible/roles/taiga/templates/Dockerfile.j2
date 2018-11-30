@@ -1,0 +1,96 @@
+FROM python:3.6
+MAINTAINER Michael Joseph Walsh <github.com@nemonik.com>
+
+ENV DEBIAN_FRONTEND noninteractive
+
+{% if CA_CERTIFICATES %}
+RUN cd /usr/local/share/ca-certificates/ && {% for ca in CA_CERTIFICATES %} wget {{ ca }} &&{% endfor %} update-ca-certificates
+{% endif %}
+
+RUN useradd -g 0 taiga
+
+RUN  cd /tmp && \
+        echo "deb http://security.debian.org/debian-security jessie/updates main" >> /etc/apt/sources.list && \
+        curl -sL http://nginx.org/packages/keys/nginx_signing.key | apt-key add - && \
+        echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list && \
+        apt-get update && \
+        apt-get install -y --no-install-recommends apt-transport-https && \
+        curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+        apt-get install -y --no-install-recommends libssl1.0.0 nginx=1.13.9-1~jessie curl wget gettext nano postgresql-client locales nodejs && \
+        rm -rf /var/lib/apt/lists/* && \
+        apt-get clean
+
+{% if CA_CERTIFICATES %}
+{% for ca in CA_CERTIFICATES if 'ROOT' in ca %}
+# Insert MITRE certs to upgrade pip
+RUN curl {{ ca }} >> /usr/local/lib/python3.6/site-packages/pip/_vendor/requests/cacert.pem
+RUN curl {{ ca }} >> /usr/local/lib/python3.6/site-packages/pip/_vendor/certifi/cacert.pem
+{% endfor %} 
+{% endif %}
+
+RUN pip install --upgrade pip
+
+{% if CA_CERTIFICATES %}
+{% for ca in CA_CERTIFICATES if 'ROOT' in ca %}
+# Insert again to install packages
+RUN curl {{ ca }} >> /usr/local/lib/python3.6/site-packages/pip/_vendor/certifi/cacert.pem
+{% endfor %} 
+{% endif %}
+
+RUN mkdir -p /taiga/media && \
+        mkdir -p /taiga/static
+
+WORKDIR /taiga
+
+RUN mkdir taiga-back && \
+        curl -sL https://codeload.github.com/taigaio/taiga-back/tar.gz/{{ taiga_version }} | tar xvz -C taiga-back --strip-components=1 && \
+        cd taiga-back && \
+        sed -i 's/git+git/git+https/g' requirements.txt && \
+        pip install --no-cache-dir -r requirements.txt
+
+RUN mkdir taiga-front-dist &&  \
+        curl -sL https://codeload.github.com/taigaio/taiga-front-dist/tar.gz/{{ taiga_version }}-stable | tar xvz -C taiga-front-dist --strip-components=1 && \
+        cd taiga-front-dist && \{% if (http_proxy and https_proxy) %}        
+        npm config set proxy {{ http_proxy }} && \
+        npm config set https-proxy {{ https_proxy }} && \{% endif %}  
+        npm install
+
+RUN mkdir -p /etc/nginx/conf.d
+
+COPY ./taiga-front-dist/dist/conf.template /taiga/taiga-front-dist/dist/
+
+COPY ./taiga-back/settings/local.py /taiga/taiga-back/settings/.
+
+COPY ./nginx/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx/etc/nginx/conf.d/taiga.conf /etc/nginx/conf.d/default.conf
+
+RUN chgrp 0 /var/log/nginx/error.log && \
+        chmod g=u /var/log/nginx/error.log
+
+RUN pip install taiga-contrib-ldap-auth-ext
+
+COPY ./django /etc/init.d/.
+
+RUN chmod +x /etc/init.d/django && \
+        update-rc.d django defaults
+
+# Disable nginux spinning up by default
+RUN update-rc.d -f nginx remove
+
+COPY ./docker-entrypoint.sh /.
+
+RUN chmod +x /docker-entrypoint.sh
+
+RUN chmod g=u /etc/passwd && \
+        chgrp -R 0 /taiga && \
+        chmod -R g=u /taiga && \
+        chgrp 0 /docker-entrypoint.sh && \
+        chmod g=u /docker-entrypoint.sh
+
+USER 1001
+
+WORKDIR /taiga
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+EXPOSE 8080

@@ -1,0 +1,40 @@
+---
+# tasks file for golint
+
+# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+# This works because the defauly $GOPATH is ~/go
+- name: ensure golint is installed
+  command: /bin/bash -c "/usr/local/go/bin/go get -u golang.org/x/lint/golint"
+
+- name: configure `:Lint` in Vim to run golint on the current file and populate the quickfix list
+  lineinfile:
+    path: /home/{{ ansible_user_id }}/.vimrc
+    create: yes
+    regexp: "^set rtp+="
+    line: "set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim"
+  tags:
+    - golint
+
+# TODO: fix
+# - name: configure Vim to automatically run golint on :w
+#   lineinfile:
+#     path: "/home/{{ ansible_user_id }}/.vimrc"
+#     regexp: "^autocmd BufWritePost,FileWritePost \\*.go"
+#     line: "autocmd BufWritePost,FileWritePost *.go execute 'golint' | cwindow"
+
+- name: configure emacs so `M-x golint` will run golint on the current file
+  blockinfile:
+    path: /home/{{ ansible_user_id }}/.emacs
+    create: yes
+    marker: ; {mark} ANSIBLE MANAGED BLOCK
+    block: |
+      (add-to-list 'load-path (concat (getenv "GOPATH") "/src/github.com/golang/lint/misc/emacs"))
+      (require 'golint)
+  tags:
+    - golint

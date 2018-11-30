@@ -1,0 +1,69 @@
+---
+# tasks file for gitlab
+
+# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: "ensure /home/{{ ansible_user_id }}/gitlab exists"
+  become: yes
+  file:
+    path: "/home/{{ ansible_user_id }}/gitlab"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  tags:
+    - gitlab
+
+- name: "template files into /home/{{ ansible_user_id }}/gitlab"
+  become: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}" 
+    force: yes  
+  with_items:
+    - { src: "templates/README.j2", dest: "/home/{{ ansible_user_id }}/gitlab/README.MD" }
+    - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/gitlab/Dockerfile" }
+    - { src: "templates/dockerfile_build.j2", dest: "/home/{{ ansible_user_id }}/gitlab/dockerfile_build.sh" }
+    - { src: "templates/docker-compose.j2", dest: "/home/{{ ansible_user_id }}/gitlab/docker-compose.yml" }
+  tags:
+    - gitlab
+
+- name: "make //home/{{ ansible_user_id }}/gitlab/dockerfile_build.sh executable"
+  become: yes
+  file: 
+    path: "/home/{{ ansible_user_id }}/gitlab/dockerfile_build.sh"
+    mode: "u=rwx,g=r,o=r"  
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  tags:
+    - gitlab
+
+- name: "build nemonik/gitlab:{{ gitlab_version }} docker image"
+  become: yes
+  docker_image:
+    path: "/home/{{ ansible_user_id }}/gitlab"
+    name: nemonik/gitlab:{{ gitlab_version }}
+    buildargs:
+      http_proxy: "{{ http_proxy }}"
+      HTTP_PROXY: "{{ http_proxy }}"
+      https_proxy: "{{ https_proxy }}"
+      HTTPS_PROXY: "{{ https_proxy }}"
+      NO_PROXY: "{{ no_proxy }}"
+      no_proxy: "{{ no_proxy }}" 
+  tags:
+    - gitlab
+
+- name: spin up gitlab via docker-compose
+  become: yes
+  docker_service:
+    build: no
+    debug: yes
+    project_src: "/home/{{ ansible_user_id }}/gitlab"
+  tags:
+    - gitlab

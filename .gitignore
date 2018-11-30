@@ -1,0 +1,12 @@
+# OS-specific
+.DS_Store
+
+# Ansible
+*.retry
+
+# Vagrant
+.vagrant/
+*.vdi
+
+
+

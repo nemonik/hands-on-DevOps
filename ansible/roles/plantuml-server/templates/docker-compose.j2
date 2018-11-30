@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  plantuml-server:
+    build: .
+    image:
+      plantuml/plantuml-server:latest
+    restart: always
+{% if http_proxy  %}  
+    command: -Dhttp.nonProxyHosts={{ no_proxy }} -Dhttp.proxyHost={{ http_proxy.split("http://")[1].split(":")[0]}} -Dhttp.proxyPort={{ http_proxy.split("http://")[1].split(":")[1]}}
+{% endif %}
+{% if (http_proxy or https_proxy or no_proxy) %}
+    environment:
+{% endif %}
+{% if http_proxy %}
+      - http_proxy={{ http_proxy }}
+      - HTTP_PROXY={{ http_proxy }}
+{% endif %}
+{% if https_proxy %}
+      - https_proxy={{ https_proxy }}
+      - HTTPS_PROXY={{ https_proxy }}
+{% endif %}
+{% if no_proxy %}
+      - no_proxy={{ no_proxy }}
+      - NO_PROXY={{ no_proxy }}
+{% endif %} 
+    ports:
+      - "8081:8080"

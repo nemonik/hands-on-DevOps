@@ -1,0 +1,42 @@
+# Drone
+
+Drone is a Continuous Delivery system built on container technology. 
+
+To spin up integrated with GitLab:
+
+1. As `Root` log into GitLab,
+2. Click on the `wrench` to enter the `Admin Area`,
+3. Click `Applications`,
+4. Click `New Application`,
+5. Enter `Drone CI ` for `Name`,
+6. Enter `http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:8000/authorize`,
+7. Click `submit`,
+8. vagrant ssh toolchain 
+9. cd /root/drone
+10. Use the values of `Application Id` and `Secret` to set values in the docker-compose.yml file, respectfully.
+11. docker-compose up -d
+
+Note: I'll need to automate this through curl or some such at a later date.
+
+Then execute :
+
+```
+docker-compose build
+docker-compose up
+```
+
+Then access via
+
+[http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:8000](http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:8000)
+
+To stop:
+
+```
+docker-compose stop
+```
+
+To remove:
+
+```
+docker-compose rm
+```

@@ -1,0 +1,5 @@
+---
+# Ansible playbook for vagrants 
+---
+- import_playbook: development-playbook.yml
+- import_playbook: toolchain-playbook.yml

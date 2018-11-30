@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook  --limit="toolchain" --inventory-file=hosts --extra-vars=\{\"drone_version\":\"0.8.4\",\"golang_version\":\"1.10.3\",\"gitlab_version\":\"10.4.2-1\",\"openshift_origin_client_tools_version\":\"v3.10.0/openshift-origin-client-tools-v3.10.0-dd10d17-linux-64bit.tar.gz\",\"registry_version\":\"2.5.2\",\"sonarqube_version\":\"7.1\",\"sonar_golang_plugin_version\":\"1.2.11\",\"selenium_standalone_chrome_version\":\"3.14.0\",\"selenium_standalone_firefox_version\":\"3.14.0\",\"taiga_version\":\"3.3.13\",\"zap2docker_stable_version\":\"2.7.0\",\"http_proxy\":null,\"https_proxy\":null,\"ftp_proxy\":null,\"no_proxy\":null,\"CA_CERTIFICATES\":null\} -v ansible/toolchain-playbook.yml

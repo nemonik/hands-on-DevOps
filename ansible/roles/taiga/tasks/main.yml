@@ -1,0 +1,93 @@
+---
+# tasks file for taiga
+
+# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: "copy to taiga files to /home/{{ ansible_user_id }}/taiga"
+  become: yes
+  copy:
+    src: files/
+    dest: "/home/{{ ansible_user_id }}/taiga"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  tags:
+    - taiga
+
+- name: "template files into /home/{{ ansible_user_id }}/taiga"
+  become: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"  
+    force: yes 
+  with_items:
+    - { src: "templates/README.j2", dest: "/home/{{ ansible_user_id }}/taiga/README.MD" }
+    - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/taiga/Dockerfile" }
+    - { src: "templates/dockerfile_build.j2", dest: "/home/{{ ansible_user_id }}/taiga/dockerfile_build.sh" }
+    - { src: "templates/docker-compose.j2", dest: "/home/{{ ansible_user_id }}/taiga/docker-compose.yml" }
+  tags:
+    - taiga
+
+- name: "make /home/{{ ansible_user_id }}/taiga/dockerfile_build.sh executable"
+  become: yes
+  file: 
+    path: "/home/{{ ansible_user_id }}/taiga/dockerfile_build.sh"
+    mode: "u=rwx,g=r,o=r"  
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  tags:
+    - taiga
+
+- name: ensure user 'default' with a 1001 uid and a primary group of 'ROOT' exists
+  become: yes
+  user:
+    name: default
+    uid: 1001
+    group: root
+  tags:
+    - taiga 
+
+- name: ensure ./volumes exist
+  become: yes
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"    
+  with_items:
+    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/" , owner: root, group: root }
+    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/admin", owner: default, group: root }
+    - { path: "/home/{{ ansible_user_id }}/taiga/volumess/media/", owner: root, group: root }    
+    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/user", owner: default, group: root }
+  tags:
+    - taiga
+
+- name: "build nemonik/taiga:{{ taiga_version }} docker image"
+  become: yes
+  docker_image:
+    path: "/home/{{ ansible_user_id }}/taiga"
+    name: "nemonik/taiga:{{ taiga_version }}"
+    buildargs:
+      http_proxy: "{{ http_proxy }}"
+      HTTP_PROXY: "{{ http_proxy }}"
+      https_proxy: "{{ https_proxy }}"
+      HTTPS_PROXY: "{{ https_proxy }}"
+      NO_PROXY: "{{ no_proxy }}"
+      no_proxy: "{{ no_proxy }}" 
+  tags:
+    - taiga
+
+- name: spin up taiga via docker-compose
+  become: yes
+  docker_service:
+    build: no
+    debug: yes
+    project_src: "/home/{{ ansible_user_id }}/taiga"
+  tags:
+    - taiga 

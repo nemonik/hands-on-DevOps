@@ -1,0 +1,51 @@
+# Gitlab
+
+GitLab Community Edition (CE) is an open source software development platform with built-in version control, issue tracking, code review, CI/CD, etc.
+
+To spin up:
+
+```
+dcoker-compose build
+docker_compose up
+```
+
+Monitor the logs via
+
+```
+docker logs -f gitlab_gitlab_1
+```
+
+Wait for the list line of log output:
+
+```
+<snip>
+2018-02-08 19:13:20,722 INFO success: gitaly entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2018-02-08 19:13:20,722 INFO success: sidekiq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2018-02-08 19:13:20,722 INFO success: unicorn entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2018-02-08 19:13:20,722 INFO success: gitlab-workhorse entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2018-02-08 19:13:20,722 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2018-02-08 19:13:20,722 INFO success: nginx entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2018-02-08 19:13:20,722 INFO success: sshd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+```
+
+Then access via
+
+[http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:10080](http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:10080)
+
+To stop:
+
+```
+docker_compose stop
+```
+
+To remove:
+
+```
+docker_compose rm
+```
+
+If you ever need to shell into the container to debug:
+
+```
+docker exec -i -t gitlab_gitlab_1 /bin/bash
+```

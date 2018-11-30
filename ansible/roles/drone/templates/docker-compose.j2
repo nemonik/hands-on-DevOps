@@ -1,0 +1,60 @@
+version: "2"
+
+# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+services:
+    drone-postgresql:
+        image:
+            sameersbn/postgresql:9.6-4
+        restart: always
+        environment:
+            - DB_NAME=drone
+            - DB_USER=drone
+            - DB_PASS=password
+            - DB_EXTENSION=pg_trgm
+        ports:
+            - "5432"
+        volumes:
+            - ./volumes/drone-postgresql/var/lib/postgresql:/var/lib/postgresql:Z
+
+    drone-agent:
+        build: drone-agent/.
+        image:
+            nemonik/agent:{{ drone_version }}
+        restart: always
+        command:
+            agent
+        environment:
+            - DRONE_SERVER=drone-server:9000
+            - DRONE_SECRET=shared_secret
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        depends_on:
+            - drone-server
+
+    drone-server:
+        build: drone-server/.
+        image:
+            nemonik/drone:{{ drone_version }}
+        restart: always
+        environment:
+            - DRONE_HOST=http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:8000
+            - DRONE_OPEN=true
+            - DRONE_SECRET=shared_secret
+            - DRONE_DATABASE_DRIVER=postgres
+            - DRONE_DATABASE_DATASOURCE=postgres://drone:password@drone-postgresql:5432/drone?sslmode=disable
+            - DRONE_GITLAB=true
+            - DRONE_GITLAB_CLIENT=Your Application Id
+            - DRONE_GITLAB_SECRET=Your Secret
+            - DRONE_GITLAB_URL=http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:10080
+            - DRONE_ADMIN=root
+        ports:
+            - 8000:8000
+            - 9000
+        depends_on:
+            - drone-postgresql

@@ -1,0 +1,7 @@
+FROM sonarqube:{{ sonarqube_version }}
+MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
+
+{% if CA_CERTIFICATES%}
+# Update CA Certs
+RUN cd /usr/local/share/ca-certificates/ && {% for ca in CA_CERTIFICATES %} wget {{ ca }} &&{% endfor %} update-ca-certificates
+{% endif %}

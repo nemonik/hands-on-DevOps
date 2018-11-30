@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - /vagrant/ansible/roles/standalon-chrome-container-image

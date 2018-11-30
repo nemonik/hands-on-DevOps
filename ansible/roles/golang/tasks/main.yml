@@ -1,0 +1,105 @@
+---
+# tasks file for golang
+
+# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: ensure an up-to-date git is installed
+  become: yes
+  block:
+    - yum:
+        name: git
+        state: absent
+
+    - yum:
+        name: https://centos7.iuscommunity.org/ius-release.rpm
+        state: present
+
+    - yum: 
+        name: git2u
+        state: latest 
+  tags:
+    - golang
+
+- name: is golang installed?
+  stat: path=/usr/local/go
+  register: go_installed
+  tags:
+    - golang
+
+- name: download and install golang binary release
+  become: yes
+  block:
+    - command: /bin/bash -c "wget https://dl.google.com/go/go{{ golang_version }}.linux-amd64.tar.gz"
+      args:
+        chdir: /tmp
+
+    - unarchive:
+        src: "/tmp/go{{ golang_version }}.linux-amd64.tar.gz"
+        dest: /usr/local
+  when: go_installed.stat.exists == False 
+  tags:
+    - golang
+
+- name: ensure /etc/profile.d/path.sh exists
+  become: yes   
+  file:
+    path: /etc/profile.d/devops_class.sh
+    state: touch
+    mode: 0644
+  tags:
+    - golang
+
+- name: ensure /etc/profile.d/devops_class.sh PATH includes /usr/local/go/bin
+  become: yes
+  block:
+    - lineinfile:
+        dest: /etc/profile.d/devops_class.sh
+        regexp: "^export PATH=$PATH:/usr/local/go/bin"
+        state: absent
+
+    - lineinfile:
+        dest: /etc/profile.d/devops_class.sh
+        line: export PATH=$PATH:/usr/local/go/bin
+        insertafter: EOF
+  tags:
+    - golang
+
+- name: checking golang project folders
+  file:
+    path: /home/{{ ansible_user_id }}/go/{{ item }}
+    state: directory
+    mode: 0775
+  with_items:
+    - bin
+    - pkg
+    - src
+  tags:
+    - golang
+
+- name: ensure /etc/profile.d/devops_class.sh defines GOBIN and GOPATH environment variables
+  become: yes
+  block:
+    - lineinfile:
+        dest: /etc/profile.d/devops_class.sh
+        regexp: "{{ item.regexp }}"
+        state: absent
+      with_items:
+        - { regexp: "^export GOBIN" }
+        - { regexp: "^export GOPATH" }
+        - { regexp: '^export PATH="$PATH:$GOBIN"' }
+
+    - lineinfile:
+        dest: /etc/profile.d/devops_class.sh
+        line: "{{ item.line }}"
+        insertafter: EOF      
+      with_items:
+        - { line: 'export GOBIN="$HOME/go/bin"' }
+        - { line: 'export GOPATH="$HOME/go"' }
+        - { line: 'export PATH="$PATH:$GOBIN"' }
+  tags:
+    - golang

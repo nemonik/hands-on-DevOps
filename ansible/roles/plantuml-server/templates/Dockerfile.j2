@@ -1,0 +1,11 @@
+FROM plantuml/plantuml-server:{{ plantuml_server_version }}
+MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
+
+{% if CA_CERTIFICATES %}
+USER root
+
+RUN cd /usr/local/share/ca-certificates/ && {% for ca in CA_CERTIFICATES %} wget {{ ca }} &&{% endfor %} update-ca-certificates
+
+USER jetty
+{% endif %}
+
