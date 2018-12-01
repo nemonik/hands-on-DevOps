@@ -3484,8 +3484,8 @@ And the output will be
 ```
 [vagrant@development helloworld-web]$ gometalinter.v2
 main.go:11:21:warning: error return value not checked (http.ListenAndServe(":3000", logRequest(http.DefaultServeMux))) (errcheck)
-main.go:11::warning: Errors unhandled.,LOW,HIGH (gas)
-main.go:15::warning: Errors unhandled.,LOW,HIGH (gas)
+main.go:15:13:warning: error return value not checked (fmt.Fprintf(w, "Hello world!\n")) (errcheck)
+main.go:11::warning: Errors unhandled.,LOW,HIGH (gosec)
 ```
 
 Oops. Line 11 and line 15 have problems:
