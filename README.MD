@@ -622,12 +622,13 @@ Example settings (Adjust for your environment.):
 | http_proxy                         | http://gatekeeper.mitre.org:80                                   |
 | https_proxy                        | http://gatekeeper.mitre.org:80                                   |
 | no_proxy                           | 127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11  |
-| CA_CERTIFICATES                    | https://raw.githubusercontent.com/nemonik/hands-on-DevOps/master/certs/MITRE%20BA%20NPE%20CA-3(1).crt,https://raw.githubusercontent.com/nemonik/hands-on-DevOps/master/certs/MITRE%20BA%20ROOT.crt |
+| CA_CERTIFICATES                    | http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt |
 | VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS | 0                                                                |
 
 **NOTE**
 
 - The cetificate URLs need to be encoded for parenthese to work.
+- One Windows, you may inadvertantly cut-and-paste hidden characters at the end of a `Variable Names`'s `Value` and the subsequent Ansible automation may fail.
 
 ## 9.2. VirtualBox
 
@@ -1306,8 +1307,12 @@ On this vagrant will be running a number of DevOps tools.  This will take a whil
 
 **NOTE**
 
+- It is very possible a network anomaly may result in Ansible failing, if you can determine the role you failed in you could try re-running the role the failure occured in and the subsequent roles like so:
+  ```
+  ANSIBLE_ARGS='--tags "python-container-image,golang-sonarqube-scanner-image, standalone-firefox-container-image,owasp-zap2docker-stable-image"' vagrant provision toolchain
+  ```
 - Caution, it is easy to forget DevOps is as much about culture as it is about a methodology and repeated practices (often further mistakenly thought as "tools and automation"), so keep this in mind.  
-- The tools, methodology, an repeated practices exist to support the culture.
+- The tools, methodology and repeated practices exist to support the culture.
 - Again, I'll drop from time to time stating "into the shell" when instruction you to enter things in the CLI as it should understood.
 
 ### 9.8.1. Taiga, an example of Agile project management software

@@ -52,27 +52,7 @@
     state: directory
   tags:
     - sonarqube
-
-# 
-# Deprecated
-#
-# - name: is golang plugin installed?
-#   become: yes
-#   stat: 
-#     path: "/home/{{ ansible_user_id }}/sonarqube/volumes/sonarqube-extensions/plugins/sonar-golang-plugin-{{ sonar_golang_plugin_version }}.jar"
-#   register: golang_plugin_installed
-#   tags:
-#     - sonarqube
-
-# - name: download and install golang plugin
-#   become: yes  
-#   get_url:
-#     url: "https://github.com/uartois/sonar-golang/releases/download/v{{ sonar_golang_plugin_version }}/sonar-golang-plugin-{{ sonar_golang_plugin_version }}.jar"
-#     dest: /home/{{ ansible_user_id }}/sonarqube/volumes/sonarqube-extensions/plugins/
-#   when: golang_plugin_installed.stat.exists == False 
-#   tags:
-#     - sonarqube
-  
+ 
 - name: "build nemonik/sonarqube:{{ sonarqube_version }} docker image"
   become: yes
   docker_image:

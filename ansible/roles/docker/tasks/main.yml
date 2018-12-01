@@ -9,7 +9,7 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: uninstall old versions
+- name: uninstall old versions of docker
   become: yes
   yum:
     name: ['docker', 'docker-client', 'docker-common', 'docker-engine']
@@ -17,7 +17,7 @@
   tags:
     - docker
 
-- name: yum install required packages
+- name: yum install required packages to create the docker storage
   become: yes
   yum: 
     state: latest 
@@ -25,7 +25,7 @@
   tags:
     - docker
 
-- name: Ensure docker group exists
+- name: ensure docker group exists
   become: yes
   group:
     name: docker
