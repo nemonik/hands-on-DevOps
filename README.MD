@@ -1427,11 +1427,6 @@ A CMS must facilitate best practices, not limited to:
 
 - Trigger follow-on activities orchestrated by the Continuous Integration Service.
 
-MITRE provides:
-
-- A GitLab at <https://gitlab.mitre.org/users/sign_in>.  Use your MITRE username and password to authenticate. This is where you retrieved this class, so you already knew this, G.I. Joe.
-- Bitbucket (formally Stash) under CODEV at <https://git.codev.mitre.org/dashboard> where you have to first login via <https://login.codev.mitre.org/portal>.
-
 #### 9.8.2.1. Documentation, source, container image
 
 GitLab's documentation can be found at
@@ -1481,7 +1476,7 @@ Drone is distributed as a Docker image. Drone CI can be run with an internal SQL
 
 Drone and its brethren (e.g., Jenkins CI, GitLab CI/CD) is used to facilitate Continuous Integration (CI), a software development practice where members of an Agile team frequently integrate their work in order to detect integration issues as soon as possible. Each integration is orchestrated through a service that essentially assembles a build and runs tests every time a predetermined trigger has been met; and then reports with immediate feedback.
 
-MITRE provides a Jenkins CI server at <https://jenkins.mitre.org/>. Use your MITRE username and password to authenticate and you can have at all that Jenkins CI goodness. I don't use it unless I have to. Why? I'm simply not a fan. Initially, because its plugin architecture is painful to manage and your pipelines existed entirely in the Jenkins CI tool itself. Later, Jenkins CI introduced Groovy-based Jenkin Pipelines that were CMed wit your project's source. Every orchestrator has based their DSL on YAML and although I love the Groovy language for its power, I don't find it makes for a good orchestration language. Your opinion may differ. I'm okay with that.
+I don't use Jenkins unless I have to. Why? I'm simply not a fan. Initially, because its plugin architecture is painful to manage and your pipelines existed entirely in the Jenkins CI tool itself. Later, Jenkins CI introduced Groovy-based Jenkin Pipelines that were CMed wit your project's source. Every orchestrator has based their DSL on YAML and although I love the Groovy language for its power, I don't find it makes for a good orchestration language. Your opinion may differ. I'm okay with that.
 
 There are also SaaS CI/CD tools, such as Travis CI and Circle CI. These are great, free CI/CD orchestrators.
 
