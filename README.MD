@@ -94,7 +94,7 @@ See the License file at the root of the project.
                 - [9.5.1.4.1. Modelines](#95141-modelines)
                 - [9.5.1.4.2. Setting Software version for Ansible roles](#95142-setting-software-version-for-ansible-roles)
                 - [9.5.1.4.3. Inserting Proxy setting via host environmental variables](#95143-inserting-proxy-setting-via-host-environmental-variables)
-                - [9.5.1.4.4. Inserting MITRE CA Certificates](#95144-inserting-mitre-ca-certificates)
+                - [9.5.1.4.4. Inserting Enterprise CA Certificates](#95144-inserting-enterprise-ca-certificates)
                 - [9.5.1.4.5. Configuring the cache plugin to speed things along](#95145-configuring-the-cache-plugin-to-speed-things-along)
                 - [9.5.1.4.6. Configuring the disksize plugin to increase the disk size](#95146-configuring-the-disksize-plugin-to-increase-the-disk-size)
                 - [9.5.1.4.7. Requiring _vagrant-vbquest_ for Windows](#95147-requiring-_vagrant-vbquest_-for-windows)
@@ -855,7 +855,7 @@ Vagrant.configure('2') do |config|
   end 
 ```
 
-##### 9.5.1.4.4. Inserting MITRE CA Certificates
+##### 9.5.1.4.4. Inserting Enterprise CA Certificates
 
 ```ruby
   # To add Enterprise CA Certificates to all vagrants
