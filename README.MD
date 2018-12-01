@@ -2616,7 +2616,7 @@ BINARY_NAME=helloworld
 SONAR_DEPENDENCIES := \
 	gopkg.in/alecthomas/gometalinter.v2
 
-all: fmt lint test build sonar
+all: build
 clean:
 	$(GOCLEAN)
 	rm -f $(BINARY_NAME)
@@ -2629,7 +2629,7 @@ test: lint
 	$(GOTEST) -v -cover ./...
 build: test
 	$(GOBUILD) -o $(BINARY_NAME) -v
-run: build
+run:
 	$(GOBUILD) -o $(BINARY_NAME) -v ./...
 	./$(BINARY_NAME)
 ```
@@ -2650,55 +2650,30 @@ make all
 The output will resemble
 
 ```bash
-[vagrant@development helloworld]$ make all
 go fmt
+main_test.go
+main.go
 go get github.com/golang/lint/golint
 golint
-go test -v ./...
-=== RUN   TestHelloWorld
---- PASS: TestHelloWorld (0.00s)
-PASS
-ok  	github.com/nemonik/helloworld	(cached)
-go build -o helloworld -v
-go get -u gopkg.in/alecthomas/gometalinter.v2
-gometalinter.v2 --install
-Installing:
-  deadcode
-  dupl
-  errcheck
-  gas
-  gochecknoglobals
-  gochecknoinits
-  goconst
-  gocyclo
-  goimports
-  golint
-  gosimple
-  gotype
-  gotypex
-  ineffassign
-  interfacer
-  lll
-  maligned
-  megacheck
-  misspell
-  nakedret
-  safesql
-  staticcheck
-  structcheck
-  unconvert
-  unparam
-  unused
-  varcheck
-gometalinter.v2 > gometalinter-report.out
-golint > golint-report.out
-go test -v ./... -coverprofile=coverage.out
+go test -v -cover ./...
 === RUN   TestHelloWorld
 --- PASS: TestHelloWorld (0.00s)
 PASS
 coverage: 50.0% of statements
-ok  	github.com/nemonik/helloworld	0.002s	coverage: 50.0% of statements
-go test -v ./... -json > report.json
+ok      github.com/nemonik/helloworld   0.001s  coverage: 50.0% of statements
+go build -o helloworld -v
+github.com/nemonik/helloworld
+[vagrant@development helloworld]$ make all
+go fmt
+go get github.com/golang/lint/golint
+golint
+go test -v -cover ./...
+=== RUN   TestHelloWorld
+--- PASS: TestHelloWorld (0.00s)
+PASS
+coverage: 50.0% of statements
+ok      github.com/nemonik/helloworld   (cached)        coverage: 50.0% of statements
+go build -o helloworld -v
 ```
 
 ### 9.10.11. Author Drone-based Continuous Integration
@@ -2775,13 +2750,13 @@ In your editor create `.drone.yml` file at the root of the `helloworld` project:
 ```yaml
 pipeline:
   build:
-    image: 192.168.0.11:5000/nemonik/golang:1.10.3
+    image: 192.168.0.11:5000/nemonik/golang:1.11.2
     commands:
       - make lint
       - make test
       - make build
   run:
-    image: 192.168.0.11:5000/nemonik/golang:1.10.3
+    image: 192.168.0.11:5000/nemonik/golang:1.11.2
     commands:
       - make run
 ```
@@ -2830,15 +2805,29 @@ The output of the `build` (An arbitrary name. You could use "skippy".) step will
 
 ```bash
 + make lint
+go fmt
 go get github.com/golang/lint/golint
 golint
 + make test
-go test -v ./...
+go fmt
+go get github.com/golang/lint/golint
+golint
+go test -v -cover ./...
 === RUN   TestHelloWorld
 --- PASS: TestHelloWorld (0.00s)
 PASS
-ok  	_/drone/src/192.168.0.11/root/helloworld	0.003s
+coverage: 50.0% of statements
+ok  	_/drone/src/192.168.0.11/root/helloworld	0.002s	coverage: 50.0% of statements
 + make build
+go fmt
+go get github.com/golang/lint/golint
+golint
+go test -v -cover ./...
+=== RUN   TestHelloWorld
+--- PASS: TestHelloWorld (0.00s)
+PASS
+coverage: 50.0% of statements
+ok  	_/drone/src/192.168.0.11/root/helloworld	(cached)	coverage: 50.0% of statements
 go build -o helloworld -v
 _/drone/src/192.168.0.11/root/helloworld
 ```
