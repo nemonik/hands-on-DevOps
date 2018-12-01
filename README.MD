@@ -620,6 +620,7 @@ Example settings:
 | no_proxy                           | 127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11  |
 | CA_CERTIFICATES                    | https://raw.githubusercontent.com/nemonik/hands-on-DevOps/master/certs/MITRE%20BA%20NPE%20CA-3(1).crt,https://raw.githubusercontent.com/nemonik/hands-on-DevOps/master/certs/MITRE%20BA%20ROOT.crt |
 | VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS | 0                                                                |
+
 **NOTE**
 - The cetificate URLs need to be encoded for parenthese to work.
 - This class makes use **NOTE** sections to call out things that are important to know or will drop a few tidbits.  Reading these notes may save you some time.
