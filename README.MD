@@ -6415,7 +6415,7 @@ In another `vagrant ssh` to `development` enter
 ```
 curl -X GET http://192.168.0.11:5000/v2/_catalog
 curl -X GET http://192.168.0.11:5000/v2/nemonik/standalone-firefox/tags/list
-docker pull 192.168.0.11:5000/nemonik/standalone-firefox:3.141.59
+docker pull 192.168.0.11:5000/nemonik/standalone-firefox:3.14.0
 ```
 
 to search for and pull then pull the `nemonik/standalone-firefox:3.141.59` container image frome our private Docker repository running on our `toolchain` vagrant.
@@ -6423,7 +6423,7 @@ to search for and pull then pull the `nemonik/standalone-firefox:3.141.59` conta
 Then enter into the command line
 
 ```bash
-docker run -p 4444:4444 192.168.0.11:5000/nemonik/standalone-firefox:3.141.59
+docker run -p 4444:4444 192.168.0.11:5000/nemonik/standalone-firefox:3.14.0
 ```
 
 This stands up Selenium specifically running Firefox.  The container is running in the foreground so we can watch the log output.
@@ -6431,18 +6431,17 @@ This stands up Selenium specifically running Firefox.  The container is running 
 A good start outputs to the command line
 
 ```
-[vagrant@development helloworld-web]$ docker run -p 4444:4444 192.168.0.11:5000/nemonik/standalone-firefox:3.141.59
-2018-12-01 07:32:54,889 WARN Included extra file "/etc/supervisor/conf.d/selenium.conf" during parsing
-2018-12-01 07:32:54,891 INFO supervisord started with pid 7
-2018-12-01 07:32:55,899 INFO spawned: 'xvfb' with pid 10
-2018-12-01 07:32:55,900 INFO spawned: 'selenium-standalone' with pid 11
-07:32:56.311 INFO [GridLauncherV3.parse] - Selenium server version: 3.141.59, revision: e82be7d358
-2018-12-01 07:32:56,312 INFO success: xvfb entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
-2018-12-01 07:32:56,312 INFO success: selenium-standalone entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
-07:32:56.400 INFO [GridLauncherV3.lambda$buildLaunchers$3] - Launching a standalone Selenium Server on port 4444
-2018-12-01 07:32:56.461:INFO::main: Logging initialized @524ms to org.seleniumhq.jetty9.util.log.StdErrLog
-07:32:56.680 INFO [WebDriverServlet.<init>] - Initialising WebDriverServlet
-07:32:56.761 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
+[vagrant@development ~]$ docker run -p 4444:4444 192.168.0.11:5000/nemonik/standalone-firefox:3.14.0
+2018-12-01 08:15:45,146 WARN Included extra file "/etc/supervisor/conf.d/selenium.conf" during parsing
+2018-12-01 08:15:45,148 INFO supervisord started with pid 7
+2018-12-01 08:15:46,154 INFO spawned: 'xvfb' with pid 10
+2018-12-01 08:15:46,158 INFO spawned: 'selenium-standalone' with pid 11
+08:15:46.576 INFO [GridLauncherV3.launch] - Selenium build info: version: '3.14.0', revision: 'aacccce0'
+08:15:46.577 INFO [GridLauncherV3$1.launch] - Launching a standalone Selenium Server on port 4444
+2018-12-01 08:15:46,578 INFO success: xvfb entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2018-12-01 08:15:46,578 INFO success: selenium-standalone entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2018-12-01 08:15:46.679:INFO::main: Logging initialized @487ms to org.seleniumhq.jetty9.util.log.StdErrLog
+08:15:46.852 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
 ```
 
 #### 9.11.20.3. Create our test automation
@@ -6461,25 +6460,26 @@ We're going to write our test in Python.  Python is already installed on the `de
 We'll need to install a dependency, we can install by entering into the command line
 
 ```bash
- sudo pip install 'selenium==3.141.0'
+ sudo pip install 'selenium==3.14.0'
 ```
 
 The output of looks like
 
 ```
-[vagrant@development selenium-test]$  sudo pip install 'selenium==3.141.0'
-Collecting selenium==3.141.0
-  Downloading https://files.pythonhosted.org/packages/80/d6/4294f0b4bce4de0abf13e17190289f9d0613b0a44e5dd6a7f5ca98459853/selenium-3.141.0-py2.py3-none-any.whl (904kB)
-    100% |████████████████████████████████| 911kB 2.5MB/s
-Requirement already satisfied: urllib3 in /usr/lib/python2.7/site-packages (from selenium==3.141.0) (1.24.1)
+[vagrant@development ~]$ sudo pip install 'selenium==3.14.0'
+Collecting selenium==3.14.0
+  Downloading https://files.pythonhosted.org/packages/b8/53/9cafbb616d20c7624ff31bcabd82e5cc9823206267664e68aa8acdde4629/selenium-3.14.0-py2.py3-none-any.whl (898kB)
+    100% |████████████████████████████████| 901kB 3.1MB/s
+Requirement already satisfied: urllib3 in /usr/lib/python2.7/site-packages (from selenium==3.14.0) (1.24.1)
 Installing collected packages: selenium
-Successfully installed selenium-3.141.0
+Successfully installed selenium-3.14.0
+
 ```
 
 But let's create a `requirements.txt` file to hold our dependency with our text editor containing
 
 ```python
-selenium==3.141.0
+selenium==3.14.0
 ```
 
 This allow the test's dependencies to be enumerated in a file including the specififc version of the dependency, so their installation can be automated.
