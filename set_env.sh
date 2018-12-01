@@ -20,9 +20,6 @@ export http_proxy=$PROXY
 export HTTP_PROXY=$PROXY
 export ALL_PROXY=$PROXY
 export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,$(echo 192.168.0.{1..255} | sed 's/ /,/g')"
-#,172.30.1.1"
 export no_proxy=${NO_PROXY}
-
 export CA_CERTIFICATES=https://raw.githubusercontent.com/nemonik/hands-on-DevOps/master/certs/MITRE%20BA%20NPE%20CA-3%281%29.crt,https://raw.githubusercontent.com/nemonik/hands-on-DevOps/master/certs/MITRE%20BA%20ROOT.crt
-
 export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0

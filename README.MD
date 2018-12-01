@@ -450,7 +450,11 @@ The gist of the book can be found at SlideShare https://www.slideshare.net/niles
 
 # 9. Now the hands-on part
 
-In this class you will spin up the following developent and toolchain environment:
+In this class you will spin up the following developent and toolchain environment.
+
+**NOTE**
+- If your web-based Git-repository manager is paired with a PlantUML server you will see a diagram rendered below otherwise you will only the PlantUML source code for the diagram. Don't worry the course's Ansible automation will spin up both a GitLab and PlantUML.
+- This class makes use **NOTE** sections to call out things that are important to know or will drop a few tidbits.  Reading these notes may save you some time.
 
 ```plantuml
 @startuml
@@ -571,7 +575,7 @@ you .[#0B5C92].> helloworld_web
 
 **On Mac OS X or \*NIX environments**
 
-Example settings:
+Example settings (Adjust for your environment.):
 
 ```bash
 #!/usr/bin/env bash
@@ -606,7 +610,7 @@ export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
 
 **On Windows**
 
-Example settings:
+Example settings (Adjust for your environment.):
 
 1. In the Windows taskbar, enter `edit the system environment variables` into `Search Windows` and select the icon with the corresponding name.
 2. On the `Advanced` tab select `Environment Variables...` button.
@@ -622,8 +626,8 @@ Example settings:
 | VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS | 0                                                                |
 
 **NOTE**
+
 - The cetificate URLs need to be encoded for parenthese to work.
-- This class makes use **NOTE** sections to call out things that are important to know or will drop a few tidbits.  Reading these notes may save you some time.
 
 ## 9.2. VirtualBox
 
@@ -758,10 +762,6 @@ vagrant-disksize (0.1.3, global)
 vagrant-proxyconf (1.5.2, global)
 vagrant-vbguest (0.16.0, global)
 ```
-
-**NOTE**
-
-- For lab computers remember to re-authenticate through http://info.mitre.org to be able to access the Internet otherwise `vagrant` will error trying to retrieve the plugins.
 
 #### 9.5.1.4. The Vagrantfile explained
 
