@@ -6417,6 +6417,7 @@ if __name__ == "__main__":
         sys.exit()
 
     del sys.argv[1:]
+    unittest.main()
 ```
 
 Save the file and exit.
@@ -6435,7 +6436,7 @@ Successful command line output in this window will be
 [vagrant@development selenium-test]$ python test_helloworld.py 192.168.0.10 http://192.168.0.10:3000
 .
 ----------------------------------------------------------------------
-Ran 1 test in 2.485s
+Ran 1 test in 1.699s
 
 OK
 ```
@@ -6463,7 +6464,6 @@ cd /home/vagrant/go/src/github.com/nemonik/helloworld-web
 Edit the `.drone.yml` file and add to the bottom the following with the `selenum:` step having the same idention as the prior steps, and `services:` starting the line.
 
 ```yaml
-
   selenium:
     image: 192.168.0.11:5000/nemonik/python:2.7.15
     commands:
@@ -6528,16 +6528,16 @@ Successful output for this stage resembles
 + export no_proxy=$no_proxy,$(python selenium-test/resolve.py firefox)
 + cd selenium-test
 + pip install -r requirements.txt
-Collecting selenium==3.14 (from -r requirements.txt (line 1))
+Collecting selenium==3.14.0 (from -r requirements.txt (line 1))
   Downloading https://files.pythonhosted.org/packages/b8/53/9cafbb616d20c7624ff31bcabd82e5cc9823206267664e68aa8acdde4629/selenium-3.14.0-py2.py3-none-any.whl (898kB)
-Collecting urllib3 (from selenium==3.14->-r requirements.txt (line 1))
-  Downloading https://files.pythonhosted.org/packages/bd/c9/6fdd990019071a4a32a5e7cb78a1d92c53851ef4f56f62a3486e6a7d8ffb/urllib3-1.23-py2.py3-none-any.whl (133kB)
+Collecting urllib3 (from selenium==3.14.0->-r requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/62/00/ee1d7de624db8ba7090d1226aebefab96a2c71cd5cfa7629d6ad3f61b79e/urllib3-1.24.1-py2.py3-none-any.whl (118kB)
 Installing collected packages: urllib3, selenium
-Successfully installed selenium-3.14.0 urllib3-1.23
+Successfully installed selenium-3.14.0 urllib3-1.24.1
 + python test_helloworld.py firefox http://192.168.0.11:3000
 .
 ----------------------------------------------------------------------
-Ran 1 test in 5.713s
+Ran 1 test in 5.283s
 
 OK
 ```
@@ -6659,7 +6659,7 @@ And the following for the `docker run`
 ```
 [vagrant@development helloworld-web]$ docker run 192.168.0.11:5000/nemonik/zap2docker-stable:2.7.0 zap-baseline.py -t http://192.168.0.11:3000
 
-Aug 12, 2018 10:11:59 AM java.util.prefs.FileSystemPreferences$1 run
+Dec 01, 2018 8:52:48 AM java.util.prefs.FileSystemPreferences$1 run
 INFO: Created user preferences directory.
 Total of 3 URLs
 PASS: Cookie No HttpOnly Flag [10010]
@@ -6676,11 +6676,11 @@ PASS: Session ID in URL Rewrite [3]
 PASS: Script Passive Scan Rules [50001]
 PASS: Application Error Disclosure [90022]
 WARN-NEW: X-Content-Type-Options Header Missing [10021] x 4
-	http://192.168.0.11:3000/
-	http://192.168.0.11:3000/robots.txt
-	http://192.168.0.11:3000/sitemap.xml
-	http://192.168.0.11:3000
-FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 1	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 13
+        http://192.168.0.11:3000/
+        http://192.168.0.11:3000/robots.txt
+        http://192.168.0.11:3000/sitemap.xml
+        http://192.168.0.11:3000
+FAIL-NEW: 0     FAIL-INPROG: 0  WARN-NEW: 1     WARN-INPROG: 0  INFO: 0 IGNORE: 0       PASS: 13
 ```
 
 **NOTE**
@@ -6714,7 +6714,7 @@ Successful output for this stage resembles
 
 ```
 + zap-baseline.py -t http://192.168.0.11:3000 || true
-Apr 18, 2018 9:19:10 PM java.util.prefs.FileSystemPreferences$1 run
+Dec 01, 2018 8:56:31 AM java.util.prefs.FileSystemPreferences$1 run
 INFO: Created user preferences directory.
 Total of 3 URLs
 PASS: Cookie No HttpOnly Flag [10010]
