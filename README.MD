@@ -4387,7 +4387,7 @@ skinparam note {
 Build a Docker image named `nemonik/helloworld-web` for the application and all its dependencies to ensure a repeatable deployment on Docker by opening the file `Dockerfile` in an editor at the root of the project and copy the is content into it
 
 ```docker
-FROM 192.168.0.11:5000/nemonik/golang:1.12.2
+FROM 192.168.0.11:5000/nemonik/golang:1.11.2
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
 RUN mkdir /app
