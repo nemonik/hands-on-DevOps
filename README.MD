@@ -120,7 +120,7 @@ See the License file at the root of the project.
         - [9.8.4. Once the *toolchain* vagrant is up](#984-once-the-toolchain-vagrant-is-up)
             - [9.8.4.1. Integrate GitLab with the PlantUML-Server](#9841-integrate-gitlab-with-the-plantuml-server)
             - [9.8.4.2. Integrate Drone CI with GitLab](#9842-integrate-drone-ci-with-gitlab)
-            - [9.8.4.3. Optionally, add the *hands-on-DevOps* to the `toolchain`'s GitLab](#9843-optionally-add-the-hands-on-devops-to-the-toolchains-gitlab)
+            - [9.8.4.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab](#9843-optionally-add-the-hands-on-devops-repository-to-the-toolchains-gitlab)
         - [9.8.5. SonarQube, an example of a platform for the inspection of code quality](#985-sonarqube-an-example-of-a-platform-for-the-inspection-of-code-quality)
             - [9.8.5.1. Documentation, source, container image](#9851-documentation-source-container-image)
             - [9.8.5.2. URL, Username and password](#9852-url-username-and-password)
@@ -1307,9 +1307,13 @@ On this vagrant will be running a number of DevOps tools.  This will take a whil
 
 **NOTE**
 
-- It is very possible a network anomaly may result in Ansible failing, if you can determine the role you failed in you could try re-running the role the failure occured in and the subsequent roles like so:
+- It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you could try re-running the role the failure occured in and the subsequent roles like so:
   ```
   ANSIBLE_ARGS='--tags "python-container-image,golang-sonarqube-scanner-image, standalone-firefox-container-image,owasp-zap2docker-stable-image"' vagrant provision toolchain
+  ```
+  Otherwise, re-run the automation from the start:
+  ```
+  vagrant up toolchain --provision
   ```
 - Caution, it is easy to forget DevOps is as much about culture as it is about a methodology and repeated practices (often further mistakenly thought as "tools and automation"), so keep this in mind.  
 - The tools, methodology and repeated practices exist to support the culture.
@@ -1583,9 +1587,9 @@ You'll need to enable the integration between GitLab and the PlantUML-Server by 
 
 1. As `root` log into GitLab with the password you entered in the prior step,
 2. Click on the `wrench` to enter the `Admin Area`,
-3. Then click `Settings`.
-4. Scroll to bottom of the page until PlantUML section check Enable PlantUML checkbox, set the PlantUML instance as http://192.168.0.11:8081
-5. Then click `Save` at the very bottom of the page.
+3. Then click `Settings` or the `gear`-icon and then select `Integrations`.
+4. Expand PlantUML and then check Enable PlantUML checkbox, set the `PlantUML URL` to http://192.168.0.11:8081
+5. Then click `Save changes`.
 
 #### 9.8.4.2. Integrate Drone CI with GitLab
 
@@ -1662,7 +1666,7 @@ Recreating drone_drone-agent_1  ... done
 
 You will only have to do these step in regards to Drone once. Drone should always restart in the toolchain vagrant even if you `halt` the vagrant and later bring it `up`.
 
-#### 9.8.4.3. Optionally, add the *hands-on-DevOps* to the `toolchain`'s GitLab
+#### 9.8.4.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab
 
 1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left.
    a. Select `Create Project`.  
@@ -1772,6 +1776,17 @@ Command line will open a prompt to the vagrant
 ```bash
 [vagrant@development ~]$
 ```
+
+**NOTE**
+
+- Again, it is very possible a network anomaly may result in Ansible failing, if you can determine the role automation failed in you could try re-running the role the failure occured in and the subsequent roles like so:
+  ```
+  ANSIBLE_ARGS='--tags "inspec,drone-cli,sonar-scanner-cli"' vagrant provision development
+  ```
+  Otherwise, re-run the automation from the start:
+  ```
+  vagrant up development --provision
+  ```
 
 ## 9.10. Golang _helloworld_ project
 
