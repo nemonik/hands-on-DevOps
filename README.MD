@@ -6986,7 +6986,7 @@ Notice how the `curl` requests are Round-robin load balanced across each replica
 
 Git clone the Python+Flask Magic Eight Ball web app
 
-https://gitlab.mitre.org/mjwalsh/magiceightball
+https://github.com/nemonik/magiceightball
 
 and develop a pipeline for.
 
