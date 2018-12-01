@@ -1333,15 +1333,6 @@ Further, the Lean-Agile Software tools should provide the following capabilities
 
 The 800lb Gorilla in this market segment is JIRA Software. Some of my co-workers hate it. It is part of the Atlassian suite providing provides collaboration software for teams with products including JIRA Software, Confluence, HipChat, Bitbucket, and Stash.
 
-Here at MITRE, MITRE provides:
-
-- JIRA Software as part of CODEV at <https://tracker.codev.mitre.org/secure/Dashboard.jspa> where you have to first login via <https://login.codev.mitre.org/portal>.
-- Taiga at <https://taiga.mitre.org/> using your MITRE username and password to log in.
-
-There may be more. I'm simply not aware of them.
-
-A number of MITRE projects also use Pivotal Lab's Pivotal Tracker, a SaaS.
-
 **NOTE**
 
 - Lean-Agile Project Management software's primary purpose is to integrare people and really not much else.
