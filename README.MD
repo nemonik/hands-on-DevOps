@@ -4142,7 +4142,7 @@ BINARY_NAME=helloworld-web
 SONAR_DEPENDENCIES := \
 	gopkg.in/alecthomas/gometalinter.v2
 
-all: fmt lint test sonar build
+all: sonar build
 clean:
 	$(GOCLEAN)
 	rm -f $(BINARY_NAME)
@@ -4161,7 +4161,7 @@ sonar: test
 	-$(GOTEST) -v ./... -coverprofile=coverage.out
 	-$(GOTEST) -v ./... -json > report.json
 	-sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
-build: sonar
+build:
 	$(GOBUILD) -o $(BINARY_NAME) -v
 run: build
 	$(GOBUILD) -o $(BINARY_NAME) -v ./...
@@ -4193,20 +4193,20 @@ go test -v -cover ./...
 --- PASS: TestHandler (0.00s)
 PASS
 coverage: 55.6% of statements
-ok  	github.com/nemonik/helloworld-web	(cached)	coverage: 55.6% of statements
+ok      github.com/nemonik/helloworld-web       (cached)        coverage: 55.6% of statements
 go get -u gopkg.in/alecthomas/gometalinter.v2
 gometalinter.v2 --install
 Installing:
   deadcode
   dupl
   errcheck
-  gas
   gochecknoglobals
   gochecknoinits
   goconst
   gocyclo
   goimports
   golint
+  gosec
   gosimple
   gotype
   gotypex
@@ -4233,41 +4233,41 @@ go test -v ./... -coverprofile=coverage.out
 --- PASS: TestHandler (0.00s)
 PASS
 coverage: 55.6% of statements
-ok  	github.com/nemonik/helloworld-web	0.005s	coverage: 55.6% of statements
+ok      github.com/nemonik/helloworld-web       0.003s  coverage: 55.6% of statements
 go test -v ./... -json > report.json
 sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner-3.2.0.1227-linux/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
 INFO: SonarQube Scanner 3.2.0.1227
 INFO: Java 1.8.0_121 Oracle Corporation (64-bit)
-INFO: Linux 3.10.0-862.2.3.el7.x86_64 amd64
+INFO: Linux 3.10.0-862.14.4.el7.x86_64 amd64
 INFO: User cache: /home/vagrant/.sonar/cache
 INFO: SonarQube server 7.1.0
 INFO: Default locale: "en_US", source code encoding: "UTF-8" (analysis is platform dependent)
 INFO: Publish mode
 INFO: Load global settings
-INFO: Load global settings (done) | time=76ms
-INFO: Server id: AWUleERE22lLPPH40AH8
+INFO: Load global settings (done) | time=53ms
+INFO: Server id: AWdnkdRdhzMtOWEkQLzX
 INFO: User cache: /home/vagrant/.sonar/cache
 INFO: Load plugins index
-INFO: Load plugins index (done) | time=39ms
+INFO: Load plugins index (done) | time=42ms
 INFO: Load/download plugins
-INFO: Load/download plugins (done) | time=7ms
+INFO: Load/download plugins (done) | time=4ms
 INFO: Process project properties
 INFO: Load project repositories
-INFO: Load project repositories (done) | time=73ms
+INFO: Load project repositories (done) | time=48ms
 INFO: Load quality profiles
-INFO: Load quality profiles (done) | time=25ms
+INFO: Load quality profiles (done) | time=18ms
 INFO: Load active rules
-INFO: Load active rules (done) | time=48ms
+INFO: Load active rules (done) | time=54ms
 INFO: Load metrics repository
-INFO: Load metrics repository (done) | time=23ms
+INFO: Load metrics repository (done) | time=17ms
 WARN: SCM provider autodetection failed. No SCM provider claims to support this project. Please use sonar.scm.provider to define SCM of your project.
 INFO: Project key: helloworld-web
 INFO: Project base dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web
 INFO: -------------  Scan helloworld-web
 INFO: Load server rules
-INFO: Load server rules (done) | time=12ms
+INFO: Load server rules (done) | time=9ms
 INFO: Base dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web
 INFO: Working dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web/.scannerwork
 INFO: Source paths: .
@@ -4275,42 +4275,43 @@ INFO: Source encoding: UTF-8, default locale: en_US
 INFO: Index files
 INFO: Excluded sources:
 INFO:   **/*test.go
-INFO: 9 files indexed
+INFO: 8 files indexed
 INFO: 1 file ignored because of inclusion/exclusion patterns
-INFO: Quality profile for go: Golint Rules
+INFO: Quality profile for go: Sonar way
 INFO: Sensor SonarGo [go]
 INFO: Load coverage report from '/home/vagrant/go/src/github.com/nemonik/helloworld-web/coverage.out'
-INFO: Sensor SonarGo [go] (done) | time=130ms
+INFO: Sensor SonarGo [go] (done) | time=123ms
 INFO: Sensor Go Unit Test Report [go]
 WARN: Failed to find test file for package github.com/nemonik/helloworld-web and test TestLogRequest
 WARN: Failed to find test file for package github.com/nemonik/helloworld-web and test TestHandler
-INFO: Sensor Go Unit Test Report [go] (done) | time=13ms
+INFO: Sensor Go Unit Test Report [go] (done) | time=8ms
 INFO: Sensor Import of Golint issues [go]
 ERROR: GoLintReportSensor: Import of external issues requires SonarQube 7.2 or greater.
 INFO: Sensor Import of Golint issues [go] (done) | time=0ms
 INFO: Sensor Import of GoMetaLinter issues [go]
 ERROR: GoMetaLinterReportSensor: Import of external issues requires SonarQube 7.2 or greater.
-INFO: Sensor Import of GoMetaLinter issues [go] (done) | time=1ms
+INFO: Sensor Import of GoMetaLinter issues [go] (done) | time=0ms
 INFO: Sensor Zero Coverage Sensor
-INFO: Sensor Zero Coverage Sensor (done) | time=15ms
+INFO: Sensor Zero Coverage Sensor (done) | time=7ms
 INFO: Sensor CPD Block Indexer
 INFO: Sensor CPD Block Indexer (done) | time=0ms
 INFO: No SCM system was detected. You can use the 'sonar.scm.provider' property to explicitly specify it.
 INFO: Calculating CPD for 1 file
 INFO: CPD calculation finished
-INFO: Analysis report generated in 74ms, dir size=2 KB
-INFO: Analysis reports compressed in 7ms, zip size=2 KB
-INFO: Analysis report uploaded in 36ms
+INFO: Analysis report generated in 47ms, dir size=3 KB
+INFO: Analysis reports compressed in 8ms, zip size=3 KB
+INFO: Analysis report uploaded in 17ms
 INFO: ANALYSIS SUCCESSFUL, you can browse http://192.168.0.11:9000/dashboard/index/helloworld-web
 INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
-INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AWUsvoqdpDDHV_UC4bR1
-INFO: Task total time: 1.207 s
+INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AWdog_50aMf02WKW2S18
+INFO: Task total time: 0.919 s
 INFO: ------------------------------------------------------------------------
 INFO: EXECUTION SUCCESS
 INFO: ------------------------------------------------------------------------
-INFO: Total time: 2.281s
-INFO: Final Memory: 7M/111M
+INFO: Total time: 1.757s
+INFO: Final Memory: 8M/115M
 INFO: ------------------------------------------------------------------------
+go build -o helloworld-web -v
 ```
 
 ### 9.11.11. Dockerize the application
@@ -4415,11 +4416,6 @@ Command line output will resemble
 ```
 [vagrant@development helloworld-web]$ docker build -t nemonik/helloworld-web .
 Sending build context to Docker daemon  9.816MB
-Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.10.3
-manifest for 192.168.0.11:5000/nemonik/golang:1.10.3 not found
-[vagrant@development helloworld-web]$ nano Dockerfile
-[vagrant@development helloworld-web]$ docker build -t nemonik/helloworld-web .
-Sending build context to Docker daemon  9.816MB
 Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.11.2
 1.11.2: Pulling from nemonik/golang
 54f7e8ac135a: Pull complete
@@ -4501,7 +4497,7 @@ docker-build: build
 Also, add the `docker-build` to the `all` target like so:
 
 ```
-all: fmt lint test build docker-build
+all: sonar docker-build
 ```
 
 Remember to us tab characters vice space characters.
@@ -4509,13 +4505,13 @@ Remember to us tab characters vice space characters.
 And then run in the command lin
 
 ```bash
-make docker-build
+make all
 ```
 
 Whose output will be 
 
 ```
-[vagrant@development helloworld-web]$ make docker-build
+[vagrant@development helloworld-web]$ make all
 go fmt
 go get github.com/golang/lint/golint
 golint
@@ -4579,28 +4575,28 @@ INFO: SonarQube server 7.1.0
 INFO: Default locale: "en_US", source code encoding: "UTF-8" (analysis is platform dependent)
 INFO: Publish mode
 INFO: Load global settings
-INFO: Load global settings (done) | time=52ms
+INFO: Load global settings (done) | time=53ms
 INFO: Server id: AWdnkdRdhzMtOWEkQLzX
 INFO: User cache: /home/vagrant/.sonar/cache
 INFO: Load plugins index
-INFO: Load plugins index (done) | time=42ms
+INFO: Load plugins index (done) | time=39ms
 INFO: Load/download plugins
 INFO: Load/download plugins (done) | time=4ms
 INFO: Process project properties
 INFO: Load project repositories
-INFO: Load project repositories (done) | time=45ms
+INFO: Load project repositories (done) | time=47ms
 INFO: Load quality profiles
-INFO: Load quality profiles (done) | time=17ms
+INFO: Load quality profiles (done) | time=14ms
 INFO: Load active rules
-INFO: Load active rules (done) | time=57ms
+INFO: Load active rules (done) | time=53ms
 INFO: Load metrics repository
-INFO: Load metrics repository (done) | time=21ms
+INFO: Load metrics repository (done) | time=14ms
 WARN: SCM provider autodetection failed. No SCM provider claims to support this project. Please use sonar.scm.provider to define SCM of your project.
 INFO: Project key: helloworld-web
 INFO: Project base dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web
 INFO: -------------  Scan helloworld-web
 INFO: Load server rules
-INFO: Load server rules (done) | time=11ms
+INFO: Load server rules (done) | time=9ms
 INFO: Base dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web
 INFO: Working dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web/.scannerwork
 INFO: Source paths: .
@@ -4613,7 +4609,7 @@ INFO: 1 file ignored because of inclusion/exclusion patterns
 INFO: Quality profile for go: Sonar way
 INFO: Sensor SonarGo [go]
 INFO: Load coverage report from '/home/vagrant/go/src/github.com/nemonik/helloworld-web/coverage.out'
-INFO: Sensor SonarGo [go] (done) | time=109ms
+INFO: Sensor SonarGo [go] (done) | time=128ms
 INFO: Sensor Go Unit Test Report [go]
 WARN: Failed to find test file for package github.com/nemonik/helloworld-web and test TestLogRequest
 WARN: Failed to find test file for package github.com/nemonik/helloworld-web and test TestHandler
@@ -4631,51 +4627,51 @@ INFO: Sensor CPD Block Indexer (done) | time=0ms
 INFO: No SCM system was detected. You can use the 'sonar.scm.provider' property to explicitly specify it.
 INFO: Calculating CPD for 1 file
 INFO: CPD calculation finished
-INFO: Analysis report generated in 59ms, dir size=3 KB
-INFO: Analysis reports compressed in 9ms, zip size=3 KB
-INFO: Analysis report uploaded in 24ms
+INFO: Analysis report generated in 63ms, dir size=3 KB
+INFO: Analysis reports compressed in 8ms, zip size=3 KB
+INFO: Analysis report uploaded in 15ms
 INFO: ANALYSIS SUCCESSFUL, you can browse http://192.168.0.11:9000/dashboard/index/helloworld-web
 INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
-INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AWdn50HkaMf02WKW2S14
-INFO: Task total time: 0.879 s
+INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AWdoh255aMf02WKW2S19
+INFO: Task total time: 0.871 s
 INFO: ------------------------------------------------------------------------
 INFO: EXECUTION SUCCESS
 INFO: ------------------------------------------------------------------------
-INFO: Total time: 1.643s
-INFO: Final Memory: 7M/111M
+INFO: Total time: 1.651s
+INFO: Final Memory: 7M/112M
 INFO: ------------------------------------------------------------------------
 go build -o helloworld-web -v
 docker build --no-cache -t nemonik/helloworld-web .
-Sending build context to Docker daemon  9.816MB
+Sending build context to Docker daemon  9.858MB
 Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.11.2
  ---> 32c900b4b4da
 Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
- ---> Running in 6f5b7ab65530
-Removing intermediate container 6f5b7ab65530
- ---> 757a03998223
+ ---> Running in 31355cee7820
+Removing intermediate container 31355cee7820
+ ---> 3680dba3fed3
 Step 3/8 : RUN mkdir /app
- ---> Running in 9fff74f166a5
-Removing intermediate container 9fff74f166a5
- ---> 812e4a504d55
+ ---> Running in 5c82a6edac29
+Removing intermediate container 5c82a6edac29
+ ---> 04db300b54f7
 Step 4/8 : ADD main.go /app/
- ---> 49ea334a3f4c
+ ---> 67155c7c05d4
 Step 5/8 : WORKDIR /app
- ---> Running in 1158c99303d2
-Removing intermediate container 1158c99303d2
- ---> 45d129588046
+ ---> Running in 71a46deb3bd0
+Removing intermediate container 71a46deb3bd0
+ ---> 9581df883f9c
 Step 6/8 : RUN go build -o helloworld-web .
- ---> Running in 706af38116b6
-Removing intermediate container 706af38116b6
- ---> 94b63220333a
+ ---> Running in 67e9686fd414
+Removing intermediate container 67e9686fd414
+ ---> 6cc918879824
 Step 7/8 : CMD ["/app/helloworld-web"]
- ---> Running in d5b9c5a359b2
-Removing intermediate container d5b9c5a359b2
- ---> f49392fdf7dc
+ ---> Running in cbc30798c867
+Removing intermediate container cbc30798c867
+ ---> e707989b4166
 Step 8/8 : EXPOSE 3000
- ---> Running in 18d0094ff590
-Removing intermediate container 18d0094ff590
- ---> 38f173e57b74
-Successfully built 38f173e57b74
+ ---> Running in c493e4047478
+Removing intermediate container c493e4047478
+ ---> 4f29800771fe
+Successfully built 4f29800771fe
 Successfully tagged nemonik/helloworld-web:latest
 ```
 
@@ -4917,19 +4913,19 @@ docker-push: docker-build
 Also, add the `docker-push` to the `all` target like so:
 
 ```makefile
-all: fmt lint test build docker-build docker-push
+all: sonar docker-push
 ```
 
 And then run in the command line
 
 ```bash
-make docker-push
+make all
 ```
 
 The output will be something like
 
 ```
-[vagrant@development helloworld-web]$ make docker-push
+[vagrant@development helloworld-web]$ make all
 go fmt
 go get github.com/golang/lint/golint
 golint
@@ -4993,22 +4989,22 @@ INFO: SonarQube server 7.1.0
 INFO: Default locale: "en_US", source code encoding: "UTF-8" (analysis is platform dependent)
 INFO: Publish mode
 INFO: Load global settings
-INFO: Load global settings (done) | time=61ms
+INFO: Load global settings (done) | time=59ms
 INFO: Server id: AWdnkdRdhzMtOWEkQLzX
 INFO: User cache: /home/vagrant/.sonar/cache
 INFO: Load plugins index
-INFO: Load plugins index (done) | time=41ms
+INFO: Load plugins index (done) | time=27ms
 INFO: Load/download plugins
-INFO: Load/download plugins (done) | time=9ms
+INFO: Load/download plugins (done) | time=6ms
 INFO: Process project properties
 INFO: Load project repositories
-INFO: Load project repositories (done) | time=59ms
+INFO: Load project repositories (done) | time=46ms
 INFO: Load quality profiles
 INFO: Load quality profiles (done) | time=16ms
 INFO: Load active rules
-INFO: Load active rules (done) | time=66ms
+INFO: Load active rules (done) | time=60ms
 INFO: Load metrics repository
-INFO: Load metrics repository (done) | time=16ms
+INFO: Load metrics repository (done) | time=24ms
 WARN: SCM provider autodetection failed. No SCM provider claims to support this project. Please use sonar.scm.provider to define SCM of your project.
 INFO: Project key: helloworld-web
 INFO: Project base dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web
@@ -5027,76 +5023,76 @@ INFO: 1 file ignored because of inclusion/exclusion patterns
 INFO: Quality profile for go: Sonar way
 INFO: Sensor SonarGo [go]
 INFO: Load coverage report from '/home/vagrant/go/src/github.com/nemonik/helloworld-web/coverage.out'
-INFO: Sensor SonarGo [go] (done) | time=118ms
+INFO: Sensor SonarGo [go] (done) | time=115ms
 INFO: Sensor Go Unit Test Report [go]
 WARN: Failed to find test file for package github.com/nemonik/helloworld-web and test TestLogRequest
 WARN: Failed to find test file for package github.com/nemonik/helloworld-web and test TestHandler
 INFO: Sensor Go Unit Test Report [go] (done) | time=6ms
 INFO: Sensor Import of Golint issues [go]
 ERROR: GoLintReportSensor: Import of external issues requires SonarQube 7.2 or greater.
-INFO: Sensor Import of Golint issues [go] (done) | time=0ms
+INFO: Sensor Import of Golint issues [go] (done) | time=1ms
 INFO: Sensor Import of GoMetaLinter issues [go]
 ERROR: GoMetaLinterReportSensor: Import of external issues requires SonarQube 7.2 or greater.
 INFO: Sensor Import of GoMetaLinter issues [go] (done) | time=0ms
 INFO: Sensor Zero Coverage Sensor
-INFO: Sensor Zero Coverage Sensor (done) | time=7ms
+INFO: Sensor Zero Coverage Sensor (done) | time=6ms
 INFO: Sensor CPD Block Indexer
 INFO: Sensor CPD Block Indexer (done) | time=0ms
 INFO: No SCM system was detected. You can use the 'sonar.scm.provider' property to explicitly specify it.
 INFO: Calculating CPD for 1 file
 INFO: CPD calculation finished
 INFO: Analysis report generated in 49ms, dir size=3 KB
-INFO: Analysis reports compressed in 10ms, zip size=3 KB
-INFO: Analysis report uploaded in 17ms
+INFO: Analysis reports compressed in 6ms, zip size=3 KB
+INFO: Analysis report uploaded in 15ms
 INFO: ANALYSIS SUCCESSFUL, you can browse http://192.168.0.11:9000/dashboard/index/helloworld-web
 INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
-INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AWdn7GbPaMf02WKW2S15
-INFO: Task total time: 0.860 s
+INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AWdoib8-aMf02WKW2S1-
+INFO: Task total time: 0.888 s
 INFO: ------------------------------------------------------------------------
 INFO: EXECUTION SUCCESS
 INFO: ------------------------------------------------------------------------
-INFO: Total time: 1.637s
-INFO: Final Memory: 7M/113M
+INFO: Total time: 1.698s
+INFO: Final Memory: 7M/111M
 INFO: ------------------------------------------------------------------------
 go build -o helloworld-web -v
 docker build --no-cache -t nemonik/helloworld-web .
-Sending build context to Docker daemon  9.816MB
+Sending build context to Docker daemon  9.858MB
 Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.11.2
  ---> 32c900b4b4da
 Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
- ---> Running in f548b7354d5b
-Removing intermediate container f548b7354d5b
- ---> 7d4bb692bfd8
+ ---> Running in 6fbaa63413fd
+Removing intermediate container 6fbaa63413fd
+ ---> 3fa9596009ad
 Step 3/8 : RUN mkdir /app
- ---> Running in 575057f68636
-Removing intermediate container 575057f68636
- ---> 668528001dc4
+ ---> Running in 36edce050117
+Removing intermediate container 36edce050117
+ ---> bd0245a95867
 Step 4/8 : ADD main.go /app/
- ---> cc1053da4a92
+ ---> 6f6cf224dc1f
 Step 5/8 : WORKDIR /app
- ---> Running in 32bc1c997299
-Removing intermediate container 32bc1c997299
- ---> 596345793022
+ ---> Running in 870f68806bae
+Removing intermediate container 870f68806bae
+ ---> 2bd3a186c86b
 Step 6/8 : RUN go build -o helloworld-web .
- ---> Running in e1ade4d42df4
-Removing intermediate container e1ade4d42df4
- ---> bbbf45db4e16
+ ---> Running in c46f61ca8cd8
+Removing intermediate container c46f61ca8cd8
+ ---> e26ec6b6bcea
 Step 7/8 : CMD ["/app/helloworld-web"]
- ---> Running in 31e173939d61
-Removing intermediate container 31e173939d61
- ---> a8bc9a7f4487
+ ---> Running in 828c6434caff
+Removing intermediate container 828c6434caff
+ ---> 30df6c8aab10
 Step 8/8 : EXPOSE 3000
- ---> Running in 3ce01b105fd5
-Removing intermediate container 3ce01b105fd5
- ---> 79ee586722d5
-Successfully built 79ee586722d5
+ ---> Running in 07f74960aef7
+Removing intermediate container 07f74960aef7
+ ---> ce0f377b1d74
+Successfully built ce0f377b1d74
 Successfully tagged nemonik/helloworld-web:latest
 docker tag nemonik/helloworld-web 192.168.0.11:5000/nemonik/helloworld-web
 docker push 192.168.0.11:5000/nemonik/helloworld-web
 The push refers to repository [192.168.0.11:5000/nemonik/helloworld-web]
-e113e65dce71: Pushed
-5b8f1b917a49: Pushed
-eeb245ca5197: Pushed
+4172d4f60896: Pushed
+40a20fd427ab: Pushed
+e43983bb1194: Pushed
 382408b8ce47: Layer already exists
 48302eac2a97: Layer already exists
 274449f3d60f: Layer already exists
@@ -5108,7 +5104,7 @@ f75e64f96dbc: Layer already exists
 8f7ee6d76fd9: Layer already exists
 c23711a84ad4: Layer already exists
 90d1009ce6fe: Layer already exists
-latest: digest: sha256:e04dd7288847c0a9e72b95ac2b037af46992a2505af25531521056c6e33893f6 size: 3267
+latest: digest: sha256:871929d6d6ed2f4e6ee3e19b5072a20456baa274486c84aa29fcc9b927da4606 size: 3267
 ```
 
 The Docker registry container image shipped by Docker does not provide a GUI, but we can verify by querying the catalog of the private registry through a web browser or Unix command line tool `curl` by entering into the command line
@@ -5313,8 +5309,7 @@ pipeline:
 
 Things to note in the above
 
-- This step uses an image building ontop of the 192.168.0.11:5000/nemonik/golang:1.10.3 image adding all the GoLang lint tools and the installation of `sonar-scanner` to speed builds along. 
-- And since, Drone mounts the source in the container in path other than  /go/src/github.com/nemonik/helloworld-web` this is handled as well by this sub-section
+- This step uses an image, `nemonik/golang-sonarqube-scanner:3.2.0.1227`, built ontop of the `nemonik/golang:1.11.2` image to speed builds along. 
 - Cut-and-pasting may split the last `-sonar-scanner` line into multiple line resulting in your build failing.  Correct in the editor. 
 
 ```yaml
@@ -5357,111 +5352,171 @@ Typical success resembles
 + mkdir -p $GOPATH/src/github.com/nemonik
 + cd $GOPATH/src/github.com/nemonik
 + ln -s $DRONESRC helloworld-web
-+ cd $DRONESRC
-+ ls
-Dockerfile
-Makefile
-helloworld-web
-main.go
-main.go.bck
-main_test.go
-+ which gometalinter.v2
-/go/bin/gometalinter.v2
-+ which golint
-/go/bin/golint
-+ env | grep -i "go"
-OLDPWD=/go/src/github.com/nemonik
-PATH=/usr/local/sonar-scanner-3.2.0.1227-linux/bin:/go/bin:/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-GOBIN=/go/bin
-GOPATH=/go
-GOLANG_VERSION=1.10.3
-+ gometalinter.v2 --deadline=120s  > gometalinter-report.out || true
-+ golint > golint-report.out || true
-+ go test -v ./... -coverprofile=coverage.out || true
-=== RUN   TestLogRequest
---- PASS: TestLogRequest (0.00s)
-=== RUN   TestHandler
---- PASS: TestHandler (0.00s)
-PASS
-coverage: 55.6% of statements
-ok  	_/drone/src/192.168.0.11/root/helloworld-web	0.006s	coverage: 55.6% of statements
-+ go test -v ./... -json > report.json || true
-+ sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
-INFO: Scanner configuration file: /usr/local/sonar-scanner-3.2.0.1227-linux/conf/sonar-scanner.properties
-INFO: Project root configuration file: NONE
-INFO: SonarQube Scanner 3.2.0.1227
-INFO: Java 1.8.0_121 Oracle Corporation (64-bit)
-INFO: Linux 3.10.0-862.2.3.el7.x86_64 amd64
-INFO: User cache: /root/.sonar/cache
-INFO: SonarQube server 7.1.0
-INFO: Default locale: "en_US", source code encoding: "US-ASCII" (analysis is platform dependent)
-INFO: Publish mode
-INFO: Load global settings
-INFO: Load global settings (done) | time=100ms
-INFO: Server id: AWUleERE22lLPPH40AH8
-INFO: User cache: /root/.sonar/cache
-INFO: Load plugins index
-INFO: Load plugins index (done) | time=44ms
-INFO: Load/download plugins
-INFO: Load/download plugins (done) | time=52ms
-INFO: Process project properties
-INFO: Load project repositories
-INFO: Load project repositories (done) | time=75ms
-INFO: Load quality profiles
-INFO: Load quality profiles (done) | time=36ms
-INFO: Load active rules
-INFO: Load active rules (done) | time=38ms
-INFO: Load metrics repository
-INFO: Load metrics repository (done) | time=25ms
-WARN: SCM provider autodetection failed. No SCM provider claims to support this project. Please use sonar.scm.provider to define SCM of your project.
-INFO: Project key: helloworld-web
-INFO: Project base dir: /drone/src/192.168.0.11/root/helloworld-web
-INFO: -------------  Scan helloworld-web
-INFO: Load server rules
-INFO: Load server rules (done) | time=10ms
-INFO: Base dir: /drone/src/192.168.0.11/root/helloworld-web
-INFO: Working dir: /drone/src/192.168.0.11/root/helloworld-web/.scannerwork
-INFO: Source paths: .
-INFO: Source encoding: US-ASCII, default locale: en_US
-INFO: Index files
-INFO: Excluded sources: 
-INFO:   **/*test.go
-INFO: 9 files indexed
-INFO: 1 file ignored because of inclusion/exclusion patterns
-INFO: Quality profile for go: Golint Rules
-INFO: Sensor SonarGo [go]
-INFO: Load coverage report from '/drone/src/192.168.0.11/root/helloworld-web/coverage.out'
-INFO: Sensor SonarGo [go] (done) | time=148ms
-INFO: Sensor Go Unit Test Report [go]
-WARN: Failed to find test file for package _/drone/src/192.168.0.11/root/helloworld-web and test TestLogRequest
-WARN: Failed to find test file for package _/drone/src/192.168.0.11/root/helloworld-web and test TestHandler
-ERROR: GoLintReportSensor: Import of external issues requires SonarQube 7.2 or greater.
-ERROR: GoMetaLinterReportSensor: Import of external issues requires SonarQube 7.2 or greater.
-INFO: Sensor Go Unit Test Report [go] (done) | time=16ms
-INFO: Sensor Import of Golint issues [go]
-INFO: Sensor Import of Golint issues [go] (done) | time=0ms
-INFO: Sensor Import of GoMetaLinter issues [go]
-INFO: Sensor Import of GoMetaLinter issues [go] (done) | time=0ms
-INFO: Sensor Zero Coverage Sensor
-INFO: Sensor Zero Coverage Sensor (done) | time=19ms
-INFO: Sensor CPD Block Indexer
-INFO: Sensor CPD Block Indexer (done) | time=0ms
-INFO: No SCM system was detected. You can use the 'sonar.scm.provider' property to explicitly specify it.
-INFO: Calculating CPD for 1 file
-INFO: CPD calculation finished
-INFO: Analysis report generated in 74ms, dir size=2 KB
-INFO: Analysis reports compressed in 9ms, zip size=2 KB
-INFO: Analysis report uploaded in 26ms
-INFO: ANALYSIS SUCCESSFUL, you can browse http://192.168.0.11:9000/dashboard/index/helloworld-web
-INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
-INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AWUs0TtnpDDHV_UC4bR6
-INFO: Task total time: 1.808 s
-INFO: ------------------------------------------------------------------------
-INFO: EXECUTION SUCCESS
-INFO: ------------------------------------------------------------------------
-INFO: Total time: 4.095s
-INFO: Final Memory: 11M/132M
-INFO: ------------------------------------------------------------------------
++ go get -u gopkg.in/alecthomas/gometalinter.v2
++ gometalinter.v2 --install
+Installing:
+  deadcode
+  dupl
+  errcheck
+  gochecknoglobals
+  gochecknoinits
+  goconst
+  gocyclo
+  goimports
+  golint
+  gosec
+  gosimple
+  gotype
+  gotypex
+  ineffassign
+  interfacer
+  lll
+  maligned
+  megacheck
+  misspell
+  nakedret
+  safesql
+  staticcheck
+  structcheck
+  unconvert
+  unparam
+  unused
+  varcheck
++ gometalinter.v2 --deadline=120s --checkstyle > report.xml || true
++ gocov test ./... | gocov-xml || true
+/bin/sh: 41: gocov: not found
+/bin/sh: 41: gocov-xml: not found
++ go test  -v ./... | go-junit-report > test.xml || true
+/bin/sh: 44: go-junit-report: not found
+go: warning: "./..." matched no packages
+no packages to test
++ sonar-scanner -X -D http.nonProxyHosts=$NO_PROXY -D http.proxyHost=$HTTP_PROXY -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.coverage.dtdVerification=false -D sonar.sources=. -D sonar.golint.reportPath=report.xml -D sonar.coverage.reportPath=coverage.xml -D sonar.coverage.dtdVerification=false -D sonar.test.reportPath=test.xml -D sonar.exclusions=**/*test.go || true
+06:33:27.219 INFO: Scanner configuration file: /usr/local/sonar-scanner-3.2.0.1227-linux/conf/sonar-scanner.properties
+06:33:27.224 INFO: Project root configuration file: NONE
+06:33:27.254 INFO: SonarQube Scanner 3.2.0.1227
+06:33:27.254 INFO: Java 1.8.0_121 Oracle Corporation (64-bit)
+06:33:27.254 INFO: Linux 3.10.0-862.14.4.el7.x86_64 amd64
+06:33:27.411 DEBUG: keyStore is : 
+06:33:27.412 DEBUG: keyStore type is : jks
+06:33:27.412 DEBUG: keyStore provider is : 
+06:33:27.412 DEBUG: init keystore
+06:33:27.412 DEBUG: init keymanager of type SunX509
+06:33:27.489 DEBUG: Create: /root/.sonar/cache
+06:33:27.491 INFO: User cache: /root/.sonar/cache
+06:33:27.491 DEBUG: Create: /root/.sonar/cache/_tmp
+06:33:27.494 DEBUG: Extract sonar-scanner-api-batch in temp...
+06:33:27.502 DEBUG: Get bootstrap index...
+06:33:27.503 DEBUG: Download: http://192.168.0.11:9000/batch/index
+06:33:27.554 DEBUG: Get bootstrap completed
+06:33:27.569 DEBUG: Download http://192.168.0.11:9000/batch/file?name=sonar-scanner-engine-shaded-7.1-all.jar to /root/.sonar/cache/_tmp/fileCache6062220128233485030.tmp
+06:33:27.844 DEBUG: Create isolated classloader...
+06:33:27.855 DEBUG: Start temp cleaning...
+06:33:27.866 DEBUG: Temp cleaning done
+06:33:27.866 DEBUG: Execution getVersion
+06:33:27.868 INFO: SonarQube server 7.1.0
+06:33:27.873 INFO: Default locale: "en_US", source code encoding: "US-ASCII" (analysis is platform dependent)
+06:33:27.873 DEBUG: Work directory: /go/src/github.com/nemonik/.scannerwork
+06:33:27.874 DEBUG: Execution execute
+06:33:28.019 INFO: Publish mode
+06:33:28.108 INFO: Load global settings
+06:33:28.156 DEBUG: GET 200 http://192.168.0.11:9000/api/settings/values.protobuf | time=42ms
+06:33:28.173 INFO: Load global settings (done) | time=65ms
+06:33:28.177 INFO: Server id: AWdnkdRdhzMtOWEkQLzX
+06:33:28.184 INFO: User cache: /root/.sonar/cache
+06:33:28.397 INFO: Load plugins index
+06:33:28.404 DEBUG: GET 200 http://192.168.0.11:9000/api/plugins/installed | time=7ms
+06:33:28.426 INFO: Load plugins index (done) | time=29ms
+06:33:28.426 INFO: Load/download plugins
+06:33:28.427 DEBUG: Download plugin 'sonar-go-plugin-1.1.0.1612.jar' to '/root/.sonar/cache/_tmp/fileCache2598922142734936157.tmp'
+06:33:28.431 DEBUG: GET 200 http://192.168.0.11:9000/deploy/plugins/go/sonar-go-plugin-1.1.0.1612.jar | time=4ms
+06:33:28.463 INFO: Load/download plugins (done) | time=37ms
+06:33:28.474 DEBUG: Plugins:
+06:33:28.474 DEBUG:   * SonarGo 1.1.0.1612 (go)
+06:33:28.696 INFO: Process project properties
+06:33:28.702 DEBUG: Process project properties (done) | time=6ms
+06:33:28.715 INFO: Load project repositories
+06:33:28.739 DEBUG: GET 200 http://192.168.0.11:9000/batch/project.protobuf?key=helloworld-web | time=24ms
+06:33:28.779 INFO: Load project repositories (done) | time=64ms
+06:33:28.850 DEBUG: Available languages:
+06:33:28.850 DEBUG:   * Go => "go"
+06:33:28.858 INFO: Load quality profiles
+06:33:28.876 DEBUG: GET 200 http://192.168.0.11:9000/api/qualityprofiles/search.protobuf?projectKey=helloworld-web | time=17ms
+06:33:28.880 INFO: Load quality profiles (done) | time=22ms
+06:33:28.897 INFO: Load active rules
+06:33:28.935 DEBUG: GET 200 http://192.168.0.11:9000/api/rules/search.protobuf?f=repo,name,severity,lang,internalKey,templateKey,params,actives,createdAt&activation=true&qprofile=AWdn3OCEaMf02WKW2S1S&p=1&ps=500 | time=38ms
+06:33:28.966 INFO: Load active rules (done) | time=69ms
+06:33:28.968 INFO: Load metrics repository
+06:33:28.984 DEBUG: GET 200 http://192.168.0.11:9000/api/metrics/search?f=name,description,direction,qualitative,custom&ps=500&p=1 | time=16ms
+06:33:28.994 INFO: Load metrics repository (done) | time=26ms
+06:33:29.000 WARN: SCM provider autodetection failed. No SCM provider claims to support this project. Please use sonar.scm.provider to define SCM of your project.
+06:33:29.008 INFO: Project key: helloworld-web
+06:33:29.008 INFO: Project base dir: /go/src/github.com/nemonik
+06:33:29.008 DEBUG: Start recursive analysis of project modules
+06:33:29.008 INFO: -------------  Scan helloworld-web
+06:33:29.058 INFO: Load server rules
+06:33:29.065 DEBUG: GET 200 http://192.168.0.11:9000/api/rules/list.protobuf | time=7ms
+06:33:29.069 INFO: Load server rules (done) | time=11ms
+06:33:29.088 INFO: Base dir: /go/src/github.com/nemonik
+06:33:29.088 INFO: Working dir: /go/src/github.com/nemonik/.scannerwork
+06:33:29.089 INFO: Source paths: .
+06:33:29.089 INFO: Source encoding: US-ASCII, default locale: en_US
+06:33:29.104 DEBUG: Declared extensions of language Go were converted to sonar.lang.patterns.go : **/*.go
+06:33:29.107 DEBUG: Initializers : 
+06:33:29.108 INFO: Index files
+06:33:29.114 INFO: Excluded sources: 
+06:33:29.114 INFO:   **/*test.go
+06:33:29.122 DEBUG: 'helloworld-web/Dockerfile' indexed with language 'null'
+06:33:29.123 DEBUG: 'helloworld-web/main.go' indexed with language 'go'
+06:33:29.123 DEBUG: 'helloworld-web/Makefile' indexed with language 'null'
+06:33:29.123 DEBUG: 'report.xml' indexed with language 'null'
+06:33:29.123 DEBUG: 'test.xml' indexed with language 'null'
+06:33:29.124 INFO: 5 files indexed
+06:33:29.124 INFO: 1 file ignored because of inclusion/exclusion patterns
+06:33:29.124 INFO: Quality profile for go: Sonar way
+06:33:29.170 DEBUG: 'Generic Coverage Report' skipped because one of the required properties is missing
+06:33:29.171 DEBUG: 'Generic Test Executions Report' skipped because one of the required properties is missing
+06:33:29.177 DEBUG: 'Go Unit Test Report' skipped because one of the required properties is missing
+06:33:29.178 DEBUG: 'Import of go vet issues' skipped because one of the required properties is missing
+06:33:29.178 DEBUG: 'Import of Golint issues' skipped because one of the required properties is missing
+06:33:29.179 DEBUG: 'Import of GoMetaLinter issues' skipped because one of the required properties is missing
+06:33:29.180 DEBUG: 'Generic Coverage Report' skipped because one of the required properties is missing
+06:33:29.180 DEBUG: 'Generic Test Executions Report' skipped because one of the required properties is missing
+06:33:29.181 DEBUG: 'Go Unit Test Report' skipped because one of the required properties is missing
+06:33:29.181 DEBUG: 'Import of go vet issues' skipped because one of the required properties is missing
+06:33:29.181 DEBUG: 'Import of Golint issues' skipped because one of the required properties is missing
+06:33:29.181 DEBUG: 'Import of GoMetaLinter issues' skipped because one of the required properties is missing
+06:33:29.184 DEBUG: Sensors : SonarGo -> Zero Coverage Sensor -> CPD Block Indexer
+06:33:29.185 INFO: Sensor SonarGo [go]
+06:33:29.252 DEBUG: 'helloworld-web/main.go' generated metadata  with charset 'US-ASCII'
+06:33:29.295 INFO: Sensor SonarGo [go] (done) | time=110ms
+06:33:29.295 INFO: Sensor Zero Coverage Sensor
+06:33:29.304 INFO: Sensor Zero Coverage Sensor (done) | time=9ms
+06:33:29.304 INFO: Sensor CPD Block Indexer
+06:33:29.305 DEBUG: org.sonar.scanner.cpd.deprecated.DefaultCpdBlockIndexer is used for go
+06:33:29.305 DEBUG: No CpdMapping for language go
+06:33:29.305 INFO: Sensor CPD Block Indexer (done) | time=1ms
+06:33:29.305 INFO: No SCM system was detected. You can use the 'sonar.scm.provider' property to explicitly specify it.
+06:33:29.305 INFO: Calculating CPD for 1 file
+06:33:29.309 DEBUG: Detection of duplications for /go/src/github.com/nemonik/helloworld-web/main.go
+06:33:29.315 INFO: CPD calculation finished
+06:33:29.361 INFO: Analysis report generated in 44ms, dir size=10 KB
+06:33:29.366 INFO: Analysis reports compressed in 5ms, zip size=5 KB
+06:33:29.366 INFO: Analysis report generated in /go/src/github.com/nemonik/.scannerwork/scanner-report
+06:33:29.366 DEBUG: Upload report
+06:33:29.388 DEBUG: POST 200 http://192.168.0.11:9000/api/ce/submit?projectKey=helloworld-web&projectName=helloworld-web | time=21ms
+06:33:29.389 INFO: Analysis report uploaded in 23ms
+06:33:29.390 INFO: ANALYSIS SUCCESSFUL, you can browse http://192.168.0.11:9000/dashboard/index/helloworld-web
+06:33:29.390 INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+06:33:29.390 INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AWdoeNghaMf02WKW2S16
+06:33:29.391 DEBUG: Report metadata written to /go/src/github.com/nemonik/.scannerwork/report-task.txt
+06:33:29.392 DEBUG: Post-jobs : 
+06:33:29.394 INFO: Task total time: 0.919 s
+06:33:29.449 INFO: ------------------------------------------------------------------------
+06:33:29.449 INFO: EXECUTION SUCCESS
+06:33:29.449 INFO: ------------------------------------------------------------------------
+06:33:29.449 INFO: Total time: 2.272s
+06:33:29.504 INFO: Final Memory: 13M/194M
+06:33:29.504 INFO: ------------------------------------------------------------------------
 ```
 
 ### 9.11.16. Add the build step to the pipeline
@@ -5471,7 +5526,7 @@ At the root of the project open `.drone.yml` as a new file to edit
 
 ```yaml
   build:
-    image: nemonik/golang:1.10.3
+    image: nemonik/golang:1.11.2
     commands:
       - make build
     when:
@@ -5499,7 +5554,6 @@ _/drone/src/192.168.0.11/root/helloworld-web
 ```
 
 Mirroring what you saw in development in your local environment.
-
 
 ### 9.11.17. Add container image publish step to pipeline
 
@@ -5591,7 +5645,7 @@ Add the publish step to your `.drone.yml` so that the publish to the private reg
 
 **Note**
 
-- Your DNS server entries in the `custom_dns: ["10.20.100.53", "10.20.200.53"]` line may vary or this line may not be needed. In this case, the DNS servers were needed to be pass otherwise the build will fail to resolve the corporate proxy when it attempts to retrieve external dependency to include in the container image.
+- Your DNS server entries in the `custom_dns: ["10.20.100.53", "10.20.200.53"]` line may vary for your environment or this line may not be needed. In this case, the DNS servers were needed to be pass otherwise the build will fail to resolve the enterprise proxy when it attempts to retrieve external dependency to include in the container image.
 
 Push your code into GitLab
 
@@ -5601,10 +5655,10 @@ git commit -m "added publish step to pipeline"
 git push -u origin master
 ```
 
-The publish step takes quite a bit of time and resebles:
+The publish step takes quite a bit of time and resembles:
 
 ```
-+ /usr/local/bin/dockerd -g /var/lib/docker -s overlay --insecure-registry 192.168.0.11:5000 --dns 128.29.154.114 --dns 129.83.20.114
++ /usr/local/bin/dockerd -g /var/lib/docker -s overlay --insecure-registry 192.168.0.11:5000 --dns 10.20.100.53 --dns 10.20.200.53
 Registry credentials not provided. Guest mode enabled.
 + /usr/local/bin/docker version
 Client:
@@ -5632,7 +5686,7 @@ Containers: 0
 Images: 0
 Server Version: 17.12.0-ce
 Storage Driver: overlay
- Backing Filesystem: xfs
+ Backing Filesystem: extfs
  Supports d_type: true
 Logging Driver: json-file
 Cgroup Driver: cgroupfs
@@ -5650,14 +5704,14 @@ init version: 949e6fa
 Security Options:
  seccomp
   Profile: default
-Kernel Version: 3.10.0-862.2.3.el7.x86_64
+Kernel Version: 3.10.0-862.14.4.el7.x86_64
 Operating System: Alpine Linux v3.7 (containerized)
 OSType: linux
 Architecture: x86_64
 CPUs: 4
 Total Memory: 5.67GiB
-Name: 3378b0fcf0f4
-ID: JPZJ:V2CN:2SJD:4NJH:TYJY:S7SQ:LRPI:4Z2D:ILG2:5E6O:KVUW:2TUW
+Name: 5f313f5c5c13
+ID: 5H5L:Z6X5:IPNQ:YTB3:GBVC:RV2O:3BP3:KAWS:JQZA:MKIT:HI3K:AWGR
 Docker Root Dir: /var/lib/docker
 Debug Mode (client): false
 Debug Mode (server): false
@@ -5671,139 +5725,140 @@ Live Restore Enabled: false
 
 WARNING: bridge-nf-call-iptables is disabled
 WARNING: bridge-nf-call-ip6tables is disabled
-+ /usr/local/bin/docker build --rm=true -f Dockerfile -t 77c52b8f631cb73ec73a2c0511dea848da60660a . --pull=true --label org.label-schema.build-date=2018-08-12T06:27:20Z --label org.label-schema.vcs-ref=77c52b8f631cb73ec73a2c0511dea848da60660a --label org.label-schema.vcs-url=http://192.168.0.11:10080/root/helloworld-web.git
-Sending build context to Docker daemon  15.26MB
++ /usr/local/bin/docker build --rm=true -f Dockerfile -t 05cfa544b6fc3082f61155a9797d8ae5628a8d74 . --pull=true --label org.label-schema.schema-version=1.0 --label org.label-schema.build-date=2018-12-01T06:59:05Z --label org.label-schema.vcs-ref=05cfa544b6fc3082f61155a9797d8ae5628a8d74 --label org.label-schema.vcs-url=http://192.168.0.11:10080/root/helloworld-web.git
+Sending build context to Docker daemon  6.653MB
 
-Step 1/9 : FROM 192.168.0.11:5000/nemonik/golang:1.10.3
-1.10.3: Pulling from nemonik/golang
-55cbf04beb70: Pulling fs layer
-1607093a898c: Pulling fs layer
-9a8ea045c926: Pulling fs layer
-d4eee24d4dac: Pulling fs layer
-9c35c9787a2f: Pulling fs layer
-6a66653f6388: Pulling fs layer
-102f6b19f797: Pulling fs layer
-f091c5e816f1: Pulling fs layer
-755dedee752d: Pulling fs layer
-2a89e94eb9ce: Pulling fs layer
-fc4c782a2551: Pulling fs layer
-d4eee24d4dac: Waiting
-9c35c9787a2f: Waiting
-6a66653f6388: Waiting
-755dedee752d: Waiting
-102f6b19f797: Waiting
-2a89e94eb9ce: Waiting
-fc4c782a2551: Waiting
-f091c5e816f1: Waiting
-9a8ea045c926: Verifying Checksum
-9a8ea045c926: Download complete
-1607093a898c: Verifying Checksum
-1607093a898c: Download complete
-55cbf04beb70: Verifying Checksum
-55cbf04beb70: Download complete
-d4eee24d4dac: Verifying Checksum
-d4eee24d4dac: Download complete
-102f6b19f797: Verifying Checksum
-102f6b19f797: Download complete
-f091c5e816f1: Verifying Checksum
-f091c5e816f1: Download complete
-9c35c9787a2f: Verifying Checksum
-9c35c9787a2f: Download complete
-755dedee752d: Verifying Checksum
-755dedee752d: Download complete
-2a89e94eb9ce: Verifying Checksum
-2a89e94eb9ce: Download complete
-fc4c782a2551: Verifying Checksum
-fc4c782a2551: Download complete
-6a66653f6388: Download complete
-55cbf04beb70: Pull complete
-1607093a898c: Pull complete
-9a8ea045c926: Pull complete
-d4eee24d4dac: Pull complete
-9c35c9787a2f: Pull complete
-6a66653f6388: Pull complete
-102f6b19f797: Pull complete
-f091c5e816f1: Pull complete
-755dedee752d: Pull complete
-2a89e94eb9ce: Pull complete
-fc4c782a2551: Pull complete
-Digest: sha256:4f94034caaec303e6eb201d526c080ef05b1dc657c039bc8b8ed7e8f65fb3e2a
-Status: Downloaded newer image for 192.168.0.11:5000/nemonik/golang:1.10.3
- ---> a4049be1547a
+Step 1/9 : FROM 192.168.0.11:5000/nemonik/golang:1.11.2
+1.11.2: Pulling from nemonik/golang
+54f7e8ac135a: Pulling fs layer
+d6341e30912f: Pulling fs layer
+087a57faf949: Pulling fs layer
+5d71636fb824: Pulling fs layer
+f368dba6a331: Pulling fs layer
+f2e97ec220f9: Pulling fs layer
+e4c39f2ed8c2: Pulling fs layer
+a2992ac95eb6: Pulling fs layer
+b6347f061623: Pulling fs layer
+624cedf99a02: Pulling fs layer
+b3caf54db51f: Pulling fs layer
+e4c39f2ed8c2: Waiting
+a2992ac95eb6: Waiting
+b6347f061623: Waiting
+624cedf99a02: Waiting
+b3caf54db51f: Waiting
+5d71636fb824: Waiting
+f368dba6a331: Waiting
+f2e97ec220f9: Waiting
+087a57faf949: Verifying Checksum
+087a57faf949: Download complete
+d6341e30912f: Verifying Checksum
+d6341e30912f: Download complete
+54f7e8ac135a: Verifying Checksum
+54f7e8ac135a: Download complete
+5d71636fb824: Verifying Checksum
+5d71636fb824: Download complete
+e4c39f2ed8c2: Verifying Checksum
+e4c39f2ed8c2: Download complete
+f368dba6a331: Verifying Checksum
+f368dba6a331: Download complete
+a2992ac95eb6: Verifying Checksum
+a2992ac95eb6: Download complete
+b6347f061623: Verifying Checksum
+b6347f061623: Download complete
+624cedf99a02: Verifying Checksum
+624cedf99a02: Download complete
+f2e97ec220f9: Verifying Checksum
+f2e97ec220f9: Download complete
+b3caf54db51f: Verifying Checksum
+b3caf54db51f: Download complete
+54f7e8ac135a: Pull complete
+d6341e30912f: Pull complete
+087a57faf949: Pull complete
+5d71636fb824: Pull complete
+f368dba6a331: Pull complete
+f2e97ec220f9: Pull complete
+e4c39f2ed8c2: Pull complete
+a2992ac95eb6: Pull complete
+b6347f061623: Pull complete
+624cedf99a02: Pull complete
+b3caf54db51f: Pull complete
+Digest: sha256:5f5b7b244da69c56a95bb1c924c2557e08b60b703c7f3131884f73d02f907bab
+Status: Downloaded newer image for 192.168.0.11:5000/nemonik/golang:1.11.2
+ ---> 32c900b4b4da
 Step 2/9 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
- ---> Running in 86f8fd9ea9b1
-Removing intermediate container 86f8fd9ea9b1
- ---> 7ff9ee7c9441
+ ---> Running in ac61aba08f1c
+Removing intermediate container ac61aba08f1c
+ ---> 33a70df94816
 Step 3/9 : RUN mkdir /app
- ---> Running in e2a210480402
-Removing intermediate container e2a210480402
- ---> 713105e7288b
+ ---> Running in 52c411171688
+Removing intermediate container 52c411171688
+ ---> ce4ef1288d28
 Step 4/9 : ADD main.go /app/
- ---> 2eb0733e41d1
+ ---> 8adeb9f66464
 Step 5/9 : WORKDIR /app
-Removing intermediate container 4dcaf0db7349
- ---> 0f1db272dda6
+Removing intermediate container 8e92749cfe8d
+ ---> 8f164d7c66c9
 Step 6/9 : RUN go build -o helloworld-web .
- ---> Running in e4b906a7e16c
-Removing intermediate container e4b906a7e16c
- ---> d923534175f8
+ ---> Running in dbc17c5c9e1c
+Removing intermediate container dbc17c5c9e1c
+ ---> 807609ef0468
 Step 7/9 : CMD ["/app/helloworld-web"]
- ---> Running in 26c4f61ce3e8
-Removing intermediate container 26c4f61ce3e8
- ---> 7155fe8a034f
+ ---> Running in a01670b6a0aa
+Removing intermediate container a01670b6a0aa
+ ---> 549af300f148
 Step 8/9 : EXPOSE 3000
- ---> Running in 3ecd38c9e6e7
-Removing intermediate container 3ecd38c9e6e7
- ---> bd4369d46975
-Step 9/9 : LABEL "org.label-schema.build-date"='2018-08-12T06:27:20Z' "org.label-schema.vcs-ref"='77c52b8f631cb73ec73a2c0511dea848da60660a' "org.label-schema.vcs-url"='http://192.168.0.11:10080/root/helloworld-web.git'
- ---> Running in b7d7964821d7
-Removing intermediate container b7d7964821d7
- ---> b863ed04564c
-Successfully built b863ed04564c
-Successfully tagged 77c52b8f631cb73ec73a2c0511dea848da60660a:latest
-+ /usr/local/bin/docker tag 77c52b8f631cb73ec73a2c0511dea848da60660a 192.168.0.11:5000/nemonik/helloworld-web:latest
+ ---> Running in 2455b914519f
+Removing intermediate container 2455b914519f
+ ---> fa6831463c27
+Step 9/9 : LABEL "org.label-schema.build-date"='2018-12-01T06:59:05Z' "org.label-schema.schema-version"='1.0' "org.label-schema.vcs-ref"='05cfa544b6fc3082f61155a9797d8ae5628a8d74' "org.label-schema.vcs-url"='http://192.168.0.11:10080/root/helloworld-web.git'
+ ---> Running in cff7286ce8c2
+Removing intermediate container cff7286ce8c2
+ ---> 495506e61a7a
+Successfully built 495506e61a7a
+Successfully tagged 05cfa544b6fc3082f61155a9797d8ae5628a8d74:latest
++ /usr/local/bin/docker tag 05cfa544b6fc3082f61155a9797d8ae5628a8d74 192.168.0.11:5000/nemonik/helloworld-web:latest
 + /usr/local/bin/docker push 192.168.0.11:5000/nemonik/helloworld-web:latest
 The push refers to repository [192.168.0.11:5000/nemonik/helloworld-web]
-f5564d5984de: Preparing
-e8cc2cac7e31: Preparing
-c6c6c6d8dc93: Preparing
-f7f6ba2190ac: Preparing
-ee08af0638ac: Preparing
-a76bf5fa13af: Preparing
-8a48c18a38e7: Preparing
-9f6493dca884: Preparing
-ddae4b0a26c6: Preparing
-920961b94eb3: Preparing
-fa0c3f992cbd: Preparing
-ce6466f43b11: Preparing
-719d45669b35: Preparing
-3b10514a95be: Preparing
-a76bf5fa13af: Waiting
-8a48c18a38e7: Waiting
-9f6493dca884: Waiting
-ddae4b0a26c6: Waiting
-920961b94eb3: Waiting
-fa0c3f992cbd: Waiting
-ce6466f43b11: Waiting
-719d45669b35: Waiting
-3b10514a95be: Waiting
-f7f6ba2190ac: Layer already exists
-ee08af0638ac: Layer already exists
-a76bf5fa13af: Layer already exists
-8a48c18a38e7: Layer already exists
-9f6493dca884: Layer already exists
-920961b94eb3: Layer already exists
-ddae4b0a26c6: Layer already exists
-e8cc2cac7e31: Pushed
-fa0c3f992cbd: Layer already exists
-719d45669b35: Layer already exists
-c6c6c6d8dc93: Pushed
-ce6466f43b11: Layer already exists
-3b10514a95be: Layer already exists
-f5564d5984de: Pushed
-latest: digest: sha256:5e173da8ce2a20b269ea07e06547f80c5395c663328fd1371f95b984c91f866c size: 3267
-+ /usr/local/bin/docker rmi 77c52b8f631cb73ec73a2c0511dea848da60660a
-Untagged: 77c52b8f631cb73ec73a2c0511dea848da60660a:latest
+b30658e0f8ca: Preparing
+ec0ffa96b9d6: Preparing
+65083988c970: Preparing
+382408b8ce47: Preparing
+48302eac2a97: Preparing
+274449f3d60f: Preparing
+b65d59e413b9: Preparing
+652fefcd9ea8: Preparing
+8019683f918e: Preparing
+e7b9eaeca217: Preparing
+f75e64f96dbc: Preparing
+8f7ee6d76fd9: Preparing
+c23711a84ad4: Preparing
+90d1009ce6fe: Preparing
+8019683f918e: Waiting
+e7b9eaeca217: Waiting
+f75e64f96dbc: Waiting
+8f7ee6d76fd9: Waiting
+274449f3d60f: Waiting
+c23711a84ad4: Waiting
+b65d59e413b9: Waiting
+90d1009ce6fe: Waiting
+652fefcd9ea8: Waiting
+48302eac2a97: Layer already exists
+382408b8ce47: Layer already exists
+274449f3d60f: Layer already exists
+652fefcd9ea8: Layer already exists
+b65d59e413b9: Layer already exists
+e7b9eaeca217: Layer already exists
+8019683f918e: Layer already exists
+65083988c970: Pushed
+ec0ffa96b9d6: Pushed
+f75e64f96dbc: Layer already exists
+8f7ee6d76fd9: Layer already exists
+90d1009ce6fe: Layer already exists
+c23711a84ad4: Layer already exists
+b30658e0f8ca: Pushed
+latest: digest: sha256:e692b9f876d463755ab58cc07c124139d2d99fb4b8da4a55832a8b9ff9665b3a size: 3267
++ /usr/local/bin/docker rmi 05cfa544b6fc3082f61155a9797d8ae5628a8d74
+Untagged: 05cfa544b6fc3082f61155a9797d8ae5628a8d74:latest
 + /usr/local/bin/docker system prune -f
 Total reclaimed space: 0B
 ```
@@ -5882,7 +5937,7 @@ skinparam note {
 -left-> (*)
 ```
 
-Usually one adds a Drone secret and the `appleboy/ssh` plugin, but there appears to be a [bug in the plugin](https://github.com/appleboy/drone-ssh/issues/51), but one can accomplish the same goal using the plugin slightly differently.
+Usually, one adds a Drone secret and the `appleboy/ssh` plugin, but the last I looked there appeared to be a [bug in the plugin](https://github.com/appleboy/drone-ssh/issues/51), but one can accomplish the same goal using the plugin slightly differently.
 
 First, enable the `Trusted` setting for the repository by opening
 
@@ -5955,6 +6010,47 @@ git commit -m "added deploy step to pipeline"
 git push -u origin master
 ```
 
+The deploy step output resembles:
+
+```
+======CMD======
+docker stop helloworld-web 2>/dev/null
+docker rm helloworld-web 2>/dev/null
+docker rmi 192.168.0.11:5000/nemonik/helloworld-web 2>/dev/null
+docker run -d --restart=always --name helloworld-web --publish 3000:3000 192.168.0.11:5000/nemonik/helloworld-web
+======END======
+out: f56fa19cf749134fb8e1a53f8e4706612a7956fe0756d25e4d0a2284f3b5fa4f
+err: Unable to find image '192.168.0.11:5000/nemonik/helloworld-web:latest' locally
+err: latest: Pulling from nemonik/helloworld-web
+err: 54f7e8ac135a: Already exists
+err: d6341e30912f: Already exists
+err: 087a57faf949: Already exists
+err: 5d71636fb824: Already exists
+err: f368dba6a331: Already exists
+err: f2e97ec220f9: Already exists
+err: e4c39f2ed8c2: Already exists
+err: a2992ac95eb6: Already exists
+err: b6347f061623: Already exists
+err: 624cedf99a02: Already exists
+err: b3caf54db51f: Already exists
+err: a9520f945746: Pulling fs layer
+err: 19de2ec0e886: Pulling fs layer
+err: aa0e691fa83d: Pulling fs layer
+err: 19de2ec0e886: Verifying Checksum
+err: 19de2ec0e886: Download complete
+err: a9520f945746: Download complete
+err: aa0e691fa83d: Verifying Checksum
+err: aa0e691fa83d: Download complete
+err: a9520f945746: Pull complete
+err: 19de2ec0e886: Pull complete
+err: aa0e691fa83d: Pull complete
+err: Digest: sha256:208ecc85c106a81d67bca9cd81146403568b16a4e66996c996f622c1b803c734
+err: Status: Downloaded newer image for 192.168.0.11:5000/nemonik/helloworld-web:latest
+==========================================
+Successfully executed commands to all host.
+==========================================
+```
+
 Open on your host
 
 <http://192.168.0.11:8000/root/helloworld-web>
@@ -5997,7 +6093,7 @@ Either way the container will return
 Hello world!
 ```
 
-So, now we have beggings of a real CI/CD pipeline. There are no strings on me.
+So, now we have beginnings of a real CI/CD pipeline. There are no strings on me.
 
 ### 9.11.19. Add complaince automation (InSpec) test to pipeline
 
@@ -6101,7 +6197,7 @@ end
 
 First, we'll Eexecute the test against container running locally by first spinning up a `nemonik/helloworld-web:latest` container via
 
-```basj
+```bash
 docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web:latest
 ```
 
@@ -6124,8 +6220,11 @@ inspec exec inspec.rb
 The result will be a comparsion of the expected state against the current state of the container and will look like
 
 ```
-Profile: inspec-shell
+[vagrant@development inspec-tests]$ inspec exec inspec.rb
+
+Profile: tests from inspec.rb (tests from inspec.rb)
 Version: (not specified)
+Target:  local://
 
   Docker Container helloworld-web
      ✔  should exist
@@ -6153,7 +6252,7 @@ Open in an editor `.drone.yml` and add the following step
     command_timeout: 360
     script:
       - cd /tmp
-      - rm inspec.rb*
+      - rm inspec.rb
       - wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
       - inspec exec inspec.rb
     when:
@@ -6172,13 +6271,21 @@ to
   its('repo') { should eq '192.168.0.11:5000/nemonik/helloworld-web' }
 ```
 
+Then commit the your code
+
+```bash
+git add .
+git commit -m "added inspec step to pipeline"
+git push -u origin master
+```
+
 The output of the `inspec` step of the pipeline will resemble
 
 ```
 ======CMD======
 cd /tmp
 rm inspec.rb*
-wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec.rb
+wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
 inspec exec inspec.rb
 ======END======
 out: 
@@ -6194,15 +6301,16 @@ out:      ✔  ports should eq "0.0.0.0:3000->3000/tcp"
 out:      ✔  command should eq "/app/helloworld-web"
 out: 
 out: Test Summary: 5 successful, 0 failures, 0 skipped
-err: --2018-08-12 09:15:40--  http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec.rb
+err: rm: cannot remove ‘inspec.rb*’: No such file or directory
+err: --2018-12-01 07:24:11--  http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
 err: Connecting to 192.168.0.11:10080... connected.
 err: HTTP request sent, awaiting response... 200 OK
 err: Length: 284 [text/plain]
 err: Saving to: ‘inspec.rb’
 err: 
-err:      0K                                                       100% 4.93M=0s
+err:      0K                                                       100% 87.3M=0s
 err: 
-err: 2018-08-12 09:15:42 (4.93 MB/s) - ‘inspec.rb’ saved [284/284]
+err: 2018-12-01 07:24:11 (87.3 MB/s) - ‘inspec.rb’ saved [284/284]
 err: 
 ==========================================
 Successfully executed commands to all host.
@@ -6305,15 +6413,17 @@ docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web:latest
 In another `vagrant ssh` to `development` enter
 
 ```
-docker pull 192.168.0.11:5000/nemonik/standalone-firefox:3.14.0
+curl -X GET http://192.168.0.11:5000/v2/_catalog
+curl -X GET http://192.168.0.11:5000/v2/nemonik/standalone-firefox/tags/list
+docker pull 192.168.0.11:5000/nemonik/standalone-firefox:3.141.59
 ```
 
-to pull the container image frome our private Docker repository running on our `toolchain` vagrant.
+to search for and pull then pull the `nemonik/standalone-firefox:3.141.59` container image frome our private Docker repository running on our `toolchain` vagrant.
 
 Then enter into the command line
 
 ```bash
-docker run -p 4444:4444 192.168.0.11:5000/nemonik/standalone-firefox:3.14.0
+docker run -p 4444:4444 192.168.0.11:5000/nemonik/standalone-firefox:3.141.59
 ```
 
 This stands up Selenium specifically running Firefox.  The container is running in the foreground so we can watch the log output.
@@ -6321,11 +6431,18 @@ This stands up Selenium specifically running Firefox.  The container is running 
 A good start outputs to the command line
 
 ```
-[vagrant@development helloworld-web]$ docker run -p 4444:4444 192.168.0.11:5000/nemonik/standalone-firefox:3.14.0
-09:15:47.808 INFO [GridLauncherV3.launch] - Selenium build info: version: '3.14.0', revision: 'aacccce0'
-09:15:47.810 INFO [GridLauncherV3$1.launch] - Launching a standalone Selenium Server on port 4444
-2018-08-12 09:15:48.010:INFO::main: Logging initialized @762ms to org.seleniumhq.jetty9.util.log.StdErrLog
-09:15:48.267 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
+[vagrant@development helloworld-web]$ docker run -p 4444:4444 192.168.0.11:5000/nemonik/standalone-firefox:3.141.59
+2018-12-01 07:32:54,889 WARN Included extra file "/etc/supervisor/conf.d/selenium.conf" during parsing
+2018-12-01 07:32:54,891 INFO supervisord started with pid 7
+2018-12-01 07:32:55,899 INFO spawned: 'xvfb' with pid 10
+2018-12-01 07:32:55,900 INFO spawned: 'selenium-standalone' with pid 11
+07:32:56.311 INFO [GridLauncherV3.parse] - Selenium server version: 3.141.59, revision: e82be7d358
+2018-12-01 07:32:56,312 INFO success: xvfb entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2018-12-01 07:32:56,312 INFO success: selenium-standalone entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+07:32:56.400 INFO [GridLauncherV3.lambda$buildLaunchers$3] - Launching a standalone Selenium Server on port 4444
+2018-12-01 07:32:56.461:INFO::main: Logging initialized @524ms to org.seleniumhq.jetty9.util.log.StdErrLog
+07:32:56.680 INFO [WebDriverServlet.<init>] - Initialising WebDriverServlet
+07:32:56.761 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
 ```
 
 #### 9.11.20.3. Create our test automation
@@ -6344,25 +6461,25 @@ We're going to write our test in Python.  Python is already installed on the `de
 We'll need to install a dependency, we can install by entering into the command line
 
 ```bash
- sudo pip install 'selenium==3.14'
+ sudo pip install 'selenium==3.141.0'
 ```
 
 The output of looks like
 
 ```
-[vagrant@development selenium-test]$  sudo pip install 'selenium==3.14'
-Collecting selenium
-  Downloading https://files.pythonhosted.org/packages/b8/53/9cafbb616d20c7624ff31bcabd82e5cc9823206267664e68aa8acdde4629/selenium-3.14.0-py2.py3-none-any.whl (898kB)
-    100% |████████████████████████████████| 901kB 2.5MB/s
-Requirement already satisfied: urllib3 in /usr/lib/python2.7/site-packages (from selenium) (1.22)
+[vagrant@development selenium-test]$  sudo pip install 'selenium==3.141.0'
+Collecting selenium==3.141.0
+  Downloading https://files.pythonhosted.org/packages/80/d6/4294f0b4bce4de0abf13e17190289f9d0613b0a44e5dd6a7f5ca98459853/selenium-3.141.0-py2.py3-none-any.whl (904kB)
+    100% |████████████████████████████████| 911kB 2.5MB/s
+Requirement already satisfied: urllib3 in /usr/lib/python2.7/site-packages (from selenium==3.141.0) (1.24.1)
 Installing collected packages: selenium
-Successfully installed selenium-3.14.0
+Successfully installed selenium-3.141.0
 ```
 
 But let's create a `requirements.txt` file to hold our dependency with our text editor containing
 
 ```python
-selenium==3.14
+selenium==3.141.0
 ```
 
 This allow the test's dependencies to be enumerated in a file including the specififc version of the dependency, so their installation can be automated.
