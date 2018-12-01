@@ -35,8 +35,10 @@ software_versions = {
   plantuml_server_version: "latest",
   sonarqube_version: "7.1", # 7.4-community is different enough i will need to look into in order to patch
   sonar_scanner_cli_version: "3.2.0.1227",
-  selenium_standalone_chrome_version: "3.141.59",
-  selenium_standalone_firefox_version: "3.141.59",
+ # selenium_standalone_chrome_version: "3.141.59",
+ # selenium_standalone_firefox_version: "3.141.59",
+  selenium_standalone_chrome_version: "3.14.0",
+  selenium_standalone_firefox_version: "3.14.0",
   taiga_version: "4.0.0",
   zap2docker_stable_version: "2.7.0"
 }
