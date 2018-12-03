@@ -11,12 +11,12 @@
 - hosts: toolchains
   remote_user: vagrant
   roles:
-    - common
-    - docker
-    - docker-compose 
+    # - common
+    # - docker
+    # - docker-compose 
+    # - golang
+    # - golint
     - docker-registry
-    - golang
-    - golint
 
 # CI/CD Tools
     - taiga

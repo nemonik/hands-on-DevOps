@@ -53,3 +53,20 @@
     tag: "{{ sonar_scanner_cli_version }}"
   tags:
     - golang-sonarqube-scanner-image
+  
+# - name: build golang-sonarqube-scanner image and push into private registry
+#   become: yes
+#   shell: |
+#     ./dockerfile_build.sh
+#     ./push_into_private_repo.sh
+#   args:
+#     chdir: /home/{{ ansible_user_id }}/golang-sonarqube-scanner-image
+#   environment:
+#     http_proxy: "{{ http_proxy }}"
+#     HTTP_PROXY: "{{ http_proxy }}"
+#     https_proxy: "{{ https_proxy }}"
+#     HTTPS_PROXY: "{{ https_proxy }}"
+#     NO_PROXY: "{{ no_proxy }}"
+#     no_proxy: "{{ no_proxy }}" 
+#   tags:    
+#     - golang-sonarqube-scanner-image

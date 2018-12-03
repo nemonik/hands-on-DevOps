@@ -87,6 +87,16 @@ Vagrant.configure('2') do |config|
     config.proxy.enabled = false
   end 
 
+  # Print Docker DNS servers configured in host file
+  puts "DNS server(s) are configured to:"
+  f = File.open('hosts','r')
+  f.each_line do |line|
+    if line =~ /^ns[1-2] ansible_host/
+       puts "- #{line.split('=')[1]}"
+    end
+  end
+  f.close 
+
   # To add Enterprise CA Certificates to all vagrants
   #
   # Depends on the install of the vagrant-ca-certificates plugin

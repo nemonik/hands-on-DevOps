@@ -68,25 +68,28 @@
   tags:
     - taiga
 
-- name: "build nemonik/taiga:{{ taiga_version }} docker image"
-  become: yes
-  docker_image:
-    path: "/home/{{ ansible_user_id }}/taiga"
-    name: "nemonik/taiga:{{ taiga_version }}"
-    buildargs:
-      http_proxy: "{{ http_proxy }}"
-      HTTP_PROXY: "{{ http_proxy }}"
-      https_proxy: "{{ https_proxy }}"
-      HTTPS_PROXY: "{{ https_proxy }}"
-      NO_PROXY: "{{ no_proxy }}"
-      no_proxy: "{{ no_proxy }}" 
-  tags:
-    - taiga
+# Vagrant is triping up on the NGINX GPGKEY warnings coming out the Dockerfile build, 
+# but the docker-compose appears to build the container image fine.
+
+# - name: "build nemonik/taiga:{{ taiga_version }} docker image"
+#   become: yes
+#   docker_image:
+#     path: "/home/{{ ansible_user_id }}/taiga"
+#     name: "nemonik/taiga:{{ taiga_version }}"
+#     buildargs:
+#       http_proxy: "{{ http_proxy }}"
+#       HTTP_PROXY: "{{ http_proxy }}"
+#       https_proxy: "{{ https_proxy }}"
+#       HTTPS_PROXY: "{{ https_proxy }}"
+#       NO_PROXY: "{{ no_proxy }}"
+#       no_proxy: "{{ no_proxy }}" 
+#   tags:
+#    - taiga
 
 - name: spin up taiga via docker-compose
   become: yes
   docker_service:
-    build: no
+    build: yes
     debug: yes
     project_src: "/home/{{ ansible_user_id }}/taiga"
   tags:

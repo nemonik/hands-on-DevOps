@@ -44,20 +44,40 @@
   tags:    
     - golang-container-image
 
+# TODO: Cannotfigure this one out, the `go get` is resulting in fail in 
+# certain environments
+
+# - name: build golang image and push into private registry
+#   become: yes
+#   docker_image:
+#     path: /home/{{ ansible_user_id }}/golang-container-image
+#     name: nemonik/golang
+#     repository: "{{ hostvars['toolchain']['ansible_host'] }}:5000/nemonik/golang"
+#     push: yes
+#     tag: "{{ golang_version }}"
+#     buildargs:
+#       http_proxy: "{{ http_proxy }}"
+#       HTTP_PROXY: "{{ http_proxy }}"
+#       https_proxy: "{{ https_proxy }}"
+#       HTTPS_PROXY: "{{ https_proxy }}"
+#       NO_PROXY: "{{ no_proxy }}"
+#       no_proxy: "{{ no_proxy }}" 
+#   tags:    
+#     - golang-container-image
+
 - name: build golang image and push into private registry
   become: yes
-  docker_image:
-    path: /home/{{ ansible_user_id }}/golang-container-image
-    name: nemonik/golang
-    repository: "{{ hostvars['toolchain']['ansible_host'] }}:5000/nemonik/golang"
-    push: yes
-    tag: "{{ golang_version }}"
-    buildargs:
-      http_proxy: "{{ http_proxy }}"
-      HTTP_PROXY: "{{ http_proxy }}"
-      https_proxy: "{{ https_proxy }}"
-      HTTPS_PROXY: "{{ https_proxy }}"
-      NO_PROXY: "{{ no_proxy }}"
-      no_proxy: "{{ no_proxy }}" 
+  shell: |
+    ./dockerfile_build.sh
+    ./push_into_private_repo.sh
+  args:
+    chdir: /home/{{ ansible_user_id }}/golang-container-image
+  environment:
+    http_proxy: "{{ http_proxy }}"
+    HTTP_PROXY: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
+    HTTPS_PROXY: "{{ https_proxy }}"
+    NO_PROXY: "{{ no_proxy }}"
+    no_proxy: "{{ no_proxy }}" 
   tags:    
     - golang-container-image
