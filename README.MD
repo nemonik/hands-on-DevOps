@@ -750,7 +750,7 @@ Vagrant.configure('2') do |config|
       config.ca_certificates.certs = ENV['CA_CERTIFICATES'].split(',')
     else
       raise "Missing vagrant-ca-certificates plugin.  Install via: vagrant plugin install vagrant-ca-certificates"
-    end      
+    end
   else
     puts "No CA_CERTIFICATES environment variable set."
     config.ca_certificates.certs = nil

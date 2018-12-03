@@ -88,7 +88,7 @@ Vagrant.configure('2') do |config|
   end 
 
   # Print Docker DNS servers configured in host file
-  puts "DNS server(s) are configured to:"
+  puts "Docker is configurd to us the folllowing DNS server(s):"
   f = File.open('hosts','r')
   f.each_line do |line|
     if line =~ /^ns[1-2] ansible_host/
@@ -143,20 +143,23 @@ Vagrant.configure('2') do |config|
   end
 
   if Vagrant::Util::Platform.windows? and !Vagrant.has_plugin?('vagrant-vbguest') 
-     raise "Missing vagrant-vbguest plugin.  Install via: vagrant plugin install vagrant-vbguest"
+    raise "Missing vagrant-vbguest plugin.  Install via: vagrant plugin install vagrant-vbguest"
   end
-  
-  # Provision multiple machines
-  
+
+  # if (! File.file?("./devops.box"))
+  #   raise "Must create the devops.box by running ./build_devops_box.sh"
+  # end
+
   ## Provision development vagrant
   config.vm.define "development", primary: true do |development|
-    development.vm.box = "centos/7" 
+    development.vm.box = "centos/7"
     development.disksize.size = "80GB"
     development.vm.network "private_network", ip: "192.168.0.10"
     development.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
     development.vm.hostname = "development"
     development.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     development.vm.provider :virtualbox do |virtualbox|
+
       virtualbox.name = "DevOps Class - development"
       virtualbox.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10]
       virtualbox.memory = 2048
@@ -202,7 +205,7 @@ Vagrant.configure('2') do |config|
 
   ## Provision the pipeline vagrant
   config.vm.define "toolchain", autostart: false do |toolchain|
-    toolchain.vm.box = "centos/7" 
+    toolchain.vm.box = "centos/7"
     toolchain.disksize.size = "80GB"
     toolchain.vm.network "private_network", ip: "192.168.0.11"  
     toolchain.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'

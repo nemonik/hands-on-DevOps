@@ -7,6 +7,6 @@
 # Vagrant
 .vagrant/
 *.vdi
-
+*.box
 
 

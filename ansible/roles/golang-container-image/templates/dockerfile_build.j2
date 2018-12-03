@@ -8,4 +8,4 @@
 # this file. If not, please email <mjwalsh@nemonik.com>
 
 docker build -t nemonik/golang:{{ golang_version }}{% if http_proxy %} --build-arg http_proxy={{ http_proxy }} --build-arg HTTP_PROXY={{ http_proxy }}{% endif %}{% if https_proxy %} --build-arg https_proxy={{ https_proxy }} --build-arg HTTPS_PROXY={{ https_proxy }}{% endif %}{% if no_proxy %} --build-arg no_proxy={{ no_proxy }} --build-arg NO_PROXY={{ no_proxy }} {% endif %} .
-#docker image inspect nemonik/golang:{{ golang_version }}
+docker image inspect nemonik/golang:{{ golang_version }}
