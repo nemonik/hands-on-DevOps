@@ -9,7 +9,7 @@ This course will
 
 We will be spending most of the course hands-on working with the tools and in the Unix command line making methods and repeated practices of DevOps happen, so as to grow an understanding of how DevOps actually works.
 
-Don't fixate on the tools used, nor the apps we develop in the course of learning how and why.  How and why is far more important.  This course like DevOps is not about tools although we'll be using them. You'll spend far more time writing code.  (Or at least cutting-and-pasting code.) 
+Don't fixate on the tools used, nor the apps we develop in the course of learning how and why.  How and why is far more important.  This course like DevOps is not about tools although we'll be using them. You'll spend far more time writing code.  (Or at least cutting-and-pasting code.)
 
 # 2. Author
 
@@ -216,7 +216,7 @@ For example,
 3.  If a security engineer, you'e **coding** the compliance and policy test automation.
 4.  If ops, you're **coding*** the deployment and infrastructure configuration management automation.
 
-And since all these disciplines are **coding**, they're essentially using the same methods and repeated practices to ensure they're producing good code.  
+And since all these disciplines are **coding**, they're essentially using the same methods and repeated practices to ensure they're producing good code.
 
 And they're all collectively doing all this coding left in the delivery pipeline, collaborating and from this springs forth culture.
 
@@ -513,7 +513,7 @@ skinparam database {
 actor "You" as you
 
 rectangle "Host"{
-    
+
 	rectangle "Toolchain" {
 
 		rectangle "Docker" as docker1 {
@@ -537,7 +537,7 @@ rectangle "Host"{
 			rectangle "SonarQube" {
 				component "sonarqube:7.1" as sonarqube
 			}
-        
+
 			rectangle "PlantUML Server" {
 				component "plantuml/plantuml-server:latest" as plantuml_server
 			}
@@ -645,7 +645,7 @@ For the class, it is assumed VirtualBox is installed, but below are the instruct
 Then turn for Windows 10 turn off Hyper-V
 
 1. Click Windows `Start` and then type `turn Windows features on or off` into the search bar.
-2. Select the icon with the corresponding name. 
+2. Select the icon with the corresponding name.
 3. This will open the `Windows Features` page and then unselect the `Hyper-V` checkbox if it is enabled and then click `Okay`.
 
 The same site has the Mac OS X download. The install is less involved.
@@ -698,7 +698,7 @@ git checkout --track origin/december
 
 ## 9.5. Infrastructure as code (IaC)
 
-This class uses Infrastructure as code (IaC) to set up the class environment (i.e., two virtual machines that will later be referred to as "vagrants".) IaC is the process of provisioning, and configuring (i.e., managing) computr systems through code, rather than directly manipulating the systems by hand (i.e., manual processes). 
+This class uses Infrastructure as code (IaC) to set up the class environment (i.e., two virtual machines that will later be referred to as "vagrants".) IaC is the process of provisioning, and configuring (i.e., managing) computr systems through code, rather than directly manipulating the systems by hand (i.e., manual processes).
 
 This class uses Vagrant and Ansible IaC framewoorks and the following sections will unpack each.
 
@@ -722,11 +722,11 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL.
 
 #### 9.5.1.2. Installing Vagrant
 
-1. Download the latest Vagrant release  
+1. Download the latest Vagrant release
 
-   <https://www.vagrantup.com/downloads.html>  
+   <https://www.vagrantup.com/downloads.html>
 
-   Version 2.2.2 is verified to work on Windows and Mac OS X.  
+   Version 2.2.2 is verified to work on Windows and Mac OS X.
 
    <https://releases.hashicorp.com/vagrant/2.2.2/vagrant_2.2.2_x86_64.msi>
 
@@ -790,7 +790,7 @@ When authoring, tells your text editor (e.g. emacs or vim) to choose a specific 
 ```ruby
 # Holds the version of software for the Ansible roles to install
 software_versions = {
-  drone_version: "0.8.9",  
+  drone_version: "0.8.9",
   drone_cli_version: "1.0.1",
   golang_version: "1.11.2",
   gitlab_version: "11.5.1",
@@ -819,14 +819,14 @@ The proxy setting section above uses the `vagrant-proxyconf` plugin to set vagra
 Vagrant.configure('2') do |config|
 
   # Set proxy settings for all vagrants
-  # 
+  #
   # Depends on install of vagrant-proxyconf plugin.
   #
   # To use:
   #
   # 1.  Install `vagrant plugin install vagrant-proxyconf`
   # 2.  Set environmental variables for `http_proxy`, `https_proxy`, `ftp_proxy`, and `no_proxy`
-  # 
+  #
   #     For example:
   #
   #     ```
@@ -834,7 +834,7 @@ Vagrant.configure('2') do |config|
   #     export https_proxy=
   #     export ftp_proxy=
   #     export no_proxy=
-  #     ```  
+  #     ```
   if (ENV['http_proxy'] || ENV['https_proxy'])
     if Vagrant.has_plugin?('vagrant-proxyconf')
       config.proxy.http = ENV['http_proxy']
@@ -851,9 +851,9 @@ Vagrant.configure('2') do |config|
     config.proxy.http = nil
     config.proxy.https = nil
     config.proxy.ftp = nil
-    config.proxy.no_proxy = nil   
+    config.proxy.no_proxy = nil
     config.proxy.enabled = false
-  end 
+  end
 ```
 
 ##### 9.5.1.4.4. Inserting Enterprise CA Certificates
@@ -876,16 +876,16 @@ Vagrant.configure('2') do |config|
   #
   #     The Root certificate *must* be denotes as the root certificat like so:
   #
-  #     http://pki.mitre.org/MITRE%20BA%20ROOT.crt 
+  #     http://pki.mitre.org/MITRE%20BA%20ROOT.crt
   #
-  if ENV['CA_CERTIFICATES'] 
+  if ENV['CA_CERTIFICATES']
     if Vagrant.has_plugin?('vagrant-ca-certificates')
       puts "CA Certificates set to #{ ENV['CA_CERTIFICATES'] }"
       config.ca_certificates.enabled = true
       config.ca_certificates.certs = ENV['CA_CERTIFICATES'].split(',')
     else
       raise "Missing vagrant-ca-certificates plugin.  Install via: vagrant plugin install vagrant-ca-certificates"
-    end      
+    end
   else
     puts "No CA_CERTIFICATES environment variable set."
     config.ca_certificates.certs = nil
@@ -921,7 +921,7 @@ This section uses the `vagrant-disksize` plugin to to resize disks in VirtualBox
 ##### 9.5.1.4.7. Requiring _vagrant-vbquest_ for Windows
 
 ```ruby
-  if Vagrant::Util::Platform.windows? and !Vagrant.has_plugin?('vagrant-vbguest') 
+  if Vagrant::Util::Platform.windows? and !Vagrant.has_plugin?('vagrant-vbguest')
      raise "Missing vagrant-vbguest plugin.  Install via: vagrant plugin install vagrant-vbguest"
   end
 ```
@@ -933,7 +933,7 @@ This section uses the `vagrant-disksize` plugin to to resize disks in VirtualBox
 ```ruby
   ## Provision development vagrant
   config.vm.define "development", primary: true do |development|
-    development.vm.box = "centos/7" 
+    development.vm.box = "centos/7"
     development.disksize.size = "80GB"
     development.vm.network "private_network", ip: "192.168.0.10"
     development.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
@@ -953,7 +953,7 @@ This section uses the `vagrant-disksize` plugin to to resize disks in VirtualBox
       end
 
       # the value of storage_system_bus depends on your platform
-      storage_system_bus = "IDE" 
+      storage_system_bus = "IDE"
 
       # Provisions a drive for Docker storage
       virtualbox.customize ['storageattach', :id, '--storagectl', storage_system_bus, '--port', 1, '--device', 0, '--type', 'hdd', '--medium', development_docker_disk]
@@ -981,7 +981,7 @@ This section uses the `vagrant-disksize` plugin to to resize disks in VirtualBox
         ansible.extra_vars[:CA_CERTIFICATES] = config.ca_certificates.certs
       end
     end
-  end  
+  end
 ```
 
 This section provisions and configures a `development` vagrant used for development
@@ -991,7 +991,7 @@ This section provisions and configures a `development` vagrant used for developm
   - `toolchain.vm.box` loads the vagrant with this `centos/7` vagrant base box.  Vagrant curates a listing of base boxes here https://app.vagrantup.com/boxes/search
   - `dev.vm.synced_folder` mounts the class's project folder to `/vagrant` path in the vagrant.
   -  The `dev.vm.provider` section tells the hypervisor how to configure the vagrant (i.e., how much memory, how many procesors)
-- `ansible_local` does not require one to have Ansible installed on the host. Vagrant handles installing it on the vagrant and executing the specified playbook. 
+- `ansible_local` does not require one to have Ansible installed on the host. Vagrant handles installing it on the vagrant and executing the specified playbook.
   - In this instance, I have `ansible.verbose` jacked to its highest setting providing loads of `development` logging.  If too much information about what is going on unnerves you changing this to `false` will disable verbose logging.
 
 ##### 9.5.1.4.9. Configuring the *toolchain* vagrant
@@ -999,9 +999,9 @@ This section provisions and configures a `development` vagrant used for developm
 ```ruby
   ## Provision the pipeline vagrant
   config.vm.define "toolchain", autostart: false do |toolchain|
-    toolchain.vm.box = "centos/7" 
+    toolchain.vm.box = "centos/7"
     toolchain.disksize.size = "80GB"
-    toolchain.vm.network "private_network", ip: "192.168.0.11"  
+    toolchain.vm.network "private_network", ip: "192.168.0.11"
     toolchain.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'
     toolchain.vm.hostname = "toolchain"
     toolchain.vm.synced_folder ".", "/vagrant", type: "virtualbox"
@@ -1012,7 +1012,7 @@ This section provisions and configures a `development` vagrant used for developm
       virtualbox.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
       virtualbox.memory = 4096
       virtualbox.cpus = 4
-      virtualbox.gui = false  
+      virtualbox.gui = false
 
       toolchain_docker_disk = './toolchain_docker.vdi'
 
@@ -1021,7 +1021,7 @@ This section provisions and configures a `development` vagrant used for developm
       end
 
       # the value of storage_system_bus depends on your platform
-      storage_system_bus = "IDE" 
+      storage_system_bus = "IDE"
 
       # Provisions a drive for Docker storage
       virtualbox.customize ['storageattach', :id, '--storagectl', storage_system_bus, '--port', 1, '--device', 0, '--type', 'hdd', '--medium', toolchain_docker_disk]
@@ -1100,7 +1100,7 @@ ns2 ansible_host=10.20.200.53
 # ns1 ansible_host=192.168.1.1
 ```
 
-The inventory collects all the vagrants under a `[nodes]` group, and then defines each vagrant under their respective group either `[developments]` or `[toolchains]`.  
+The inventory collects all the vagrants under a `[nodes]` group, and then defines each vagrant under their respective group either `[developments]` or `[toolchains]`.
 
 **NOTE**
 
@@ -1108,7 +1108,7 @@ The inventory collects all the vagrants under a `[nodes]` group, and then define
 
 #### 9.5.2.2. Playbooks
 
-In Ansible one defines playbooks to manage configurations of and deployments to remote machines. The playbooks I'm using to configure the vagrants exist in `ansible/`. 
+In Ansible one defines playbooks to manage configurations of and deployments to remote machines. The playbooks I'm using to configure the vagrants exist in `ansible/`.
 
 The `development` vagrant Ansible playbook (`ansible/development-playbook.yml`) contains:
 
@@ -1169,7 +1169,7 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"   
+    group: "{{ ansible_user_id }}"
   with_items:
     - { src: "templates/README.j2", dest: "/home/{{ ansible_user_id }}/taiga/README.MD" }
     - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/taiga/Dockerfile" }
@@ -1178,9 +1178,9 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
 
 - name: "make /home/{{ ansible_user_id }}/taiga/dockerfile_build.sh executable"
   become: yes
-  file: 
+  file:
     path: "/home/{{ ansible_user_id }}/taiga/dockerfile_build.sh"
-    mode: "u=rwx,g=r,o=r"  
+    mode: "u=rwx,g=r,o=r"
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
 
@@ -1197,11 +1197,11 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
     path: "{{ item.path }}"
     state: directory
     owner: "{{ item.owner }}"
-    group: "{{ item.group }}"    
+    group: "{{ item.group }}"
   with_items:
     - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/" , owner: root, group: root }
     - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/admin", owner: default, group: root }
-    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/", owner: root, group: root }    
+    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/", owner: root, group: root }
     - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/user", owner: default, group: root }
 
 - name: spin up taiga via docker-compose
@@ -1221,8 +1221,8 @@ So, what is Docker?   What are Containers?
 Whats a container?
 
 - Containers are a form of lightweight virtualization first existing in 1979’s Version 7 UNIX operating system when the chroot command was developed.
-- Since chroot, containers have continued to evolve within the Linux kernel to decouple applications from the operating system and run them in an isolated manner. 
-- A container is essentially an isolated processes running in user space.  
+- Since chroot, containers have continued to evolve within the Linux kernel to decouple applications from the operating system and run them in an isolated manner.
+- A container is essentially an isolated processes running in user space.
 - The benefit over Virtual Machines in that multiple containers can run on the same machine (in case of this class, a vagrant) sharing the OS kernel with other containers.  Whereas a VM would require a full copy of an operating system in order to run the application.  This makes containers insanely light-weight.
 - Container support has thrived and seen popular adoption across various operating systems outside of the Linux including Windows Containers and Window’s direct ability to run Linux containers from the Hyper-V isolation work done by Microsoft.
 - The Open Container Initiative (OCI), formed in 2015 maintains open industry standards for containers that focus on Runtime Specification (runtime-spec) and its partner project, the Image Specification (image-spec).
@@ -1267,7 +1267,7 @@ In the command line of the host in the root of the class project, open `ansible/
   roles:
     - common
     - docker
-    - docker-compose 
+    - docker-compose
     - docker-registry
     - taiga
     - gitlab
@@ -1303,7 +1303,7 @@ The command line will open a prompt a bash shell on the vagrant
 [vagrant@toolchain ~]$
 ```
 
-On this vagrant will be running a number of DevOps tools.  This will take a while, so let's discuss what is being installed.  
+On this vagrant will be running a number of DevOps tools.  This will take a while, so let's discuss what is being installed.
 
 **NOTE**
 
@@ -1315,7 +1315,7 @@ On this vagrant will be running a number of DevOps tools.  This will take a whil
   ```
   vagrant up toolchain --provision
   ```
-- Caution, it is easy to forget DevOps is as much about culture as it is about a methodology and repeated practices (often further mistakenly thought as "tools and automation"), so keep this in mind.  
+- Caution, it is easy to forget DevOps is as much about culture as it is about a methodology and repeated practices (often further mistakenly thought as "tools and automation"), so keep this in mind.
 - The tools, methodology and repeated practices exist to support the culture.
 - Again, I'll drop from time to time stating "into the shell" when instruction you to enter things in the CLI as it should understood.
 
@@ -1360,7 +1360,7 @@ dedicated to the front-end, and
 
 dedicated to the back-end.
 
-Taiga doesn't directly offer a Docker container image for, but I've authored an image that collapses both taiga-front-dist and -back onto one container behind an NGINX reverse proxy. 
+Taiga doesn't directly offer a Docker container image for, but I've authored an image that collapses both taiga-front-dist and -back onto one container behind an NGINX reverse proxy.
 
 #### 9.8.1.2. URL, Username and password
 
@@ -1370,7 +1370,7 @@ Once, stood up your instance of Taiga will reachable at
 
 The default admin accont username and password are
 
-**admin**  
+**admin**
 **123123**
 
 ### 9.8.2. GitLab CE, an example of configuration management software
@@ -1612,7 +1612,7 @@ So, you will need to accomplish the following steps, while at the same time beco
   vagrant ssh toolchain
   ```
 
-9. Open a secure shell to the  `toolchain` vagrant at the root of the 
+9. Open a secure shell to the  `toolchain` vagrant at the root of the
 project with
 
   ```bash
@@ -1669,8 +1669,8 @@ You will only have to do these step in regards to Drone once. Drone should alway
 #### 9.8.4.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab
 
 1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left.
-   a. Select `Create Project`.  
-   b. Or click <http://192.168.0.11:10080/projects/new>  
+   a. Select `Create Project`.
+   b. Or click <http://192.168.0.11:10080/projects/new>
 2. Leave the `Project path` defaulted to `http://192.168.0.11:10080/root/`.
 3. Enter `hands-on-DevOps` (the form field the page defaults to) for the `Project name`.
 4. Provide an optional `Project description`. Something descriptive, such as, _"An awesome DevOps class"_.
@@ -1681,12 +1681,12 @@ The UI will refresh to show you a landing page for the project that should be ac
 
 On your host in the DevOps class project:
 
-1. Enter into the following into the command line 
+1. Enter into the following into the command line
    ```
    git config --global user.name "Administrator"`
    git config --global user.email "admin@example.com"
    ```
-2. Then enter the following 
+2. Then enter the following
    ```
    git remote add toolchain http://192.168.0.11:10080/root/hands-on-DevOps.git
    git push -u toolchain --all
@@ -1749,7 +1749,7 @@ Open `ansible/development-playbook.yml` and make sure these roles are uncommente
   roles:
     - common
     - docker
-    - docker-compose 
+    - docker-compose
     - golang
     - golint
     - drone-cli
@@ -1864,21 +1864,21 @@ http://192.168.0.11:8080
 
 The default admin account username and password are
 
-**admin**   
-**123123**  
+**admin**
+**123123**
 
 Complete the follow to track your progress in completing the Golang *helloworld* project
 1. Click `Create Project`.
 2. Select `Kanban`.  In a Kanban board work moves from left to right with each column represents a stage within the value stream.
 3. Give your project a name.  For example, `Helloworld` and a description, such as, `My Kanban board for this awesome helloworld app` and then click `CREATE PROJECT`.
 5. You can skip this step and opt to chose to click `><` to fold `READY`, `USER STORY STATUS` and `ARCHIVED` only after completing step 6.  Otherwise, you can edit your Kanban board to just `NEW`, `IN PROGRESS`, and `DONE` by
-   a. On the bottom left, click the `ADMIN` gear.  
-   b. Click `ATTRIBUTES`.  
-   c. Scroll down to `USER STORY STATUS`.  
-   d. Hover over `Ready`, click the trash icon to delete and click `ACCEPT`.  
-   c. Do the same for `Ready for test` and `Archived`.  
-   d. Click the `KANBAN` icon on the far left. It Looks like columns.  And then reload the browser to get the changes to take.  
-6. In the `NEW` column select `Add New bulk` icon that looks like a list and when the page updates cut-and-paste the lines below into the text box and click `SAVE`. 
+   a. On the bottom left, click the `ADMIN` gear.
+   b. Click `ATTRIBUTES`.
+   c. Scroll down to `USER STORY STATUS`.
+   d. Hover over `Ready`, click the trash icon to delete and click `ACCEPT`.
+   c. Do the same for `Ready for test` and `Archived`.
+   d. Click the `KANBAN` icon on the far left. It Looks like columns.  And then reload the browser to get the changes to take.
+6. In the `NEW` column select `Add New bulk` icon that looks like a list and when the page updates cut-and-paste the lines below into the text box and click `SAVE`.
 
     ```
     Create the project’s backlog
@@ -1959,8 +1959,8 @@ skinparam note {
 ```
 
 1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left.
-   a. Select `Create Project`.  
-   b. Or click <http://192.168.0.11:10080/projects/new>  
+   a. Select `Create Project`.
+   b. Or click <http://192.168.0.11:10080/projects/new>
 2. Leave the `Project path` defaulted to `http://192.168.0.11:10080/root/`.
 3. Enter `helloworld` (the form field the page defaults to) for the `Project name`.
 4. Provide an optional `Project description`. Something descriptive, such as, _"GoLang helloworld application for the hands-on DevOps class."_.
@@ -2078,7 +2078,7 @@ helloworld
 
 **NOTE**
 
-- Make sure you pre-pend that dot (`.`) at the start of `.gitignore`. Dot-files are hidden files. 
+- Make sure you pre-pend that dot (`.`) at the start of `.gitignore`. Dot-files are hidden files.
 - `.gitignore` will not show up if you simply list the file system via the `ls` command, but they do if you use `ls -a` or `ls --all`.  Either arguments configures `ls` to not ignore entries starting with `.`.
 
 ### 9.10.4. Author the application
@@ -2489,9 +2489,9 @@ skinparam note {
 -left-> (*)
 ```
 
-GoLang ships with a built-in `testing` package 
+GoLang ships with a built-in `testing` package
 
-<https://golang.org/pkg/testing/> 
+<https://golang.org/pkg/testing/>
 
 for automated unit testing of Go packages.  Unit testing is a software development process where the smallest testable components of an application are individually tested for proper operation. Unit testing offers the biggest return for dollars spent in comparison to integration and functional testing.
 
@@ -2788,7 +2788,7 @@ pipeline:
 
 **NOTE**
 
-- Make sure you pre-pend that dot (`.`) at the start of `.drone.yml`. 
+- Make sure you pre-pend that dot (`.`) at the start of `.drone.yml`.
 
 The pipeline is authored in YAML like almost all the CI orchestrators out there except for Jenkin's Pipelines, whose you author in Groovy-based DSL.
 
@@ -2928,7 +2928,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -2953,7 +2953,7 @@ Complete the follow to track your progress in completing the _helloworld-web_ pr
    d. Hover over `Ready`, click the trash icon to delete and click `ACCEPT`.
    c. Do the same for `Ready for test` and `Archived`.
    d. Click the `KANBAN` icon on the far left. It Looks like columns.  And then reload the browser to get the changes to take
-6. In the `NEW` column select `Add New bulk` icon that looks like a list and when the page updates cut-and-paste the lines below into the text box and click `SAVE`. 
+6. In the `NEW` column select `Add New bulk` icon that looks like a list and when the page updates cut-and-paste the lines below into the text box and click `SAVE`.
 
     ```
     Create the project's backlog
@@ -2978,7 +2978,7 @@ Complete the follow to track your progress in completing the _helloworld-web_ pr
     Add automated funtional test\n(Selenium) to pipeline
     Add DAST step (OWASP ZAP) to the pipeline
     ```
-    
+
 Track your progress in Taiga as you work through each section.
 
 ### 9.11.2. Create the project in GitLab
@@ -3043,7 +3043,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -3052,9 +3052,9 @@ skinparam note {
 -left-> (*)
 ```
 
-1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left. 
+1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left.
    a. Select `Your projects` from the dropdown.
-   b. Click the green `New Project` on the far right under `Projects`, or 
+   b. Click the green `New Project` on the far right under `Projects`, or
    c. Click <http://192.168.0.11:10080/projects/new>
 2. Leave the `Project path` defaulted to `http://192.168.0.11:10080/root/`.
 3. Enter `helloworld-web` for the `Project name`.  **Be careful with the spelling.**
@@ -3128,7 +3128,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -3241,7 +3241,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -3347,7 +3347,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -3457,7 +3457,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -3476,7 +3476,7 @@ gometalinter.v2 --install
 Run our linters
 
 ```bash
-gometalinter.v2 
+gometalinter.v2
 ```
 
 And the output will be
@@ -3556,7 +3556,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -3600,7 +3600,7 @@ func logRequest(handler http.Handler) http.Handler {
 Run our linters again
 
 ```bash
-gometalinter.v2 
+gometalinter.v2
 ```
 
 And nothing is returned.  Problem solved.
@@ -3667,7 +3667,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -3837,11 +3837,11 @@ skinparam note {
 -left-> (*)
 ```
 
-SonarQube provides the capability to show the health of an application's source code, highlighting issues as they are introduced. 
+SonarQube provides the capability to show the health of an application's source code, highlighting issues as they are introduced.
 
 #### 9.11.9.1. Optionally, register your app in SonarQube
 
-This section is optional as the `sonar-scanner`command line tool will do all this automagically for you.  
+This section is optional as the `sonar-scanner`command line tool will do all this automagically for you.
 
 Open in your browser
 
@@ -3849,17 +3849,17 @@ Open in your browser
 
 If you have to authenticate, your username and password is
 
-**admin**  
+**admin**
 
-Click `Create project`.  
+Click `Create project`.
 
-Provide the `name` of  
+Provide the `name` of
 
-**helloworld-web**  
+**helloworld-web**
 
-Provide the `key` of  
+Provide the `key` of
 
-**helloworld-web**  
+**helloworld-web**
 
 #### 9.11.9.2. Install the SonarGo plugin
 
@@ -4118,7 +4118,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -4170,7 +4170,7 @@ run: build
 
 **NOTE**
 
-- The indents are `tab` characters and not `spaces` characters.  
+- The indents are `tab` characters and not `spaces` characters.
 - And cut-and-paste may split the single line beginning with `sonar-scanner` into multiple lines.  You want this to be single line of text.
 
 Test out your `Makefile`
@@ -4376,7 +4376,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -4405,11 +4405,11 @@ EXPOSE 3000
 
 Then create the Docker image
 
-`docker build -t nemonik/helloworld-web .`  
+`docker build -t nemonik/helloworld-web .`
 
 **NOTE**
 
-- Don't miss that last period (`.`) at the end the line above. 
+- Don't miss that last period (`.`) at the end the line above.
 
 Command line output will resemble
 
@@ -4466,7 +4466,7 @@ What just happened?
 
 - The `FROM` line instructs Docker to retreive the `nemonik/golang:1.11.2` from the private Docker registry running on our Toolchain vagrant, which it did.
 - Then the rest of the commands in the `Dockerfile` are executed building a new docker image.
-- `docker build` then places the image with the name `nemonik/helloworld-web` in the `Development`'s local Docker registry so that containers can be created off this image locally. 
+- `docker build` then places the image with the name `nemonik/helloworld-web` in the `Development`'s local Docker registry so that containers can be created off this image locally.
 
 Check the local Docker registry via
 
@@ -4485,7 +4485,7 @@ nemonik/helloworld-web             latest              facd0af56fe5        2 min
 
 **NOTE:**
 
-- The registy will also contain the `192.168.0.11:5000/nemonik/golang:1.11.2` on which `nemonik/helloworld-web:latest` is based, so the next time re-build image you won't have to wait for `192.168.0.11:5000/nemonik/golang:1.11.2` to be retrieved.   
+- The registy will also contain the `192.168.0.11:5000/nemonik/golang:1.11.2` on which `nemonik/helloworld-web:latest` is based, so the next time re-build image you won't have to wait for `192.168.0.11:5000/nemonik/golang:1.11.2` to be retrieved.
 
 We can update the project's Makefile adding a `docker-build` target
 
@@ -4508,7 +4508,7 @@ And then run in the command lin
 make all
 ```
 
-Whose output will be 
+Whose output will be
 
 ```
 [vagrant@development helloworld-web]$ make all
@@ -4741,7 +4741,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -4776,7 +4776,7 @@ listening on :3000
 
 #### 9.11.12.2. Option 2
 
-For the second option there will be no output written to the screen, but you can see the same output if you run 
+For the second option there will be no output written to the screen, but you can see the same output if you run
 
 ```bash
 docker logs <the container id output when started the container>
@@ -4863,7 +4863,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry" #FFFFFF
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -5195,7 +5195,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline" #FFFFFF
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -5277,7 +5277,7 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline" #FFFFFF
--right->"Add build step\nto pipeline" 
+-right->"Add build step\nto pipeline"
 -right->"Add container\nimage publish\nstep to pipeline"
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
@@ -5287,7 +5287,7 @@ skinparam note {
 -left-> (*)
 ```
 
-So, let us add `sonar-scan` to our pipeline to update SonarQube with code quality scans automatically by opening `.drone.yml` in our text editor and adding the following step right after our `build` step, so that we run the step prior to a deploy. 
+So, let us add `sonar-scan` to our pipeline to update SonarQube with code quality scans automatically by opening `.drone.yml` in our text editor and adding the following step right after our `build` step, so that we run the step prior to a deploy.
 
 ```yaml
 pipeline:
@@ -5309,8 +5309,8 @@ pipeline:
 
 Things to note in the above
 
-- This step uses an image, `nemonik/golang-sonarqube-scanner:3.2.0.1227`, built ontop of the `nemonik/golang:1.11.2` image to speed builds along. 
-- Cut-and-pasting may split the last `-sonar-scanner` line into multiple line resulting in your build failing.  Correct in the editor. 
+- This step uses an image, `nemonik/golang-sonarqube-scanner:3.2.0.1227`, built ontop of the `nemonik/golang:1.11.2` image to speed builds along.
+- Cut-and-pasting may split the last `-sonar-scanner` line into multiple line resulting in your build failing.  Correct in the editor.
 
 ```yaml
       - export DRONESRC=`pwd`
@@ -5318,7 +5318,7 @@ Things to note in the above
       - mkdir -p $GOPATH/src/github.com/nemonik
       - cd $GOPATH/src/github.com/nemonik
       - ln -s $DRONESRC helloworld-web
-``` 
+```
 
 What follows handles running the scan absorbing errors as they arise, so as to not break the build.
 
@@ -5342,7 +5342,7 @@ Open on your host
 
 <http://192.168.0.11:8000/root/helloworld-web>
 
-And monitor the progress of the build. The pipeline should execute in a few minutes.  
+And monitor the progress of the build. The pipeline should execute in a few minutes.
 
 Typical success resembles
 
@@ -5396,9 +5396,9 @@ no packages to test
 06:33:27.254 INFO: SonarQube Scanner 3.2.0.1227
 06:33:27.254 INFO: Java 1.8.0_121 Oracle Corporation (64-bit)
 06:33:27.254 INFO: Linux 3.10.0-862.14.4.el7.x86_64 amd64
-06:33:27.411 DEBUG: keyStore is : 
+06:33:27.411 DEBUG: keyStore is :
 06:33:27.412 DEBUG: keyStore type is : jks
-06:33:27.412 DEBUG: keyStore provider is : 
+06:33:27.412 DEBUG: keyStore provider is :
 06:33:27.412 DEBUG: init keystore
 06:33:27.412 DEBUG: init keymanager of type SunX509
 06:33:27.489 DEBUG: Create: /root/.sonar/cache
@@ -5461,9 +5461,9 @@ no packages to test
 06:33:29.089 INFO: Source paths: .
 06:33:29.089 INFO: Source encoding: US-ASCII, default locale: en_US
 06:33:29.104 DEBUG: Declared extensions of language Go were converted to sonar.lang.patterns.go : **/*.go
-06:33:29.107 DEBUG: Initializers : 
+06:33:29.107 DEBUG: Initializers :
 06:33:29.108 INFO: Index files
-06:33:29.114 INFO: Excluded sources: 
+06:33:29.114 INFO: Excluded sources:
 06:33:29.114 INFO:   **/*test.go
 06:33:29.122 DEBUG: 'helloworld-web/Dockerfile' indexed with language 'null'
 06:33:29.123 DEBUG: 'helloworld-web/main.go' indexed with language 'go'
@@ -5509,7 +5509,7 @@ no packages to test
 06:33:29.390 INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
 06:33:29.390 INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AWdoeNghaMf02WKW2S16
 06:33:29.391 DEBUG: Report metadata written to /go/src/github.com/nemonik/.scannerwork/report-task.txt
-06:33:29.392 DEBUG: Post-jobs : 
+06:33:29.392 DEBUG: Post-jobs :
 06:33:29.394 INFO: Task total time: 0.919 s
 06:33:29.449 INFO: ------------------------------------------------------------------------
 06:33:29.449 INFO: EXECUTION SUCCESS
@@ -5959,7 +5959,7 @@ Successfully updated the repository settings
 
 indicating success.
 
-Since we let Vagrant manage the creation and configuration of each Vagrant's SSH keys for each of our variants (e.g., dev, toolchain) vagrant will have to create a unique key pair for each vagrant. Vagrant store each vagrant's private inside the `.vagrant` path created in the class project.  
+Since we let Vagrant manage the creation and configuration of each Vagrant's SSH keys for each of our variants (e.g., dev, toolchain) vagrant will have to create a unique key pair for each vagrant. Vagrant store each vagrant's private inside the `.vagrant` path created in the class project.
 
 The `toolchain` vagrant's private keys exists at
 
@@ -6081,7 +6081,7 @@ Then either on your docker host in a browser open
 
 <http://192.168.0.11:3000>
 
-or in the command-line of your `development` vagrant enter 
+or in the command-line of your `development` vagrant enter
 
 ```bash
 curl http://192.168.0.11:3000
@@ -6177,34 +6177,107 @@ https://www.inspec.io/
 At the root of the `helloworld-web` project create a directory to hold your inspec test
 
 ```bash
-mkdir inspec-tests
-cd inspec-tests
+➜  hands-on-DevOps git:(master) inspec init profile helloworld-tests
 ```
 
-Then author a simple Ruby-based tests to verify the expected state of the `nemonik/helloworld-web:latest` Docker container by creating `inspec.rb ` in an editor with this content:
+This will create a basic shell of your first InSpec profile called `helloworld-baseline`.
+
+The output will be simular to:
+
+```
+Create new profile at ../helloworld-app/helloworld-tests
+ * Create directory libraries
+ * Create file README.md
+ * Create directory controls
+ * Create file controls/example.rb
+ * Create file inspec.yml
+ * Create file libraries/.gitkeep
+ ```
+
+Your InSpec profile will house your tests and you can create many profiles that
+can capture almost any set of tests - from ports and protocols - to security
+baselines to application installation standards, etc.
+
+Your new profile will have the structure of:
+
+```
+├── README.md
+├── controls
+│   └── example.rb
+├── inspec.yml
+└── libraries
+
+2 directories, 3 files
+```
+
+Then author a simple Ruby-based tests to verify the expected state of the
+`nemonik/helloworld-web:latest` Docker container by editing the `./controls/example.rb`
+file and creating our first 'control' (a.k.a a collection of one or more tests)
+in an editor with this content:
 
 ```ruby
-describe docker_container(name: 'helloworld-web') do
-  it { should exist }
-  it { should be_running }
-  its('repo') { should eq 'nemonik/helloworld-web' }
-  its('ports') { should eq '0.0.0.0:3000->3000/tcp' }
-  its('command') { should eq '/app/helloworld-web' }
+control 'docker-checks-1.1' do
+  impact 0.7 # High Impact
+  tag "nist": ['CM-6', 'Rev_4']
+  title 'Verify Docker Container exists and is running'
+
+  describe docker_container(name: 'helloworld-web') do
+    it { should exist }
+    it { should be_running }
+    its('repo') { should eq 'nemonik/helloworld-web' }
+    its('ports') { should eq '0.0.0.0:3000->3000/tcp' }
+    its('command') { should eq '/app/helloworld-web' }
+  end
+
+  # you can even test if it does what it should :)
+  #describe http("http://#{application_url}", enable_remote_worker: true) do
+  #  its('body.chomp') { should cmp 'Hello world!' }
+  #end
+
 end
 ```
 
+As a note: you can abstract your tests via `attributes` in in the `inspec.yml`
+in the `helloworld-tests` profile. Something like this and the above example:
+
+```
+name: helloworld-tests
+title: InSpec Profile
+maintainer: The Authors
+copyright: The Authors
+copyright_email: you@example.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 0.1.0
+supports:
+  platform: os
+
+attributes:
+  - name: 'application_url'
+    type: string
+    default: 192.168.0.11
+
+  - name: 'application_port'
+    type: string
+    default: 3000
+```
+
+Save/rename this file as `funcational.rb` and let's give it a run. InSpec has a very robust support for both
+the docker container and its host, see: https://lollyrock.com/posts/inspec-for-docker/ for more information.
+
 #### 9.11.19.2. Execute your test
 
-First, we'll Eexecute the test against container running locally by first spinning up a `nemonik/helloworld-web:latest` container via
+First, we'll Eexecute the test against container running locally by first
+spinning up a `nemonik/helloworld-web:latest` container via
 
 ```bash
 docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web:latest
 ```
 
-And then in the root of your `helloworld-web` project run the inspec test
+And then in the root of your `helloworld-web` project we will run the `helloworld-tests` profile aginst the running container.
 
 ```bash
-inspec exec inspec.rb
+inspec exec ./helloworld-tests --reporter cli json:helloworld-tests.json
 ```
 
 ***Note***
@@ -6220,11 +6293,11 @@ inspec exec inspec.rb
 The result will be a comparsion of the expected state against the current state of the container and will look like
 
 ```
-[vagrant@development inspec-tests]$ inspec exec inspec.rb
+[vagrant@development helloworld-web]$ inspec exec ./helloworld-tests --reporter cli json:helloworld-tests.json
 
-Profile: tests from inspec.rb (tests from inspec.rb)
+Profile: tests from helloworld-tests
 Version: (not specified)
-Target:  local://
+Target:  docker://
 
   Docker Container helloworld-web
      ✔  should exist
@@ -6234,6 +6307,7 @@ Target:  local://
      ✔  command should eq "/app/helloworld-web"
 
 Test Summary: 5 successful, 0 failures, 0 skipped
+Profile Summary: 1 successful, 0 failures, 0 skipped
 ```
 
 #### 9.11.19.4. Add InSpec to the pipeline
@@ -6252,14 +6326,14 @@ Open in an editor `.drone.yml` and add the following step
     command_timeout: 360
     script:
       - cd /tmp
-      - rm inspec.rb
-      - wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
-      - inspec exec inspec.rb
+      - rm functional.rb 2> /dev/null
+      - wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/controls/functional.rb
+      - inspec exec functional.rb --reporter cli json:helloworld-tests.json
     when:
       branch: master
 ```
 
-And modify the `inspec.rb` to reflect the expected repo for when deployed by changing the line
+And modify the `functional.rb` to reflect the expected repo for when deployed by changing the line
 
 ```ruby
   its('repo') { should eq 'nemonik/helloworld-web' }
@@ -6288,18 +6362,18 @@ rm inspec.rb*
 wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
 inspec exec inspec.rb
 ======END======
-out: 
+out:
 out: Profile: tests from inspec.rb (tests from inspec.rb)
 out: Version: (not specified)
 out: Target:  local://
-out: 
+out:
 out:   Docker Container helloworld-web
 out:      ✔  should exist
 out:      ✔  should be running
 out:      ✔  repo should eq "192.168.0.11:5000/nemonik/helloworld-web"
 out:      ✔  ports should eq "0.0.0.0:3000->3000/tcp"
 out:      ✔  command should eq "/app/helloworld-web"
-out: 
+out:
 out: Test Summary: 5 successful, 0 failures, 0 skipped
 err: rm: cannot remove ‘inspec.rb*’: No such file or directory
 err: --2018-12-01 07:24:11--  http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
@@ -6307,11 +6381,11 @@ err: Connecting to 192.168.0.11:10080... connected.
 err: HTTP request sent, awaiting response... 200 OK
 err: Length: 284 [text/plain]
 err: Saving to: ‘inspec.rb’
-err: 
+err:
 err:      0K                                                       100% 87.3M=0s
-err: 
-err: 2018-12-01 07:24:11 (87.3 MB/s) - ‘inspec.rb’ saved [284/284]
-err: 
+err:
+err: 2018-12-01 07:24:11 (87.3 MB/s) - functional.rb’ saved [284/284]
+err:
 ==========================================
 Successfully executed commands to all host.
 ==========================================
@@ -6446,7 +6520,7 @@ A good start outputs to the command line
 
 #### 9.11.20.3. Create our test automation
 
-In another `vagrant ssh` to `development`, we author and run our automated test.  
+In another `vagrant ssh` to `development`, we author and run our automated test.
 
 In this other command line at the root of the `helloworld-web` project (e.g., `/home/vagrant/go/src/github.com/nemonik/helloworld-web`) enter
 
@@ -6455,7 +6529,7 @@ mkdir selenium-test
 cd selenium-test
 ```
 
-We're going to write our test in Python.  Python is already installed on the `development` vagrant. Ansible uses it.  
+We're going to write our test in Python.  Python is already installed on the `development` vagrant. Ansible uses it.
 
 We'll need to install a dependency, we can install by entering into the command line
 
@@ -6560,7 +6634,7 @@ OK
 
 The other windows will show logging.
 
-`ctrl-c` to stop the containers in your other shells.  
+`ctrl-c` to stop the containers in your other shells.
 
 **NOTE**
 
@@ -6603,7 +6677,7 @@ services:
 
 - `services` is not indented like all the prior steps, because it is not a step, but enumeration of services, so be careful when you edit the pipeline.
 
-Drone uses the  `services:` section to spin up a patched version of `selenium/standalone-firefox:3.14.0` exposed with the name `firefox`.  This is where the problem creeps in that I mentioned earlier, where the `selenium` step will hit corporate proxy to resolve `firefox`.  We don't want that to happen, so the `selenium:` step will makes use of another Python script to resolved `firefox` service to its private IP and add it the `no_proxy` and `NO_PROXY` environmental variables, so that the Python selenium test code doesn't attempt to pass the request on to the corporate proxy and result in the test failing.  
+Drone uses the  `services:` section to spin up a patched version of `selenium/standalone-firefox:3.14.0` exposed with the name `firefox`.  This is where the problem creeps in that I mentioned earlier, where the `selenium` step will hit corporate proxy to resolve `firefox`.  We don't want that to happen, so the `selenium:` step will makes use of another Python script to resolved `firefox` service to its private IP and add it the `no_proxy` and `NO_PROXY` environmental variables, so that the Python selenium test code doesn't attempt to pass the request on to the corporate proxy and result in the test failing.
 
 Create in a text editor `selenium-test/resolve.py` with
 
@@ -6624,7 +6698,7 @@ if __name__ == "__main__":
         print socket.gethostbyname( sys.argv[1] )
 ```
 
-Commit the code to GitLab hosted remote repo  
+Commit the code to GitLab hosted remote repo
 
 ```bash
 git add .
@@ -6632,7 +6706,7 @@ git commit -m "added selenium step to pipeline"
 git push -u origin master
 ```
 
-Open on your host  
+Open on your host
 
 http://192.168.0.11:8000/root/helloworld-web
 
@@ -6813,7 +6887,7 @@ Great, now lets add a step to our pipeline after the `selenium:`, but before `se
       - zap-baseline.py -t http://192.168.0.11:3000 || true
 ```
 
-Commit the code to GitLab hosted remote repo  
+Commit the code to GitLab hosted remote repo
 
 ```bash
 git add .
@@ -6821,7 +6895,7 @@ git commit -m "added owasp-zaproxy step to pipeline"
 git push -u origin master
 ```
 
-Open on your host  
+Open on your host
 
 http://192.168.0.11:8000/root/helloworld-web
 
@@ -6847,7 +6921,7 @@ PASS: Private IP Disclosure [2]
 PASS: Session ID in URL Rewrite [3]
 PASS: Script Passive Scan Rules [50001]
 PASS: Application Error Disclosure [90022]
-WARN-NEW: X-Content-Type-Options Header Missing [10021] x 4 
+WARN-NEW: X-Content-Type-Options Header Missing [10021] x 4
 	http://192.168.0.11:3000/
 	http://192.168.0.11:3000/robots.txt
 	http://192.168.0.11:3000/sitemap.xml
@@ -6884,14 +6958,14 @@ The benefit
 - Thereby, permitting each service to be scaled and maintained independently.
 - Providing Crash Isolation, so if a single piece of your service is crashing, then the rest of your application continues to work
 - Providing Isolation for Security, so a compromise of one service only gains the adversary access to the resources of that single service
-- Providing Independent Scaling, so each microservice’s compute utilization can be independently scaled up and down 
+- Providing Independent Scaling, so each microservice’s compute utilization can be independently scaled up and down
 - Increasing Development Velocity, lowering development risks thereby permitting teams to build faster in comparison to monolithic development.
 
 So, with the `helloworld-web` application, you've developed a micrsoservice, packaged it into a container (i.e., containerized it), and by doing so essentially created a cloud-native application.
 
 ### 9.12.1. What's cloud-native?
 
-Cloud-native computing deploys applications as microservices, packaging each into its own container, and by doing so have opened yourself up to the capability of being able to dynamically orchestrate the container to optimize resource utilization, elastic scaling, security issolation...  
+Cloud-native computing deploys applications as microservices, packaging each into its own container, and by doing so have opened yourself up to the capability of being able to dynamically orchestrate the container to optimize resource utilization, elastic scaling, security issolation...
 
 Granted our microservice doesn't do much, but we can get a peak of the possibilities without even installing a full blown Container Platform, such as, Kubernetes, Docker Swarm, or OpenShift.
 
@@ -6903,7 +6977,7 @@ On the `development` vagrant
 docker swarm init --advertise-addr=192.168.0.10
 ```
 
-Edit the `go/src/github.com/nemonik/helloworld-web/main.go` 
+Edit the `go/src/github.com/nemonik/helloworld-web/main.go`
 
 ```go
 package main
@@ -7069,7 +7143,7 @@ overall progress: 5 out of 5 tasks
 verify: Service converged
 ```
 
-Re-running 
+Re-running
 
 ```bash
 docker service list
@@ -7091,7 +7165,7 @@ curl http://192.168.0.10:3000
 done
 ```
 
-The output will resemble 
+The output will resemble
 
 ```
 Hello world! 6a0e64e07f27

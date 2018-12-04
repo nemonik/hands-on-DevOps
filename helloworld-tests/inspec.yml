@@ -1,0 +1,20 @@
+name: helloworld-tests
+title: InSpec Profile
+maintainer: The Authors
+copyright: The Authors
+copyright_email: you@example.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 0.1.0
+supports:
+  platform: os
+
+attributes:
+  - name: 'application_url'
+    type: string
+    default: 192.168.0.11
+
+  - name: 'application_port'
+    type: string
+    default: 3000
+
