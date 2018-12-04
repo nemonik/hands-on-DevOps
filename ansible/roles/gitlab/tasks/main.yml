@@ -50,12 +50,12 @@
     path: "/home/{{ ansible_user_id }}/gitlab"
     name: nemonik/gitlab:{{ gitlab_version }}
     buildargs:
-      http_proxy: "{{ http_proxy }}"
-      HTTP_PROXY: "{{ http_proxy }}"
-      https_proxy: "{{ https_proxy }}"
-      HTTPS_PROXY: "{{ https_proxy }}"
-      NO_PROXY: "{{ no_proxy }}"
-      no_proxy: "{{ no_proxy }}" 
+      http_proxy: "{{ http_proxy|default('') }}"
+      HTTP_PROXY: "{{ http_proxy|default('') }}"
+      https_proxy: "{{ https_proxy|default('') }}"
+      HTTPS_PROXY: "{{ https_proxy|default('') }}"
+      NO_PROXY: "{{ no_proxy|default('') }}"
+      no_proxy: "{{ no_proxy|default('') }}" 
   tags:
     - gitlab
 

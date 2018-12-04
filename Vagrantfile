@@ -74,7 +74,11 @@ Vagrant.configure('2') do |config|
       config.proxy.no_proxy = ENV['no_proxy'] 
       # config.proxy.enabled = true
       config.proxy.enabled = { docker: false } 
-      puts "HTTP Proxy variables set. http_proxy = #{ config.proxy.http }, https_proxy = #{ config.proxy.https }, ftp_proxy = #{ config.proxy.ftp }, no_proxy = #{ config.proxy.no_proxy }"
+      puts "HTTP Proxy variables set."
+      puts "http_proxy = #{ config.proxy.http }"
+      puts "https_proxy = #{ config.proxy.https }"
+      puts "ftp_proxy = #{ config.proxy.ftp }"
+      puts "no_proxy = #{ config.proxy.no_proxy }"
     else
       raise "Missing vagrant-proxyconf plugin.  Install via: vagrant plugin install vagrant-proxyconf"
     end
@@ -86,6 +90,16 @@ Vagrant.configure('2') do |config|
     config.proxy.no_proxy = nil   
     config.proxy.enabled = false
   end 
+
+  # Print Docker DNS servers configured in host file
+  puts "Docker is configurd to us the folllowing DNS server(s):"
+  f = File.open('hosts','r')
+  f.each_line do |line|
+    if line =~ /^ns[1-2] ansible_host/
+       puts "- #{line.split('=')[1]}"
+    end
+  end
+  f.close 
 
   # To add Enterprise CA Certificates to all vagrants
   #
@@ -133,20 +147,23 @@ Vagrant.configure('2') do |config|
   end
 
   if Vagrant::Util::Platform.windows? and !Vagrant.has_plugin?('vagrant-vbguest') 
-     raise "Missing vagrant-vbguest plugin.  Install via: vagrant plugin install vagrant-vbguest"
+    raise "Missing vagrant-vbguest plugin.  Install via: vagrant plugin install vagrant-vbguest"
   end
-  
-  # Provision multiple machines
-  
+
+  # if (! File.file?("./devops.box"))
+  #   raise "Must create the devops.box by running ./build_devops_box.sh"
+  # end
+
   ## Provision development vagrant
   config.vm.define "development", primary: true do |development|
-    development.vm.box = "centos/7" 
+    development.vm.box = "centos/7"
     development.disksize.size = "80GB"
     development.vm.network "private_network", ip: "192.168.0.10"
     development.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
     development.vm.hostname = "development"
     development.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     development.vm.provider :virtualbox do |virtualbox|
+
       virtualbox.name = "DevOps Class - development"
       virtualbox.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10]
       virtualbox.memory = 2048
@@ -178,10 +195,10 @@ Vagrant.configure('2') do |config|
       ansible.extra_vars = software_versions
 
       if development.proxy.enabled
-        ansible.extra_vars[:http_proxy] = config.proxy.http
-        ansible.extra_vars[:https_proxy] = config.proxy.https
-        ansible.extra_vars[:ftp_proxy] = config.proxy.ftp
-        ansible.extra_vars[:no_proxy] = config.proxy.no_proxy
+        ansible.extra_vars[:http_proxy] = (!config.proxy.http ? "" : config.proxy.http)
+        ansible.extra_vars[:https_proxy] = (!config.proxy.https ? "" : config.proxy.https)
+        ansible.extra_vars[:ftp_proxy] = (!config.proxy.ftp ? "" : config.proxy.ftp)
+        ansible.extra_vars[:no_proxy] = (!config.proxy.no_proxy ? "" : config.proxy.no_proxy)
       end
 
       if development.ca_certificates.enabled
@@ -192,7 +209,7 @@ Vagrant.configure('2') do |config|
 
   ## Provision the pipeline vagrant
   config.vm.define "toolchain", autostart: false do |toolchain|
-    toolchain.vm.box = "centos/7" 
+    toolchain.vm.box = "centos/7"
     toolchain.disksize.size = "80GB"
     toolchain.vm.network "private_network", ip: "192.168.0.11"  
     toolchain.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'
@@ -232,10 +249,10 @@ Vagrant.configure('2') do |config|
       ansible.extra_vars = software_versions
 
       if toolchain.proxy.enabled
-        ansible.extra_vars[:http_proxy] = config.proxy.http
-        ansible.extra_vars[:https_proxy] = config.proxy.https
-        ansible.extra_vars[:ftp_proxy] = config.proxy.ftp
-        ansible.extra_vars[:no_proxy] = config.proxy.no_proxy
+        ansible.extra_vars[:http_proxy] = (!config.proxy.http ? "" : config.proxy.http)
+        ansible.extra_vars[:https_proxy] = (!config.proxy.https ? "" : config.proxy.https)
+        ansible.extra_vars[:ftp_proxy] = (!config.proxy.ftp ? "" : config.proxy.ftp)
+        ansible.extra_vars[:no_proxy] = (!config.proxy.no_proxy ? "" : config.proxy.no_proxy)
       end
 
       if toolchain.ca_certificates.enabled

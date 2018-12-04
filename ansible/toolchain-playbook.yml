@@ -14,9 +14,9 @@
     - common
     - docker
     - docker-compose 
-    - docker-registry
     - golang
     - golint
+    - docker-registry
 
 # CI/CD Tools
     - taiga

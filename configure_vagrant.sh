@@ -12,19 +12,20 @@
 # then run in shell via
 # 
 # ```
-# cd ..
 # sudo -E bash -c ./configure_vagrant.sh
 # ```
 
+echo "Must run as `sudo -E bash -c ./configure_vagrant.sh`"
+
 env 
 
-if [ -n "$ca_certificates" ]; then
+if [ -n "$CA_CERTIFICATES" ]; then
 
   cp /opt/vagrant/embedded/cacert.pem /opt/vagrant/embedded/cacert.pem.back
 
   IFS=","
 
-  arr=($ca_certificates)
+  arr=($CA_CERTIFICATES)
 
   for i in "${!arr[@]}"; do
     echo " curl --insecure -sS ${arr[$i]} >> /opt/vagrant/embedded/cacert.pem"
