@@ -89,7 +89,7 @@
 - name: spin up taiga via docker-compose
   become: yes
   docker_service:
-    build: yes
+    build: no
     debug: yes
     project_src: "/home/{{ ansible_user_id }}/taiga"
   tags:

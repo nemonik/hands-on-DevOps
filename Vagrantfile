@@ -74,7 +74,11 @@ Vagrant.configure('2') do |config|
       config.proxy.no_proxy = ENV['no_proxy'] 
       # config.proxy.enabled = true
       config.proxy.enabled = { docker: false } 
-      puts "HTTP Proxy variables set. http_proxy = #{ config.proxy.http }, https_proxy = #{ config.proxy.https }, ftp_proxy = #{ config.proxy.ftp }, no_proxy = #{ config.proxy.no_proxy }"
+      puts "HTTP Proxy variables set."
+      puts "http_proxy = #{ config.proxy.http }"
+      puts "https_proxy = #{ config.proxy.https }"
+      puts "ftp_proxy = #{ config.proxy.ftp }"
+      puts "no_proxy = #{ config.proxy.no_proxy }"
     else
       raise "Missing vagrant-proxyconf plugin.  Install via: vagrant plugin install vagrant-proxyconf"
     end
@@ -191,10 +195,10 @@ Vagrant.configure('2') do |config|
       ansible.extra_vars = software_versions
 
       if development.proxy.enabled
-        ansible.extra_vars[:http_proxy] = config.proxy.http
-        ansible.extra_vars[:https_proxy] = config.proxy.https
-        ansible.extra_vars[:ftp_proxy] = config.proxy.ftp
-        ansible.extra_vars[:no_proxy] = config.proxy.no_proxy
+        ansible.extra_vars[:http_proxy] = (!config.proxy.http ? "" : config.proxy.http)
+        ansible.extra_vars[:https_proxy] = (!config.proxy.https ? "" : config.proxy.https)
+        ansible.extra_vars[:ftp_proxy] = (!config.proxy.ftp ? "" : config.proxy.ftp)
+        ansible.extra_vars[:no_proxy] = (!config.proxy.no_proxy ? "" : config.proxy.no_proxy)
       end
 
       if development.ca_certificates.enabled
@@ -245,10 +249,10 @@ Vagrant.configure('2') do |config|
       ansible.extra_vars = software_versions
 
       if toolchain.proxy.enabled
-        ansible.extra_vars[:http_proxy] = config.proxy.http
-        ansible.extra_vars[:https_proxy] = config.proxy.https
-        ansible.extra_vars[:ftp_proxy] = config.proxy.ftp
-        ansible.extra_vars[:no_proxy] = config.proxy.no_proxy
+        ansible.extra_vars[:http_proxy] = (!config.proxy.http ? "" : config.proxy.http)
+        ansible.extra_vars[:https_proxy] = (!config.proxy.https ? "" : config.proxy.https)
+        ansible.extra_vars[:ftp_proxy] = (!config.proxy.ftp ? "" : config.proxy.ftp)
+        ansible.extra_vars[:no_proxy] = (!config.proxy.no_proxy ? "" : config.proxy.no_proxy)
       end
 
       if toolchain.ca_certificates.enabled
