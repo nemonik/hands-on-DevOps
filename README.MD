@@ -27,11 +27,7 @@ Don't fixate on the tools used, nor the apps we develop in the course of learnin
 
 See the License file at the root of the project.
 
-# 5. TOC
-
-<!-- TOC -->autoauto- [1. DevOps](#1-devops)auto- [2. Author](#2-author)auto- [3. Acknowledgments](#3-acknowledgments)auto- [4. Copyright and License](#4-copyright-and-license)auto- [5. TOC](#5-toc)auto- [6. Prerequisites](#6-prerequisites)auto- [7. DevOps unpacked](#7-devops-unpacked)auto    - [7.1. What is DevOps?](#71-what-is-devops)auto    - [7.2. What DevOps is not.](#72-what-devops-is-not)auto    - [7.3. DevOps is really about](#73-devops-is-really-about)auto    - [7.4. How does it related to the Agile?](#74-how-does-it-related-to-the-agile)auto    - [7.5. How do they differ?](#75-how-do-they-differ)auto    - [7.6. Why?](#76-why)auto    - [7.7. What are the principles of DevOps?](#77-what-are-the-principles-of-devops)auto    - [7.8. How is this achieved?](#78-how-is-this-achieved)auto    - [7.9. What is Continuous Integration (CI)?](#79-what-is-continuous-integration-ci)auto    - [7.10. How?](#710-how)auto    - [7.11. CI best practices](#711-ci-best-practices)auto        - [7.11.1. Utilize a Configuration Management System](#7111-utilize-a-configuration-management-system)auto        - [7.11.2. Automate the build](#7112-automate-the-build)auto        - [7.11.3. Employ one or more CI services/orchestrators](#7113-employ-one-or-more-ci-servicesorchestrators)auto        - [7.11.4. Make builds self-testing](#7114-make-builds-self-testing)auto        - [7.11.5. Never commit broken](#7115-never-commit-broken)auto        - [7.11.6. Developers are expected to pre-flight new code](#7116-developers-are-expected-to-pre-flight-new-code)auto        - [7.11.7. The CI service/orchestrator provides feedback](#7117-the-ci-serviceorchestrator-provides-feedback)auto    - [7.12. What is Continuous Delivery?](#712-what-is-continuous-delivery)auto        - [7.12.1. Extends Continuous Integration (CI)](#7121-extends-continuous-integration-ci)auto        - [7.12.2. Consistency](#7122-consistency)auto    - [7.13. But wait. What's a pipeline?](#713-but-wait-whats-a-pipeline)auto    - [7.14. But really why do we code err. automate?](#714-but-really-why-do-we-code-err-automate)auto        - [7.14.1. Laziness](#7141-laziness)auto        - [7.14.2. Impatience](#7142-impatience)auto        - [7.14.3. Hubris](#7143-hubris)auto        - [7.14.4. But really we automate for](#7144-but-really-we-automate-for)auto    - [7.15. How is a pipeline manifested?](#715-how-is-a-pipeline-manifested)auto    - [7.16. What underlines all of this?](#716-what-underlines-all-of-this)auto    - [7.17. Monitoring](#717-monitoring)auto        - [7.17.1. The most important metric](#7171-the-most-important-metric)auto        - [7.17.2. An Understanding of Performance](#7172-an-understanding-of-performance)auto        - [7.17.3. Establish a baseline](#7173-establish-a-baseline)auto        - [7.17.4. Set Reaction Thresholds](#7174-set-reaction-thresholds)auto        - [7.17.5. Reacting](#7175-reacting)auto        - [7.17.6. Gaps in CI/CD](#7176-gaps-in-cicd)auto        - [7.17.7. Eliminating Waste](#7177-eliminating-waste)auto    - [7.18. Crawl, Walk, Run](#718-crawl-walk-run)auto        - [7.18.1. Ultimately, DevOps is Goal](#7181-ultimately-devops-is-goal)auto- [8. Reading list](#8-reading-list)auto- [9. Now the hands-on part](#9-now-the-hands-on-part)auto    - [9.1. Configuring environmental variables](#91-configuring-environmental-variables)auto    - [9.2. VirtualBox](#92-virtualbox)auto        - [9.2.1. Installing VirtualBox](#921-installing-virtualbox)auto    - [9.3. Git Bash](#93-git-bash)auto        - [9.3.1. Installing Git Bash](#931-installing-git-bash)auto    - [9.4. Retrieve the course material](#94-retrieve-the-course-material)auto    - [9.5. Infrastructure as code (IaC)](#95-infrastructure-as-code-iac)auto        - [9.5.1. Vagrant](#951-vagrant)auto            - [9.5.1.1. Vagrant documentation and source](#9511-vagrant-documentation-and-source)auto            - [9.5.1.2. Installing Vagrant](#9512-installing-vagrant)auto            - [9.5.1.3. Installing Vagrant Plugins](#9513-installing-vagrant-plugins)auto            - [9.5.1.4. The Vagrantfile explained](#9514-the-vagrantfile-explained)auto                - [9.5.1.4.1. Modelines](#95141-modelines)auto                - [9.5.1.4.2. Setting Software version for Ansible roles](#95142-setting-software-version-for-ansible-roles)auto                - [9.5.1.4.3. Inserting Proxy setting via host environmental variables](#95143-inserting-proxy-setting-via-host-environmental-variables)auto                - [9.5.1.4.4. Inserting Enterprise CA Certificates](#95144-inserting-enterprise-ca-certificates)auto                - [9.5.1.4.5. Configuring the cache plugin to speed things along](#95145-configuring-the-cache-plugin-to-speed-things-along)auto                - [9.5.1.4.6. Configuring the disksize plugin to increase the disk size](#95146-configuring-the-disksize-plugin-to-increase-the-disk-size)auto                - [9.5.1.4.7. Requiring _vagrant-vbquest_ for Windows](#95147-requiring-_vagrant-vbquest_-for-windows)auto                - [9.5.1.4.8. Configuring the *development* vagrant](#95148-configuring-the-development-vagrant)auto                - [9.5.1.4.9. Configuring the *toolchain* vagrant](#95149-configuring-the-toolchain-vagrant)auto        - [9.5.2. Ansible](#952-ansible)auto            - [9.5.2.1. Inventory file](#9521-inventory-file)auto            - [9.5.2.2. Playbooks](#9522-playbooks)auto            - [9.5.2.3. Roles](#9523-roles)auto    - [9.6. Docker image and containers](#96-docker-image-and-containers)auto    - [9.7. Docker-compose](#97-docker-compose)auto    - [9.8. Spinning up the _toolchain_ vagrant](#98-spinning-up-the-_toolchain_-vagrant)auto        - [9.8.1. Taiga, an example of Agile project management software](#981-taiga-an-example-of-agile-project-management-software)auto            - [9.8.1.1. Documentation, source, container image](#9811-documentation-source-container-image)auto            - [9.8.1.2. URL, Username and password](#9812-url-username-and-password)auto        - [9.8.2. GitLab CE, an example of configuration management software](#982-gitlab-ce-an-example-of-configuration-management-software)auto            - [9.8.2.1. Documentation, source, container image](#9821-documentation-source-container-image)auto            - [9.8.2.2. URL, Username and password](#9822-url-username-and-password)auto            - [9.8.2.3. Allow requests to the local network from hooks and services](#9823-allow-requests-to-the-local-network-from-hooks-and-services)auto        - [9.8.3. Drone CI, an example of CI/CD orchestrator](#983-drone-ci-an-example-of-cicd-orchestrator)auto            - [9.8.3.1. Documentation, source, container image](#9831-documentation-source-container-image)auto            - [9.8.3.2. URL, Username and password](#9832-url-username-and-password)auto        - [9.8.4. Once the *toolchain* vagrant is up](#984-once-the-toolchain-vagrant-is-up)auto            - [9.8.4.1. Integrate GitLab with the PlantUML-Server](#9841-integrate-gitlab-with-the-plantuml-server)auto            - [9.8.4.2. Integrate Drone CI with GitLab](#9842-integrate-drone-ci-with-gitlab)auto            - [9.8.4.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab](#9843-optionally-add-the-hands-on-devops-repository-to-the-toolchains-gitlab)auto        - [9.8.5. SonarQube, an example of a platform for the inspection of code quality](#985-sonarqube-an-example-of-a-platform-for-the-inspection-of-code-quality)auto            - [9.8.5.1. Documentation, source, container image](#9851-documentation-source-container-image)auto            - [9.8.5.2. URL, Username and password](#9852-url-username-and-password)auto    - [9.9. Spin up the _development_ vagrant](#99-spin-up-the-_development_-vagrant)auto    - [9.10. Golang _helloworld_ project](#910-golang-_helloworld_-project)auto        - [9.10.1. Create the project's backlog](#9101-create-the-projects-backlog)auto        - [9.10.2. Create the project in GitLab](#9102-create-the-project-in-gitlab)auto        - [9.10.3. Setup the project on the _development_ Vagrant](#9103-setup-the-project-on-the-_development_-vagrant)auto        - [9.10.4. Author the application](#9104-author-the-application)auto        - [9.10.5. Align source code with Go coding standards](#9105-align-source-code-with-go-coding-standards)auto        - [9.10.6. Lint your code](#9106-lint-your-code)auto        - [9.10.7. Build the application](#9107-build-the-application)auto        - [9.10.8. Run your application](#9108-run-your-application)auto        - [9.10.9. Author the unit tests](#9109-author-the-unit-tests)auto        - [9.10.10. Automated the build (i.e., write the Makefile)](#91010-automated-the-build-ie-write-the-makefile)auto        - [9.10.11. Author Drone-based Continuous Integration](#91011-author-drone-based-continuous-integration)auto            - [9.10.11.1. Configure Drone to execute your pipeline](#910111-configure-drone-to-execute-your-pipeline)auto            - [9.10.11.2. Trigger the build](#910112-trigger-the-build)auto        - [9.10.12. The completed source for *helloworld*](#91012-the-completed-source-for-helloworld)auto    - [9.11. Golang *helloworld-web* project](#911-golang-helloworld-web-project)auto        - [9.11.1. Create the project's backlog](#9111-create-the-projects-backlog)auto        - [9.11.2. Create the project in GitLab](#9112-create-the-project-in-gitlab)auto        - [9.11.3. Setup the project on the _development_ Vagrant](#9113-setup-the-project-on-the-_development_-vagrant)auto        - [9.11.4. Author the application](#9114-author-the-application)auto        - [9.11.5. Build and Run the application](#9115-build-and-run-the-application)auto        - [9.11.6. Run gometalinter.v2 on application](#9116-run-gometalinterv2-on-application)auto        - [9.11.7. Fix the application](#9117-fix-the-application)auto        - [9.11.8. Author unit tests](#9118-author-unit-tests)auto        - [9.11.9. Perform static analysis (i.e., sonar-scanner) on the command line](#9119-perform-static-analysis-ie-sonar-scanner-on-the-command-line)auto            - [9.11.9.1. Optionally, register your app in SonarQube](#91191-optionally-register-your-app-in-sonarqube)auto            - [9.11.9.2. Install the SonarGo plugin](#91192-install-the-sonargo-plugin)auto            - [9.11.9.3. Perform static analysis (run *sonar-scanner*) on the command line](#91193-perform-static-analysis-run-sonar-scanner-on-the-command-line)auto        - [9.11.10. Automated the build (i.e., write the Makefile)](#91110-automated-the-build-ie-write-the-makefile)auto        - [9.11.11. Dockerize the application](#91111-dockerize-the-application)auto        - [9.11.12. Run the Docker container](#91112-run-the-docker-container)auto            - [9.11.12.1. Option 1](#911121-option-1)auto            - [9.11.12.2. Option 2](#911122-option-2)auto        - [9.11.13. Push the container image to the private Docker registry](#91113-push-the-container-image-to-the-private-docker-registry)auto        - [9.11.14. Configure Drone to execute your CI/CD pipeline](#91114-configure-drone-to-execute-your-cicd-pipeline)auto        - [9.11.15. Add Static Analysis (*SonarQube*) step to pipeline](#91115-add-static-analysis-sonarqube-step-to-pipeline)auto        - [9.11.16. Add the build step to the pipeline](#91116-add-the-build-step-to-the-pipeline)auto        - [9.11.17. Add container image publish step to pipeline](#91117-add-container-image-publish-step-to-pipeline)auto        - [9.11.18. Add container deploy step to pipeline](#91118-add-container-deploy-step-to-pipeline)auto        - [9.11.19. Add complaince automation (InSpec) test to pipeline](#91119-add-complaince-automation-inspec-test-to-pipeline)auto            - [9.11.19.1. First author an InSpec test](#911191-first-author-an-inspec-test)auto            - [9.11.19.2. Execute your test](#911192-execute-your-test)auto            - [9.11.19.3. The results](#911193-the-results)auto            - [9.11.19.4. Add InSpec to the pipeline](#911194-add-inspec-to-the-pipeline)auto        - [9.11.20. Add automated funtional test to pipeline](#91120-add-automated-funtional-test-to-pipeline)auto            - [9.11.20.1. Run the *helloworld-web* application](#911201-run-the-helloworld-web-application)auto            - [9.11.20.2. Pull and run Selenium Firefox Standalone](#911202-pull-and-run-selenium-firefox-standalone)auto            - [9.11.20.3. Create our test automation](#911203-create-our-test-automation)auto            - [9.11.20.4. Add a *selenium* step to the pipeline](#911204-add-a-selenium-step-to-the-pipeline)auto        - [9.11.21. Add DAST step (*OWASP ZAP*) to pipeline](#91121-add-dast-step-owasp-zap-to-pipeline)auto        - [9.11.22. All the source for *helloworld-web*](#91122-all-the-source-for-helloworld-web)auto    - [9.12. Microservices](#912-microservices)auto        - [9.12.1. What's cloud-native?](#9121-whats-cloud-native)auto            - [9.12.1.1. So, let's experiment with our little "microservice"](#91211-so-lets-experiment-with-our-little-microservice)auto    - [9.13. Using what you've learned](#913-using-what-youve-learned)auto    - [9.14. Shoo away your vagrants](#914-shoo-away-your-vagrants)auto    - [9.15. That's it](#915-thats-it)autoauto<!-- /TOC -->
-
-# 6. Prerequisites
+# 5. Prerequisites
 
 The following skills would be useful in following along, but aren't strictly necessary.
 
@@ -45,9 +41,9 @@ What's on the classroom computer:
 
 - The latest version of VirtualBox is expected to be installed.
 
-# 7. DevOps unpacked
+# 6. DevOps unpacked
 
-## 7.1. What is DevOps?
+## 6.1. What is DevOps?
 
 DevOps (a clipped compound of the words "development" and "operations") is a software development methodology with an emphasis on a more reliable release pipeline, automation, and stronger collaboration across all stakeholders with the goal of deploying working functionality into the hands of users (i.e., production) faster.
 
@@ -66,7 +62,7 @@ And since all these disciplines are ***coding***, they're essentially using the 
 
 And they're all collectively doing all this coding left in the delivery pipeline, collaborating and from this springs forth culture.
 
-## 7.2. What DevOps is not
+## 6.2. What DevOps is not
 
 DevOps is not entirely about tools.
 
@@ -74,11 +70,11 @@ Or as I like to put it, "Its not about the tools."
 
 DevOps will also not entirely stop all bugs nor all vulnerabilities from making it into production, but that's not really the point.
 
-## 7.3. DevOps is really about
+## 6.3. DevOps is really about
 
 Providing the culture and delivery/release pipeline that once a bug or vulnerability is discovered, the concern can to be quickly remediated and functionality returned back to the user.
 
-## 7.4. How is it related to the Agile?
+## 6.4. How is it related to the Agile?
 
 Agile Software Development is an umbrella term for a set of methods and practices based on the [values](http://www.agilealliance.org/agile101/the-agile-manifesto/) and [principles](http://www.agilealliance.org/agile101/12-principles-behind-the-agile-manifesto/) expressed in the Agile Manifesto.
 
@@ -93,7 +89,7 @@ For Agile, solutions evolve through collaboration between self-organizing, cross
 
 Again, in DevOps everyone is developing software, so it is my view DevOps builds on Agile.
 
-## 7.5. How do they differ?
+## 6.5. How do they differ?
 
 While Agile Software Development encourages collaboration between cross-functional teams, the focus in DevOps is on the
 
@@ -102,11 +98,11 @@ While Agile Software Development encourages collaboration between cross-function
 - development, and
 - quality assurance functionaries as stakeholders into the development effort.
 
-## 7.6. Why?
+## 6.6. Why?
 
 In Agile Software Development, there is rarely an integration of these individuals outside the immediate application development team with members of technology operations (e.g., network engineers administrators, testers, cyber security engineers.)
 
-## 7.7. What are the principles of DevOps?
+## 6.7. What are the principles of DevOps?
 
 As DevOps matures, several principles have emerged, namely the necessity for product teams to:
 
@@ -117,75 +113,75 @@ As DevOps matures, several principles have emerged, namely the necessity for pro
 - Validate and monitor operational quality, and
 - Provide rapid, automated feedback to the stakeholders
 
-## 7.8. How is this achieved?
+## 6.8. How is this achieved?
 
 Achieved through the repeated practices of Continuous Integration (CI) and Continuous Delivery (CD) often conflated into simply "CI/CD".
 
 After tools, this is what is commonly (albeit mistakenly) thought to be the totality of DevOps.
 
-## 7.9. What is Continuous Integration (CI)?
+## 6.9. What is Continuous Integration (CI)?
 
 It is a repeated Agile software development practice, lifted specifically from Extreme programming, where members of a development team frequently integrate their work in order to detect integration issues as quickly as possible thereby shifting discovery of issues "left" (i.e., early) in the software release.
 
-## 7.10. How?
+## 6.10. How?
 
 Each integration is orchestrated through a CI service/orchestrator (e.g., Jenkins CI, Drone CI, GitLab Runners, Concourse CI) that essentially assembles a build, runs unit and integration tests every time a predetermined trigger has been met; and then reports with immediate feedback.
 
-## 7.11. CI best practices
+## 6.11. CI best practices
 
-### 7.11.1. Utilize a Configuration Management System
+### 6.11.1. Utilize a Configuration Management System
 
 For the software's source code, where the mainline (i.e., master branch) is the most the most recent working version, past releases held in branches, and new features not yet merged into the mainline branch being worked on their own branches.
 
-### 7.11.2. Automate the build
+### 6.11.2. Automate the build
 
 By accompanying build automation (e.g., Gradle, Apache Maven, Make) alongside the source code.
 
-### 7.11.3. Employ one or more CI services/orchestrators
+### 6.11.3. Employ one or more CI services/orchestrators
 
 Perform source code analysis via automate formal code inspection and assessment.
 
-### 7.11.4. Make builds self-testing
+### 6.11.4. Make builds self-testing
 
 In other words, ingrain testing by including unit and integration tests (e.g., Spock, JUnit, Mockito, SOAPUI, go package *Testing*) with the source code so as to be executed by the build automation to be execute by the CI service.
 
-### 7.11.5. Never commit broken
+### 6.11.5. Never commit broken
 
 Or untested source code to the CMS mainline or otherwise risk breaking a build.
 
-### 7.11.6. Developers are expected to pre-flight new code
+### 6.11.6. Developers are expected to pre-flight new code
 
 Prior to committing source code in their own workspace.
 
-### 7.11.7. The CI service/orchestrator provides feedback
+### 6.11.7. The CI service/orchestrator provides feedback
 
 On the success or fail of a build integration to all its stakeholders.
 
-## 7.12. What is Continuous Delivery?
+## 6.12. What is Continuous Delivery?
 
 It is a repeated software development practice of providing a rapid, reliable, low-risk product delivery achieved through automating all facets of building, testing, and deploying software.
 
-### 7.12.1. Extending Continuous Integration (CI)
+### 6.12.1. Extending Continuous Integration (CI)
 
 With additional stages/steps aimed to provide ongoing validation that a newly assembled software build meets all desired requirements and thereby is releasable.
 
-### 7.12.2. Consistency
+### 6.12.2. Consistency
 
 Is achieved through delivering applications into production via individual repeatable pipelines of ingrained system configuration management and testing
 
-## 7.13. But wait. What's a pipeline?
+## 6.13. But wait. What's a pipeline?
 
 A pipeline automates the various stages/steps (e.g., Static Application Security Testing (SAST), build, unit testing, Dynamic Application Security Testing (DAST), secure configuration acceptance compliance, integration, function and non-functional testing, delivery, and deployment) to enforce quality conformance.
 
-## 7.14. How is a pipeline manifested?
+## 6.14. How is a pipeline manifested?
 
 Each delivery pipeline is manifested as **Pipeline as Code** (i.e., software automation) accompanying software's source code in its version control repository.
 
-## 7.15. What underlines all of this?
+## 6.15. What underlines all of this?
 
 I'd argue, _a ubiquitous access to shared pools of configurable system resources and higher-level services that can be rapidly provisioned with minimal management effort_ without the repeated practices of DevOps will struggle.  Although, it is possible to DevOps on mainframes.
 
-## 7.16. But really why do we automate err. code?
+## 6.16. But really why do we automate err. code?
 
 In 2001, I think Larry Wall in his 1st edition of *Programming Perl* book put it best with "We will encourage you to develop the three great virtues of a programmer:
 
@@ -197,7 +193,7 @@ hubris."
 
 The second edition of the same book provided definitions for these terms
 
-### 7.16.1. Why do I mention Larry Wall?
+### 6.16.1. Why do I mention Larry Wall?
 
 Well...
 
@@ -214,19 +210,19 @@ I kid, but in all serious the sentimanet of this seminal book still holds true.
 
 Let me explain.
 
-### 7.16.2. Laziness
+### 6.16.2. Laziness
 
 _The quality that makes you go to great effort to reduce overall energy expenditure. It makes you write labor-saving programs that other people will find useful, and document what you wrote so you don't have to answer so many questions about it. Hence, the first great virtue of a programmer._ (p.609)
 
-### 7.16.3. Impatience
+### 6.16.3. Impatience
 
 _The anger you feel when the computer is being lazy. This makes you write programs that don't just react to your needs, but actually anticipate them. Or at least pretend to. Hence, the second great virtue of a programmer._ (p.608)
 
-### 7.16.4. Hubris
+### 6.16.4. Hubris
 
 _Excessive pride, the sort of thing Zeus zaps you for. Also, the quality that makes you write (and maintain) programs that other people won't want to say bad things about. Hence, the third great virtue of a programmer._ (p.607)
 
-### 7.16.5. We automate for
+### 6.16.5. We automate for
 
 - Faster, coordinated, repeatable, and therefore more reliable deployments.
 - Discover bugs sooner. Shifting their discovery left in the process.
@@ -234,41 +230,41 @@ _Excessive pride, the sort of thing Zeus zaps you for. Also, the quality that ma
 - Reduce tribal knowledge, where one group or person holds the keys to how things get done. Yep, this is about making us all replaceable.
 - Reduce shadow IT (i.e., hardware or software within an enterprise that is not supported by IT. Just waiting for its day to explode.)
 
-## 7.17. Monitoring
+## 6.17. Monitoring
 
 Once deployed, the work is done, right?
 
 A development team's work is not complete once a product leaves CI/CD and enters production; especially, under DevOps where the development teams include members of operations.
 
-### 7.17.1. The most important metric
+### 6.17.1. The most important metric
 
 Is working software is the _primary_, but not the only, measure of progress.  The key to successful DevOps is knowing how well the methodology and the software it produces are performing.
 
-### 7.17.2. An Understanding of Performance
+### 6.17.2. An Understanding of Performance
 
 Is achieved by collecting and analyzing data produced by environments used for CI/CD and production.
 
-### 7.17.3. Establish a baseline Performance
+### 6.17.3. Establish a baseline Performance
 
 So, that improvements can be gauged and anomalies detected.
 
-### 7.17.4. Set Reaction Thresholds
+### 6.17.4. Set Reaction Thresholds
 
 To formulate and prioritize reactions weighting factors, such as, the frequency at which an anomaly arises and who is impacted.
 
-### 7.17.5. Reacting
+### 6.17.5. Reacting
 
 A reaction could be as simple as operations instructing users through training to not do something that triggers the anomaly, or more ideally, result in an issue being entered into the product's backlog culminating in the development team delivering a fix into production.
 
-### 7.17.6. Gaps in CI/CD
+### 6.17.6. Gaps in CI/CD
 
 Monitoring will also inform development teams of gaps in CI/CD resulting in additional testing for the issue that triggered the necessity for the improvement.
 
-### 7.17.7. Eliminating Waste
+### 6.17.7. Eliminating Waste
 
 Further, monitoring may result in the re-scoping of requirements, re-prioritizing of a backlog, or the deprecation of un-used features.
 
-## 7.18. What is DevOps Culture?
+## 6.18. What is DevOps Culture?
 
 > **culture** noun  \ *ˈkəl-chər* \
 > the set of shared attitudes, values, goals, and practices that characterizes an institution or
@@ -276,31 +272,31 @@ Further, monitoring may result in the re-scoping of requirements, re-prioritizin
 
 Now that everyone is a coder using the same tools, methods and repeated practices for their particular discipline you have the foundations of a ***culture***.
 
-### 7.18.1. We were taught the requisite skills as children
+### 6.18.1. We were taught the requisite skills as children
 
 ![Paw Patrol](./images/paw_patrol.png)
 
-### 7.18.2. Maintaining relationships is your most important skill
+### 6.18.2. Maintaining relationships is your most important skill
 
 ![Maintaining Relationships](./images/maintaining_relationships.png)
 
-### 7.18.3. Be quick... Be slow to... 
+### 6.18.3. Be quick... Be slow to... 
 
 ![Quick to slow](./images/quick_to_slow_to.png)
 
-### 7.18.4. The pressures of social media
+### 6.18.4. The pressures of social media
 
 ![Social Media](./images/social_media.png)
 
-## 7.19. Crawl, Walk, Run
+## 6.19. Crawl, Walk, Run
 
-### 7.19.1. Ultimately, DevOps is Goal
+### 6.19.1. Ultimately, DevOps is Goal
 
 - With DevOps one does not simply hit the ground running.
 - One must first crawl, walk, and then ultimately run as you embrace the necessary culture change, methods, and repeated practices.
 - Collaboration and automation are expected continually improve so to achieve more frequent and more reliable releases.
 
-# 8. Reading list
+# 7. Reading list
 
 **AntiPatterns: Refactoring Software, Architectures, and Projects in Crisis**
 William J. Brown, Raphael C. Malveau, Hays W. "Skip" McCormick,  and Thomas J. Mowbray
@@ -344,7 +340,7 @@ Ujjwal Sinha
 Oct 25, 2014
 The SlideShare can be found here https://www.slideshare.net/abhiujjwal/how-2-deal-wid-diiclt-ppl
 
-# 9. Now the hands-on part
+# 8. Now the hands-on part
 
 In this class you will spin up the following developent and toolchain environment.
 
@@ -467,7 +463,7 @@ you .[#0B5C92].> helloworld_web
 @enduml
 ```
 
-## 9.1. Configuring environmental variables
+## 8.1. Configuring environmental variables
 
 **On Mac OS X or \*NIX environments**
 
@@ -526,11 +522,11 @@ Example settings (Adjust for your environment.):
 - The cetificate URLs need to be encoded for parenthese to work.
 - One Windows, you may inadvertantly cut-and-paste hidden characters at the end of a `Variable Names`'s `Value` and the subsequent Ansible automation may fail.
 
-## 9.2. VirtualBox
+## 8.2. VirtualBox
 
 VirtualBox is a general-purpose full virtualizer for x86 hardware, targeted at server, desktop and embedded use.
 
-### 9.2.1. Installing VirtualBox
+### 8.2.1. Installing VirtualBox
 
 For the class, it is assumed VirtualBox is installed, but below are the instructions for installing it on Windows 10.
 
@@ -546,11 +542,11 @@ Then turn for Windows 10 turn off Hyper-V
 
 The same site has the Mac OS X download. The install is less involved.
 
-## 9.3. Git Bash
+## 8.3. Git Bash
 
 Is `git` packaged for Windows with bash (a command-line shell) and a collection of other, separate *NIX utilities, such as, `ssh`, `scp`, `cat`, `find` and others compiled for Windows.
 
-### 9.3.1. Installing Git Bash
+### 8.3.1. Installing Git Bash
 
 If you are on Windows or on a lab computer, you'll need to install `git`.
 
@@ -564,7 +560,7 @@ If you are on Windows or on a lab computer, you'll need to install `git`.
 
 5. On the Windows task bar, enter `git` into `Search Windows` then select `Git Bash`.  Use `Git Bash` instead of `Command` or `Powershell`.
 
-## 9.4. Retrieve the course material
+## 8.4. Retrieve the course material
 
 If you are reading this on paper and have nothing else, you only have a small portion of the class material. You will need to download the class project containing all the automation to spin up a DevOps toolchain and development, etc.
 
@@ -592,19 +588,19 @@ Then fetch and switch to the `december` branch
 git checkout --track origin/december
 ```
 
-## 9.5. Infrastructure as code (IaC)
+## 8.5. Infrastructure as code (IaC)
 
 This class uses Infrastructure as code (IaC) to set up the class environment (i.e., two virtual machines that will later be referred to as "vagrants".) IaC is the process of provisioning, and configuring (i.e., managing) computr systems through code, rather than directly manipulating the systems by hand (i.e., manual processes). 
 
 This class uses Vagrant and Ansible IaC framewoorks and the following sections will unpack each.
 
-### 9.5.1. Vagrant
+### 8.5.1. Vagrant
 
 This class uses Vagrant, a command line utility for managing the lifecycle of virtual machines as a vagrant in that the VMs are not meant to hang around in the same place for long.
 
 Unless you want to pollute your machine with every imaginable programming language, framework and library version you'll find yourself often creating a virtual machine (VM) for each software project. Sometimes more than one. And if you're like me of the past you'll end up with a VirtualBox full of VMs. If you haven't gone about this the right way, you'll end up wondering what VM went with which project and now how did I create it? The anti-pattern around this problem is to write documentation. A better way that aligns with  DevOps repeatable practices is to create automation to provision and configure your development VMs. This is where Vagrant comes in as it is "a command line utility for managing the lifecycle of virtual machines."
 
-#### 9.5.1.1. Vagrant documentation and source
+#### 8.5.1.1. Vagrant documentation and source
 
 Vagrant's documentation can be found at
 
@@ -616,7 +612,7 @@ It's canonical (i.e., authoritative) source can be found at
 
 Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL.
 
-#### 9.5.1.2. Installing Vagrant
+#### 8.5.1.2. Installing Vagrant
 
 1. Download the latest Vagrant release  
 
@@ -630,7 +626,7 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL.
 
 3. On Windows, copy the `vagrant_files/cacert.pem` into `C:\Hashicorp\vagrant\embedded` or when on Mac OS X copy it to `/opt/vagrant/embedded`.  On Windows use the File Explorer to replace the existing `cacert.pem` file. The replacement has MITRE's certificates necessary for the SSL inspection hell.
 
-#### 9.5.1.3. Installing Vagrant Plugins
+#### 8.5.1.3. Installing Vagrant Plugins
 
 Vagrant plugins extend the functionality of Vagrant, and you'll need a few of them for this course.
 
@@ -660,7 +656,7 @@ vagrant-proxyconf (1.5.2, global)
 vagrant-vbguest (0.16.0, global)
 ```
 
-#### 9.5.1.4. The Vagrantfile explained
+#### 8.5.1.4. The Vagrantfile explained
 
 The `Vagrantfile` found at the root of the project describes how to provision and configure one or more virtual machines.
 
@@ -672,7 +668,7 @@ If we were instead provisioning production Virtual Machines we'd alternatively u
 
 The following sub sections enumerate the various sections of the  `Vagrantfile` broken apart in order to discuss.
 
-##### 9.5.1.4.1. Modelines
+##### 8.5.1.4.1. Modelines
 
 ```ruby
 # -*- mode: ruby -*-
@@ -681,7 +677,7 @@ The following sub sections enumerate the various sections of the  `Vagrantfile` 
 
 When authoring, tells your text editor (e.g. emacs or vim) to choose a specific editing mode for the Vagrantfile. Line one is a [modeline for emacs](http://www.gnu.org/software/emacs/manual/html_node/emacs/Choosing-Modes.html) and line two is a [modeline for vim](http://vim.wikia.com/wiki/Modeline_magic).
 
-##### 9.5.1.4.2. Setting Software version for Ansible roles
+##### 8.5.1.4.2. Setting Software version for Ansible roles
 
 ```ruby
 # Holds the version of software for the Ansible roles to install
@@ -707,7 +703,7 @@ software_versions = {
 
 Contains all the version numbers for the software installed by the Ansible roles found in `ansible/roles`.
 
-##### 9.5.1.4.3. Inserting Proxy setting via host environmental variables
+##### 8.5.1.4.3. Inserting Proxy setting via host environmental variables
 
 The proxy setting section above uses the `vagrant-proxyconf` plugin to set vagrants (i.e., managed VMs) to use specified proxies by using http_proxy and no_proxy environment variable.
 
@@ -752,7 +748,7 @@ Vagrant.configure('2') do |config|
   end 
 ```
 
-##### 9.5.1.4.4. Inserting Enterprise CA Certificates
+##### 8.5.1.4.4. Inserting Enterprise CA Certificates
 
 ```ruby
   # To add Enterprise CA Certificates to all vagrants
@@ -792,7 +788,7 @@ Vagrant.configure('2') do |config|
 
 This section uses `vagrant-ca-certificates` to as the plugin's documentation puts it _configures the virtual machine to inject the specified certificates into the guest's root bundle. This is useful, for example, if your enterprise network has a firewall (or appliance) which utilizes SSL interception._ So, we aren't the only ones that have to deal with the havoc SSL interception brings to development.
 
-##### 9.5.1.4.5. Configuring the cache plugin to speed things along
+##### 8.5.1.4.5. Configuring the cache plugin to speed things along
 
 ```ruby
   if Vagrant.has_plugin?("vagrant-cachier")
@@ -804,7 +800,7 @@ This section uses `vagrant-ca-certificates` to as the plugin's documentation put
   end
 ```
 
-##### 9.5.1.4.6. Configuring the disksize plugin to increase the disk size
+##### 8.5.1.4.6. Configuring the disksize plugin to increase the disk size
 
 ```ruby
   if !Vagrant.has_plugin?("vagrant-disksize")
@@ -814,7 +810,7 @@ This section uses `vagrant-ca-certificates` to as the plugin's documentation put
 
 This section uses the `vagrant-disksize` plugin to to resize disks in VirtualBox.
 
-##### 9.5.1.4.7. Requiring _vagrant-vbquest_ for Windows
+##### 8.5.1.4.7. Requiring _vagrant-vbquest_ for Windows
 
 ```ruby
   if Vagrant::Util::Platform.windows? and !Vagrant.has_plugin?('vagrant-vbguest') 
@@ -824,7 +820,7 @@ This section uses the `vagrant-disksize` plugin to to resize disks in VirtualBox
 
 `vagrant-vbguest` automatically installs the host's VirtualBox Guest Additions on the guest system. Not needed on Mac OS X, but needed on Windows.
 
-##### 9.5.1.4.8. Configuring the *development* vagrant
+##### 8.5.1.4.8. Configuring the *development* vagrant
 
 ```ruby
   ## Provision development vagrant
@@ -890,7 +886,7 @@ This section provisions and configures a `development` vagrant used for developm
 - `ansible_local` does not require one to have Ansible installed on the host. Vagrant handles installing it on the vagrant and executing the specified playbook. 
   - In this instance, I have `ansible.verbose` jacked to its highest setting providing loads of `development` logging.  If too much information about what is going on unnerves you changing this to `false` will disable verbose logging.
 
-##### 9.5.1.4.9. Configuring the *toolchain* vagrant
+##### 8.5.1.4.9. Configuring the *toolchain* vagrant
 
 ```ruby
   ## Provision the pipeline vagrant
@@ -950,7 +946,7 @@ This section provisions and configures a `development` vagrant used for developm
 
 This section provisions and configures the `toolchain` vagrant. This is the beefy vagrant running GitLab. Drone CI, the private Docker registry, SonarQube, Selenium, Taiga...
 
-### 9.5.2. Ansible
+### 8.5.2. Ansible
 
 Ansible is a "configuration management" tool that automates software provisioning, configuration management, and application deployment.  Configuration management, deployment automation are two core repeated practices in DevOps, so for the purposes of the class Ansible addresses this concern in configuring the two vagrants.
 
@@ -958,7 +954,7 @@ Ansible was open source and then subsumed by Red Hat.
 
 There are other "configuration management" tools, such as Chef and Puppet. There are of course even more, but they hold little or no market share (e.g., BOSH, Salt.)
 
-#### 9.5.2.1. Inventory file
+#### 8.5.2.1. Inventory file
 
 Since, Ansible will work against multiple systems in the infrastructure at the same time it does this via what it refers to as an inventory.
 
@@ -1002,7 +998,7 @@ The inventory collects all the vagrants under a `[nodes]` group, and then define
 
 - The inventory also defines a `[dns]` group. DNS (domain name service) hosts will vary between environment.  **Please configure, for your environment.**
 
-#### 9.5.2.2. Playbooks
+#### 8.5.2.2. Playbooks
 
 In Ansible one defines playbooks to manage configurations of and deployments to remote machines. The playbooks I'm using to configure the vagrants exist in `ansible/`. 
 
@@ -1034,7 +1030,7 @@ The `development` vagrant Ansible playbook (`ansible/development-playbook.yml`) 
 
 The file is written in a YAML-based DSL (domain specific language.)
 
-#### 9.5.2.3. Roles
+#### 8.5.2.3. Roles
 
 The roles exist in `ansible/roles` and permi the sharing of bits of configuration content with other users. Roles can also be found in the [Ansible Galaxy](https://galaxy.ansible.com/), retrieved and placed into the `ansible/roles` folder to be used, but I wrote all the roles for the class.
 
@@ -1110,7 +1106,7 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
 
 The `Taiga` role dependes on `docker-compose`, `docker`, and `common` having configured the vagrant.
 
-## 9.6. Docker image and containers
+## 8.6. Docker image and containers
 
 So, what is Docker?   What are Containers?
 
@@ -1133,7 +1129,7 @@ More can be read on the topic at
 
 You will build a couple Docker images and spin up a containers in this class.
 
-## 9.7. Docker-compose
+## 8.7. Docker-compose
 
 And what is docker-compose?
 
@@ -1143,7 +1139,7 @@ What is YAML?  YAML bills itself as _a human-friendly data serialization standar
 
 You will edit a `docker-compose.yml` file in this class in order to complete the configuration of one the key CI/CD tools.
 
-## 9.8. Spinning up the _toolchain_ vagrant
+## 8.8. Spinning up the _toolchain_ vagrant
 
 In the command line of the host in the root of the class project, open `ansible/tool-chain-playbook.yml` and make sure the roles are as so:
 
@@ -1215,7 +1211,7 @@ On this vagrant will be running a number of DevOps tools.  This will take a whil
 - The tools, methodology and repeated practices exist to support the culture.
 - Again, I'll drop from time to time stating "into the shell" when instruction you to enter things in the CLI as it should understood.
 
-### 9.8.1. Taiga, an example of Agile project management software
+### 8.8.1. Taiga, an example of Agile project management software
 
 Taiga is an Open Source project management platform for agile development.
 
@@ -1242,7 +1238,7 @@ The 800lb Gorilla in this market segment is JIRA Software. Some of my co-workers
 
 - Lean-Agile Project Management software's primary purpose is to integrare people and really not much else.
 
-#### 9.8.1.1. Documentation, source, container image
+#### 8.8.1.1. Documentation, source, container image
 
 Taiga's documentation can be found at
 
@@ -1258,7 +1254,7 @@ dedicated to the back-end.
 
 Taiga doesn't directly offer a Docker container image for, but I've authored an image that collapses both taiga-front-dist and -back onto one container behind an NGINX reverse proxy. 
 
-#### 9.8.1.2. URL, Username and password
+#### 8.8.1.2. URL, Username and password
 
 Once, stood up your instance of Taiga will reachable at
 
@@ -1269,7 +1265,7 @@ The default admin accont username and password are
 **admin**  
 **123123**
 
-### 9.8.2. GitLab CE, an example of configuration management software
+### 8.8.2. GitLab CE, an example of configuration management software
 
 GitLab is installed on the `toolchain` vagrant, where it will be accessible at <http://192.168.0.11:10080/>.
 
@@ -1323,7 +1319,7 @@ A CMS must facilitate best practices, not limited to:
 
 - Trigger follow-on activities orchestrated by the Continuous Integration Service.
 
-#### 9.8.2.1. Documentation, source, container image
+#### 8.8.2.1. Documentation, source, container image
 
 GitLab's documentation can be found at
 
@@ -1343,7 +1339,7 @@ And its canonical source is located at
 
 <https://github.com/sameersbn/docker-gitlab>
 
-#### 9.8.2.2. URL, Username and password
+#### 8.8.2.2. URL, Username and password
 
 Once, stood up your instance of GitLab will reachable at
 
@@ -1353,7 +1349,7 @@ GitLab requires you to enter a password for its **root** account. You will be us
 
 I would suggest for the purposes of the class choosing something simple, but at least the same number of characters as "**password**".
 
-#### 9.8.2.3. Allow requests to the local network from hooks and services
+#### 8.8.2.3. Allow requests to the local network from hooks and services
 
 Perform the following steps as the GitLab adminstrator:
 
@@ -1362,7 +1358,7 @@ Perform the following steps as the GitLab adminstrator:
 3. In the `side bar` running the length of the left-side of the page, click the `gear`-icon, select `Network`, and expand `Outbound requests`
 4. Under `Outbound requests`, check `Allow requests to the local network from hooks and services` and then click `Save Changes`
 
-### 9.8.3. Drone CI, an example of CI/CD orchestrator
+### 8.8.3. Drone CI, an example of CI/CD orchestrator
 
 Drone CI often referred to simply as "Drone" is installed on the `toolchain` vagrant, where it will be accessible at <http://192.168.0.11:8000/> after some user configuration that will be explained later in the _Integrate Drone CI with GitLab_ section.
 
@@ -1437,7 +1433,7 @@ To deploy the web application to [Heroku](https://www.heroku.com/), one of the f
 
 More details on Drone is sprinkled across the class. As you can see I favor being a polyglot when it comes to CI/CD.
 
-#### 9.8.3.1. Documentation, source, container image
+#### 8.8.3.1. Documentation, source, container image
 
 Drone's main site is at
 
@@ -1463,7 +1459,7 @@ and
 
 <https://hub.docker.com/r/drone/agent/>
 
-#### 9.8.3.2. URL, Username and password
+#### 8.8.3.2. URL, Username and password
 
 Once, stood up your instance of Drone CI will reachable at
 
@@ -1471,11 +1467,11 @@ Once, stood up your instance of Drone CI will reachable at
 
 Drone will authenticate you off GitLab once integrated.
 
-### 9.8.4. Once the *toolchain* vagrant is up
+### 8.8.4. Once the *toolchain* vagrant is up
 
 Perform the follwing tasks.
 
-#### 9.8.4.1. Integrate GitLab with the PlantUML-Server
+#### 8.8.4.1. Integrate GitLab with the PlantUML-Server
 
 This README.MD has embedded PlantUML diagrams for you visual learners without the integration the diagrams will remain in the source code.
 
@@ -1487,7 +1483,7 @@ You'll need to enable the integration between GitLab and the PlantUML-Server by 
 4. Expand PlantUML and then check Enable PlantUML checkbox, set the `PlantUML URL` to http://192.168.0.11:8081
 5. Then click `Save changes`.
 
-#### 9.8.4.2. Integrate Drone CI with GitLab
+#### 8.8.4.2. Integrate Drone CI with GitLab
 
 Once, Drone is configured, accomplish the steps.
 
@@ -1562,7 +1558,7 @@ Recreating drone_drone-agent_1  ... done
 
 You will only have to do these step in regards to Drone once. Drone should always restart in the toolchain vagrant even if you `halt` the vagrant and later bring it `up`.
 
-#### 9.8.4.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab
+#### 8.8.4.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab
 
 1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left.
    a. Select `Create Project`.  
@@ -1591,11 +1587,11 @@ On your host in the DevOps class project:
 
 You now have a clone of the project hosted in the GitLab running on the `toolchain`vagrant.  This way you can open the README.MD and follow along.
 
-### 9.8.5. SonarQube, an example of a platform for the inspection of code quality
+### 8.8.5. SonarQube, an example of a platform for the inspection of code quality
 
 SonarQube provides the capability to show the health of an application's source code, highlighting issues as they are introduced. SonarQube can be extended by language-specific extensions/plugins to report on duplicated code, coding standards, unit tests, code coverage, code complexity, comments, bugs, and security vulnerabilities.
 
-#### 9.8.5.1. Documentation, source, container image
+#### 8.8.5.1. Documentation, source, container image
 
 SonarQube's main site is at
 
@@ -1613,7 +1609,7 @@ I'm using the container image provided at
 
 <https://hub.docker.com/_/sonarqube/>
 
-#### 9.8.5.2. URL, Username and password
+#### 8.8.5.2. URL, Username and password
 
 Once, stood up your instance of SonarQube will reachable at
 
@@ -1623,7 +1619,7 @@ The default admin account username and password is
 
 **admin**
 
-## 9.9. Spin up the _development_ vagrant
+## 8.9. Spin up the _development_ vagrant
 
 In another command line of the host in the root of the class project
 
@@ -1684,13 +1680,13 @@ Command line will open a prompt to the vagrant
   vagrant up development --provision
   ```
 
-## 9.10. Golang _helloworld_ project
+## 8.10. Golang _helloworld_ project
 
 The prior `toolchain` and `development` vagrants are required to be up and running for the following sections.
 
 In this next part, we will create a simple helloworld GoLang project to demonstrate Continuous Integration. GoLang lends itself well to DevOps and underlines almost every new tool you can think of related to DevOps and cloud (e.g., [golang / go](https://github.com/golang/go), [docker / docker-ce](https://github.com/docker/docker-ce), [kubernetes / kubernetes](https://github.com/kubernetes/kubernetes), [openshift / origin ](https://github.com/openshift/origin),[hashicorp / terraform](https://github.com/hashicorp/terraform), [coreos / etcd](https://github.com/coreos/etcd), [hashicorp / vault](https://github.com/hashicorp/vault), [hashicorp / packer](https://github.com/hashicorp/packer), [hashicorp / consul](https://github.com/hashicorp/consul), [gogits / gogs](https://github.com/gogits/gogs), [drone / drone](https://github.com/drone/drone).)
 
-### 9.10.1. Create the project's backlog
+### 8.10.1. Create the project's backlog
 
 ```plantuml
 skinparam shadowing false
@@ -1793,7 +1789,7 @@ Complete the follow to track your progress in completing the Golang *helloworld*
 
 Track your progress in Taiga as you work through each section.
 
-### 9.10.2. Create the project in GitLab
+### 8.10.2. Create the project in GitLab
 
 ```plantuml
 skinparam shadowing false
@@ -1865,7 +1861,7 @@ skinparam note {
 
 The UI will refresh to show you a landing page for the project that should be accessible from <http://192.168.0.11:10080/root/helloworld>
 
-### 9.10.3. Setup the project on the _development_ Vagrant
+### 8.10.3. Setup the project on the _development_ Vagrant
 
 ```plantuml
 skinparam shadowing false
@@ -1977,7 +1973,7 @@ helloworld
 - Make sure you pre-pend that dot (`.`) at the start of `.gitignore`. Dot-files are hidden files. 
 - `.gitignore` will not show up if you simply list the file system via the `ls` command, but they do if you use `ls -a` or `ls --all`.  Either arguments configures `ls` to not ignore entries starting with `.`.
 
-### 9.10.4. Author the application
+### 8.10.4. Author the application
 
 ```plantuml
 skinparam shadowing false
@@ -2055,7 +2051,7 @@ func HelloWorld() string {
 }
 ```
 
-### 9.10.5. Align source code with Go coding standards
+### 8.10.5. Align source code with Go coding standards
 
 ```plantuml
 skinparam shadowing false
@@ -2145,7 +2141,7 @@ You'll see the difference if you `cat` your source
 cat main.go
 ```
 
-### 9.10.6. Lint your code
+### 8.10.6. Lint your code
 
 ```plantuml
 skinparam shadowing false
@@ -2240,7 +2236,7 @@ func HelloWorld() string {
 
 Run `golint` again and it should return no output indicating it sees nothing wrong.
 
-### 9.10.7. Build the application
+### 8.10.7. Build the application
 
 Build the project by executing
 
@@ -2250,7 +2246,7 @@ go build -o helloworld .
 
 Success returns no command line output.  What?  Did you want a cookie?  No cookie for you.  This is GoLangs way of doing things.  Silence is golden and means things went fine. Otherwise, go back and fix the mistakes in your code.
 
-### 9.10.8. Run your application
+### 8.10.8. Run your application
 
 ```plantuml
 skinparam shadowing false
@@ -2324,7 +2320,7 @@ The command line output will be
 hello world
 ```
 
-### 9.10.9. Author the unit tests
+### 8.10.9. Author the unit tests
 
 ```plantuml
 skinparam shadowing false
@@ -2434,7 +2430,7 @@ ok  	github.com/nemonik/helloworld	0.002s
 
 This step and all the proceeding follows of a DevOps tenant of Devops, "Developers are expected to pre-flight new code."
 
-### 9.10.10. Automated the build (i.e., write the Makefile)
+### 8.10.10. Automated the build (i.e., write the Makefile)
 
 ```plantuml
 skinparam shadowing false
@@ -2572,7 +2568,7 @@ ok      github.com/nemonik/helloworld   (cached)        coverage: 50.0% of state
 go build -o helloworld -v
 ```
 
-### 9.10.11. Author Drone-based Continuous Integration
+### 8.10.11. Author Drone-based Continuous Integration
 
 ```plantuml
 skinparam shadowing false
@@ -2668,7 +2664,7 @@ The pipeline is authored in YAML like almost all the CI orchestrators out there 
 - `image: 192.168.0.11:5000/nemonik/golang:1.10.3` - The build step is using the nemonik/golang container tagged `1.10.1` retrieved from private Docker registry located at `192.168.0.11:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
 - `commands` - Is a collection of terminal commands to be executed. These are all the same commands we executed previously in the command line. If anyone of these commands were to fail returning a non-zero exit code, the pipeline will immediately end resulting in a failed build.
 
-#### 9.10.11.1. Configure Drone to execute your pipeline
+#### 8.10.11.1. Configure Drone to execute your pipeline
 
 1. Open <http://192.168.0.11:8000/> in your browser and authenticate through GitLab on into Drone, if you need to.
 2. In the upper right corner find the hamburger icon (displayed as ☰) and click it and then select `Repositories`.
@@ -2678,7 +2674,7 @@ The pipeline is authored in YAML like almost all the CI orchestrators out there 
 
 You won't have any builds to start, but when you do the builds will increment starting from 1. Red is failed the build. Yellow-orange is a presently executing build. Green is a build that passed. When a build does start, click on its row to open and monitor it. The UI will update as the build proceeds informing you as to its progress.
 
-#### 9.10.11.2. Trigger the build
+#### 8.10.11.2. Trigger the build
 
 To trigger the build, in your ssh connection to `development` simply commit your code:
 
@@ -2741,17 +2737,17 @@ Our build was successful.  Drone uses a container's exit code to determine succe
 
 That's it.  This is essentially CI.
 
-### 9.10.12. The completed source for *helloworld*
+### 8.10.12. The completed source for *helloworld*
 
 The `helloworld` project can be viewed completed at
 
 https://gitlab.mitre.org/mjwalsh/helloworld
 
-## 9.11. Golang *helloworld-web* project
+## 8.11. Golang *helloworld-web* project
 
 Like `helloworld`, the `helloworld-web` project is a very simple application that we will use to explore Continuous Deliver.  Remember, Continuous Delivery builds upon Continuous Integration.
 
-### 9.11.1. Create the project's backlog
+### 8.11.1. Create the project's backlog
 
 ```plantuml
 skinparam shadowing false
@@ -2866,7 +2862,7 @@ Complete the follow to track your progress in completing the _helloworld-web_ pr
     
 Track your progress in Taiga as you work through each section.
 
-### 9.11.2. Create the project in GitLab
+### 8.11.2. Create the project in GitLab
 
 ```plantuml
 skinparam shadowing false
@@ -2951,7 +2947,7 @@ The UI will refresh to show you landing page for the project that should be acce
 
 <http://192.168.0.11:10080/root/helloworld-web>
 
-### 9.11.3. Setup the project on the _development_ Vagrant
+### 8.11.3. Setup the project on the _development_ Vagrant
 
 ```plantuml
 skinparam shadowing false
@@ -3064,7 +3060,7 @@ Or copy it from your first project via
 cp ../helloworld/.gitignore .
 ```
 
-### 9.11.4. Author the application
+### 8.11.4. Author the application
 
 ```plantuml
 skinparam shadowing false
@@ -3170,7 +3166,7 @@ go fmt
 golint
 ```
 
-### 9.11.5. Build and Run the application
+### 8.11.5. Build and Run the application
 
 ```plantuml
 skinparam shadowing false
@@ -3280,7 +3276,7 @@ The command line will output
 192.168.0.1:63201  GET  /favicon.ico
 ```
 
-### 9.11.6. Run gometalinter.v2 on application
+### 8.11.6. Run gometalinter.v2 on application
 
 ```plantuml
 skinparam shadowing false
@@ -3379,7 +3375,7 @@ Oops. Line 11 and line 15 have problems:
 
 - `fmt.Fprintf` on line 17 returns the number of bytes written and any write error encountered. We need to handle that too. We can swallow the number of bytes return via `_`, collect the `err`, log it, and exit.
 
-### 9.11.7. Fix the application
+### 8.11.7. Fix the application
 
 ```plantuml
 skinparam shadowing false
@@ -3490,7 +3486,7 @@ gometalinter.v2
 
 And nothing is returned.  Problem solved.
 
-### 9.11.8. Author unit tests
+### 8.11.8. Author unit tests
 
 ```plantuml
 skinparam shadowing false
@@ -3652,7 +3648,7 @@ coverage: 55.6% of statements
 ok  	github.com/nemonik/helloworld-web	0.004s
 ```
 
-### 9.11.9. Perform static analysis (i.e., sonar-scanner) on the command line
+### 8.11.9. Perform static analysis (i.e., sonar-scanner) on the command line
 ```plantuml
 skinparam shadowing false
 
@@ -3724,7 +3720,7 @@ skinparam note {
 
 SonarQube provides the capability to show the health of an application's source code, highlighting issues as they are introduced. 
 
-#### 9.11.9.1. Optionally, register your app in SonarQube
+#### 8.11.9.1. Optionally, register your app in SonarQube
 
 This section is optional as the `sonar-scanner`command line tool will do all this automagically for you.  
 
@@ -3746,7 +3742,7 @@ Provide the `key` of
 
 **helloworld-web**  
 
-#### 9.11.9.2. Install the SonarGo plugin
+#### 8.11.9.2. Install the SonarGo plugin
 
 1. Open you browser to <http://192.168.0.11:9000/admin/marketplace>
 2. If you need to login as `admin` with the pasword `admin`.
@@ -3755,7 +3751,7 @@ Provide the `key` of
 4. Click `Restart`.
 5. Yes, your sure.  Click `Restart` in the modal.
 
-#### 9.11.9.3. Perform static analysis (run *sonar-scanner*) on the command line
+#### 8.11.9.3. Perform static analysis (run *sonar-scanner*) on the command line
 
 Generate the reports and submit to SonarQube
 
@@ -3941,7 +3937,7 @@ Open in your host's web browser
 
 to view your SonarQube report.
 
-### 9.11.10. Automated the build (i.e., write the Makefile)
+### 8.11.10. Automated the build (i.e., write the Makefile)
 
 ```plantuml
 skinparam shadowing false
@@ -4198,7 +4194,7 @@ INFO: ------------------------------------------------------------------------
 go build -o helloworld-web -v
 ```
 
-### 9.11.11. Dockerize the application
+### 8.11.11. Dockerize the application
 
 ```plantuml
 skinparam shadowing false
@@ -4563,7 +4559,7 @@ Successfully tagged nemonik/helloworld-web:latest
 
 - As noted before the base image already existed in the local Docker registry thereby saving us time.
 
-### 9.11.12. Run the Docker container
+### 8.11.12. Run the Docker container
 
 ```plantuml
 skinparam shadowing false
@@ -4646,7 +4642,7 @@ Where
 - `-p 3000:3000` published the container's port as 3000 to the host.
 - `nemonik/helloworld-web` states what container image to use.
 
-#### 9.11.12.1. Option 1
+#### 8.11.12.1. Option 1
 
 The command line output for the first option will be
 
@@ -4658,7 +4654,7 @@ listening on :3000
 ^C
 ```
 
-#### 9.11.12.2. Option 2
+#### 8.11.12.2. Option 2
 
 For the second option there will be no output written to the screen, but you can see the same output if you run 
 
@@ -4685,7 +4681,7 @@ docker rm -f <the container id output when started the container>
 
 and the container id returned when you ran the container.
 
-### 9.11.13. Push the container image to the private Docker registry
+### 8.11.13. Push the container image to the private Docker registry
 
 ```plantuml
 skinparam shadowing false
@@ -5017,7 +5013,7 @@ Returns in the command line
 {"name":"nemonik/helloworld-web","tags":["latest"]}
 ```
 
-### 9.11.14. Configure Drone to execute your CI/CD pipeline
+### 8.11.14. Configure Drone to execute your CI/CD pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -5099,7 +5095,7 @@ Complete the following:
 4. Then click the slider to for the `root/helloworld-web` repo to enable Drone orchestration for the project.
 5. Clicking the box icon with the arrow pointing toward upper-right to open root/helloworld-web's builds.
 
-### 9.11.15. Add Static Analysis (*SonarQube*) step to pipeline
+### 8.11.15. Add Static Analysis (*SonarQube*) step to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -5403,7 +5399,7 @@ no packages to test
 06:33:29.504 INFO: ------------------------------------------------------------------------
 ```
 
-### 9.11.16. Add the build step to the pipeline
+### 8.11.16. Add the build step to the pipeline
 
 Add container\nimage publish\nstep to pipeline
 At the root of the project open `.drone.yml` as a new file to edit
@@ -5439,7 +5435,7 @@ _/drone/src/192.168.0.11/root/helloworld-web
 
 Mirroring what you saw in development in your local environment.
 
-### 9.11.17. Add container image publish step to pipeline
+### 8.11.17. Add container image publish step to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -5749,7 +5745,7 @@ Total reclaimed space: 0B
 
 Indicating the `publish` executed successfully.
 
-### 9.11.18. Add container deploy step to pipeline
+### 8.11.18. Add container deploy step to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -5979,7 +5975,7 @@ Hello world!
 
 So, now we have beginnings of a real CI/CD pipeline. There are no strings on me.
 
-### 9.11.19. Add complaince automation (InSpec) test to pipeline
+### 8.11.19. Add complaince and policy automation (InSpec) test to the pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6056,7 +6052,7 @@ More on InSpec can be found here
 
 https://www.inspec.io/
 
-#### 9.11.19.1. First author an InSpec test
+#### 8.11.19.1. First author an InSpec test
 
 At the root of the `helloworld-web` project create a directory to hold your inspec test
 
@@ -6077,7 +6073,7 @@ describe docker_container(name: 'helloworld-web') do
 end
 ```
 
-#### 9.11.19.2. Execute your test
+#### 8.11.19.2. Execute your test
 
 First, we'll Eexecute the test against container running locally by first spinning up a `nemonik/helloworld-web:latest` container via
 
@@ -6099,7 +6095,7 @@ inspec exec inspec.rb
   docker rm -f helloworld-web
   ```
 
-#### 9.11.19.3. The results
+#### 8.11.19.3. The results
 
 The result will be a comparsion of the expected state against the current state of the container and will look like
 
@@ -6120,7 +6116,7 @@ Target:  local://
 Test Summary: 5 successful, 0 failures, 0 skipped
 ```
 
-#### 9.11.19.4. Add InSpec to the pipeline
+#### 8.11.19.4. Add InSpec to the pipeline
 
 Open in an editor `.drone.yml` and add the following step
 
@@ -6201,7 +6197,7 @@ Successfully executed commands to all host.
 ==========================================
 ```
 
-### 9.11.20. Add automated funtional test to pipeline
+### 8.11.20. Add automated funtional test to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6280,7 +6276,7 @@ http://www.seleniumhq.org/
 
 You'll need a couple of shells open to your `development` vagrant to complete this section.
 
-#### 9.11.20.1. Run the *helloworld-web* application
+#### 8.11.20.1. Run the *helloworld-web* application
 
 In the first `vagrant ssh development` enter
 
@@ -6292,7 +6288,7 @@ docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web:latest
 
 - If you don't mind running more than a couple shells you can drop the `-d` argument and not daemonize the container, so you can watch its log.
 
-#### 9.11.20.2. Pull and run Selenium Firefox Standalone
+#### 8.11.20.2. Pull and run Selenium Firefox Standalone
 
 In another `vagrant ssh` to `development` enter
 
@@ -6328,7 +6324,7 @@ A good start outputs to the command line
 08:15:46.852 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
 ```
 
-#### 9.11.20.3. Create our test automation
+#### 8.11.20.3. Create our test automation
 
 In another `vagrant ssh` to `development`, we author and run our automated test.  
 
@@ -6453,7 +6449,7 @@ The other windows will show logging.
   docker rm -f helloworld-web
   ```
 
-#### 9.11.20.4. Add a *selenium* step to the pipeline
+#### 8.11.20.4. Add a *selenium* step to the pipeline
 
 In one of your existing `vagrant ssh` to `development` enter into the commmand line
 
@@ -6543,7 +6539,7 @@ Ran 1 test in 5.713s
 OK
 ```
 
-### 9.11.21. Add DAST step (*OWASP ZAP*) to pipeline
+### 8.11.21. Add DAST step (*OWASP ZAP*) to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6741,13 +6737,13 @@ FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 1	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 13
 
 The application is relatively simple, so it was doubtful anything would be found, but there is a warning that a *X-Content-Type-Options Header* is missing that could be resolved by adding addtional handlers to the helloworld-web's main.go.
 
-### 9.11.22. All the source for *helloworld-web*
+### 8.11.22. All the source for *helloworld-web*
 
 The `helloworld-web` project can be viewed completed at
 
 <https://gitlab.mitre.org/mjwalsh/helloworld-web>
 
-## 9.12. Microservices
+## 8.12. Microservices
 
 So, you may not realize it, but with the `helloworld-web` application you've actually written a microservice.
 
@@ -6773,13 +6769,13 @@ The benefit
 
 So, with the `helloworld-web` application, you've developed a micrsoservice, packaged it into a container (i.e., containerized it), and by doing so essentially created a cloud-native application.
 
-### 9.12.1. What's cloud-native?
+### 8.12.1. What's cloud-native?
 
 Cloud-native computing deploys applications as microservices, packaging each into its own container, and by doing so have opened yourself up to the capability of being able to dynamically orchestrate the container to optimize resource utilization, elastic scaling, security issolation...  
 
 Granted our microservice doesn't do much, but we can get a peak of the possibilities without even installing a full blown Container Platform, such as, Kubernetes, Docker Swarm, or OpenShift.
 
-#### 9.12.1.1. So, let's experiment with our little "microservice"
+#### 8.12.1.1. So, let's experiment with our little "microservice"
 
 On the `development` vagrant
 
@@ -6992,7 +6988,7 @@ Hello world! b6835470176e
 
 Notice how the `curl` requests are Round-robin load balanced across each replica container.  Typically, these containers would be spread across a container platform's cluster thereby permiting you to scale your application to accommodate shifting capacity needs. In other words, to be become elastic.  Further, the approach permits iterative software development and deployment (thereby benefitting from DevOps methods and repeated practices), isolation, and resiliency.
 
-## 9.13. Using what you've learned
+## 8.13. Using what you've learned
 
 Git clone the Python+Flask Magic Eight Ball web app
 
@@ -7000,7 +6996,7 @@ https://github.com/nemonik/magiceightball
 
 and develop a pipeline for.
 
-## 9.14. Shoo away your vagrants
+## 8.14. Shoo away your vagrants
 
 If you're done with your vagrants, shoo them away from the root of the project on the host
 
@@ -7010,6 +7006,6 @@ vagrant destroy -f
 
 And they're gone.
 
-## 9.15. That's it
+## 8.15. That's it
 
 That's a wrap.
