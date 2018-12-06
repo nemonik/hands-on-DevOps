@@ -299,7 +299,7 @@ Now that everyone is a coder using the same tools, methods and repeated practice
 ### 6.19.1. Ultimately, DevOps is Goal
 
 - With DevOps one does not simply hit the ground running.
-- One must first crawl, walk, and then ultimately run as you embrace the necessary culture change, methods, and repeated practices.
+- One must first crawl, walk and then ultimately run as you embrace the necessary culture change, methods and repeated practices.
 - Collaboration and automation are expected continually improve so to achieve more frequent and more reliable releases.
 
 # 7. Reading list

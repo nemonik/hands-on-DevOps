@@ -530,7 +530,7 @@ Now that everyone is a coder using the same tools, methods and repeated practice
 
 ## Crawl, Walk, Run
 
-<small>Like with alomst everything.</small>
+<small>Like with almost everything.</small>
 
 --
 
@@ -542,7 +542,7 @@ With DevOps one does not simply hit the ground running.
 
 --
 
-One must first crawl, walk, and then ultimately run as you embrace the necessary culture change, methods, and repeated practices.
+One must first crawl, walk and then ultimately run as you embrace the necessary culture change, methods and repeated practices.
 
 --
 
