@@ -25,13 +25,17 @@ Don't fixate on the tools used, nor the apps we develop in the course of learnin
 ## Thank you to
 
 - Walter Hiranpat for running through course material prior to me teaching it.
-- Eric McCann assisting Walter and I work through Vagrant install issues on Microsoft Windows.
+- Eric McCann for assisting Walter and I work through Vagrant install issues on Microsoft Windows.
 - My first class participants for "beta" testing my class.
 - Jonathan Thomas for TA'ing my second class.
+
+--
+
+## Thank you to
+
 - David Trang for TA'ing my third and fourth class.
 - Walter Hiranpat and David Trang for prepping the MITRE Institute classroom for my 8th class.
 - Rony Xavier and Aaron Lippold for assiting me mature the InSpec section.
-
 
 ---
 

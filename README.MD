@@ -18,7 +18,7 @@ Don't fixate on the tools used, nor the apps we develop in the course of learnin
 # 3. Thank you to
 
 - Walter Hiranpat for running through course material prior to me teaching it.
-- Eric McCann assisting Walter and I work through Vagrant install issues on Microsoft Windows.
+- Eric McCann for assisting Walter and I work through Vagrant install issues on Microsoft Windows.
 - My first class participants for "beta" testing my class.
 - Jonathan Thomas for TA'ing my second class.
 - David Trang for TA'ing my third and fourth class.
