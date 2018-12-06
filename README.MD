@@ -584,12 +584,6 @@ Receiving objects: 100% (1184/1184), 235.51 MiB | 21.53 MiB/s, done.
 Resolving deltas: 100% (480/480), done.
 ```
 
-Then fetch and switch to the `december` branch
-
-```
-git checkout --track origin/december
-```
-
 ## 8.5. Infrastructure as code (IaC)
 
 This class uses Infrastructure as code (IaC) to set up the class environment (i.e., two virtual machines that will later be referred to as "vagrants".) IaC is the process of provisioning, and configuring (i.e., managing) computr systems through code, rather than directly manipulating the systems by hand (i.e., manual processes). 
