@@ -22,6 +22,8 @@ Don't fixate on the tools used, nor the apps we develop in the course of learnin
 - My first class participants for "beta" testing my class.
 - Jonathan Thomas for TA'ing my second class.
 - David Trang for TA'ing my third and fourth class.
+- Walter Hiranpat and David Trang for prepping the MITRE Institute classroom for my 8th class.
+- Rony Xavier and Aaron Lippold for assiting me mature the InSpec section.
 
 # 4. Copyright and License
 
