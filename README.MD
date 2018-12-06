@@ -72,6 +72,10 @@ Or as I like to put it, "Its not about the tools."
 
 DevOps will also not entirely stop all bugs nor all vulnerabilities from making it into production, but that's not really the point.
 
+![My Pillow Guy](./images/my_pillow_guy.png)
+
+<sub>There are countless vendors out there, who want to sell you their crummy tool.</sub>
+
 ## 6.3. DevOps is really about
 
 Providing the culture and delivery/release pipeline that once a bug or vulnerability is discovered, the concern can to be quickly remediated and functionality returned back to the user.

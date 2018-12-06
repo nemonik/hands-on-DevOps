@@ -107,6 +107,12 @@ Or as I like to put it, "Its not about the tools."
 
 --
 
+![My Pillow Guy](./images/my_pillow_guy.png)
+
+<small>There are countless vendors out there, who want to sell you their crummy tool.</small>
+
+--
+
 DevOps will also not entirely stop all bugs nor all vulnerabilities from making it into production, but that's not really the point.
 
 ---
