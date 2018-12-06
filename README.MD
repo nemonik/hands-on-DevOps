@@ -6048,9 +6048,19 @@ skinparam note {
 
 InSpec tests permit you to author compliance as code thereby turing compliance, security, and other policy requirements into automated tests.
 
-More on InSpec can be found here
+InSpec has a very robust support for both the docker container and its host, see: https://lollyrock.com/posts/inspec-for-docker/ for more information for using InSpec with Docker.
 
-https://www.inspec.io/
+More on InSpec in general can be found here
+
+https://www.inspec.io/docs/
+
+And these specific sectons are relevant to Docker:
+
+https://www.inspec.io/docs/reference/resources/docker_container/
+
+https://www.inspec.io/docs/reference/resources/docker/
+
+https://www.inspec.io/docs/reference/resources/docker_image/
 
 #### 8.11.19.1. First author an InSpec test
 
@@ -6064,13 +6074,40 @@ cd inspec-tests
 Then author a simple Ruby-based tests to verify the expected state of the `nemonik/helloworld-web:latest` Docker container by creating `inspec.rb ` in an editor with this content:
 
 ```ruby
-describe docker_container(name: 'helloworld-web') do
-  it { should exist }
-  it { should be_running }
-  its('repo') { should eq 'nemonik/helloworld-web' }
-  its('ports') { should eq '0.0.0.0:3000->3000/tcp' }
-  its('command') { should eq '/app/helloworld-web' }
+control 'docker-checks-1.1' do
+  impact 0.7 # High Impact
+  tag "nist": ['CM-6', 'Rev_4']
+  title 'Verify Docker Container exists and is running'
+
+  describe docker_container(name: 'helloworld-web') do
+    it { should exist }
+    it { should be_running }
+    its('repo') { should eq '192.168.0.11:5000/nemonik/helloworld-web' }
+    its('ports') { should eq '0.0.0.0:3000->3000/tcp' }
+    its('command') { should eq '/app/helloworld-web' }
+  end
 end
+```
+
+And then create the profile's metadata file, `inspec.yml` with the contents:
+
+```yml
+name: helloworld-tests
+title: InSpec Profile
+maintainer: Michael Joseph Walsh
+copyright: Michael Joseph Walsh
+copyright_email: walsh@nemonik.comm
+license: New BSD License
+summary: A minimal InSpec Compliance Profile for helloworld-web
+version: 0.0.1
+supports:
+  platform: os
+ attributes:
+  - name: 'application_url'
+    type: string
+    default: 192.168.0.11
+  - name: 'application_port'
+    type: string
 ```
 
 #### 8.11.19.2. Execute your test
@@ -6106,13 +6143,15 @@ Profile: tests from inspec.rb (tests from inspec.rb)
 Version: (not specified)
 Target:  local://
 
-  Docker Container helloworld-web
-     ✔  should exist
-     ✔  should be running
-     ✔  repo should eq "nemonik/helloworld-web"
-     ✔  ports should eq "0.0.0.0:3000->3000/tcp"
-     ✔  command should eq "/app/helloworld-web"
+  ✔  docker-checks-1.1: Verify Docker Container exists and is running
+     ✔  Docker Container helloworld-web should exist
+     ✔  Docker Container helloworld-web should be running
+     ✔  Docker Container helloworld-web repo should eq "192.168.0.11:5000/nemonik/helloworld-web"
+     ✔  Docker Container helloworld-web ports should eq "0.0.0.0:3000->3000/tcp"
+     ✔  Docker Container helloworld-web command should eq "/app/helloworld-web"
 
+
+Profile Summary: 1 successful control, 0 control failures, 0 controls skipped
 Test Summary: 5 successful, 0 failures, 0 skipped
 ```
 
@@ -6132,8 +6171,9 @@ Open in an editor `.drone.yml` and add the following step
     command_timeout: 360
     script:
       - cd /tmp
-      - rm inspec.rb
+      - rm inspec.*
       - wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
+      - wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.yml
       - inspec exec inspec.rb
     when:
       branch: master
@@ -6164,8 +6204,9 @@ The output of the `inspec` step of the pipeline will resemble
 ```
 ======CMD======
 cd /tmp
-rm inspec.rb*
+rm inspec.*
 wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
+wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.yml
 inspec exec inspec.rb
 ======END======
 out: 
@@ -6173,29 +6214,54 @@ out: Profile: tests from inspec.rb (tests from inspec.rb)
 out: Version: (not specified)
 out: Target:  local://
 out: 
-out:   Docker Container helloworld-web
-out:      ✔  should exist
-out:      ✔  should be running
-out:      ✔  repo should eq "192.168.0.11:5000/nemonik/helloworld-web"
-out:      ✔  ports should eq "0.0.0.0:3000->3000/tcp"
-out:      ✔  command should eq "/app/helloworld-web"
+out:   ✔  docker-checks-1.1: Verify Docker Container exists and is running
+out:      ✔  Docker Container helloworld-web should exist
+out:      ✔  Docker Container helloworld-web should be running
+out:      ✔  Docker Container helloworld-web repo should eq "192.168.0.11:5000/nemonik/helloworld-web"
+out:      ✔  Docker Container helloworld-web ports should eq "0.0.0.0:3000->3000/tcp"
+out:      ✔  Docker Container helloworld-web command should eq "/app/helloworld-web"
 out: 
+out: 
+out: Profile Summary: 1 successful control, 0 control failures, 0 controls skipped
 out: Test Summary: 5 successful, 0 failures, 0 skipped
-err: rm: cannot remove ‘inspec.rb*’: No such file or directory
-err: --2018-12-01 07:24:11--  http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
+err: --2018-12-06 02:07:49--  http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
 err: Connecting to 192.168.0.11:10080... connected.
 err: HTTP request sent, awaiting response... 200 OK
-err: Length: 284 [text/plain]
+err: Length: 449 [text/plain]
 err: Saving to: ‘inspec.rb’
 err: 
-err:      0K                                                       100% 87.3M=0s
+err:      0K                                                       100% 73.3M=0s
 err: 
-err: 2018-12-01 07:24:11 (87.3 MB/s) - ‘inspec.rb’ saved [284/284]
+err: 2018-12-06 02:07:50 (73.3 MB/s) - ‘inspec.rb’ saved [449/449]
+err: 
+err: --2018-12-06 02:07:50--  http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.yml
+err: Connecting to 192.168.0.11:10080... connected.
+err: HTTP request sent, awaiting response... 200 OK
+err: Length: 416 [text/plain]
+err: Saving to: ‘inspec.yml’
+err: 
+err:      0K                                                       100% 77.1M=0s
+err: 
+err: 2018-12-06 02:07:50 (77.1 MB/s) - ‘inspec.yml’ saved [416/416]
 err: 
 ==========================================
 Successfully executed commands to all host.
 ==========================================
 ```
+
+#### 8.11.19.5. Viewing the results in Heimdall-lite
+
+ MITRE maintains two projects for viewing of InSpec profiles and evaluations in a convenient interface.
+
+ We'll use Heimdall-lite, a single page JavaScript implementation of the MITRE Heimdall InSpec results viewer, to view:
+
+In the Development vagrant, use `inspec` to report out to JSON via
+  
+```
+inspec exec inspec.rb --reporter json > /vagrant/inspec_hellworld.json
+```
+
+Open Heimdall-lite https://mitre.github.io/heimdall-lite/, select `Load JSON`, the `Browse` to navigate to `inspec_hellworld.json` in the root of the class project and upload to view the results.
 
 ### 8.11.20. Add automated funtional test to pipeline
 

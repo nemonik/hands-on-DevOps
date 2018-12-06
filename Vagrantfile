@@ -92,7 +92,7 @@ Vagrant.configure('2') do |config|
   end 
 
   # Print Docker DNS servers configured in host file
-  puts "Docker is configurd to us the folllowing DNS server(s):"
+  puts "Docker is configured to us the folllowing DNS server(s):"
   f = File.open('hosts','r')
   f.each_line do |line|
     if line =~ /^ns[1-2] ansible_host/
