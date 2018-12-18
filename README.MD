@@ -671,9 +671,10 @@ export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
 
 Example settings (Adjust for your environment.):
 
-1. In the Windows taskbar, enter `edit the system environment variables` into `Search Windows` and select the icon with the corresponding name.
-2. On the `Advanced` tab select `Environment Variables...` button.
-3. In `Environment Variables` windows that opens, under `User variables for...`press `New ...` to  open a `New User Variable` window, enter `proxy` for `variable name:` and `variable value:` for each pair in the table below
+1. In the Windows taskbar, enter `edit the system environment variables` into `Search Windows` and select the icon with the corresponding name. 
+3. The `Systems Property` window will likely open in the background, so you will likely need to go find it and bring it forward.
+4. In the `Systems Property`'s `Advanced` tab select `Environment Variables...` button.
+5. In `Environment Variables` windows that opens, under `User variables for...`press `New ...` to  open a `New User Variable` window, enter each `Variable Name` and and its respective `Value` for each pair in the table below
 
 | Variable Name                      | Value                                                            |
 | ---------------------------------- | ---------------------------------------------------------------- |
@@ -687,7 +688,7 @@ Example settings (Adjust for your environment.):
 **NOTE**
 
 - The cetificate URLs need to be encoded for parenthese to work.
-- One Windows, you may inadvertantly cut-and-paste hidden characters at the end of a `Variable Names`'s `Value` and the subsequent Ansible automation may fail.
+- One Windows, you may inadvertantly cut-and-paste blank space characters (e.g., tabs, spaces) and the subsequent Ansible automation may fail.
 
 ## 9.2. VirtualBox
 
@@ -725,7 +726,9 @@ If you are on Windows or on a lab computer, you'll need to install `git`.
 
 4. Then `next`, `next`, `next`...
 
-5. On the Windows task bar, enter `git` into `Search Windows` then select `Git Bash`.  Use `Git Bash` instead of `Command` or `Powershell`.
+5. Don't open git-bash from the final window as it will not have the environmental variables set.  Go onto step-6.
+
+6. On the Windows task bar, enter `git` into `Search Windows` then select `Git Bash`.  Use `Git Bash` instead of `Command` or `Powershell`.
 
 ## 9.4. Retrieve the course material
 
@@ -783,7 +786,7 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL.
 
    <https://releases.hashicorp.com/vagrant/2.2.2/vagrant_2.2.2_x86_64.msi>
 
-2. Click on the installer once downloaded and follow along. The installer may bury modals you need to respond to in the Windows Task bar, so keep an eye out for that. The installer will automatically add the `vagrant` command to your system path so that it is available on the command line. If it is not found, the documentation advises to try logging out and logging back into your system. It advises this is particularly necessary sometimes for Windows.  Windows will require a reboot, so remember to **come back and complete step-3**.
+2. Click on the installer once downloaded and follow along. The installer may stall calculating for a bit on Windows and for this same OS may bury modals you'll need to respond to in the Windows Task bar, so keep an eye out for that. The installer will automatically add the `vagrant` command to your system path so that it is available on the command line. If it is not found, the documentation advises to try logging out and logging back into your system. This is particularly necessary sometimes for Windows.  Windows will require a reboot, so remember to **come back and complete step-3**.
 
 3. On Windows, copy the `vagrant_files/cacert.pem` into `C:\Hashicorp\vagrant\embedded` or when on Mac OS X copy it to `/opt/vagrant/embedded`.  On Windows use the File Explorer to replace the existing `cacert.pem` file. The replacement has MITRE's certificates necessary for the SSL inspection hell.
 
@@ -823,7 +826,10 @@ The `Vagrantfile` found at the root of the project describes how to provision an
 
 Vagrant's own documentation puts it best:
 
-_Vagrant is meant to run with one Vagrantfile per project, and the Vagrantfile is supposed to be committed to version control. This allows other developers involved in the project to check out the code, run vagrant up, and be on their way. Vagrantfiles are portable across every platform Vagrant supports._
+> Vagrant is meant to run with one Vagrantfile per project, and the Vagrantfile is 
+> supposed to be committed to version control. This allows other developers involved
+> in the project to check out the code, run vagrant up, and be on their way. 
+> Vagrantfiles are portable across every platform Vagrant supports.
 
 If we were instead provisioning production Virtual Machines we'd alternatively use [Terraform](https://www.terraform.io/), a tool for building, changing, and versioning infrastructure
 
@@ -1321,7 +1327,11 @@ In the command line of the host in the root of the class project, open `ansible/
     - common
     - docker
     - docker-compose 
+    - golang
+    - golint
     - docker-registry
+
+    # CI/CD Tools
     - taiga
     - gitlab
     - plantuml-server
@@ -1334,15 +1344,30 @@ In the command line of the host in the root of the class project, open `ansible/
     - golang-sonarqube-scanner-image
     - standalone-firefox-container-image
     - owasp-zap2docker-stable-image
+
+#    - inspec-container-image
+#    - standalone-chrome-container-image
+#    - gnome-desktop
+#    - firefox
+#    - chrome
+#    - openshift
 ```
 
 Then enter into the command-line of the host at the root of the class project and enter into shell (I'll drop from time to time stating "into the shell" as it should understood.)
 
 ```bash
+./up_toolchain.sh
+```
+
+Typically, all one has to do is type
+
+```bash
 vagrant up toolchain
 ```
 
-You will see a good deal of output and on the Windows OS it will pester you to approve certain things.  Blindly approve everything.
+but presently as of December 18th, 2018 there is an issue downstream with the`centos/7` box requiring one to work around.
+
+You will see a good deal of output and on the Windows OS, it will pester you to approve certain things.  As a trust exercise blindly approve everything.
 
 Once complete, open a secure shell (ssh) to the `toolchain` vagrant
 
@@ -1813,8 +1838,16 @@ Open `ansible/development-playbook.yml` and make sure these roles are uncommente
 Then in the command-line of the host (not while ssh'ed into the toolchain vagrant) at the root of the class project
 
 ```bash
+./up_development.sh
+```
+
+Typically, all one has to do is type
+
+```bash
 vagrant up development
 ```
+
+but presently as of December 18th, 2018 there is an issue downstream with the`centos/7` box requiring one to work around.
 
 You will see a good deal of output.
 

@@ -8,5 +8,5 @@
 # this file. If not, please email <mjwalsh@nemonik.com>
 
 vagrant up toolchain
-vagrant ssh toolchain --command "sudo yum update -y"
+vagrant ssh toolchain --command "sudo yum install -y kernel-devel kernel-devel-\$(uname -r)"
 vagrant reload toolchain

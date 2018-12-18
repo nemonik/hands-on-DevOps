@@ -514,7 +514,7 @@ Now that everyone is a coder using the same tools, methods and repeated practice
 
 --
 
-### Be quick... Be slow to... 
+### Be
 
 --
 
@@ -524,7 +524,147 @@ Now that everyone is a coder using the same tools, methods and repeated practice
 
 ### The pressures of social media
 
-![Social Media](./images/social_media.png)
+<small>
+> The instinct to offend, or be offended, is cultivated by social media platforms and egged on by partisan online tabloid journalism. They curate the most egregious examples of outrage porn in a cynical ploy to keep us angry - sharing their articles and video clips to use as weapons in the culture war. Meanwhile, trolls and bots take advantage of this toxic environment to sow discord.
+</small>
+
+<small>
+["Being nice is the new punk"* By Bex Coates](http://www.politics.co.uk/comment-analysis/2018/11/21/being-nice-is-the-new-punk)
+</small>
+
+<small>* - This article is loaded with curse words.</small>
+
+--
+
+### The pressures of social media
+
+<small>
+> Conflict always attracts an audience. Just as the gladiators filled amphitheatres, Twitter - now routinely referred to by its own users as a 'hellsite' - provides a platform in which those battles can be fought in real time. And they are. Watching a Twitter spat is like watching people attempt to gouge each other's eyes out in written form. The audience is key. Whoever gets more 'likes' wins. 
+</small>
+
+<small>
+["Being nice is the new punk"* By Bex Coates](http://www.politics.co.uk/comment-analysis/2018/11/21/being-nice-is-the-new-punk)
+</small>
+
+<small>* - This article is loaded with curse words.</small>
+
+--
+
+### Don't fall for the trap
+
+<small>
+> People will try to goad you. They rely on it. When you lose your patience, you let them win. So engage in good faith. Don't allow yourself to be baited. Reject the establishment vitriol. Ad-hom is so mainstream it's boring. Decide to engage with the idea, rather than the personality.
+>
+> Decide to be considerate, respectful, principled, kind and generous.
+</small>
+
+<small>
+["Being nice is the new punk"* By Bex Coates](http://www.politics.co.uk/comment-analysis/2018/11/21/being-nice-is-the-new-punk)
+</small>
+
+<small>* - This article is loaded with curse words.</small>
+
+---
+
+## Fueled by trust
+
+["The Speed Of Trust" By Stephen MR Covey summarized in a SlideShare by Nilesh Chamoli](https://www.slideshare.net/nileshchamoli/the-speed-of-trust-13205957)
+
+--
+
+> Trust means confidence
+
+--
+
+> When we trust people, we have confidence in them - in there integrity and their abilities
+
+--
+
+> When we distrust people, we are suspicious of them.
+
+--
+
+> In a high-trust relationship, we can say the wrong thing, and people will understand us.
+
+--
+
+> In a low-trust relationship, despite precise communication, people will misinterpret us.
+
+--
+
+### Huh? How is this relative to DevOps?
+
+--
+
+Essentially, Agile and DevOps are built on ***trust***.
+
+--
+
+I'd encourage you spend time with the *The Speed Of Trust* Slideshare.
+
+--
+
+As it unpacks behaviors to building trust: `Talk Straight`, `Demonstrate Respect`, `Create Transparency`, `Right Wrongs`, `Show Loyalty`, `Deliver Results`, `Get Better`, `Confront Reality`, `Clarify Expectation`, `Practice Accountability`, `Listen First`, `Keep Commitments`, and `Extend Trust`. 
+
+---
+
+## Learn personality types
+
+["How to Deal With Difficult People" By Ujjwal Sinha](https://www.slideshare.net/abhiujjwal/how-2-deal-wid-diiclt-ppl)
+
+--
+
+### Tanks
+
+> Aggressive, in your face behavior verbal and physical behavior... 
+>
+> Their goal is control at all costs... 
+> 
+> I win/you lose! 
+
+--
+
+### Handle by
+
+> By standing your ground, but not getting into a fight with them...
+> 
+> Maintain self control.
+
+--
+
+### Think-They-Know-It-All
+
+> Do **not** know what they are talking about, but they have a knack for conversation and act like a professional.
+
+--
+
+### Handle by
+
+> State the correct facts or give alternative opinions in as much detail as you can.
+>
+> Move on to the next topic as soon as you correct a balloon.
+>
+> This gives the balloon enough time to deflate with as little embarrassment as possible.
+
+--
+
+### Pessimists
+
+> Tear down morale
+> 
+> Feel that those with power can’t be trusted... suspicious and paranoid
+>
+> Feel like they have no control over anything
+
+--
+
+### Handle by
+
+> Ask what’s the worst that could happen?
+> 
+> Don’t argue with them!
+>
+> Distance yourself from them or limit your time with them to maintain a positive outlook
 
 ---
 
@@ -542,13 +682,9 @@ With DevOps one does not simply hit the ground running.
 
 --
 
-One must first crawl, walk and then ultimately run as you embrace the necessary culture change, methods and repeated practices.
+Keep in mind, one must first `crawl`, `walk` and then ultimately `run` as you embrace the necessary culture change, methods and repeated practices...
 
 --
-
-Collaboration and automation are expected continually improve so to achieve more frequent and more reliable releases.
-
----
 
 This ends my deck
 ___
