@@ -1683,8 +1683,9 @@ So, you will need to accomplish the following steps, while at the same time beco
 4. Click `New Application`,
 5. Enter `Drone CI` for `Name`,
 6. Enter `http://192.168.0.11:8000/authorize`,
-7. Click `submit`,
-8. In a command line on the host (i.e., the machine running the vagrants) at the root of the class project enter into the host's command line at the root of the project:
+7. Check off `api` and `read_user`,
+8. Click `submit`,
+9. In a command line on the host (i.e., the machine running the vagrants) at the root of the class project enter into the host's command line at the root of the project:
 
   ```bash
   vagrant ssh toolchain
@@ -1937,7 +1938,7 @@ skinparam note {
 -down->“Run\nyour application”
 -left->“Author\nthe unit tests”
 -left->“Write the Makefile”
--left->“Author Drone-based\nContinuous Integration”
+-left->“Author Drone-based Continuous Integration”
 -left-> (*)
 ```
 
@@ -2115,7 +2116,6 @@ skinparam note {
 -left-> (*)
 ```
 
-
 On your host open a shell to `development` vagrant, and configure your user name and email:
 
 ```bash
@@ -2132,7 +2132,7 @@ The Ansible `golang` role (`ansible/roles/golang`) in the class project on your 
 Go source code is placed in the `src` directory under a namespace (i.e., a unique base path to avoid naming collisions under which all your go code will reside.) In open source software development, it is typical to use github.com account path. Mine is `github.com/nemonik`, so I would create this base path via (You do the same., so we are all on the same page.)
 
 ```bash
-mkdir $GOPATH/src/github.com/nemonik
+mkdir -p $GOPATH/src/github.com/nemonik
 ```
 
 Now lets create the GoLang `helloworld` project to demonstrate Continuous Integration via
@@ -3469,6 +3469,8 @@ The command line will output
 192.168.0.1:63201  GET  /favicon.ico
 ```
 
+`crl-c` will stop your application.
+
 ### 9.11.6. Run gometalinter.v2 on application
 
 ```plantuml
@@ -3553,13 +3555,12 @@ Run our linters
 gometalinter.v2 
 ```
 
-And the output will be
+And the output like the follwing outout will be returned after some time
 
 ```
 [vagrant@development helloworld-web]$ gometalinter.v2
 main.go:11:21:warning: error return value not checked (http.ListenAndServe(":3000", logRequest(http.DefaultServeMux))) (errcheck)
 main.go:15:13:warning: error return value not checked (fmt.Fprintf(w, "Hello world!\n")) (errcheck)
-main.go:11::warning: Errors unhandled.,LOW,HIGH (gosec)
 ```
 
 Oops. Line 11 and line 15 have problems:
@@ -3752,7 +3753,7 @@ skinparam note {
 
 We don't have any unit tests, so let's fix that.
 
-Create `main_test.go` in emacs, nano, vi, or vim with this content:
+Create the text file `main_test.go` in emacs, nano, vi, or vim with this content:
 
 ```Go
 package main
@@ -3828,7 +3829,7 @@ Execute the unit test by entering
 go test -v -cover
 ```
 
-The command line returns
+The command line will return something like
 
 ```
 [vagrant@development helloworld-web]$ go test -v -cover
@@ -4825,14 +4826,15 @@ skinparam note {
 
 Spin up a new `nemonik/helloworld-web` container by either entering
 
-- ``` docker run -p 3000:3000 nemonik/helloworld-web``` and hitting <http://192.168.0.10:3000> in your web browser, or
-- ``` docker run -d -p 3000:3000 nemonik/helloworld-web``` and hitting the same URL via ```curl http://192.168.0.10:3000```.
+- ``` docker run -p 3000:3000 --name helloworld-web  nemonik/helloworld-web``` and hitting <http://192.168.0.10:3000> in your web browser, or
+- ``` docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web``` and hitting the same URL via ```curl http://192.168.0.10:3000```.
 
 Where
 
 - `run` messages Docker you are running a new container
 - `-d` in the second option, runs the container in background and prints container ID.
 - `-p 3000:3000` published the container's port as 3000 to the host.
+- `--name helloworld-web` names the running container
 - `nemonik/helloworld-web` states what container image to use.
 
 #### 9.11.12.1. Option 1
@@ -4840,7 +4842,7 @@ Where
 The command line output for the first option will be
 
 ```
-[vagrant@development helloworld-web]$ docker run  -p 3000:3000 nemonik/helloworld-web
+[vagrant@development helloworld-web]$ docker run -p 3000:3000 --name helloworld-web nemonik/helloworld-web
 listening on :3000
 192.168.0.1:54740  GET  /
 192.168.0.1:54740  GET  /favicon.ico
@@ -4852,13 +4854,19 @@ listening on :3000
 For the second option there will be no output written to the screen, but you can see the same output if you run 
 
 ```bash
-docker logs <the container id output when started the container>
+docker logs <the container id output when started the container> -f
+```
+
+or 
+
+```bash
+docker logs helloworld-web  -f
 ```
 
 returning
 
 ```
-[vagrant@development helloworld-web]$ docker logs 31257f287d26bdb8ae02d9d444f8ebb1478da183f7d6f908767e006c212fcbd8
+[vagrant@development helloworld-web]$ docker logs 31257f287d26bdb8ae02d9d444f8ebb1478da183f7d6f908767e006c212fcbd8 -f
 listening on :3000
 192.168.0.1:55159  GET  /
 192.168.0.1:55159  GET  /favicon.ico
@@ -5360,7 +5368,7 @@ skinparam note {
 -left-> (*)
 ```
 
-So, let us add `sonar-scan` to our pipeline to update SonarQube with code quality scans automatically by opening `.drone.yml` in our text editor and adding the following step right after our `build` step, so that we run the step prior to a deploy. 
+So, lets create our pipeline starting with a `sonar-scan` step to update SonarQube with code quality scans automatically by opening `.drone.yml` in our text editor and adding the following step right after our `build` step, so that we run the step prior to a deploy. 
 
 ```yaml
 pipeline:
@@ -5594,8 +5602,7 @@ no packages to test
 
 ### 9.11.16. Add the build step to the pipeline
 
-Add container\nimage publish\nstep to pipeline
-At the root of the project open `.drone.yml` as a new file to edit
+Add a build step to our `.drone.yml`
 
 ```yaml
   build:
@@ -5700,7 +5707,7 @@ skinparam note {
 -left-> (*)
 ```
 
-Add the publish step to your `.drone.yml` so that the publish to the private registry will be automated through the pipeline.  The `publish:` step must be indented the same as the prior `build:` step.
+Add the publish step to your `.drone.yml` so that the container image is publish to the private registry via the pipeline.  The `publish:` step must be indented the same as the prior `build:` step.
 
 ```yaml
   publish:
@@ -5936,7 +5943,7 @@ Untagged: 05cfa544b6fc3082f61155a9797d8ae5628a8d74:latest
 Total reclaimed space: 0B
 ```
 
-Indicating the `publish` executed successfully.
+Indicating the `publish` step executed, successfully.
 
 ### 9.11.18. Add container deploy step to pipeline
 
@@ -6311,6 +6318,13 @@ First, we'll Eexecute the test against container running locally by first spinni
 docker run -d -p 3000:3000 --name helloworld-web 192.168.0.11:5000/nemonik/helloworld-web:latest
 ```
 
+If this command fails you likely already have a instance of the container running, you can kill the previous instance via
+
+```
+docker stop helloworld-web
+docker rm helloworld-web
+```
+
 And then in the root of your `helloworld-web` project run the inspec test
 
 ```bash
@@ -6370,18 +6384,6 @@ Open in an editor `.drone.yml` and add the following step
       - inspec exec inspec.rb
     when:
       branch: master
-```
-
-And modify the `inspec.rb` to reflect the expected repo for when deployed by changing the line
-
-```ruby
-  its('repo') { should eq 'nemonik/helloworld-web' }
-```
-
-to
-
-```ruby
-  its('repo') { should eq '192.168.0.11:5000/nemonik/helloworld-web' }
 ```
 
 Then commit the your code
