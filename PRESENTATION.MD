@@ -35,7 +35,7 @@ Don't fixate on the tools used, nor the apps we develop in the course of learnin
 
 - David Trang for TA'ing my third and fourth class.
 - Walter Hiranpat and David Trang for prepping the MITRE Institute classroom for my 8th class.
-- Rony Xavier and Aaron Lippold for assiting me mature the InSpec section.
+- Rony Xavier and Aaron Lippold for assisting me mature the InSpec section.
 
 ---
 
