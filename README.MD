@@ -687,7 +687,7 @@ Example settings (Adjust for your environment.):
 
 **NOTE**
 
-- The cetificate URLs need to be encoded for parenthese to work.
+- The certificate URLs need to be encoded for parentheses to work.
 - One Windows, you may inadvertantly cut-and-paste blank space characters (e.g., tabs, spaces) and the subsequent Ansible automation may fail.
 
 ## 9.2. VirtualBox
