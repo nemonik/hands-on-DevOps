@@ -1978,7 +1978,7 @@ Complete the follow to track your progress in completing the Golang *helloworld*
     Run your application
     Author the unit tests
     Write the Makefile
-    Author Drone-based\nContinuous Integration
+    Author Drone-based Continuous Integration
     ```
 
 Track your progress in Taiga as you work through each section.
@@ -2686,7 +2686,7 @@ skinparam note {
 
  Build automation is a key practice of CI.  So, let's make the build reproducible by automating everything we've done this far via authoring a Makefile.
 
-In the root of the project edit the file, `Makefile` and add the following contents
+In the root of the project create `Makefile` and add the following contents
 
 ```makefile
 GOCMD=go
@@ -2697,9 +2697,6 @@ GOTEST=$(GOCMD) test
 GOLINT=$(GOCMD)lint
 GOGET=$(GOCMD) get
 BINARY_NAME=helloworld
-
-SONAR_DEPENDENCIES := \
-	gopkg.in/alecthomas/gometalinter.v2
 
 all: build
 clean:
@@ -2722,7 +2719,6 @@ run:
 **NOTE**
 
 - Each line indentation is a `tab` and **not** a series of `space` characters.
--  Cutting-and-pasting the last line starting with `sonar-scanner` may paste this single line as multiple lines.  It needs to be one single line in order to work.
 
 Save the file and exit your editor.
 

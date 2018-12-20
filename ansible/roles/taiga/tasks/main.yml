@@ -63,7 +63,7 @@
   with_items:
     - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/" , owner: root, group: root }
     - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/admin", owner: default, group: root }
-    - { path: "/home/{{ ansible_user_id }}/taiga/volumess/media/", owner: root, group: root }    
+    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/", owner: root, group: root }    
     - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/user", owner: default, group: root }
   tags:
     - taiga
