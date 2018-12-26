@@ -8,5 +8,5 @@
 # this file. If not, please email <mjwalsh@nemonik.com>
 
 vagrant up development
-vagrant ssh development --command "sudo yum install -y kernel-devel kernel-devel-\$(uname -r)"
+vagrant ssh development --command "sudo yum install -y kernel-devel kernel-devel-\$(uname -r) && sudo yum update -y"
 vagrant reload development

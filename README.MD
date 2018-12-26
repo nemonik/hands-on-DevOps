@@ -513,7 +513,7 @@ In this class you will spin up the following developent and toolchain environmen
 
 **NOTE**
 - If your web-based Git-repository manager is paired with a PlantUML server you will see a diagram rendered below otherwise you will only the PlantUML source code for the diagram. Don't worry the course's Ansible automation will spin up both a GitLab and PlantUML.
-- This class makes use **NOTE** sections to call out things that are important to know or will drop a few tidbits.  Reading these notes may save you some time.
+- This class makes use of **NOTE** sections to call out things that are important to know or will drop a few tidbits.  Reading these notes may save you some aggrevation.
 
 ```plantuml
 @startuml
