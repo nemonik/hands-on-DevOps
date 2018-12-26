@@ -132,6 +132,7 @@ What you should bring:
             - [9.8.2.1. Documentation, source, container image](#9821-documentation-source-container-image)
             - [9.8.2.2. URL, Username and password](#9822-url-username-and-password)
             - [9.8.2.3. Allow requests to the local network from hooks and services](#9823-allow-requests-to-the-local-network-from-hooks-and-services)
+            - [9.8.2.4. Do not default to Auto DevOps pipeline for all projects](#9824-do-not-default-to-auto-devops-pipeline-for-all-projects)
         - [9.8.3. Drone CI, an example of CI/CD orchestrator](#983-drone-ci-an-example-of-cicd-orchestrator)
             - [9.8.3.1. Documentation, source, container image](#9831-documentation-source-container-image)
             - [9.8.3.2. URL, Username and password](#9832-url-username-and-password)
@@ -634,7 +635,7 @@ you .[#0B5C92].> helloworld_web
 
 **On Mac OS X or \*NIX environments**
 
-Example settings (Adjust for your environment.):
+Example settings (Adjust for your environment.) can be set by running the BASH script in the root of the project, `set_env.sh`:
 
 ```bash
 #!/usr/bin/env bash
@@ -666,6 +667,48 @@ export CA_CERTIFICATES=https://raw.githubusercontent.com/nemonik/hands-on-DevOps
 
 export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
 ```
+
+Execute in terminal session via
+
+```
+. ./set_env.sh
+```
+
+The alternative is `unset.sh` bash script that unsets all these values:
+
+```
+#!/usr/bin/env bash
+
+# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+# run in shell via
+#
+# ```
+# . ./unset.sh
+# ```
+
+unset no_proxy
+unset NO_PROXY
+unset ALL_PROXY
+unset PROXY
+unset proxy
+unset https_proxy
+unset http_proxy
+unset HTTP_PROXY
+unset ca_certificates
+unset CA_CERTIFICATES
+```
+
+Execute in terminal session via
+
+```
+. ./unset.sh
+``` 
 
 **On Windows**
 
@@ -1544,6 +1587,21 @@ Perform the following steps as the GitLab adminstrator:
 3. In the `side bar` running the length of the left-side of the page, click the `gear`-icon, select `Network`, and expand `Outbound requests`
 4. Under `Outbound requests`, check `Allow requests to the local network from hooks and services` and then click `Save Changes`
 
+#### 9.8.2.4. Do not default to Auto DevOps pipeline for all projects
+
+1. Log into GitLab as **root** with the password you entered in the prior step
+2. Click the wrench at the top of the page to enter the `Admin area`
+3. In the `side bar` running the length of the left-side of the page, click the `gear`-icon, select `CI/CD`, and expand `Continuous Integration and Deployment`
+4. Uncheck `Default to Auto DevOps pipeline for all projects` and then click `Save Changes`
+
+Perform the following steps as the GitLab adminstrator:
+
+1. Log into GitLab as **root** with the password you entered in the prior step
+2. Click the wrench at the top of the page to enter the `Admin area`
+3. In the `side bar` running the length of the left-side of the page, click the `gear`-icon, select `Network`, and expand `Outbound requests`
+4. Under `Outbound requests`, check `Allow requests to the local network from hooks and services` and then click `Save Changes`
+
+
 ### 9.8.3. Drone CI, an example of CI/CD orchestrator
 
 Drone CI often referred to simply as "Drone" is installed on the `toolchain` vagrant, where it will be accessible at <http://192.168.0.11:8000/> after some user configuration that will be explained later in the _Integrate Drone CI with GitLab_ section.
@@ -2054,6 +2112,10 @@ skinparam note {
 6. Click the green `Create Project` button on the lower left.
 
 The UI will refresh to show you a landing page for the project that should be accessible from <http://192.168.0.11:10080/root/helloworld>
+
+**NOTE**
+
+- Sometimes GitLab with release `11.5.1` will throw an error on the step 6 above.  Simply click the green `Create Project` button again.
 
 ### 9.10.3. Setup the project on the _development_ Vagrant
 
@@ -2870,7 +2932,7 @@ To trigger the build, in your ssh connection to `development` simply commit your
 ```bash
 git add .
 git commit -m "Added Drone pipeline"
-git push -u origin master
+git push origin master
 ```
 
 Immediately after you enter your GitLab username/password open <http://192.168.0.11:8000/root/hello> in your browser, if you re-use an existing tab to this page refresh the page.
@@ -5376,12 +5438,15 @@ pipeline:
       - mkdir -p $GOPATH/src/github.com/nemonik
       - cd $GOPATH/src/github.com/nemonik
       - ln -s $DRONESRC helloworld-web
+      - cd helloworld-web
+      - go get -u golang.org/x/lint/golint
       - go get -u gopkg.in/alecthomas/gometalinter.v2
       - gometalinter.v2 --install
-      - gometalinter.v2 --deadline=120s --checkstyle > report.xml || true
-      - gocov test ./... | gocov-xml || true
-      - go test  -v ./... | go-junit-report > test.xml || true
-      - sonar-scanner -X -D http.nonProxyHosts=$NO_PROXY -D http.proxyHost=$HTTP_PROXY -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.coverage.dtdVerification=false -D sonar.sources=. -D sonar.golint.reportPath=report.xml -D sonar.coverage.reportPath=coverage.xml -D sonar.coverage.dtdVerification=false -D sonar.test.reportPath=test.xml -D sonar.exclusions=**/*test.go || true
+      - gometalinter.v2 --deadline=120s --checkstyle > gometalinter-report.out || true
+      - go lint > golint-report.out || true
+      - go test -v ./... -coverprofile=coverage.out || true
+      - go test -v ./... -json > report.json || true
+      - sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
 ```
 
 Things to note in the above
@@ -5412,7 +5477,7 @@ Commit the code to GitLab hosted remote repo
 ```bash
 git add .drone.yml
 git commit -m "added sonar step to pipeline"
-git push -u origin master
+git push origin master
 ```
 
 Open on your host
@@ -5614,7 +5679,7 @@ Then commit to GitLab
 ```bash
 git add .
 git commit -m "added build step to pipeline"
-git push -u origin master
+git push origin master
 ```
 
 Since we have not registered an SSH key with GitLab, we will need to enter a `Username` and `Password` when prompted.
@@ -5728,7 +5793,7 @@ Push your code into GitLab
 ```bash
 git add .
 git commit -m "added publish step to pipeline"
-git push -u origin master
+git push origin master
 ```
 
 The publish step takes quite a bit of time and resembles:
@@ -6083,7 +6148,7 @@ Commit the code to GitLab hosted remote repo
 ```bash
 git add .drone.yml
 git commit -m "added deploy step to pipeline"
-git push -u origin master
+git push origin master
 ```
 
 The deploy step output resembles:
@@ -6387,7 +6452,7 @@ Then commit the your code
 ```bash
 git add .
 git commit -m "added inspec step to pipeline"
-git push -u origin master
+git push origin master
 ```
 
 The output of the `inspec` step of the pipeline will resemble
@@ -6766,7 +6831,7 @@ Commit the code to GitLab hosted remote repo
 ```bash
 git add .
 git commit -m "added selenium step to pipeline"
-git push -u origin master
+git push origin master
 ```
 
 Open on your host  
@@ -6955,7 +7020,7 @@ Commit the code to GitLab hosted remote repo
 ```bash
 git add .
 git commit -m "added owasp-zaproxy step to pipeline"
-git push -u origin master
+git push origin master
 ```
 
 Open on your host  
