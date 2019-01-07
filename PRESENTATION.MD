@@ -632,6 +632,16 @@ As it unpacks behaviors to building trust: `Talk Straight`, `Demonstrate Respect
 
 --
 
+#### Or just keep in mind these immortal words
+
+> <small>The haters gonna hate, hate, hate, hate, hate</small><br>
+> <small>Baby, I'm just gonna shake, shake, shake, shake, shake</small><br>
+> <small>I shake it off, I shake it off</small>
+
+https://www.youtube.com/watch?v=6-sYTAHtzXM
+
+--
+
 ### Think-They-Know-It-All
 
 > Do **not** know what they are talking about, but they have a knack for conversation and act like a professional.
