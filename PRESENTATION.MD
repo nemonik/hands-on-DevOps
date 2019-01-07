@@ -614,6 +614,10 @@ As it unpacks behaviors to building trust: `Talk Straight`, `Demonstrate Respect
 
 --
 
+### Covering just a few...
+
+--
+
 ### Tanks
 
 > Aggressive, in your face behavior verbal and physical behavior... 
