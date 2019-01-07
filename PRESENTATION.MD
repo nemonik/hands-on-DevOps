@@ -57,7 +57,15 @@ This course is Licensed under the "New BSD License" or "Modified BSD License".
 
 --
 
-DevOps (a clipped compound of the words "development" and "operations") is a software development methodology with an emphasis on a more reliable release pipeline, automation, and stronger collaboration across all stakeholders with the goal of deploying working functionality into the hands of users (i.e., production) faster.
+DevOps (a clipped compound of the words "development" and "operations") is a software development methodology 
+
+--
+
+With an emphasis on a more reliable release pipeline, automation, and stronger collaboration across all stakeholders 
+
+--
+
+With the goal of deploying working functionality into the hands of users (i.e., production) faster.
 
 --
 
@@ -67,23 +75,41 @@ Yeah, that's the formal definition.
 
 I've grown to prefer the axiom:
 
+--
+
 *You are what you **code**.*
 
 --
 
-If you're a developer or software engineer, you're at least ***coding*** the application, its build automation, unit tests, and CI/CD (the combined practices of Continuouse Integrarion and Continuous Delivery) automation.
+If you're a developer or software engineer
+
+-- 
+
+You're at least ***coding*** the application, its build automation, unit tests, and CI/CD (the combined practices of Continuouse Integrarion and Continuous Delivery) automation.
 
 --
 
-If a tester, you're ***coding*** typically the functional test automation.
+If a tester
 
 --
 
-If a security engineer, you're ***coding*** the compliance and policy test automation.
+You're ***coding*** typically the functional test automation.
 
 --
 
-If ops, you're ***coding*** the deployment and infrastructure configuration management automation.
+If a security engineer
+
+--
+
+You're ***coding*** the compliance and policy test automation.
+
+--
+
+If ops
+
+--
+
+You're ***coding*** the deployment and infrastructure configuration management automation.
 
 --
 
@@ -620,7 +646,7 @@ As it unpacks behaviors to building trust: `Talk Straight`, `Demonstrate Respect
 
 ### Tanks
 
-> Aggressive, in your face behavior verbal and physical behavior... 
+> Aggressive, in your face verbal and physical behavior... 
 >
 > Their goal is control at all costs... 
 > 
@@ -636,10 +662,10 @@ As it unpacks behaviors to building trust: `Talk Straight`, `Demonstrate Respect
 
 --
 
-#### Or just keep in mind these immortal words
+### Or just keep in mind<br>these immortal words
 
-> <small>The haters gonna hate, hate, hate, hate, hate</small><br>
-> <small>Baby, I'm just gonna shake, shake, shake, shake, shake</small><br>
+> <small>The haters gonna hate, hate, hate, hate, hate</small>
+> <small>Baby, I'm just gonna shake, shake, shake, shake, shake</small>
 > <small>I shake it off, I shake it off</small>
 
 https://www.youtube.com/watch?v=6-sYTAHtzXM
