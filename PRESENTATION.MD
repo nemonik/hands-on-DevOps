@@ -57,7 +57,7 @@ This course is Licensed under the "New BSD License" or "Modified BSD License".
 
 --
 
-DevOps (a clipped compound of the words "development" and "operations") is a software development methodology 
+DevOps (a clipped compound of the words `development` and `operations`) is [a software development methodology](https://en.wikipedia.org/wiki/Software_development_process).
 
 --
 
@@ -81,39 +81,33 @@ I've grown to prefer the axiom:
 
 --
 
-If you're a developer or software engineer
-
--- 
+### If you're a developer or software engineer
 
 You're at least ***coding*** the application, its build automation, unit tests, and CI/CD (the combined practices of Continuouse Integrarion and Continuous Delivery) automation.
 
 --
 
-If a tester
-
---
+### If a tester
 
 You're ***coding*** typically the functional test automation.
 
 --
 
-If a security engineer
-
---
+### If a security engineer
 
 You're ***coding*** the compliance and policy test automation.
 
 --
 
-If ops
-
---
+### If ops
 
 You're ***coding*** the deployment and infrastructure configuration management automation.
 
 --
 
-And since all these disciplines are ***coding***, they're essentially using the same methods and repeated practices to ensure they're producing good code.
+### And since all these disciplines are ***coding***
+
+They're essentially using the same methods and repeated practices to ensure they're producing good code.
 
 --
 
