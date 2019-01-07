@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -113,12 +113,12 @@ Vagrant.configure('2') do |config|
   #     For example:
   #
   #     ```
-  #     export CA_CERTIFICATES=http://pki.mitre.org/MITRE%20BA%20ROOT.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-1.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-3.crt
+  #     export CA_CERTIFICATES=http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt
   #     ```
   #
   #     The Root certificate *must* be denotes as the root certificat like so:
   #
-  #     http://pki.mitre.org/MITRE%20BA%20ROOT.crt 
+  #     http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt
   #
   if ENV['CA_CERTIFICATES'] 
     if Vagrant.has_plugin?('vagrant-ca-certificates')

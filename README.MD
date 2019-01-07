@@ -640,7 +640,7 @@ Example settings (Adjust for your environment.) can be set by running the BASH s
 ```bash
 #!/usr/bin/env bash
 
-# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -679,7 +679,7 @@ The alternative is `unset.sh` bash script that unsets all these values:
 ```
 #!/usr/bin/env bash
 
-# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -973,14 +973,14 @@ Vagrant.configure('2') do |config|
   #     For example:
   #
   #     ```
-  #     export CA_CERTIFICATES=http://pki.mitre.org/MITRE%20BA%20ROOT.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-1.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-3.crt
+  #     export CA_CERTIFICATES=http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt
   #     ```
   #
   #     The Root certificate *must* be denotes as the root certificat like so:
   #
-  #     http://pki.mitre.org/MITRE%20BA%20ROOT.crt 
+  #     http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt
   #
-  if ENV['CA_CERTIFICATES'] 
+  if ENV['CA_CERTIFICATES']
     if Vagrant.has_plugin?('vagrant-ca-certificates')
       puts "CA Certificates set to #{ ENV['CA_CERTIFICATES'] }"
       config.ca_certificates.enabled = true
@@ -993,7 +993,6 @@ Vagrant.configure('2') do |config|
     config.ca_certificates.certs = nil
     config.ca_certificates.enabled = false
   end
-
 ```
 
 This section uses `vagrant-ca-certificates` to as the plugin's documentation puts it _configures the virtual machine to inject the specified certificates into the guest's root bundle. This is useful, for example, if your enterprise network has a firewall (or appliance) which utilizes SSL interception._ So, we aren't the only ones that have to deal with the havoc SSL interception brings to development.
@@ -1218,7 +1217,7 @@ The `development` vagrant Ansible playbook (`ansible/development-playbook.yml`) 
 ---
 # Development Ansible playbook
 
-# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -1250,7 +1249,7 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
 ---
 # tasks file for taiga
 
-# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -1357,7 +1356,7 @@ In the command line of the host in the root of the class project, open `ansible/
 ---
 # Toolchain Ansible playbook
 
-# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -1874,7 +1873,7 @@ Open `ansible/development-playbook.yml` and make sure these roles are uncommente
 ---
 # Development Ansible playbook
 
-# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -6695,7 +6694,7 @@ sudo pip install -r requirements.txt
 Then in an editor create `test_helloworld.py` Python-based unit test containing
 
 ```python
-# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -6812,7 +6811,7 @@ Create in a text editor `selenium-test/resolve.py` with
 ```python
 #!/usr/bin/env python
 
-# Copyright (C) 2018 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #

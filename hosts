@@ -15,11 +15,11 @@ toolchain ansible_host=192.168.0.11
 # Used by Ansible roles to configure Docker DNS server settings
 [dns]
 # My home network DNS
-#ns1 ansible_host=10.0.1.1
+ns1 ansible_host=10.0.1.1
 
 # MITRE DNS
-ns1 ansible_host=10.20.100.53
-ns2 ansible_host=10.20.200.53
+#ns1 ansible_host=10.20.100.53
+#ns2 ansible_host=10.20.200.53
 
 # Google / Starbux DNS
 #ns1 ansible_host=8.8.8.8
