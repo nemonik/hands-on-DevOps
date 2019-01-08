@@ -38,14 +38,6 @@
   tags:
     - common
 
-- name: uninstall old versions
-  become: yes
-  yum:
-    name: ['docker', 'docker-client', 'docker-common', 'docker-engine']
-    state: absent
-  tags:
-    - docker
-
 - name: ensure an up-to-date git is installed
   become: yes
   block:
