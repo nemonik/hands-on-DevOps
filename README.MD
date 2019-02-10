@@ -2,6 +2,8 @@
 
 A hands-on DevOps course.
 
+A reveal.js presention written to accompany this course can found at [https://nemonik.github.io/hands-on-DevOps/](https://nemonik.github.io/hands-on-DevOps/).
+
 This course will
 - Discuss DevOps,
 - Have you spin up a DevOps toolchain and development environment, and then
