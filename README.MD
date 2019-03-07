@@ -3603,7 +3603,7 @@ skinparam note {
 
 The following command line steps are optional as you have installed these dependencies for the `helloworld` application
 
-```basj
+```bash
 go get -u gopkg.in/alecthomas/gometalinter.v2
 gometalinter.v2 --install
 ```
@@ -3699,7 +3699,7 @@ skinparam note {
 -left-> (*)
 ```
 
-Let's fix the problems by importing `fmt` and logging the `err`s like so:
+Let's fix the problems by importing `fmt` and logging the `err`s:
 
 ```go
 package main
