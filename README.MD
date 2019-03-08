@@ -827,7 +827,7 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL.
 
    <https://www.vagrantup.com/downloads.html>  
 
-   Version 2.2.2 is verified to work on Windows and Mac OS X.  
+   Version 2.2.4 is verified to work on Windows and Mac OS X.  
 
    <https://releases.hashicorp.com/vagrant/2.2.2/vagrant_2.2.2_x86_64.msi>
 
@@ -859,10 +859,15 @@ Resembles this
 
 ```
 vagrant-ca-certificates (1.3.0, global)
+  - Version Constraint: > 0
 vagrant-cachier (1.2.1, global)
+  - Version Constraint: > 0
 vagrant-disksize (0.1.3, global)
-vagrant-proxyconf (1.5.2, global)
-vagrant-vbguest (0.16.0, global)
+  - Version Constraint: > 0
+vagrant-proxyconf (2.0.0, global)
+  - Version Constraint: > 0
+vagrant-vbguest (0.17.2, global)
+  - Version Constraint: > 0
 ```
 
 #### 9.5.1.4. The Vagrantfile explained
