@@ -5,13 +5,23 @@ A hands-on DevOps course.
 A reveal.js presention written to accompany this course can found at [https://nemonik.github.io/hands-on-DevOps/](https://nemonik.github.io/hands-on-DevOps/).
 
 This course will
-- Discuss DevOps,
-- Have you spin up a DevOps toolchain and development environment, and then
-- Author two applications and their accompanying pipelines, the first a continuous integration (CI) and the second a continuous delivery (CD) pipeline.
+1. Discuss DevOps,
+2. Have you spin up a DevOps toolchain and development environment, and then
+3. Author two applications and their accompanying pipelines, the first a continuous integration (CI) and the second a continuous delivery (CD) pipeline.
+
+After this course you will
+1. Be able to describe and have hands on experience the DevOps methods and repeated practices (e.g., use of Agile methods, configuration management, build automations, test automation and deployment automation orchestrated under continuous integration and delivery orchestrator), and why it matters for MITRE and sponsors;
+2. Identify what diverse tools and resources that exist in the DevOps ecosystem to include a few here at MITRE;
+3. Be able to address challenges sponsors face by transitioning to DevOps methods and repeated practices;
+4. Have had hands-on experience with Infrastructure as Code( Vagrant and Ansible ) to provision and configure an entire DevOps toolchain and development environment on VirtualBox including Docker Registry, GitLab, Drone CI, and SonarQube;
+5. Have had hands-on experience authoring code to include authoring and running automated tests in a CI/CD pipeline all under Configuration Management to insure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected;
+6. Have had hands-on experience with (a) using Infrastructure as Code (IaC) in Vagrant and Ansible; (b) creating and using Kanban board in Taiga; (c) code configuration in git and GitLab; (d) authoring code in Go; (e) using style checkers and linters; (f) authoring a Makefile; (g) various commands in Docker (e.g., building a container image, pushing a container into a registry, creating and running a container); (h) authoring a pipeline for Drone CI; (i) using Sonar Scanner CLI to perform static analysis; (j) authoring security test in InSpec; (k) author an automated functional test in Selenium; (l) authoring a dynamic security test in OWASP Zap; an (m) using container platform to author and scale services;
+7. Have had hands-on experience authoring code to include authoring and running automated tests in a CI/CD pipeline all under Configuration Management to insure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected.
+
 
 We will be spending most of the course hands-on working with the tools and in the Unix command line making methods and repeated practices of DevOps happen, so as to grow an understanding of how DevOps actually works.
 
-Don't fixate on the tools used, nor the apps we develop in the course of learning how and why.  How and why is far more important.  This course like DevOps is not about tools although we'll be using them. You'll spend far more time writing code.  (Or at least cutting-and-pasting code.) 
+Don't fixate on the tools used, nor the apps we develop in the course of learning how and why.  How and why is far more important.  This course like DevOps is not about tools although we'll be using them. You'll spend far more time writing code.  (Or at the very least cutting-and-pasting code.) 
 
 # 2. Author
 
@@ -19,17 +29,17 @@ Don't fixate on the tools used, nor the apps we develop in the course of learnin
 
 # 3. Thank you to
 
-- Walter Hiranpat for running through course material prior to me teaching it.
+- Walter Hiranpat for running through the course material for my first class prior to me teaching it.
 - Eric McCann for assisting Walter and I work through Vagrant install issues on Microsoft Windows.
 - My first class participants for "beta" testing my class.
 - Jonathan Thomas for TA'ing my second class.
-- David Trang for TA'ing my third and fourth class.
-- Walter Hiranpat and David Trang for prepping the MITRE Institute classroom for my 8th class.
-- Rony Xavier and Aaron Lippold for assiting me mature the InSpec section.
+- David Trang for TA'ing my class countless times.
+- Walter Hiranpat, David Trang, and Rony Xavier for prepping the MITRE Institute classroom for my class countless times.
+- Rony Xavier and Aaron Lippold for assisting me mature the InSpec section.
 
 # 4. Copyright and license
 
-See the License file at the root of the project.
+See the License file at the root of this project.
 
 # 5. Prerequisites
 
@@ -37,9 +47,9 @@ The following skills would be useful in following along, but aren't strictly nec
 
 What you should bring:
 
-- Managing Linux or Unix-like systems as we will living largely within the terminal.
-- A basic understanding of Vagrant, Docker, and Ansible would be helpful.
-- But mostly being a software engineer.
+- Managing Linux or Unix-like systems would be tremendously helpful, but not necessary, as we will living largely within the terminal.
+- A basic understanding of Vagrant, Docker, and Ansible would also be helpful, but not necessary.
+- Mostly being a software engineer, but not necessary.
 
 # 6. Table of contents
 
@@ -580,19 +590,19 @@ rectangle "Host"{
 
 		rectangle "Docker CE" as docker1 {
 			rectangle "Taiga" {
-				component "nemonik/taiga:4.0.0" as taiga
+				component "nemonik/taiga:4.0.4" as taiga
         component "sameersbn/postgresql:9.6-4" as taiga_postgresql
 			}
 
 			rectangle "GitLab" {
-				component "nemonik/gitlab:11.5.1"" as gitlab
+				component "nemonik/gitlab:11.8.3"" as gitlab
         component "sameersbn/postgresql:10" as gitlab_postgresql
         component "redis:4.0.9-1" as gitlab_redis
 			}
 
 			rectangle "Drone CI" {
-        component "drone/server:0.8.9" as drone_server
-        component "drone/agent:0.8.9" as drone_agent
+        component "drone/server:1" as drone_server
+        component "drone/agent:1" as drone_agent
         component "sameersbn/postgresql:9.6-4" as drone_postgresql
 			}
 
@@ -603,6 +613,10 @@ rectangle "Host"{
 			rectangle "PlantUML Server" {
 				component "plantuml/plantuml-server:latest" as plantuml_server
 			}
+
+			rectangle "Registry" {
+				component "registry:2.7.1" as registry
+			}      
     }
 	}
 
@@ -627,6 +641,7 @@ you .[#0B5C92].> gitlab
 you .[#0B5C92].> taiga
 you .[#0B5C92].> plantuml_server
 you .[#0B5C92].> drone_server
+you .[#0B5C92].> registry
 
 you .[#0B5C92].> helloworld
 you .[#0B5C92].> helloworld_web
@@ -744,7 +759,7 @@ VirtualBox is a general-purpose full virtualizer for x86 hardware, targeted at s
 For the class, it is assumed VirtualBox is installed, but below are the instructions for installing it on Windows 10.
 
 1. Open your browser to <https://www.virtualbox.org/wiki/Downloads>
-2. Click `Windows hosts` link under `VirtualBox 5.2.22 platform packages`.
+2. Click `Windows hosts` link under `VirtualBox 6.0.4 platform packages`.
 3. Find and click the installer to install.
 
 Then turn for Windows 10 turn off Hyper-V
@@ -785,7 +800,7 @@ In a shell, for the purposes of the class, this means in `Git Bash`, clone the p
 git -c http.sslVerify=false clone https://github.com/nemonik/hands-on-DevOps.git
 ```
 
-Output will resemble:
+Output will resemble (i.e., not being precisely the same):
 
 ```
 $ git -c http.sslVerify=false clone https://github.com/nemonik/hands-on-DevOps.git
@@ -831,9 +846,11 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL.
 
 2. Click on the installer once downloaded and follow along. The installer may stall calculating for a bit on Windows and for this same OS may bury modals you'll need to respond to in the Windows Task bar, so keep an eye out for that. The installer will automatically add the `vagrant` command to your system path so that it is available on the command line. If it is not found, the documentation advises to try logging out and logging back into your system. This is particularly necessary sometimes for Windows.  Windows will require a reboot, so remember to **come back and complete step-3**.
 
-3. **If you're not on the MITRE corporate network skip this step.**  On Windows, use the File Explorer to replace the existing `C:\Hashicorp\vagrant\embedded\cacert.pem` file with the project's `vagrant_files/cacert.pem` by using the File Explorer or when on Mac OS X copy it to `/opt/vagrant/embedded` as root using:  
+3. **If you're not on the MITRE corporate network skip this step.**  On Windows, use the File Explorer to replace the existing `C:\Hashicorp\vagrant\embedded\cacert.pem` file with the project's `vagrant_files/cacert.pem` by using the File Explorer.
 
-   ```
+   Or when on Mac OS X copy it to `/opt/vagrant/embedded` as root using:
+   
+   ```bash
    sudo cp vagrant_files/cacert.pem /opt/vagrant/embedded/.
    ```
 
@@ -2883,12 +2900,13 @@ steps:
   commands:
   - make run
 
+
 ```
 
 **NOTE**
 
 - Make sure you pre-pend that dot (`.`) at the start of `.drone.yml`.
-- Make sure leave an empty line at the end of `.drone.yml` file or a parse error will result.
+- Make sure to leave two consecutive returns to indicate the end of the `.drone.yml` file or a parse error will result.
 
 The pipeline is authored in YAML like almost all the CI orchestrators out there except for Jenkin's Pipelines, whose you author in Groovy-based DSL.
 
@@ -5426,13 +5444,14 @@ steps:
   - go test -v ./... -json > report.json || true
   - sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
 
+
 ```
 
 Things to note in the above
 
 - This step uses an image, `nemonik/golang-sonarqube-scanner:3.3.0.1492`, built ontop of the `nemonik/golang:1.12.1` image to speed builds along. 
 - Cut-and-pasting may split the last `-sonar-scanner` line into multiple line resulting in your build failing.  Correct in the editor. 
-- Make sure leave an empty line at the end of `.drone.yml` file.
+- Make sure to leave two  returns to indicate the end of the `.drone.yml` file or a parse error will result.
 
 ```yaml
   - export DRONESRC=`pwd`
@@ -5451,6 +5470,8 @@ What follows handles running the scan absorbing errors as they arise, so as to n
   - go test -v ./... -coverprofile=coverage.out || true
   - go test -v ./... -json > report.json || true
   - sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
+
+
 ```
 
 Commit the code to GitLab hosted remote repo
@@ -5591,7 +5612,12 @@ Add a build step to our `.drone.yml`
     commands:
     - make build
 
+
 ```
+
+**NOTE**
+
+- Make sure to leave two consecutive returns to indicate the end of the `.drone.yml` file or a parse error will result.
 
 Then commit to GitLab
 
@@ -5704,11 +5730,13 @@ Add the publish step to your `.drone.yml` so that the container image is publish
     - "10.20.100.53"
     - "10.20.200.53"
 
+
 ```
 
 **Note**
 
 - Your DNS server entries for `custom_dns` may vary for your environment or this line may not be needed. In this case, the DNS servers were needed to be pass otherwise the build will fail to resolve the enterprise proxy when it attempts to retrieve external dependency to include in the container image.
+- Make sure to leave two consecutive returns to indicate the end of the `.drone.yml` file or a parse error will result.
 
 Push your code into GitLab
 
@@ -6070,7 +6098,12 @@ volumes:
 - name: private_key
   host:
     path: /vagrant/.vagrant/machines/toolchain/virtualbox/private_key
+
+
 ```
+**NOTE**
+
+- Make sure to leave two consecutive returns to indicate the end of the `.drone.yml` file or a parse error will result.
 
 Commit the code to GitLab hosted remote repo
 
@@ -6281,7 +6314,7 @@ end
 
 And then create the profile's metadata file, `inspec.yml` with the contents:
 
-```yml
+```yaml
 name: helloworld-tests
 title: InSpec Profile
 maintainer: Michael Joseph Walsh
@@ -6374,7 +6407,6 @@ Open in an editor `.drone.yml` and add the following step
       - wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
       - wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.yml
       - inspec exec inspec.rb
-
 ```
 
 Then commit the your code
@@ -6713,14 +6745,14 @@ cd /home/vagrant/go/src/github.com/nemonik/helloworld-web
 Edit the `.drone.yml` file and add to the bottom the following with the `selenum:` step having the same idention as the prior steps, and `services:` starting the line.
 
 ```yaml
-  selenium:
-    image: 192.168.0.11:5000/nemonik/python:2.7.15
-    commands:
-      - export NO_PROXY=$NO_PROXY,$(python selenium-test/resolve.py firefox)
-      - export no_proxy=$no_proxy,$(python selenium-test/resolve.py firefox)
-      - cd selenium-test
-      - pip install -r requirements.txt
-      - python test_helloworld.py firefox http://192.168.0.11:3000
+- name: selenium
+  image: 192.168.0.11:5000/nemonik/python:2.7.16
+  commands:
+  - export NO_PROXY=$NO_PROXY,$(python selenium-test/resolve.py firefox)
+  - export no_proxy=$no_proxy,$(python selenium-test/resolve.py firefox)
+  - cd selenium-test
+  - pip install -r requirements.txt
+  - python test_helloworld.py firefox http://192.168.0.11:3000
 
 volumes:
 - name: private_key
@@ -6731,18 +6763,20 @@ volumes:
     path: /dev/shm
 
 services:
-  firefox:
-    image: 192.168.0.11:5000/nemonik/standalone-firefox:3.14.0
-    volumes:
-      - name: shared_memory
-        path: /dev/shm
+- name: firefox
+  image: 192.168.0.11:5000/nemonik/standalone-firefox:3.14.0
+  volumes:
+  - name: shared_memory
+    path: /dev/shm
+
+
 ```
 
 **NOTE**
 
-- `services` is not indented like all the prior steps, because it is not a step, but enumeration of services, so be careful when you edit the pipeline.
+- `services` is not part of the prior steps, because it is not a step, but enumeration of services, so be careful when you edit the pipeline.
 
-Drone uses the  `services:` section to spin up a patched version of `selenium/standalone-firefox:3.14.0` exposed with the name `firefox`.  This is where the problem creeps in that I mentioned earlier, where the `selenium` step will hit corporate proxy to resolve `firefox`.  We don't want that to happen, so the `selenium:` step will makes use of another Python script to resolved `firefox` service to its private IP and add it the `no_proxy` and `NO_PROXY` environmental variables, so that the Python selenium test code doesn't attempt to pass the request on to the corporate proxy and result in the test failing.  
+Drone uses the `services:` section to spin up a patched version of `selenium/standalone-firefox:3.14.0` exposed with the name `firefox`.  This is where the problem creeps in that I mentioned earlier, where the `selenium` step will hit corporate proxy to resolve `firefox`.  We don't want that to happen, so the `selenium:` step will makes use of another Python script to resolved `firefox` service to its private IP and add it the `no_proxy` and `NO_PROXY` environmental variables, so that the Python selenium test code doesn't attempt to pass the request on to the corporate proxy and result in the test failing.  
 
 Create in a text editor `selenium-test/resolve.py` with
 
@@ -6943,7 +6977,7 @@ FAIL-NEW: 0     FAIL-INPROG: 0  WARN-NEW: 1     WARN-INPROG: 0  INFO: 0 IGNORE: 
 
 - OWASP ZAP is not the fastest tool, so give it time.
 
-Great, now lets add a step to our pipeline after the `selenium:`, but before `services`.
+Great, now lets add another step to our pipeline after the `selenium` step, but before `services:`.
 
 ```yaml
 - name: owasp-zaproxy:
@@ -6970,7 +7004,7 @@ Successful output for this stage resembles
 
 ```
 + zap-baseline.py -t http://192.168.0.11:3000 || true
-Dec 01, 2018 8:56:31 AM java.util.prefs.FileSystemPreferences$1 run
+Apr 03, 2019 2:39:30 AM java.util.prefs.FileSystemPreferences$1 run
 INFO: Created user preferences directory.
 Total of 3 URLs
 PASS: Cookie No HttpOnly Flag [10010]
@@ -6986,11 +7020,11 @@ PASS: Private IP Disclosure [2]
 PASS: Session ID in URL Rewrite [3]
 PASS: Script Passive Scan Rules [50001]
 PASS: Application Error Disclosure [90022]
-WARN-NEW: X-Content-Type-Options Header Missing [10021] x 4 
-	http://192.168.0.11:3000/
-	http://192.168.0.11:3000/robots.txt
-	http://192.168.0.11:3000/sitemap.xml
-	http://192.168.0.11:3000
+WARN-NEW: X-Content-Type-Options Header Missing [10021] x 4
+http://192.168.0.11:3000/
+http://192.168.0.11:3000/robots.txt
+http://192.168.0.11:3000/sitemap.xml
+http://192.168.0.11:3000
 FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 1	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 13
 ```
 
