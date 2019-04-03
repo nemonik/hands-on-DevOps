@@ -150,7 +150,7 @@ Vagrant.configure('2') do |config|
   ## Provision development vagrant
   config.vm.define "development", primary: true do |development|
     development.vm.box = "centos/7"
-    development.disksize.size = "40GB"
+#    development.disksize.size = "80GB"
     development.vm.network "private_network", ip: "192.168.0.10"  
     development.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
     development.vm.hostname = "development"
@@ -202,7 +202,7 @@ Vagrant.configure('2') do |config|
   ## Provision the pipeline vagrant
   config.vm.define "toolchain", autostart: false do |toolchain|
     toolchain.vm.box = "centos/7"
-    toolchain.disksize.size = "40GB"
+#    toolchain.disksize.size = "80GB"
     toolchain.vm.network "private_network", ip: "192.168.0.11"  
     toolchain.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'
     toolchain.vm.hostname = "toolchain"
