@@ -165,7 +165,7 @@ Vagrant.configure('2') do |config|
       development_docker_disk = './development_docker.vdi'
 
       unless File.exist?(development_docker_disk)
-        virtualbox.customize ['createmedium', '--filename', development_docker_disk, '--size', 20 * 1024]
+        virtualbox.customize ['createmedium', '--filename', development_docker_disk, '--size', 40 * 1024]
       end
 
       # the value of storage_system_bus depends on your platform
@@ -217,7 +217,7 @@ Vagrant.configure('2') do |config|
       toolchain_docker_disk = './toolchain_docker.vdi'
 
       unless File.exist?(toolchain_docker_disk)
-        virtualbox.customize ['createmedium', '--filename', toolchain_docker_disk, '--size', 20 * 1024]
+        virtualbox.customize ['createmedium', '--filename', toolchain_docker_disk, '--size', 40 * 1024]
       end
 
       # the value of storage_system_bus depends on your platform
