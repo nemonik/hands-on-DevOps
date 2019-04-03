@@ -11,7 +11,7 @@ This course will
 
 After this course you will
 1. Be able to describe and have hands on experience the DevOps methods and repeated practices (e.g., use of Agile methods, configuration management, build automations, test automation and deployment automation orchestrated under continuous integration and delivery orchestrator), and why it matters;
-2. Identify what diverse tools and resources that exist in the DevOps ecosystem to include a few here at MITRE;
+2. Identify what diverse tools and resources that exist in the DevOps ecosystem;
 3. Be able to address challenges sponsors face by transitioning to DevOps methods and repeated practices;
 4. Have had hands-on experience with Infrastructure as Code( Vagrant and Ansible ) to provision and configure an entire DevOps toolchain and development environment on VirtualBox including Docker Registry, GitLab, Drone CI, and SonarQube;
 5. Have had hands-on experience authoring code to include authoring and running automated tests in a CI/CD pipeline all under Configuration Management to insure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected;
