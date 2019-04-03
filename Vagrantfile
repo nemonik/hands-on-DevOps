@@ -21,31 +21,24 @@ end
 
 # Holds the version of software for the Ansible roles to install
 software_versions = {
-  drone_version: "0.8.9",  
-  drone_cli_version: "1.0.1",
-  golang_version: "1.11.2",
-  gitlab_version: "11.5.1",
-  ispec_rpm_version: "3.0.61/el/7/inspec-3.0.61-1.el7.x86_64.rpm",
-  inspec_version: "3.0.61",
-  inspec_rpm_version: "2.2.61/el/7/inspec-2.2.61-1.el7.x86_64",
-  openshift_origin_server_tools_version: "v3.10.0/openshift-origin-server-v3.10.0-dd10d17-linux-64bit",
-  openshift_origin_client_tools_version: "v3.10.0/openshift-origin-client-tools-v3.10.0-dd10d17-linux-64bit",
-  python_version: "2.7.15",
-  registry_version: "2.5.2",
+  drone_version: "1",
+  drone_cli_version: "1.0.7",
+  golang_version: "1.12.1",
+  gitlab_version: "11.8.3",
+  inspec_version: "3.9.0",
+  inspec_rpm_version: "3.9.0/el/7/inspec-3.9.0-1.el7.x86_64",
+  python_version: "2.7.16",
+  registry_version: "2.7.1",
   plantuml_server_version: "latest",
   sonarqube_version: "7.1", # 7.4-community is different enough i will need to look into in order to patch
-  sonar_scanner_cli_version: "3.2.0.1227",
- # selenium_standalone_chrome_version: "3.141.59",
- # selenium_standalone_firefox_version: "3.141.59",
+  sonar_scanner_cli_version: "3.3.0.1492",
   selenium_standalone_chrome_version: "3.14.0",
   selenium_standalone_firefox_version: "3.14.0",
-  taiga_version: "4.0.0",
+  taiga_version: "4.0.4",
   zap2docker_stable_version: "2.7.0"
+#  openshift_origin_server_tools_version: "v3.10.0/openshift-origin-server-v3.10.0-dd10d17-linux-64bit",
+#  openshift_origin_client_tools_version: "v3.10.0/openshift-origin-client-tools-v3.10.0-dd10d17-linux-64bit",
 }
-# drone_version: "0.8.6",
-# selenium_standalone_chrome_version: "3.11.0",
-# selenium_standalone_firefox_version: "3.11.0",
-# gitlab_version: "11.1.4"
 
 Vagrant.configure('2') do |config|
 

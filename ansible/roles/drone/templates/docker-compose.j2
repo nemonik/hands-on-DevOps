@@ -25,17 +25,22 @@ services:
     drone-agent:
         build: drone-agent/.
         image:
-            nemonik/agent:{{ drone_version }}
+           nemonik/agent:{{ drone_version }}
         restart: always
-        command:
-            agent
         environment:
-            - DRONE_SERVER=drone-server:9000
-            - DRONE_SECRET=shared_secret
+           - DRONE_RPC_SERVER=http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:80
+           - DRONE_RPC_SECRET=shared_secret
+           - DRONE_RUNNER_CAPACITY=1
+           - DRONE_DEBUG_PRETTY=true
+           - DRONE_LOGS_DEBUG=true  
+        ulimits:
+           nofile:
+              soft: "262144"
+              hard: "262144" 
         volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
+           - /var/run/docker.sock:/var/run/docker.sock
         depends_on:
-            - drone-server
+           - drone-server
 
     drone-server:
         build: drone-server/.
@@ -43,18 +48,30 @@ services:
             nemonik/drone:{{ drone_version }}
         restart: always
         environment:
-            - DRONE_HOST=http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:8000
-            - DRONE_OPEN=true
-            - DRONE_SECRET=shared_secret
             - DRONE_DATABASE_DRIVER=postgres
             - DRONE_DATABASE_DATASOURCE=postgres://drone:password@drone-postgresql:5432/drone?sslmode=disable
-            - DRONE_GITLAB=true
-            - DRONE_GITLAB_CLIENT=Your Application Id
-            - DRONE_GITLAB_SECRET=Your Secret
-            - DRONE_GITLAB_URL=http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:10080
-            - DRONE_ADMIN=root
+            - DRONE_GIT_ALWAYS_AUTH=false
+            - DRONE_GITLAB_SERVER=http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:10080
+            - DRONE_GITLAB_CLIENT_ID=Your Application Id
+            - DRONE_GITLAB_CLIENT_SECRET=Your Secret
+            - DRONE_RPC_SECRET=shared_secret
+            - DRONE_SERVER_HOST={{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}
+            - DRONE_SERVER_PROTO=http
+            - DRONE_AGENTS_ENABLED=true
+            - DRONE_TLS_AUTOCERT=false
+            - DRONE_LOGS_PRETTY=true
+            - DRONE_LOGS_COLOR=true
+            - DRONE_USER_CREATE=username:root,admin:true
+        ulimits:
+          nofile:
+            soft: "262144"
+            hard: "262144"
         ports:
-            - 8000:8000
-            - 9000
+            - 80:80
+        volumes:
+            - ./volumes/drone-server/var/lib/drone:/var/lib/drone:Z
         depends_on:
             - drone-postgresql
+
+
+
