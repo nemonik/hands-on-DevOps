@@ -10,7 +10,7 @@ This course will
 3. Author two applications and their accompanying pipelines, the first a continuous integration (CI) and the second a continuous delivery (CD) pipeline.
 
 After this course you will
-1. Be able to describe and have hands on experience the DevOps methods and repeated practices (e.g., use of Agile methods, configuration management, build automations, test automation and deployment automation orchestrated under continuous integration and delivery orchestrator), and why it matters for MITRE and sponsors;
+1. Be able to describe and have hands on experience the DevOps methods and repeated practices (e.g., use of Agile methods, configuration management, build automations, test automation and deployment automation orchestrated under continuous integration and delivery orchestrator), and why it matters;
 2. Identify what diverse tools and resources that exist in the DevOps ecosystem to include a few here at MITRE;
 3. Be able to address challenges sponsors face by transitioning to DevOps methods and repeated practices;
 4. Have had hands-on experience with Infrastructure as Code( Vagrant and Ansible ) to provision and configure an entire DevOps toolchain and development environment on VirtualBox including Docker Registry, GitLab, Drone CI, and SonarQube;
@@ -868,13 +868,13 @@ vagrant plugin install vagrant-proxyconf
 vagrant plugin install vagrant-vbguest
 ```
 
-Verify with
+Verify the version installed with
 
 ```
 vagrant plugin list
 ```
 
-Resembles this
+Whose output resembles this
 
 ```
 vagrant-ca-certificates (1.3.0, global)
@@ -883,6 +883,8 @@ vagrant-disksize (0.1.3, global)
 vagrant-proxyconf (2.0.1, global)
 vagrant-vbguest (0.17.2, global)
 ```
+
+The versions should be these or newer.  Note difference in the event there ar problems later, becaus these versions have been verified to work.
 
 #### 9.5.1.4. The Vagrantfile explained
 
@@ -1054,8 +1056,8 @@ This section uses the `vagrant-disksize` plugin to to resize disks in VirtualBox
 ```ruby
   ## Provision development vagrant
   config.vm.define "development", primary: true do |development|
-    development.vm.box = "centos/7" 
-    development.disksize.size = "80GB"
+    development.vm.box = "centos/7"
+#    development.disksize.size = "80GB"
     development.vm.network "private_network", ip: "192.168.0.10"
     development.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
     development.vm.hostname = "development"
@@ -1070,11 +1072,11 @@ This section uses the `vagrant-disksize` plugin to to resize disks in VirtualBox
       development_docker_disk = './development_docker.vdi'
 
       unless File.exist?(development_docker_disk)
-        virtualbox.customize ['createmedium', '--filename', development_docker_disk, '--size', 100 * 1024]
+        virtualbox.customize ['createmedium', '--filename', development_docker_disk, '--size', 40 * 1024]
       end
 
       # the value of storage_system_bus depends on your platform
-      storage_system_bus = "IDE" 
+      storage_system_bus = "IDE"
 
       # Provisions a drive for Docker storage
       virtualbox.customize ['storageattach', :id, '--storagectl', storage_system_bus, '--port', 1, '--device', 0, '--type', 'hdd', '--medium', development_docker_disk]
@@ -1086,32 +1088,32 @@ This section uses the `vagrant-disksize` plugin to to resize disks in VirtualBox
       ansible.limit = "development"
       ansible.install_mode = :default
       ansible.compatibility_mode = "2.0"
-      ansible.verbose = 'vvvv' # true (equivalent to v), vvv, vvvv
+      ansible.verbose = true # true (equivalent to v), vvv, vvvv
 
       # Pass top-level variables into Ansible from Vagrant
       ansible.extra_vars = software_versions
 
       if development.proxy.enabled
-        ansible.extra_vars[:http_proxy] = config.proxy.http
-        ansible.extra_vars[:https_proxy] = config.proxy.https
-        ansible.extra_vars[:ftp_proxy] = config.proxy.ftp
-        ansible.extra_vars[:no_proxy] = config.proxy.no_proxy
+        ansible.extra_vars[:http_proxy] = (!config.proxy.http ? "" : config.proxy.http)
+        ansible.extra_vars[:https_proxy] = (!config.proxy.https ? "" : config.proxy.https)
+        ansible.extra_vars[:ftp_proxy] = (!config.proxy.ftp ? "" : config.proxy.ftp)
+        ansible.extra_vars[:no_proxy] = (!config.proxy.no_proxy ? "" : config.proxy.no_proxy)
       end
 
       if development.ca_certificates.enabled
         ansible.extra_vars[:CA_CERTIFICATES] = config.ca_certificates.certs
       end
     end
-  end  
+  end
 ```
 
 This section provisions and configures a `development` vagrant used for development
 
 - The `config.vm.provision` block uses `ansible_local` to configure the `development` vagrant. I've written Ansible roles under `ansible/roles` to automate the configuration of the vagrants.
 
-  - `toolchain.vm.box` loads the vagrant with this `centos/7` vagrant base box.  Vagrant curates a listing of base boxes here https://app.vagrantup.com/boxes/search
-  - `dev.vm.synced_folder` mounts the class's project folder to `/vagrant` path in the vagrant.
-  -  The `dev.vm.provider` section tells the hypervisor how to configure the vagrant (i.e., how much memory, how many procesors)
+  - `development.vm.box` loads the vagrant with this `centos/7` vagrant base box.  Vagrant curates a listing of base boxes here https://app.vagrantup.com/boxes/search
+  - `development.vm.synced_folder` mounts the class's project folder to `/vagrant` path in the vagrant.
+  -  The `development.vm.provider` section tells the hypervisor how to configure the vagrant (i.e., how much memory, how many procesors)
 - `ansible_local` does not require one to have Ansible installed on the host. Vagrant handles installing it on the vagrant and executing the specified playbook. 
   - In this instance, I have `ansible.verbose` jacked to its highest setting providing loads of `development` logging.  If too much information about what is going on unnerves you changing this to `false` will disable verbose logging.
 
@@ -1120,29 +1122,27 @@ This section provisions and configures a `development` vagrant used for developm
 ```ruby
   ## Provision the pipeline vagrant
   config.vm.define "toolchain", autostart: false do |toolchain|
-    toolchain.vm.box = "centos/7" 
-    toolchain.disksize.size = "80GB"
-    toolchain.vm.network "private_network", ip: "192.168.0.11"  
+    toolchain.vm.box = "centos/7"
+#    toolchain.disksize.size = "80GB"
+    toolchain.vm.network "private_network", ip: "192.168.0.11"
     toolchain.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'
     toolchain.vm.hostname = "toolchain"
     toolchain.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     toolchain.vm.provider :virtualbox do |virtualbox|
       virtualbox.name = "DevOps Class - toolchain"
       virtualbox.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10]
-      virtualbox.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
-      virtualbox.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
-      virtualbox.memory = 4096
+      virtualbox.memory = 6144 #4096
       virtualbox.cpus = 4
-      virtualbox.gui = false  
+      virtualbox.gui = false
 
       toolchain_docker_disk = './toolchain_docker.vdi'
 
       unless File.exist?(toolchain_docker_disk)
-        virtualbox.customize ['createmedium', '--filename', toolchain_docker_disk, '--size', 100 * 1024]
+        virtualbox.customize ['createmedium', '--filename', toolchain_docker_disk, '--size', 40 * 1024]
       end
 
       # the value of storage_system_bus depends on your platform
-      storage_system_bus = "IDE" 
+      storage_system_bus = "IDE"
 
       # Provisions a drive for Docker storage
       virtualbox.customize ['storageattach', :id, '--storagectl', storage_system_bus, '--port', 1, '--device', 0, '--type', 'hdd', '--medium', toolchain_docker_disk]
@@ -1160,10 +1160,10 @@ This section provisions and configures a `development` vagrant used for developm
       ansible.extra_vars = software_versions
 
       if toolchain.proxy.enabled
-        ansible.extra_vars[:http_proxy] = config.proxy.http
-        ansible.extra_vars[:https_proxy] = config.proxy.https
-        ansible.extra_vars[:ftp_proxy] = config.proxy.ftp
-        ansible.extra_vars[:no_proxy] = config.proxy.no_proxy
+        ansible.extra_vars[:http_proxy] = (!config.proxy.http ? "" : config.proxy.http)
+        ansible.extra_vars[:https_proxy] = (!config.proxy.https ? "" : config.proxy.https)
+        ansible.extra_vars[:ftp_proxy] = (!config.proxy.ftp ? "" : config.proxy.ftp)
+        ansible.extra_vars[:no_proxy] = (!config.proxy.no_proxy ? "" : config.proxy.no_proxy)
       end
 
       if toolchain.ca_certificates.enabled
@@ -1189,7 +1189,7 @@ Since, Ansible will work against multiple systems in the infrastructure at the s
 
 The project's inventory, `hosts` is located at the root of the project and contains:
 
-```
+```python
 controller  ansible_connection=local
 development ansible_connection=local
 toolchain   ansible_connection=local
@@ -1204,21 +1204,25 @@ development ansible_host=192.168.0.10
 [toolchains]
 toolchain ansible_host=192.168.0.11
 
-# Used by Ansible roles to configure DNS server settings
+# Used by Ansible roles to configure Docker DNS server settings
 [dns]
 # My home network DNS
-# ns1 ansible_host=10.0.1.1
+#ns1 ansible_host=10.0.1.1
 
 # MITRE DNS
-ns1 ansible_host=10.20.100.53
-ns2 ansible_host=10.20.200.53
+#ns1 ansible_host=10.20.100.53
+#ns2 ansible_host=10.20.200.53
 
-# Google DNS
+# Google / Starbux DNS
 #ns1 ansible_host=8.8.8.8
 #ns2 ansible_host=8.8.4.4
 
 # HAMP LAB DNS
-# ns1 ansible_host=192.168.1.1
+#ns1 ansible_host=192.168.1.1
+
+# OuterNET
+ns1 ansible_host=192.52.194.138
+ns2 ansible_host=198.49.146.138
 ```
 
 The inventory collects all the vagrants under a `[nodes]` group, and then defines each vagrant under their respective group either `[developments]` or `[toolchains]`.  
@@ -1255,6 +1259,7 @@ The `development` vagrant Ansible playbook (`ansible/development-playbook.yml`) 
     - inspec
     - drone-cli
     - sonar-scanner-cli
+#    - openshift-cli
 ```
 
 The file is written in a YAML-based DSL (domain specific language.)
@@ -1474,7 +1479,7 @@ Further, the Lean-Agile Software tools should provide the following capabilities
 - Facilitating the selection and assignment of individual requirements to resources, and the tracking of progress for a release.
 - Permit collaboration with external third parties.
 
-The 800lb Gorilla in this market segment is JIRA Software. Some of my co-workers hate it. It is part of the Atlassian suite providing provides collaboration software for teams with products including JIRA Software, Confluence, HipChat, Bitbucket, and Stash.
+The 800lb Gorilla in this market segment is JIRA Software. Some of my co-workers hate it. It is part of the Atlassian suite providing provides collaboration software for teams with products including JIRA Software, Confluence, Bitbucket, and Stash.
 
 **NOTE**
 
@@ -1607,14 +1612,6 @@ Perform the following steps as the GitLab adminstrator:
 3. In the `side bar` running the length of the left-side of the page, click the `gear`-icon, select `CI/CD`, and expand `Continuous Integration and Deployment`
 4. Uncheck `Default to Auto DevOps pipeline for all projects` and then click `Save Changes`
 
-Perform the following steps as the GitLab adminstrator:
-
-1. Log into GitLab as **root** with the password you entered in the prior step
-2. Click the wrench at the top of the page to enter the `Admin area`
-3. In the `side bar` running the length of the left-side of the page, click the `gear`-icon, select `Network`, and expand `Outbound requests`
-4. Under `Outbound requests`, check `Allow requests to the local network from hooks and services` and then click `Save Changes`
-
-
 ### 9.8.3. Drone CI, an example of CI/CD orchestrator
 
 Drone CI often referred to simply as "Drone" is installed on the `toolchain` vagrant, where it will be accessible at <http://192.168.0.11/> after some user configuration that will be explained later in the _Integrate Drone CI with GitLab_ section.
@@ -1625,7 +1622,7 @@ Drone is distributed as a Docker image. Drone CI can be run with an internal SQL
 
 Drone and its brethren (e.g., Jenkins CI, GitLab CI/CD) is used to facilitate Continuous Integration (CI), a software development practice where members of an Agile team frequently integrate their work in order to detect integration issues as soon as possible. Each integration is orchestrated through a service that essentially assembles a build and runs tests every time a predetermined trigger has been met; and then reports with immediate feedback.
 
-I don't use Jenkins unless I have to. Why? I'm simply not a fan. Initially, because its plugin architecture is painful to manage and your pipelines existed entirely in the Jenkins CI tool itself. Later, Jenkins CI introduced Groovy-based Jenkin Pipelines that were CMed wit your project's source. Every orchestrator has based their DSL on YAML and although I love the Groovy language for its power, I don't find it makes for a good orchestration language. Your opinion may differ. I'm okay with that.
+I don't use Jenkins unless I have to. Why? I'm simply not a fan. Initially, because its plugin architecture is painful to manage and your pipelines existed entirely in the Jenkins CI tool itself. Later, Jenkins CI introduced Groovy-based Jenkin Pipelines that are CMed with your project's source. Every orchestrator has based their DSL on YAML and although I love the Groovy language for its power, I don't find it makes for a good orchestration language. Your opinion may differ. I'm okay with that.  Really.  I am.
 
 There are also SaaS CI/CD tools, such as Travis CI and Circle CI. These are great, free CI/CD orchestrators.
 
@@ -1898,7 +1895,7 @@ Open `ansible/development-playbook.yml` and make sure these roles are uncommente
     - golint
     - drone-cli
     - sonar-scanner-cli
-    - openshift-cli
+#    - openshift-cli
 ```
 
 Then in the command-line of the host (not while ssh'ed into the toolchain vagrant) at the root of the class project
@@ -2232,7 +2229,7 @@ helloworld
 
 **NOTE**
 
-- Make sure you pre-pend that dot (`.`) at the start of `.gitignore`. Dot-files are hidden files. 
+- Make sure you pre-pend that dot (`.`) at the start of `.gitignore`. In *NIX Dot-files are hidden files. 
 - `.gitignore` will not show up if you simply list the file system via the `ls` command, but they do if you use `ls -a` or `ls --all`.  Either arguments configures `ls` to not ignore entries starting with `.`.
 
 ### 9.10.4. Author the application
@@ -2787,7 +2784,7 @@ run:
 
 **NOTE**
 
-- Each line indentation is a `tab` and **not** a series of `space` characters.
+- Each line indentation is a `tab` and **not** a series of `space` characters.  `Make` will fail to execute if these tabs are converted to a series of space characters.
 
 Save the file and exit your editor.
 
@@ -2877,7 +2874,7 @@ CI integrates all of the steps we have worked to ensure a high quality build int
 
 We're going to author a continuous integration pipeline for our application and execute it on Drone. Drone expects a `.drone.yml` to exist at the root of the project and will execute the pipeline it contains when the project is committed to GitLab.
 
-A pipeline is broken up into multiple named steps, where each step executes in an ephemeral Docker container with shared disk access to the project's workspace. The benefit of this approach is that it relieves you from having to create and maintain slaves to execute your pipelines.
+A pipeline is broken up into multiple named steps, where each step executes in an ephemeral (i.e., does its job and then poof it is gone) Docker container with shared disk access to the project's workspace. The benefit of this approach is that it relieves you from having to create and maintain slaves to execute your pipelines.
 
 Drone automatically clones your project's repo (Short for "repository.") into a volume (referred to as the workspace) shared by each Docker container (including plugins service containers).
 
@@ -2906,13 +2903,13 @@ steps:
 **NOTE**
 
 - Make sure you pre-pend that dot (`.`) at the start of `.drone.yml`.
-- Make sure to leave two consecutive returns to indicate the end of the `.drone.yml` file or a parse error will result.
+- Make sure to leave two consecutive returns to indicate the end of the `.drone.yml` file or a parse error when executed in Drone will result.
 
 The pipeline is authored in YAML like almost all the CI orchestrators out there except for Jenkin's Pipelines, whose you author in Groovy-based DSL.
 
 - `steps:` - defines a list of steps to build, test and deploy your code.
 - `build` and `run` - are the names of the step. These are  yours to name. Name steps something meaningful as to what the step is orchestrating. Each step is executed serially, in the order defined.
-- `image: 192.168.0.11:5000/nemonik/golang:1.10.3` - The build step is using the nemonik/golang container tagged `1.10.1` retrieved from private Docker registry located at `192.168.0.11:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
+- `image: 192.168.0.11:5000/nemonik/golang:1.12.1` - The build step is using the nemonik/golang container tagged `1.12.1` retrieved from private Docker registry located at `192.168.0.11:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
 - `commands` - Is a collection of terminal commands to be executed. These are all the same commands we executed previously in the command line. If anyone of these commands were to fail returning a non-zero exit code, the pipeline will immediately end resulting in a failed build.
 
 #### 9.10.11.1. Configure Drone to execute your pipeline
@@ -2940,7 +2937,7 @@ The execution of this pipeline will follow as so:
 
 1. A new build will appear. Click on it.
 2. Drone will clone your project's repository in a `clone` step.
-3. And then will execute a `build` and `run` steps in order each spinning up `nemonik/golang:1.9.4` container, whose container image was patched to work behind MITRE's http proxy and SSL introspection. (Later, you may want examine the contents of ansible/roles/golang-container-image/files/Dockerfile for more details as to how this was accomplished.)
+3. And then will execute a `build` and `run` steps in order each spinning up `nemonik/golang:1.12.1` container, whose container image was patched if proxy environmental variable are set to work behind MITRE's http proxy and SSL introspection. (Later, you may want examine the contents of ansible/roles/golang-container-image/files/Dockerfile for more details as to how this was accomplished.)
 4. These steps execute the commands in the same way you executed them yourself: a. make lint b. make test c. make build d. make run
 
 The output of the `build` (An arbitrary name. You could use "skippy".) step will resemble:
@@ -2985,7 +2982,7 @@ hello world
 
 Our build was successful.  Drone uses a container's exit code to determine success or failure. A container's non-zero exit code will cause the pipeline to exit immediately.
 
-That's it.  This is essentially CI.
+That's it.  This is essentially CI. Remember, CI stands for Continuous Integration.  Scintillating isn't it?
 
 ### 9.10.12. The completed source for *helloworld*
 
@@ -3190,7 +3187,7 @@ skinparam note {
 2. Leave the `Project path` defaulted to `http://192.168.0.11:10080/root/`.
 3. Enter `helloworld-web` for the `Project name`.  **Be careful with the spelling.**
 4. Provide an optional `Project description`. Something descriptive, such as, _"GoLang helloworld application for the hands-on DevOps class."_.
-5. Make the application `public`.
+5. Save yourself a headache, and make the application `public`.
 6. Click the green `Create Project` button on the lower left.
 
 The UI will refresh to show you landing page for the project that should be accessible from
@@ -3270,7 +3267,7 @@ skinparam note {
 
 Create a `helloworld-web` GitLab hosted repo as you did prior for the `helloworld` project.
 
-If you do not already havea shell open on `development` vagrant, on your host in a shell at the root of the class project enter the following
+If you do not already have a shell open on `development` vagrant, on your host in a shell at the root of the class project enter the following
 
 ```bash
 vagrant ssh development
@@ -3923,6 +3920,8 @@ coverage: 55.6% of statements
 ok  	github.com/nemonik/helloworld-web	0.005s
 ```
 
+Notice we only scored 55.6% coverage, but had unit tests for all our methods?  This where dicernment comes in.
+
 ### 9.11.9. Perform static analysis (i.e., sonar-scanner) on the command line
 ```plantuml
 skinparam shadowing false
@@ -4294,7 +4293,7 @@ run:
 
 **NOTE**
 
-- The indents are `tab` characters and not `spaces` characters.  
+- The indents are `tab` characters and not `spaces` characters. otherwise you `make` will fail to execute.  
 - And cut-and-paste may split the single line beginning with `sonar-scanner` into multiple lines.  You want this to be single line of text.
 
 Test out your `Makefile`
@@ -4622,7 +4621,7 @@ docker-build: build
 
 Also, add the `docker-build` to the `all` target like so:
 
-```
+```makefile
 all: sonar docker-build
 ```
 
@@ -5451,7 +5450,7 @@ Things to note in the above
 
 - This step uses an image, `nemonik/golang-sonarqube-scanner:3.3.0.1492`, built ontop of the `nemonik/golang:1.12.1` image to speed builds along. 
 - Cut-and-pasting may split the last `-sonar-scanner` line into multiple line resulting in your build failing.  Correct in the editor. 
-- Make sure to leave two  returns to indicate the end of the `.drone.yml` file or a parse error will result.
+- Make sure to leave two  returns to indicate the end of the `.drone.yml` file or a parse error will result in Drone.
 
 ```yaml
   - export DRONESRC=`pwd`
@@ -5617,7 +5616,7 @@ Add a build step to our `.drone.yml`
 
 **NOTE**
 
-- Make sure to leave two consecutive returns to indicate the end of the `.drone.yml` file or a parse error will result.
+- Make sure to leave two consecutive returns to indicate the end of the `.drone.yml` file or a parse error will result in Drone.
 
 Then commit to GitLab
 
@@ -5736,7 +5735,7 @@ Add the publish step to your `.drone.yml` so that the container image is publish
 **Note**
 
 - Your DNS server entries for `custom_dns` may vary for your environment or this line may not be needed. In this case, the DNS servers were needed to be pass otherwise the build will fail to resolve the enterprise proxy when it attempts to retrieve external dependency to include in the container image.
-- Make sure to leave two consecutive returns to indicate the end of the `.drone.yml` file or a parse error will result.
+- Make sure to leave two consecutive returns to indicate the end of the `.drone.yml` file or a parse error will result in Drone.
 
 Push your code into GitLab
 
@@ -6030,27 +6029,19 @@ skinparam note {
 
 Usually, one adds a Drone secret and the `appleboy/ssh` plugin, but the last I looked there appeared to be a [bug in the plugin](https://github.com/appleboy/drone-ssh/issues/51), but one can accomplish the same goal using the plugin slightly differently.
 
-First, enable the `Trusted` setting for the repository by opening
+Enable the `Trusted` setting for the repository in Drone by opening
 
-<http://192.168.0.11/root/helloworld-web/settings>
+1. <http://192.168.0.11/root/helloworld-web/settings>
+2. Under `Main` and then `Project Settings` check off `Trusted`.
+3. Leave the others to their defaults and click `SAVE` and look for Drone to float a modal at the bottom left denoting
 
-And then under `Main` check off
+   ```
+   Successfully saved
+   ```
 
-Project Settings
+   indicating success.
 
-- Trusted
-
-Leave the others to their defaults, click `SAVE`
-
-Look for Drone to float a modal at the bottom left denoting
-
-```
-Successfully saved
-```
-
-indicating success.
-
-Then click the Drone icon in the upper left of the page to return home.
+4. Then click the Drone icon in the upper left of the page to return home.
 
 Since we let Vagrant manage the creation and configuration of each Vagrant's SSH keys for each of our variants (e.g., dev, toolchain) vagrant will have to create a unique key pair for each vagrant. Vagrant store each vagrant's private inside the `.vagrant` path created in the class project.  
 
@@ -6087,7 +6078,7 @@ Open `root/helloworld-web`'s `.drone.yml` in your editor and add an additional `
     port: 22
     username: vagrant
     key_path: /root/ssh/drone_rsa
-    command_timeout: 3m
+    command_timeout: 5m
     script:
       - docker stop helloworld-web 2>/dev/null
       - docker rm helloworld-web 2>/dev/null
@@ -6400,7 +6391,7 @@ Open in an editor `.drone.yml` and add the following step
     port: 22
     username: vagrant
     key_path: /root/ssh/drone_rsa
-    command_timeout: 3m
+    command_timeout: 5m
     script:
       - cd /tmp
       - rm inspec.*
@@ -7165,7 +7156,7 @@ The output will resemeble
 ```
 WARNING: Some services (helloworld) use the 'deploy' key, which will be ignored. Compose does not support 'deploy' configuration - use `docker stack deploy` to deploy to a swarm.
 Building helloworld
-Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.10.3
+Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.12.1
  ---> 6aa2d9de5f78
 Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
  ---> Using cache
