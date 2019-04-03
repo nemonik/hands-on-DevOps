@@ -150,23 +150,22 @@ Vagrant.configure('2') do |config|
   ## Provision development vagrant
   config.vm.define "development", primary: true do |development|
     development.vm.box = "centos/7"
-    development.disksize.size = "80GB"
-    development.vm.network "private_network", ip: "192.168.0.10"
+    development.disksize.size = "40GB"
+    development.vm.network "private_network", ip: "192.168.0.10"  
     development.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
     development.vm.hostname = "development"
     development.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     development.vm.provider :virtualbox do |virtualbox|
-
       virtualbox.name = "DevOps Class - development"
       virtualbox.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10]
       virtualbox.memory = 2048
       virtualbox.cpus = 2
-      virtualbox.gui = false
+      virtualbox.gui = false  
 
       development_docker_disk = './development_docker.vdi'
 
       unless File.exist?(development_docker_disk)
-        virtualbox.customize ['createmedium', '--filename', development_docker_disk, '--size', 100 * 1024]
+        virtualbox.customize ['createmedium', '--filename', development_docker_disk, '--size', 20 * 1024]
       end
 
       # the value of storage_system_bus depends on your platform
@@ -203,7 +202,7 @@ Vagrant.configure('2') do |config|
   ## Provision the pipeline vagrant
   config.vm.define "toolchain", autostart: false do |toolchain|
     toolchain.vm.box = "centos/7"
-    toolchain.disksize.size = "80GB"
+    toolchain.disksize.size = "40GB"
     toolchain.vm.network "private_network", ip: "192.168.0.11"  
     toolchain.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'
     toolchain.vm.hostname = "toolchain"
@@ -211,8 +210,6 @@ Vagrant.configure('2') do |config|
     toolchain.vm.provider :virtualbox do |virtualbox|
       virtualbox.name = "DevOps Class - toolchain"
       virtualbox.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10]
-      virtualbox.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
-      virtualbox.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
       virtualbox.memory = 6144 #4096
       virtualbox.cpus = 4
       virtualbox.gui = false  
@@ -220,7 +217,7 @@ Vagrant.configure('2') do |config|
       toolchain_docker_disk = './toolchain_docker.vdi'
 
       unless File.exist?(toolchain_docker_disk)
-        virtualbox.customize ['createmedium', '--filename', toolchain_docker_disk, '--size', 100 * 1024]
+        virtualbox.customize ['createmedium', '--filename', toolchain_docker_disk, '--size', 20 * 1024]
       end
 
       # the value of storage_system_bus depends on your platform

@@ -5590,6 +5590,7 @@ Add a build step to our `.drone.yml`
     image: nemonik/golang:1.12.1
     commands:
     - make build
+
 ```
 
 Then commit to GitLab
@@ -5702,9 +5703,7 @@ Add the publish step to your `.drone.yml` so that the container image is publish
     custom_dns:
     - "10.20.100.53"
     - "10.20.200.53"
-  when:
-    branch:
-    - master
+
 ```
 
 **Note**
@@ -6007,21 +6006,23 @@ First, enable the `Trusted` setting for the repository by opening
 
 <http://192.168.0.11/root/helloworld-web/settings>
 
-And check off the following
+And then under `Main` check off
 
 Project Settings
 
 - Trusted
 
-You can leave the others to their defaults.
+Leave the others to their defaults, click `SAVE`
 
 Look for Drone to float a modal at the bottom left denoting
 
 ```
-Successfully updated the repository settings
+Successfully saved
 ```
 
 indicating success.
+
+Then click the Drone icon in the upper left of the page to return home.
 
 Since we let Vagrant manage the creation and configuration of each Vagrant's SSH keys for each of our variants (e.g., dev, toolchain) vagrant will have to create a unique key pair for each vagrant. Vagrant store each vagrant's private inside the `.vagrant` path created in the class project.  
 
@@ -6058,14 +6059,12 @@ Open `root/helloworld-web`'s `.drone.yml` in your editor and add an additional `
     port: 22
     username: vagrant
     key_path: /root/ssh/drone_rsa
-    command_timeout: 360
+    command_timeout: 3m
     script:
       - docker stop helloworld-web 2>/dev/null
       - docker rm helloworld-web 2>/dev/null
       - docker rmi 192.168.0.11:5000/nemonik/helloworld-web 2>/dev/null
       - docker run -d --restart=always --name helloworld-web --publish 3000:3000 192.168.0.11:5000/nemonik/helloworld-web
-    when:
-      branch: master
 
 volumes:
 - name: private_key
@@ -6262,7 +6261,7 @@ mkdir inspec-tests
 cd inspec-tests
 ```
 
-Then author a simple Ruby-based tests to verify the expected state of the `nemonik/helloworld-web:latest` Docker container by creating `inspec.rb ` in an editor with this content:
+Then author a simple Ruby-based tests to verify the expected state of the `nemonik/helloworld-web:latest` Docker container by creating `inspec.rb` in an editor with this content:
 
 ```ruby
 control 'docker-checks-1.1' do
@@ -6303,7 +6302,7 @@ supports:
 
 #### 9.11.19.2. Execute your test
 
-First, we'll Eexecute the test against container running locally by first spinning up a `192.168.0.11:5000/nemonik/helloworld-web:latest` container via
+First, we'll execute the test against container running locally by first spinning up a `192.168.0.11:5000/nemonik/helloworld-web:latest` container via
 
 ```bash
 docker run -d -p 3000:3000 --name helloworld-web 192.168.0.11:5000/nemonik/helloworld-web:latest
@@ -6368,15 +6367,14 @@ Open in an editor `.drone.yml` and add the following step
     port: 22
     username: vagrant
     key_path: /root/ssh/drone_rsa
-    command_timeout: 360
+    command_timeout: 3m
     script:
       - cd /tmp
       - rm inspec.*
       - wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.rb
       - wget http://192.168.0.11:10080/root/helloworld-web/raw/master/inspec-tests/inspec.yml
       - inspec exec inspec.rb
-    when:
-      branch: master
+
 ```
 
 Then commit the your code
