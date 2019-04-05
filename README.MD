@@ -749,6 +749,7 @@ Example settings (Adjust for your environment.):
 
 - The certificate URLs need to be encoded for parentheses to work.
 - One Windows, you may inadvertantly cut-and-paste blank space characters (e.g., tabs, spaces) and the subsequent Ansible automation may fail.
+- Make sure if you are using the above setting not to drop the port from the respective URLs (e.g.,`http://gatekeeper.mitre.org:80`)
 
 ## 9.2. VirtualBox
 
@@ -1824,7 +1825,7 @@ On your host in the DevOps class project:
 
 1. Enter into the following into the command line 
    ```
-   git config --global user.name "Administrator"`
+   git config --global user.name "Administrator"
    git config --global user.email "admin@example.com"
    ```
 2. Then enter the following 
@@ -3102,11 +3103,11 @@ Complete the follow to track your progress in completing the _helloworld-web_ pr
     Add build step to pipeline
     Add container image publish step to pipeline
     Add container deploy step to pipeline
-    Add complaince automation test (InSpec) step to pipeline
-    Add automated funtional test (Selenium) to pipeline
+    Add compliance automation test (InSpec) step to pipeline
+    Add automated functional test (Selenium) to pipeline
     Add DAST step (OWASP ZAP) to the pipeline
     ```
-    
+
 Track your progress in Taiga as you work through each section.
 
 ### 9.11.2. Create the project in GitLab
@@ -5607,9 +5608,9 @@ Add a build step to our `.drone.yml`
 
 ```yaml
 - name: build
-    image: nemonik/golang:1.12.1
-    commands:
-    - make build
+  image: nemonik/golang:1.12.1
+  commands:
+  - make build
 
 
 ```
