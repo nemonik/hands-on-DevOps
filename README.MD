@@ -2789,7 +2789,7 @@ run:
 
 Save the file and exit your editor.
 
-Okay, let's try it out
+Okay, let's try it out in the `development` terminal
 
 ```bash
 make all
@@ -4922,7 +4922,7 @@ listening on :3000
 192.168.0.1:55159  GET  /favicon.ico
 ```
 
-`ctrl-c` to exit the logs.
+`ctrl-c` (i.e., press and hold the `ctrl` key while pressing `c`) to exit the logs.
 
 To kill the container
 
