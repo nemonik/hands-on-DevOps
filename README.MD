@@ -3633,6 +3633,27 @@ Run our linters
 gometalinter.v2 
 ```
 
+`Gometalinter` then runs all these Go linters:
+
+* `go vet` - Reports potential errors that otherwise compile.
+* `go tool vet --shadow` - Reports variables that may have been unintentionally shadowed.
+* `gotype` - Syntactic and semantic analysis similar to the Go compiler.
+* `gotype -x` - Syntactic and semantic analysis in external test packages (similar to the Go compiler).
+* `deadcode` - Finds unused code.
+* `gocyclo` - Computes the cyclomatic complexity of functions.
+* `golint` - Google's (mostly stylistic) linter.
+* `varcheck` - Find unused global variables and constants.
+* `structcheck` - Find unused struct fields.
+* `maligned` - Detect structs that would take less memory if their fields were sorted.
+* `errcheck` - Check that error return values are used.
+* `megacheck` - Run staticcheck, gosimple and unused, sharing work.
+* `dupl` - Reports potentially duplicated code.
+* `ineffassign` - Detect when assignments to existing variables are not used.
+* `interfacer` - Suggest narrower interfaces that can be used.
+* `unconvert` - Detect redundant type conversions.
+* `goconst` - Finds repeated strings that could be replaced by a constant.
+* `gosec` - Inspects source code for security problems by scanning the Go AST.
+
 And the output like the follwing outout will be returned after some time
 
 ```
@@ -4143,27 +4164,6 @@ INFO: ------------------------------------------------------------------------
 Let me unpack what the above commands are doing
 
 The first line `go get github.com/alecthomas/gometalinter` installs the `gometalinter` dependency for concurrently run Go lint tools and normalise their output
-
-`Gometalinter` then runs all these Go linters:
-
-* `go vet` - Reports potential errors that otherwise compile.
-* `go tool vet --shadow` - Reports variables that may have been unintentionally shadowed.
-* `gotype` - Syntactic and semantic analysis similar to the Go compiler.
-* `gotype -x` - Syntactic and semantic analysis in external test packages (similar to the Go compiler).
-* `deadcode` - Finds unused code.
-* `gocyclo` - Computes the cyclomatic complexity of functions.
-* `golint` - Google's (mostly stylistic) linter.
-* `varcheck` - Find unused global variables and constants.
-* `structcheck` - Find unused struct fields.
-* `maligned` - Detect structs that would take less memory if their fields were sorted.
-* `errcheck` - Check that error return values are used.
-* `megacheck` - Run staticcheck, gosimple and unused, sharing work.
-* `dupl` - Reports potentially duplicated code.
-* `ineffassign` - Detect when assignments to existing variables are not used.
-* `interfacer` - Suggest narrower interfaces that can be used.
-* `unconvert` - Detect redundant type conversions.
-* `goconst` - Finds repeated strings that could be replaced by a constant.
-* `gosec` - Inspects source code for security problems by scanning the Go AST.
 
 `gometalinter.v2 > gometalinter-report.out` executes all the above linters and consolidates their results into a single `gometalinter-report.out` report.  Go is a very quiet language. As you may have noticed.  So, when `gometalinter.v2` runs and everything passes the output of report will contain nothing if there are no problems.  If you want to be assured it called the linters it claims to call, you run `gometalinter.v2` if debug like so `gometalinter.v2 --debug`.
 
