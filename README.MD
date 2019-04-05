@@ -2889,8 +2889,6 @@ steps:
 - name: build
   image: 192.168.0.11:5000/nemonik/golang:1.12.1
   commands:
-  - make lint
-  - make test
   - make build
 
 - name: run

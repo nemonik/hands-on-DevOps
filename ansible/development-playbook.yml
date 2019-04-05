@@ -11,12 +11,12 @@
 - hosts: [developments]
   remote_user: vagrant
   roles:
-    - common
-    - docker
-    - docker-compose 
-    - golang
-    - golint
-    - inspec
-    - drone-cli
-    - sonar-scanner-cli
+#    - common
+#    - docker
+#    - docker-compose 
+#    - golang
+#    - golint
+#    - inspec
+#    - drone-cli
+#    - sonar-scanner-cli
 #    - openshift-cli
