@@ -6662,7 +6662,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import sys
 import os
 
-class PythonOrgSearch(unittest.TestCase):
+class HelloworldWebTest(unittest.TestCase):
 
     def setUp(self):
 
