@@ -46,7 +46,7 @@
         state: absent
 
     - yum:
-        name: https://centos7.iuscommunity.org/ius-release.rpm
+        name: https://repo.ius.io/RPM-GPG-KEY-IUS-7
         state: present
 
     - yum: 
