@@ -45,15 +45,20 @@
         name: git
         state: absent
 
+    - rpm_key:
+        state: present
+        key: https://repo.ius.io/RPM-GPG-KEY-IUS-7
+
     - yum:
-        name: https://repo.ius.io/RPM-GPG-KEY-IUS-7
+        name: https://centos7.iuscommunity.org/ius-release.rpm
         state: present
 
-    - yum: 
+    - yum:
         name: git2u
-        state: latest 
+        state: latest
   tags:
     - common
+
 
 - name: yum install development related packages
   become: yes
