@@ -5003,7 +5003,7 @@ skinparam note {
 -left-> (*)
 ```
 
-Push the `nemonik/hellowrold-web` container image into the private Docker registry running on the `Toolchain` vagrant, so that both vagrants can create containers from the image with the commands
+In the development vagrant, push the `nemonik/hellowrold-web` container image into the private Docker registry running on the `Toolchain` vagrant, so that both vagrants can create containers from the image with the commands
 
 ```bash
 docker tag nemonik/helloworld-web 192.168.0.11:5000/nemonik/helloworld-web
