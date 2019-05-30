@@ -21,5 +21,8 @@ unset proxy
 unset https_proxy
 unset http_proxy
 unset HTTP_PROXY
+unset HTTPS_PROXY
+unset ftp_proxy
+unset FTP_PROXY
 unset ca_certificates
 unset CA_CERTIFICATES
