@@ -17,14 +17,6 @@
   tags:
     - docker
 
-- name: yum install required packages to create the docker storage
-  become: yes
-  yum: 
-    state: latest 
-    name: ['yum-utils', 'device-mapper-persistent-data', 'lvm2']
-  tags:
-    - docker
-
 - name: ensure docker group exists
   become: yes
   group:
@@ -61,47 +53,48 @@
   tags:
     - docker
 
-- name: does docker volume group exit?
-  become: yes 
-  shell: echo -n $(vgdisplay | grep -q 'docker' && echo "Found" || echo "Not found")
-  register: docker_vg
+- name: yum install required packages to create the docker storage
+  become: yes
+  yum:
+    state: latest
+    name: ['yum-utils', 'device-mapper-persistent-data', 'lvm2', 'yum-plugin-ovl']
+
+- name: does docker storage volume group exit?
+  become: yes
+  shell: echo -n $(vgdisplay | grep "docker_storage" && echo "Found" || echo "Not found")
+  register: docker_storage
   tags:
     - docker
 
-- name: debug docker_vg
-  debug:
-    var: docker_vg
-    verbosity: 1
-  tags:
-    - docker
-
-# Destroys contents of volume.
-- name: configure the block storage driver, if docker volume group doesn't exist
+- name: create docker storage 
   become: yes
   block:
-    - shell: |
-        pvcreate /dev/sdb
-        vgcreate docker /dev/sdb
-        lvcreate --wipesignatures y -n thinpool docker -l 95%VG
-        lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG
-        lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta
+  - name: verify or create docker storage volume group
+    lvg:
+      vg: docker_storage
+      pvs: /dev/sdb
+      state: present
 
-    - copy:
-        src: files/etc/lvm/profile/docker-thinpool.profile
-        dest: /etc/lvm/profile/docker-thinpool.profile
-        owner: root
-        group: root
-        mode: 0644
+  - name: verify or create the docker storage volume
+    lvol:
+      vg: docker_storage
+      lv: vol_docker_storage
+      size: 95%VG
+      state: present
+      active: yes
 
-    - systemd:
-        name: docker
-        state: stopped
+  - name: verify or apply filesystem to docker storage
+    filesystem:
+      fstype: ext4
+      dev: /dev/docker_storage/vol_docker_storage
 
-    - shell: |
-        lvchange --metadataprofile docker-thinpool docker/thinpool
-        lvs -o+seg_monitor
-        rm -Rf /var/lib/docker/* 
-  when: docker_vg.stdout == "Not found"
+  - name: Mount the docker volume
+    mount:
+      name: /var/lib/docker
+      src: /dev/docker_storage/vol_docker_storage
+      fstype: ext4
+      state: mounted
+  when: docker_storage.stdout == "Not found"
   tags:
     - docker
         
@@ -134,7 +127,7 @@
 - name: configured Docker options (e.g., insecure registry, DNS)
   become: yes
   template:
-    src: templates/etc/docker/daemon.j2
+    src: templates/etc/docker/daemon.json.j2
     dest: /etc/docker/daemon.json
     owner: root
     group: root
@@ -162,12 +155,19 @@
   tags:
     - docker
 
-- name: reload service docker
+- name: stop and reload docker service
+  block:
+  - name: stop docker service
+    service:
+      name: docker
+      enabled: yes
+      state: stopped
+  - name: reload docker service
+    systemd:
+      name: docker
+      daemon_reload: yes
   become: yes
-  systemd:
-    name: docker
-    daemon_reload: yes
-  when: sysconfigDocker.changed or environmentFile.changed or daemon.changed or (docker_vg.stdout == "Not found")
+  when: daemon.changed or (docker_storage.stdout == "Not found")
   tags:
     - docker
 
