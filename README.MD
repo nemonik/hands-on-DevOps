@@ -589,6 +589,7 @@ rectangle "Host"{
 	rectangle "Toolchain Vagrant" {
 
 		rectangle "Docker CE" as docker1 {
+
 			rectangle "Taiga" {
 				component "nemonik/taiga:4.0.4" as taiga
         component "sameersbn/postgresql:9.6-4" as taiga_postgresql
@@ -652,7 +653,7 @@ you .[#0B5C92].> helloworld_web
 
 **On Mac OS X or \*NIX environments**
 
-Example settings (Adjust for your environment.) can be set by running the BASH script in the root of the project, `set_env.sh`:
+If your environment makes use of an HTTP proxy or SSL inspection, you will need to configure environment variables for this class. The following `set_env.sh` BASH script is included in the root of the project and can be used to configure these variable for UNIX environments, but must be adjusted for your specific environment. 
 
 ```bash
 #!/usr/bin/env bash
@@ -685,13 +686,13 @@ export CA_CERTIFICATES=https://raw.githubusercontent.com/nemonik/hands-on-DevOps
 export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
 ```
 
-Execute in terminal session via
+When in the root of the project, the script can be execute in terminal session via
 
 ```
 . ./set_env.sh
 ```
 
-The alternative is `unset.sh` bash script that unsets all these values:
+If you have no HTTP proxy and no SSL inspection to be concerned about, the alternative is to execute `unset.sh` BASH script to unset all these values:
 
 ```
 #!/usr/bin/env bash
@@ -732,7 +733,7 @@ Execute in terminal session via
 
 **On Windows**
 
-Example settings (Adjust for your environment.):
+Now if, if you are on Windows you cam perform the following to set these environmental variable adjusting for your environment:
 
 1. In the Windows taskbar, enter `edit the system environment variables` into `Search Windows` and select the icon with the corresponding name. 
 3. The `Systems Property` window will likely open in the background, so you will likely need to go find it and bring it forward.
@@ -751,16 +752,16 @@ Example settings (Adjust for your environment.):
 **NOTE**
 
 - The certificate URLs need to be encoded for parentheses to work.
-- One Windows, you may inadvertantly cut-and-paste blank space characters (e.g., tabs, spaces) and the subsequent Ansible automation may fail.
+- On Windows, you may inadvertantly cut-and-paste blank space characters (e.g., tabs, spaces) and the subsequent Ansible automation may fail.
 - Make sure if you are using the above setting not to drop the port from the respective URLs (e.g.,`http://gatekeeper.mitre.org:80`)
 
 ## 9.2. VirtualBox
 
-VirtualBox is a general-purpose full virtualizer for x86 hardware, targeted at server, desktop and embedded use.
+You will need to install VirtualBox, a general-purpose full virtualizer for x86 hardware.
 
 ### 9.2.1. Installing VirtualBox
 
-For the class, it is assumed VirtualBox is installed, but below are the instructions for installing it on Windows 10.
+For the class when I teach it, it is assumed VirtualBox is installed, but below are the instructions for installing it on Windows 10.
 
 1. Open your browser to <https://www.virtualbox.org/wiki/Downloads>
 2. Click `Windows hosts` link under `VirtualBox 6.0.4 platform packages`.
@@ -820,7 +821,7 @@ Resolving deltas: 100% (480/480), done.
 
 This class uses Infrastructure as code (IaC) to set up the class environment (i.e., two virtual machines that will later be referred to as "vagrants".) IaC is the process of provisioning, and configuring (i.e., managing) computr systems through code, rather than directly manipulating the systems by hand (i.e., manual processes). 
 
-This class uses Vagrant and Ansible IaC framewoorks and the following sections will unpack each.
+This class uses Vagrant and Ansible IaC frameworks and the following sections will unpack each.
 
 ### 9.5.1. Vagrant
 
