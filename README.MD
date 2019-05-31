@@ -1559,8 +1559,8 @@ A CMS must facilitate best practices, not limited to:
 
 - Reducing the risk breaking a build by
 
-  - Utilize branching to separate different lines of development, and
-  - Standardize on CMS workflows (e.g., GitHub Workflow),
+  - Utilizing branching to separate different lines of development, and
+  - Standardizing on CMS workflows (e.g., GitHub Workflow),
 
 - Make builds be self-testing (i.e., ingrain testing) by including unit and integration test with the source code so that it can be executed by
 
@@ -1625,7 +1625,7 @@ Drone is distributed as a Docker image. Drone CI can be run with an internal SQL
 
 Drone and its brethren (e.g., Jenkins CI, GitLab CI/CD) is used to facilitate Continuous Integration (CI), a software development practice where members of an Agile team frequently integrate their work in order to detect integration issues as soon as possible. Each integration is orchestrated through a service that essentially assembles a build and runs tests every time a predetermined trigger has been met; and then reports with immediate feedback.
 
-I don't use Jenkins unless I have to. Why? I'm simply not a fan. Initially, because its plugin architecture is painful to manage and your pipelines existed entirely in the Jenkins CI tool itself. Later, Jenkins CI introduced Groovy-based Jenkin Pipelines that are CMed with your project's source. Every orchestrator has based their DSL on YAML and although I love the Groovy language for its power, I don't find it makes for a good orchestration language. Your opinion may differ. I'm okay with that.  Really.  I am.
+I don't use Jenkins unless I have to. Why? I'm simply not a fan. Initially, because its plugin architecture is painful to manage and with prior version your pipelines existed entirely in the Jenkins CI tool itself. Later, Jenkins CI introduced Groovy-based Jenkin Pipelines that are CMed with your project's source. Every orchestrator has based their DSL on YAML and although I love the Groovy language for its power, I don't find it makes for a good orchestration language. Your opinion may differ. I'm okay with that. Really. I am.
 
 There are also SaaS CI/CD tools, such as Travis CI and Circle CI. These are great, free CI/CD orchestrators.
 
@@ -1664,7 +1664,7 @@ test:
     - ./gradlew -x signArchives
 ```
 
-They are essentially similar both requiring the Oracle JDK and use Gradle to build and unit test the code. Both SaaS under the covers uses containers to run the builds.
+They are essentially similar with both requiring the Oracle JDK and use Gradle to build and unit test the code. Both of these services under the covers use containers to run the builds.
 
 In another GitHub hosted project, the [java-stix-validator](https://github.com/STIXProject/java-stix-validator) the [Travis CI orchestration](https://github.com/STIXProject/java-stix-validator/blob/master/.travis.yml) contains
 
@@ -1688,7 +1688,7 @@ deploy:
 
 To deploy the web application to [Heroku](https://www.heroku.com/), one of the first PaaS (Platforms-as-Service). The code was last committed in 2015 and the code is still running free on Heroku at <http://agile-journey-9583.herokuapp.com/#/>
 
-More details on Drone is sprinkled across the class. As you can see I favor being a polyglot when it comes to CI/CD.
+More details on Drone is sprinkled across the class. As you can see I favor being a polyglot when it comes to software development to include CI/CD.
 
 #### 9.8.3.1. Documentation, source, container image
 
@@ -1742,9 +1742,7 @@ You'll need to enable the integration between GitLab and the PlantUML-Server by 
 
 #### 9.8.4.2. Integrate Drone CI with GitLab
 
-Once, Drone is configured, accomplish the steps.
-
-The Ansible automation will install patched Docker containers for Drone and template the docker-compose file used to spin it up, but the automation will not spin up Drone as it requires human intervention in the absence of automation.
+The Ansible automation will install patched Docker containers for Drone and template the docker-compose file used to spin it up, but the automation will not spin up Drone as it requires human intervention in the absence of automation. I was too lazy to write this automation.
 
 So, you will need to accomplish the following steps, while at the same time becoming familiar with GitLab.
 
@@ -1781,7 +1779,7 @@ project with
               - DRONE_GITLAB_SECRET=Your Secret
   ```
 
- Around line 50, replce `Your Application Id` and `Your Secret` with `Application Id` and `Secret` provided by GitLab, respectively.  Save your changes and exit the editor.
+ Around line 50, replace `Your Application Id` and `Your Secret` with `Application Id` and `Secret` provided by GitLab, respectively.  Save your changes and exit the editor.
 
 11. Then enter into the command line
 
@@ -1837,7 +1835,7 @@ On your host in the DevOps class project:
    git push -u toolchain --tags
    ```
 
-You now have a clone of the project hosted in the GitLab running on the `toolchain`vagrant.  This way you can open the README.MD and follow along.
+You now have a clone of the project hosted in the GitLab running on the `toolchain`vagrant.  This way you can open the README.MD and follow along with rendered PlanUML diagrams.
 
 ### 9.8.5. SonarQube, an example of a platform for the inspection of code quality
 
