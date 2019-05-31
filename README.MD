@@ -980,7 +980,7 @@ Vagrant.configure('2') do |config|
     config.proxy.http = nil
     config.proxy.https = nil
     config.proxy.ftp = nil
-    config.proxy.no_proxy = nil   
+    config.proxy.no_proxy = nil
     config.proxy.enabled = false
   end 
 ```
@@ -1182,11 +1182,11 @@ This section provisions and configures the `toolchain` vagrant. This is the beef
 
 ### 9.5.2. Ansible
 
-Ansible is a "configuration management" tool that automates software provisioning, configuration management, and application deployment.  Configuration management, deployment automation are two core repeated practices in DevOps, so for the purposes of the class Ansible addresses this concern in configuring the two vagrants.
+Ansible is a "configuration management" tool that automates software provisioning, configuration management and application deployment, two core repeated practices in DevOps, so for the purposes of the class Ansible addresses this concern in configuring of two vagrants.
 
 Ansible was open source and then subsumed by Red Hat.
 
-There are other "configuration management" tools, such as Chef and Puppet. There are of course even more, but they hold little or no market share (e.g., BOSH, Salt.)
+There are other "configuration management" tools, such as Chef and Puppet. There are of course even more, but they hold little or no community practice or market share (e.g., BOSH, Salt.)
 
 #### 9.5.2.1. Inventory file
 
@@ -1238,7 +1238,7 @@ The inventory collects all the vagrants under a `[nodes]` group, and then define
 
 #### 9.5.2.2. Playbooks
 
-In Ansible one defines playbooks to manage configurations of and deployments to remote machines. The playbooks I'm using to configure the vagrants exist in `ansible/`. 
+In Ansible one defines playbooks to manage configurations of and deployments to remote machines. The playbooks I'm using to configure the vagrants exist in `ansible/`.
 
 The `development` vagrant Ansible playbook (`ansible/development-playbook.yml`) contains:
 
@@ -1271,9 +1271,9 @@ The file is written in a YAML-based DSL (domain specific language.)
 
 #### 9.5.2.3. Roles
 
-The roles exist in `ansible/roles` and permi the sharing of bits of configuration content with other users. Roles can also be found in the [Ansible Galaxy](https://galaxy.ansible.com/), retrieved and placed into the `ansible/roles` folder to be used, but I wrote all the roles for the class.
+The roles exist in `ansible/roles` and permit the sharing of bits of configuration content with other users. Roles can also be found in the [Ansible Galaxy](https://galaxy.ansible.com/), retrieved and placed into the `ansible/roles` folder to be used, but I wrote all the roles for the class.
 
-A role, such as a Taiga role is comprised of many components (e.g., files, templates), but at its core is the main task. The main task for the `taiga` roles contains
+A role, such as a Taiga role is comprised of many components (e.g., files, templates, tasks) with the core being the main task. For example, the main task for the `taiga` roles contains
 
 ```yaml
 ---
@@ -1380,7 +1380,7 @@ You will edit a `docker-compose.yml` file in this class in order to complete the
 
 ## 9.8. Spinning up the _toolchain_ vagrant
 
-In the command line of the host in the root of the class project, open `ansible/tool-chain-playbook.yml` and make sure the roles are as so:
+In the command line of the host in the root of the class project, open `ansible/tool-chain-playbook.yml` and make sure the roles are like so:
 
 ```yaml
 ---
@@ -1430,8 +1430,6 @@ Then enter into the command-line of the host at the root of the class project an
 ```bash
 vagrant up toolchain
 ```
-
-but presently as of December 18th, 2018 there is an issue downstream with the`centos/7` box requiring one to work around.
 
 You will see a good deal of output and on the Windows OS, it will pester you to approve certain things.  As a trust exercise blindly approve everything.
 
