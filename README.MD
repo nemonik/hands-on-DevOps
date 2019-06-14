@@ -1,6 +1,6 @@
 # 1. DevOps
 
-A hands-on DevOps course.
+A hands-on DevOps course covering the culture, methods and repeated practices of modern software development involving Vagrant, VirtualBox, Ansible, Docker-Compose, Docker, Taiga, GitLab, Drone CI, SonarQube, Selenium, InSpec...
 
 A reveal.js presention written to accompany this course can found at [https://nemonik.github.io/hands-on-DevOps/](https://nemonik.github.io/hands-on-DevOps/).
 
