@@ -1446,6 +1446,7 @@ The command line will open a prompt a bash shell on the vagrant
 ```
 
 On this vagrant will be running a number of DevOps tools.  This will take a while, so let's discuss what is being installed.  
+TODO: Insert the tail end of succesful output here.
 
 **NOTE**
 
@@ -1899,21 +1900,15 @@ Open `ansible/development-playbook.yml` and make sure these roles are uncommente
 #    - openshift-cli
 ```
 
-Then in the command-line of the host (not while ssh'ed into the toolchain vagrant) at the root of the class project
-
-```bash
-./up_development.sh
-```
-
-Typically, all one has to do is type
+Then in the command-line of the host (not while ssh'ed into the toolchain vagrant) at the root of the class project type
 
 ```bash
 vagrant up development
 ```
 
-but presently as of December 18th, 2018 there is an issue downstream with the`centos/7` box requiring one to work around.
-
 You will see a good deal of output.
+
+TODO: Insert the tail end of succesful output here.
 
 Once complete open a secure shell to the `development` vagrant
 
