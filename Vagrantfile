@@ -21,10 +21,10 @@ end
 
 # Holds the version of software for the Ansible roles to install
 software_versions = {
-  drone_version: "1",
+  drone_version: "1.2.1",
   drone_cli_version: "1.0.7",
-  golang_version: "1.12.1",
-  gitlab_version: "11.8.3",
+  golang_version: "1.12.6",
+  gitlab_version: "11.11.2",
   inspec_version: "3.9.0",
   inspec_rpm_version: "3.9.0/el/7/inspec-3.9.0-1.el7.x86_64",
   python_version: "2.7.16",

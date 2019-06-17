@@ -651,9 +651,11 @@ you .[#0B5C92].> helloworld_web
 
 ## 9.1. Configuring environmental variables
 
+If your environment makes use of an HTTP proxy or SSL inspection, you will need to configure environment variables for this class. 
+
 **On Mac OS X or \*NIX environments**
 
-If your environment makes use of an HTTP proxy or SSL inspection, you will need to configure environment variables for this class. The following `set_env.sh` BASH script is included in the root of the project and can be used to configure these variable for UNIX environments, but must be adjusted for your specific environment. 
+The following `set_env.sh` BASH script is included in the root of the project and can be used to configure these variable for UNIX environments, but must be adjusted for your specific environment. 
 
 ```bash
 #!/usr/bin/env bash
@@ -733,7 +735,7 @@ Execute in terminal session via
 
 **On Windows**
 
-Now if, if you are on Windows you cam perform the following to set these environmental variable adjusting for your environment:
+Now if, if you are on Windows you cam perform the following to set the same  environmental variable adjusting for your environment:
 
 1. In the Windows taskbar, enter `edit the system environment variables` into `Search Windows` and select the icon with the corresponding name. 
 3. The `Systems Property` window will likely open in the background, so you will likely need to go find it and bring it forward.
@@ -889,7 +891,7 @@ vagrant-proxyconf (2.0.1, global)
 vagrant-vbguest (0.17.2, global)
 ```
 
-The versions should be these or newer.  Note difference in the event there ar problems later, becaus these versions have been verified to work.
+The versions should be these or newer.  Note difference in the event there ar problems later, because these versions have been verified to work.
 
 #### 9.5.1.4. The Vagrantfile explained
 
@@ -920,10 +922,10 @@ When authoring, tells your text editor (e.g. emacs or vim) to choose a specific 
 ```ruby
 # Holds the version of software for the Ansible roles to install
 software_versions = {
-  drone_version: "1",
+  drone_version: "1.2.1",
   drone_cli_version: "1.0.7",
-  golang_version: "1.12.1",
-  gitlab_version: "11.8.3",
+  golang_version: "1.12.6",
+  gitlab_version: "11.11.2",
   inspec_version: "3.9.0",
   inspec_rpm_version: "3.9.0/el/7/inspec-3.9.0-1.el7.x86_64",
   python_version: "2.7.16",
