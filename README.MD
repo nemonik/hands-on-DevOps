@@ -2884,12 +2884,12 @@ name: default
 
 steps:
 - name: build
-  image: 192.168.0.11:5000/nemonik/golang:1.12.1
+  image: 192.168.0.11:5000/nemonik/golang:1.12.6
   commands:
   - make build
 
 - name: run
-  image: 192.168.0.11:5000/nemonik/golang:1.12.1
+  image: 192.168.0.11:5000/nemonik/golang:1.12.6
   commands:
   - make run
 
@@ -2905,7 +2905,7 @@ The pipeline is authored in YAML like almost all the CI orchestrators out there 
 
 - `steps:` - defines a list of steps to build, test and deploy your code.
 - `build` and `run` - are the names of the step. These are  yours to name. Name steps something meaningful as to what the step is orchestrating. Each step is executed serially, in the order defined.
-- `image: 192.168.0.11:5000/nemonik/golang:1.12.1` - The build step is using the nemonik/golang container tagged `1.12.1` retrieved from private Docker registry located at `192.168.0.11:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
+- `image: 192.168.0.11:5000/nemonik/golang:1.12.6` - The build step is using the nemonik/golang container tagged `1.12.1` retrieved from private Docker registry located at `192.168.0.11:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
 - `commands` - Is a collection of terminal commands to be executed. These are all the same commands we executed previously in the command line. If anyone of these commands were to fail returning a non-zero exit code, the pipeline will immediately end resulting in a failed build.
 
 #### 9.10.11.1. Configure Drone to execute your pipeline
@@ -2933,7 +2933,7 @@ The execution of this pipeline will follow as so:
 
 1. A new build will appear. Click on it.
 2. Drone will clone your project's repository in a `clone` step.
-3. And then will execute a `build` and `run` steps in order each spinning up `nemonik/golang:1.12.1` container, whose container image was patched if proxy environmental variable are set to work behind MITRE's http proxy and SSL introspection. (Later, you may want examine the contents of ansible/roles/golang-container-image/files/Dockerfile for more details as to how this was accomplished.)
+3. And then will execute a `build` and `run` steps in order each spinning up `nemonik/golang:1.12.6` container, whose container image was patched if proxy environmental variable are set to work behind MITRE's http proxy and SSL introspection. (Later, you may want examine the contents of ansible/roles/golang-container-image/files/Dockerfile for more details as to how this was accomplished.)
 4. These steps execute the commands in the same way you executed them yourself: a. make lint b. make test c. make build d. make run
 
 The output of the `build` (An arbitrary name. You could use "skippy".) step will resemble:
@@ -4507,7 +4507,7 @@ skinparam note {
 Build a Docker image named `nemonik/helloworld-web` for the application and all its dependencies to ensure a repeatable deployment on Docker by opening the file `Dockerfile` in an editor at the root of the project and copy the is content into it
 
 ```docker
-FROM 192.168.0.11:5000/nemonik/golang:1.12.1
+FROM 192.168.0.11:5000/nemonik/golang:1.12.6
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
 RUN mkdir /app
@@ -4537,7 +4537,7 @@ Command line output will resemble
 ```
 [vagrant@development helloworld-web]$ docker build -t nemonik/helloworld-web .
 Sending build context to Docker daemon  10.64MB
-Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.12.1
+Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.12.6
 1.12.1: Pulling from nemonik/golang
 e79bb959ec00: Pull complete
 d4b7902036fe: Pull complete
@@ -4551,7 +4551,7 @@ eb7d59297445: Pull complete
 bfcbc32359e9: Pull complete
 76c51a60b271: Pull complete
 Digest: sha256:e5f086026391553344abba61bcf184618f1ff6e6c32dc392f645bbd8971ab403
-Status: Downloaded newer image for 192.168.0.11:5000/nemonik/golang:1.12.1
+Status: Downloaded newer image for 192.168.0.11:5000/nemonik/6
  ---> 8bd76ee17c41
 Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
  ---> Running in f68f90915e36
@@ -4585,7 +4585,7 @@ Successfully tagged nemonik/helloworld-web:latest
 
 What just happened?
 
-- The `FROM` line instructs Docker to retreive the `nemonik/golang:1.12.1` from the private Docker registry running on our Toolchain vagrant, which it did.
+- The `FROM` line instructs Docker to retreive the `nemonik/golang:1.12.6` from the private Docker registry running on our Toolchain vagrant, which it did.
 - Then the rest of the commands in the `Dockerfile` are executed building a new docker image.
 - `docker build` then places the image with the name `nemonik/helloworld-web` in the `Development`'s local Docker registry so that containers can be created off this image locally. 
 
@@ -4606,7 +4606,7 @@ nemonik/helloworld-web             latest              facd0af56fe5        2 min
 
 **NOTE:**
 
-- The registy will also contain the `192.168.0.11:5000/nemonik/golang:1.12.1` on which `nemonik/helloworld-web:latest` is based, so the next time re-build image you won't have to wait for `192.168.0.11:5000/nemonik/golang:1.12.1` to be retrieved.   
+- The registy will also contain the `192.168.0.11:5000/nemonik/golang:1.12.6` on which `nemonik/helloworld-web:latest` is based, so the next time re-build image you won't have to wait for `192.168.0.11:5000/nemonik/golang:1.12.6` to be retrieved.   
 
 We can update the project's Makefile adding a `docker-build` target
 
@@ -4764,7 +4764,7 @@ INFO: ------------------------------------------------------------------------
 go build -o helloworld-web -v
 docker build --no-cache -t nemonik/helloworld-web .
 Sending build context to Docker daemon  10.64MB
-Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.12.1
+Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.12.6
  ---> 8bd76ee17c41
 Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
  ---> Running in f1da2f04877b
@@ -5185,7 +5185,7 @@ INFO: ------------------------------------------------------------------------
 go build -o helloworld-web -v
 docker build --no-cache -t nemonik/helloworld-web .
 Sending build context to Docker daemon  10.64MB
-Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.12.1
+Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.12.6
  ---> 8bd76ee17c41
 Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
  ---> Running in 4de3c6d49980
@@ -5444,7 +5444,7 @@ steps:
 
 Things to note in the above
 
-- This step uses an image, `nemonik/golang-sonarqube-scanner:3.3.0.1492`, built ontop of the `nemonik/golang:1.12.1` image to speed builds along. 
+- This step uses an image, `nemonik/golang-sonarqube-scanner:3.3.0.1492`, built ontop of the `nemonik/golang:1.12.6` image to speed builds along. 
 - Cut-and-pasting may split the last `-sonar-scanner` line into multiple line resulting in your build failing.  Correct in the editor. 
 - Make sure to leave two  returns to indicate the end of the `.drone.yml` file or a parse error will result in Drone.
 
@@ -5603,7 +5603,7 @@ Add a build step to our `.drone.yml`
 
 ```yaml
 - name: build
-  image: nemonik/golang:1.12.1
+  image: nemonik/golang:1.12.6
   commands:
   - make build
 
@@ -5814,7 +5814,7 @@ WARNING: bridge-nf-call-ip6tables is disabled
 + /usr/local/bin/docker build --rm=true -f Dockerfile -t 05cfa544b6fc3082f61155a9797d8ae5628a8d74 . --pull=true --label org.label-schema.schema-version=1.0 --label org.label-schema.build-date=2018-12-01T06:59:05Z --label org.label-schema.vcs-ref=05cfa544b6fc3082f61155a9797d8ae5628a8d74 --label org.label-schema.vcs-url=http://192.168.0.11:10080/root/helloworld-web.git
 Sending build context to Docker daemon  6.653MB
 
-Step 1/9 : FROM 192.168.0.11:5000/nemonik/golang:1.12.1
+Step 1/9 : FROM 192.168.0.11:5000/nemonik/golang:1.12.6
 1.11.2: Pulling from nemonik/golang
 54f7e8ac135a: Pulling fs layer
 d6341e30912f: Pulling fs layer
@@ -5869,7 +5869,7 @@ b6347f061623: Pull complete
 624cedf99a02: Pull complete
 b3caf54db51f: Pull complete
 Digest: sha256:5f5b7b244da69c56a95bb1c924c2557e08b60b703c7f3131884f73d02f907bab
-Status: Downloaded newer image for 192.168.0.11:5000/nemonik/golang:1.12.1
+Status: Downloaded newer image for 192.168.0.11:5000/nemonik/golang:1.12.6
  ---> 32c900b4b4da
 Step 2/9 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
  ---> Running in ac61aba08f1c
@@ -6967,7 +6967,7 @@ FAIL-NEW: 0     FAIL-INPROG: 0  WARN-NEW: 1     WARN-INPROG: 0  INFO: 0 IGNORE: 
 Great, now lets add another step to our pipeline after the `selenium` step, but before `services:`.
 
 ```yaml
-- name: owasp-zaproxy:
+- name: owasp-zaproxy
   image: 192.168.0.11:5000/nemonik/zap2docker-stable:2.7.0
   commands:
   - zap-baseline.py -t http://192.168.0.11:3000 || true
@@ -7152,7 +7152,7 @@ The output will resemeble
 ```
 WARNING: Some services (helloworld) use the 'deploy' key, which will be ignored. Compose does not support 'deploy' configuration - use `docker stack deploy` to deploy to a swarm.
 Building helloworld
-Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.12.1
+Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.12.6
  ---> 6aa2d9de5f78
 Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
  ---> Using cache
