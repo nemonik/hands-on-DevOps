@@ -223,7 +223,7 @@ What you should bring:
 
 DevOps (a clipped compound of the words "development" and "operations") is a software development methodology with an emphasis on a more reliable release pipeline, automation, and stronger collaboration across all stakeholders with the goal of deploying working functionality into the hands of users (i.e., production) faster.  
 
-Again, all stakeholders not just security. The `Ops` in DevOps sweeps up security, testing, DB admin, infrastructure and operations practitioners -- essentially, any stakeholder not commonly thought of as directly part of the development team left in the development process.  The practice of inserting a clip of whatever Ops discipline you want between Dev and Ops (e.g., DevSecOps) is essentially the same as referring to an ATM as an “ATM machine”, but no one owns the definition of DevOps, so there is room to quibble.
+Again, all stakeholders not just security. The `Ops` in DevOps sweeps up security, testing, DB admin, infrastructure and operations practitioners -- essentially, any stakeholder not commonly thought of as directly part of the development team in the system development process.  The practice of inserting a clip of whatever Ops discipline you want between Dev and Ops (e.g., DevSecOps) is essentially the same as referring to an ATM as an “ATM machine”, but no one owns the definition of DevOps, so there is room to quibble.
 
 Yeah, that's the formal definition.  I've grown to prefer the axiom:
 
