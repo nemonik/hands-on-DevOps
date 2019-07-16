@@ -221,7 +221,7 @@ What you should bring:
 
 ## 7.1. What is DevOps?
 
-DevOps (a clipped compound of the words "development" and "operations") is a software development methodology with an emphasis on a more reliable release pipeline, automation, and stronger collaboration across all stakeholders with the goal of deploying working functionality into the hands of users (i.e., production) faster.
+DevOps (a clipped compound of the words "development" and "operations") is a software development methodology with an emphasis on a more reliable release pipeline, automation, and stronger collaboration across all stakeholders with the goal of deploying working functionality into the hands of users (i.e., production) faster.  The `Ops` in DevOps sweeps up security, testing, DB administrators -- essentially, any stakeholder not commonly thought of as directly part of the development team.
 
 Yeah, that's the formal definition.  I've grown to prefer the axiom:
 
