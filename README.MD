@@ -225,7 +225,7 @@ DevOps (a clipped compound of the words "development" and "operations") is a sof
 
 Yeah, that's the formal definition.  I've grown to prefer the axiom:
 
-*You are what you **code**.*
+*You are what you **code**.
 
 For example,
 
