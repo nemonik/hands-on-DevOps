@@ -809,7 +809,7 @@ In a shell, for the purposes of the class, this means in `Git Bash`, clone the p
 git -c http.sslVerify=false clone https://github.com/nemonik/hands-on-DevOps.git
 ```
 
-Output will resemble (i.e., not being precisely the same):
+Output will resemble (i.e., will not be precisely the same):
 
 ```
 $ git -c http.sslVerify=false clone https://github.com/nemonik/hands-on-DevOps.git
@@ -823,7 +823,7 @@ Resolving deltas: 100% (480/480), done.
 
 ## 9.5. Infrastructure as code (IaC)
 
-This class uses Infrastructure as code (IaC) to set up the class environment (i.e., two virtual machines that will later be referred to as "vagrants".) IaC is the process of provisioning, and configuring (i.e., managing) computr systems through code, rather than directly manipulating the systems by hand (i.e., manual processes). 
+This class uses Infrastructure as code (IaC) to set up the class environment (i.e., two virtual machines that will later be referred to as "vagrants".) IaC is the process of provisioning, and configuring (i.e., managing) computr systems through code, rather than directly manipulating the systems by hand (i.e., through a manual processes). 
 
 This class uses Vagrant and Ansible IaC frameworks and the following sections will unpack each.
 
@@ -831,7 +831,7 @@ This class uses Vagrant and Ansible IaC frameworks and the following sections wi
 
 This class uses Vagrant, a command line utility for managing the lifecycle of virtual machines as a vagrant in that the VMs are not meant to hang around in the same place for long.
 
-Unless you want to pollute your machine with every imaginable programming language, framework and library version you'll find yourself often creating a virtual machine (VM) for each software project. Sometimes more than one. And if you're like me of the past you'll end up with a VirtualBox full of VMs. If you haven't gone about this the right way, you'll end up wondering what VM went with which project and now how did I create it? The anti-pattern around this problem is to write documentation. A better way that aligns with  DevOps repeatable practices is to create automation to provision and configure your development VMs. This is where Vagrant comes in as it is "a command line utility for managing the lifecycle of virtual machines."
+Unless you want to pollute your machine with every imaginable programming language, framework and library version you'll find yourself often creating a virtual machine (VM) for each software project. Sometimes more than one. And if you're like me of the past you'll end up with a VirtualBox full of VMs. If you haven't gone about this the right way, you'll end up wondering what VM went with which project and now how did I create it? The anti-pattern around this problem is to write documentation. A better way that aligns with a DevOps repeatable practices to create automation to provision and configure your development VMs. This is where Vagrant comes in as it is "a command line utility for managing the lifecycle of virtual machines."
 
 #### 9.5.1.1. Vagrant documentation and source
 
@@ -853,7 +853,7 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL.
 
    As of April 2nd 2014, `vagrant-ca-certificates` plugin has an open issue ([#34](https://github.com/williambailey/vagrant-ca-certificates/issues/34)), where the plugin fails to run on the recent 2.2.4 release of Vagrant, but runs fine on prior 2.2.3 release.  Please, install the 2.2.3 release of Vagrant.
 
-2. Click on the installer once downloaded and follow along. The installer may stall calculating for a bit on Windows and for this same OS may bury modals you'll need to respond to in the Windows Task bar, so keep an eye out for that. The installer will automatically add the `vagrant` command to your system path so that it is available on the command line. If it is not found, the documentation advises to try logging out and logging back into your system. This is particularly necessary sometimes for Windows.  Windows will require a reboot, so remember to **come back and complete step-3**.
+2. Click on the installer once downloaded and follow along. The installer may stall calculating for a bit on Windows and for this same OS may bury modals you'll need to respond to in the Windows Task bar, so keep an eye out for that. The installer will automatically add the `vagrant` command to your system path so that it is available on the command line. If it is not found, the documentation advises to try logging out and logging back into your system. This is particularly necessary sometimes for Windows. Windows will require a reboot, so remember to **come back and complete step-3**.
 
 3. **If you're not on the MITRE corporate network skip this step.**  On Windows, use the File Explorer to replace the existing `C:\Hashicorp\vagrant\embedded\cacert.pem` file with the project's `vagrant_files/cacert.pem` by using the File Explorer.
 
@@ -893,7 +893,9 @@ vagrant-proxyconf (2.0.1, global)
 vagrant-vbguest (0.17.2, global)
 ```
 
-The versions should be these or newer.  Note difference in the event there ar problems later, because these versions have been verified to work.
+**NOTE**
+- The versions should be these or newer.  
+- Note difference in version numbers in the event there are problems later, because these versions have been verified to work.
 
 #### 9.5.1.4. The Vagrantfile explained
 
