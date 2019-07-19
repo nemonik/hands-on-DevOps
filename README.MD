@@ -64,49 +64,50 @@ What you should bring:
 - [7. DevOps unpacked](#7-devops-unpacked)
     - [7.1. What is DevOps?](#71-what-is-devops)
     - [7.2. What DevOps is not](#72-what-devops-is-not)
-    - [7.3. DevOps is really about](#73-devops-is-really-about)
-    - [7.4. How is it related to the Agile?](#74-how-is-it-related-to-the-agile)
-    - [7.5. How do they differ?](#75-how-do-they-differ)
-    - [7.6. Why?](#76-why)
-    - [7.7. What are the principles of DevOps?](#77-what-are-the-principles-of-devops)
-    - [7.8. How is this achieved?](#78-how-is-this-achieved)
-    - [7.9. What is Continuous Integration (CI)?](#79-what-is-continuous-integration-ci)
-    - [7.10. How?](#710-how)
-    - [7.11. CI best practices](#711-ci-best-practices)
-        - [7.11.1. Utilize a Configuration Management System](#7111-utilize-a-configuration-management-system)
-        - [7.11.2. Automate the build](#7112-automate-the-build)
-        - [7.11.3. Employ one or more CI services/orchestrators](#7113-employ-one-or-more-ci-servicesorchestrators)
-        - [7.11.4. Make builds self-testing](#7114-make-builds-self-testing)
-        - [7.11.5. Never commit broken](#7115-never-commit-broken)
-        - [7.11.6. Developers are expected to pre-flight new code](#7116-developers-are-expected-to-pre-flight-new-code)
-        - [7.11.7. The CI service/orchestrator provides feedback](#7117-the-ci-serviceorchestrator-provides-feedback)
-    - [7.12. What is Continuous Delivery?](#712-what-is-continuous-delivery)
-        - [7.12.1. Extending Continuous Integration (CI)](#7121-extending-continuous-integration-ci)
-        - [7.12.2. Consistency](#7122-consistency)
-    - [7.13. But wait. What's a pipeline?](#713-but-wait-whats-a-pipeline)
-    - [7.14. How is a pipeline manifested?](#714-how-is-a-pipeline-manifested)
-    - [7.15. What underlines all of this?](#715-what-underlines-all-of-this)
-    - [7.16. But really why do we automate err. code?](#716-but-really-why-do-we-automate-err-code)
-        - [7.16.1. Why do I mention Larry Wall?](#7161-why-do-i-mention-larry-wall)
-        - [7.16.2. Laziness](#7162-laziness)
-        - [7.16.3. Impatience](#7163-impatience)
-        - [7.16.4. Hubris](#7164-hubris)
-        - [7.16.5. We automate for](#7165-we-automate-for)
-    - [7.17. Monitoring](#717-monitoring)
-        - [7.17.1. The most important metric](#7171-the-most-important-metric)
-        - [7.17.2. An understanding of performance](#7172-an-understanding-of-performance)
-        - [7.17.3. Establish a baseline performance](#7173-establish-a-baseline-performance)
-        - [7.17.4. Set reaction thresholds](#7174-set-reaction-thresholds)
-        - [7.17.5. Reacting](#7175-reacting)
-        - [7.17.6. Gaps in CI/CD](#7176-gaps-in-cicd)
-        - [7.17.7. Eliminating waste](#7177-eliminating-waste)
-    - [7.18. What is DevOps culture?](#718-what-is-devops-culture)
-        - [7.18.1. We were taught the requisite skills as children](#7181-we-were-taught-the-requisite-skills-as-children)
-        - [7.18.2. Maintaining relationships is your most important skill](#7182-maintaining-relationships-is-your-most-important-skill)
-        - [7.18.3. Be quick... Be slow to...](#7183-be-quick-be-slow-to)
-        - [7.18.4. The pressures of social media](#7184-the-pressures-of-social-media)
-    - [7.19. Crawl, walk, run](#719-crawl-walk-run)
-        - [7.19.1. Ultimately, DevOps is Goal](#7191-ultimately-devops-is-goal)
+    - [7.3. Fixate on tools and your effort will fail](#73-fixate-on-tools-and-your-effort-will-fail)
+    - [7.4. DevOps is really about](#74-devops-is-really-about)
+    - [7.5. How is it related to the Agile?](#75-how-is-it-related-to-the-agile)
+    - [7.6. How do they differ?](#76-how-do-they-differ)
+    - [7.7. Why?](#77-why)
+    - [7.8. What are the principles of DevOps?](#78-what-are-the-principles-of-devops)
+    - [7.9. How is this achieved?](#79-how-is-this-achieved)
+    - [7.10. What is Continuous Integration (CI)?](#710-what-is-continuous-integration-ci)
+    - [7.11. How?](#711-how)
+    - [7.12. CI best practices](#712-ci-best-practices)
+        - [7.12.1. Utilize a Configuration Management System](#7121-utilize-a-configuration-management-system)
+        - [7.12.2. Automate the build](#7122-automate-the-build)
+        - [7.12.3. Employ one or more CI services/orchestrators](#7123-employ-one-or-more-ci-servicesorchestrators)
+        - [7.12.4. Make builds self-testing](#7124-make-builds-self-testing)
+        - [7.12.5. Never commit broken](#7125-never-commit-broken)
+        - [7.12.6. Developers are expected to pre-flight new code](#7126-developers-are-expected-to-pre-flight-new-code)
+        - [7.12.7. The CI service/orchestrator provides feedback](#7127-the-ci-serviceorchestrator-provides-feedback)
+    - [7.13. What is Continuous Delivery?](#713-what-is-continuous-delivery)
+        - [7.13.1. Extending Continuous Integration (CI)](#7131-extending-continuous-integration-ci)
+        - [7.13.2. Consistency](#7132-consistency)
+    - [7.14. But wait. What's a pipeline?](#714-but-wait-whats-a-pipeline)
+    - [7.15. How is a pipeline manifested?](#715-how-is-a-pipeline-manifested)
+    - [7.16. What underlines all of this?](#716-what-underlines-all-of-this)
+    - [7.17. But really why do we automate err. code?](#717-but-really-why-do-we-automate-err-code)
+        - [7.17.1. Why do I mention Larry Wall?](#7171-why-do-i-mention-larry-wall)
+        - [7.17.2. Laziness](#7172-laziness)
+        - [7.17.3. Impatience](#7173-impatience)
+        - [7.17.4. Hubris](#7174-hubris)
+        - [7.17.5. We automate for](#7175-we-automate-for)
+    - [7.18. Monitoring](#718-monitoring)
+        - [7.18.1. The most important metric](#7181-the-most-important-metric)
+        - [7.18.2. An understanding of performance](#7182-an-understanding-of-performance)
+        - [7.18.3. Establish a baseline performance](#7183-establish-a-baseline-performance)
+        - [7.18.4. Set reaction thresholds](#7184-set-reaction-thresholds)
+        - [7.18.5. Reacting](#7185-reacting)
+        - [7.18.6. Gaps in CI/CD](#7186-gaps-in-cicd)
+        - [7.18.7. Eliminating waste](#7187-eliminating-waste)
+    - [7.19. What is DevOps culture?](#719-what-is-devops-culture)
+        - [7.19.1. We were taught the requisite skills as children](#7191-we-were-taught-the-requisite-skills-as-children)
+        - [7.19.2. Maintaining relationships is your most important skill](#7192-maintaining-relationships-is-your-most-important-skill)
+        - [7.19.3. Be quick... Be slow to...](#7193-be-quick-be-slow-to)
+        - [7.19.4. The pressures of social media](#7194-the-pressures-of-social-media)
+    - [7.20. Crawl, walk, run](#720-crawl-walk-run)
+        - [7.20.1. Ultimately, DevOps is Goal](#7201-ultimately-devops-is-goal)
 - [8. Reading list](#8-reading-list)
 - [9. Now the hands-on part](#9-now-the-hands-on-part)
     - [9.1. Configuring environmental variables](#91-configuring-environmental-variables)
@@ -252,11 +253,19 @@ DevOps will also not entirely stop all bugs nor all vulnerabilities from making 
 
 <sub>There are countless vendors out there, who want to sell you their crummy tool.</sub>
 
-## 7.3. DevOps is really about
+## 7.3. Fixate on tools and your effort will fail
 
-Providing the culture and delivery/release pipeline that once a bug or vulnerability is discovered, the concern can to be quickly remediated and functionality returned back to the user.
+The tools and an origanization's tailored processes around them come __after__ performing these two efforts:
 
-## 7.4. How is it related to the Agile?
+1. To succeed at DevOps you must __combine software development and information technology operations in the systems development life cycle__ with __a focus on shorting its life cycle while delivering features, fixes, and updates frequently in close alignment with business objectives__. If the effort cannot combine these both Dev and Ops with this focus the effort will most certainly fail.
+ 
+2. If effort doesn't __grok (i.e, understand intuitively) what DevOps actually is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.  I say this because culture is largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
+
+## 7.4. DevOps is really about
+
+Providing the culture. methods and repeate practices that once a bug or vulnerability is discovered, the concern can to be quickly remediated and functionality returned back to the user.
+
+## 7.5. How is it related to the Agile?
 
 Agile Software Development is an umbrella term for a set of methods and practices based on the [values](http://www.agilealliance.org/agile101/the-agile-manifesto/) and [principles](http://www.agilealliance.org/agile101/12-principles-behind-the-agile-manifesto/) expressed in the Agile Manifesto.
 
@@ -271,7 +280,7 @@ For Agile, solutions evolve through collaboration between self-organizing, cross
 
 Again, in DevOps everyone is developing software, so it is my view DevOps builds on Agile.
 
-## 7.5. How do they differ?
+## 7.6. How do they differ?
 
 While Agile Software Development encourages collaboration between cross-functional teams, the focus in DevOps is on the
 
@@ -280,11 +289,11 @@ While Agile Software Development encourages collaboration between cross-function
 - development, and
 - quality assurance functionaries as stakeholders into the development effort.
 
-## 7.6. Why?
+## 7.7. Why?
 
 In Agile Software Development, there is rarely an integration of these individuals outside the immediate application development team with members of technology operations (e.g., network engineers administrators, testers, cyber security engineers.)
 
-## 7.7. What are the principles of DevOps?
+## 7.8. What are the principles of DevOps?
 
 As DevOps matures, several principles have emerged, namely the necessity for product teams to:
 
@@ -295,75 +304,77 @@ As DevOps matures, several principles have emerged, namely the necessity for pro
 - Validate and monitor operational quality, and
 - Provide rapid, automated feedback to the stakeholders
 
-## 7.8. How is this achieved?
+## 7.9. How is this achieved?
 
 Achieved through the repeated practices of Continuous Integration (CI) and Continuous Delivery (CD) often conflated into simply "CI/CD".
 
 After tools, this is what is commonly (albeit mistakenly) thought to be the totality of DevOps.
 
-## 7.9. What is Continuous Integration (CI)?
+## 7.10. What is Continuous Integration (CI)?
 
 It is a repeated Agile software development practice, lifted specifically from Extreme programming, where members of a development team frequently integrate their work in order to detect integration issues as quickly as possible thereby shifting discovery of issues "left" (i.e., early) in the software release.
 
-## 7.10. How?
+## 7.11. How?
 
 Each integration is orchestrated through a CI service/orchestrator (e.g., Jenkins CI, Drone CI, GitLab Runners, Concourse CI) that essentially assembles a build, runs unit and integration tests every time a predetermined trigger has been met; and then reports with immediate feedback.
 
-## 7.11. CI best practices
+## 7.12. CI best practices
 
-### 7.11.1. Utilize a Configuration Management System
+### 7.12.1. Utilize a Configuration Management System
 
 For the software's source code, where the mainline (i.e., master branch) is the most the most recent working version, past releases held in branches, and new features not yet merged into the mainline branch being worked on their own branches.
 
-### 7.11.2. Automate the build
+### 7.12.2. Automate the build
 
 By accompanying build automation (e.g., Gradle, Apache Maven, Make) alongside the source code.
 
-### 7.11.3. Employ one or more CI services/orchestrators
+### 7.12.3. Employ one or more CI services/orchestrators
 
 Perform source code analysis via automate formal code inspection and assessment.
 
-### 7.11.4. Make builds self-testing
+### 7.12.4. Make builds self-testing
 
 In other words, ingrain testing by including unit and integration tests (e.g., Spock, JUnit, Mockito, SOAPUI, go package *Testing*) with the source code so as to be executed by the build automation to be execute by the CI service.
 
-### 7.11.5. Never commit broken
+### 7.12.5. Never commit broken
 
 Or untested source code to the CMS mainline or otherwise risk breaking a build.
 
-### 7.11.6. Developers are expected to pre-flight new code
+### 7.12.6. Developers are expected to pre-flight new code
 
 Prior to committing source code in their own workspace.
 
-### 7.11.7. The CI service/orchestrator provides feedback
+### 7.12.7. The CI service/orchestrator provides feedback
 
 On the success or fail of a build integration to all its stakeholders.
 
-## 7.12. What is Continuous Delivery?
+## 7.13. What is Continuous Delivery?
 
 It is a repeated software development practice of providing a rapid, reliable, low-risk product delivery achieved through automating all facets of building, testing, and deploying software.
 
-### 7.12.1. Extending Continuous Integration (CI)
+### 7.13.1. Extending Continuous Integration (CI)
 
 With additional stages/steps aimed to provide ongoing validation that a newly assembled software build meets all desired requirements and thereby is releasable.
 
-### 7.12.2. Consistency
+### 7.13.2. Consistency
 
 Is achieved through delivering applications into production via individual repeatable pipelines of ingrained system configuration management and testing
 
-## 7.13. But wait. What's a pipeline?
+## 7.14. But wait. What's a pipeline?
 
 A pipeline automates the various stages/steps (e.g., Static Application Security Testing (SAST), build, unit testing, Dynamic Application Security Testing (DAST), secure configuration acceptance compliance, integration, function and non-functional testing, delivery, and deployment) to enforce quality conformance.
 
-## 7.14. How is a pipeline manifested?
+## 7.15. How is a pipeline manifested?
 
 Each delivery pipeline is manifested as **Pipeline as Code** (i.e., software automation) accompanying software's source code in its version control repository.
 
-## 7.15. What underlines all of this?
+## 7.16. What underlines all of this?
 
-I'd argue, _a ubiquitous access to shared pools of configurable system resources and higher-level services that can be rapidly provisioned with minimal management effort_ without the repeated practices of DevOps will struggle.  Although, it is possible to DevOps on mainframes.
+I and the community of practice argues without _a ubiquitous access to shared pools of configurable system resources and higher-level services that can be rapidly provisioned with minimal management effort_the repeated practices of DevOps will struggle.  
 
-## 7.16. But really why do we automate err. code?
+Although, it is possible to DevOps on mainframes.
+
+## 7.17. But really why do we automate err. code?
 
 In 2001, I think Larry Wall in his 1st edition of *Programming Perl* book put it best with "We will encourage you to develop the three great virtues of a programmer:
 
@@ -375,7 +386,7 @@ hubris."
 
 The second edition of the same book provided definitions for these terms
 
-### 7.16.1. Why do I mention Larry Wall?
+### 7.17.1. Why do I mention Larry Wall?
 
 Well...
 
@@ -392,19 +403,19 @@ I kid, but in all serious the sentimanet of this seminal book still holds true.
 
 Let me explain.
 
-### 7.16.2. Laziness
+### 7.17.2. Laziness
 
 _The quality that makes you go to great effort to reduce overall energy expenditure. It makes you write labor-saving programs that other people will find useful, and document what you wrote so you don't have to answer so many questions about it. Hence, the first great virtue of a programmer._ (p.609)
 
-### 7.16.3. Impatience
+### 7.17.3. Impatience
 
 _The anger you feel when the computer is being lazy. This makes you write programs that don't just react to your needs, but actually anticipate them. Or at least pretend to. Hence, the second great virtue of a programmer._ (p.608)
 
-### 7.16.4. Hubris
+### 7.17.4. Hubris
 
 _Excessive pride, the sort of thing Zeus zaps you for. Also, the quality that makes you write (and maintain) programs that other people won't want to say bad things about. Hence, the third great virtue of a programmer._ (p.607)
 
-### 7.16.5. We automate for
+### 7.17.5. We automate for
 
 - Faster, coordinated, repeatable, and therefore more reliable deployments.
 - Discover bugs sooner. Shifting their discovery left in the process.
@@ -412,41 +423,41 @@ _Excessive pride, the sort of thing Zeus zaps you for. Also, the quality that ma
 - Reduce tribal knowledge, where one group or person holds the keys to how things get done. Yep, this is about making us all replaceable.
 - Reduce shadow IT (i.e., hardware or software within an enterprise that is not supported by IT. Just waiting for its day to explode.)
 
-## 7.17. Monitoring
+## 7.18. Monitoring
 
 Once deployed, the work is done, right?
 
 A development team's work is not complete once a product leaves CI/CD and enters production; especially, under DevOps where the development teams include members of operations.
 
-### 7.17.1. The most important metric
+### 7.18.1. The most important metric
 
 Is working software is the _primary_, but not the only, measure of progress.  The key to successful DevOps is knowing how well the methodology and the software it produces are performing.
 
-### 7.17.2. An understanding of performance
+### 7.18.2. An understanding of performance
 
 Is achieved by collecting and analyzing data produced by environments used for CI/CD and production.
 
-### 7.17.3. Establish a baseline performance
+### 7.18.3. Establish a baseline performance
 
 So, that improvements can be gauged and anomalies detected.
 
-### 7.17.4. Set reaction thresholds
+### 7.18.4. Set reaction thresholds
 
 To formulate and prioritize reactions weighting factors, such as, the frequency at which an anomaly arises and who is impacted.
 
-### 7.17.5. Reacting
+### 7.18.5. Reacting
 
 A reaction could be as simple as operations instructing users through training to not do something that triggers the anomaly, or more ideally, result in an issue being entered into the product's backlog culminating in the development team delivering a fix into production.
 
-### 7.17.6. Gaps in CI/CD
+### 7.18.6. Gaps in CI/CD
 
 Monitoring will also inform development teams of gaps in CI/CD resulting in additional testing for the issue that triggered the necessity for the improvement.
 
-### 7.17.7. Eliminating waste
+### 7.18.7. Eliminating waste
 
 Further, monitoring may result in the re-scoping of requirements, re-prioritizing of a backlog, or the deprecation of un-used features.
 
-## 7.18. What is DevOps culture?
+## 7.19. What is DevOps culture?
 
 > **culture** noun  \ *ˈkəl-chər* \
 > the set of shared attitudes, values, goals, and practices that characterizes an institution or
@@ -454,25 +465,25 @@ Further, monitoring may result in the re-scoping of requirements, re-prioritizin
 
 Now that everyone is a coder using the same tools, methods and repeated practices for their particular discipline you have the foundations of a ***culture***.
 
-### 7.18.1. We were taught the requisite skills as children
+### 7.19.1. We were taught the requisite skills as children
 
 ![Paw Patrol](./images/paw_patrol.png)
 
-### 7.18.2. Maintaining relationships is your most important skill
+### 7.19.2. Maintaining relationships is your most important skill
 
 ![Maintaining Relationships](./images/maintaining_relationships.png)
 
-### 7.18.3. Be quick... Be slow to... 
+### 7.19.3. Be quick... Be slow to... 
 
 ![Quick to slow](./images/quick_to_slow_to.png)
 
-### 7.18.4. The pressures of social media
+### 7.19.4. The pressures of social media
 
 ![Social Media](./images/social_media.png)
 
-## 7.19. Crawl, walk, run
+## 7.20. Crawl, walk, run
 
-### 7.19.1. Ultimately, DevOps is Goal
+### 7.20.1. Ultimately, DevOps is Goal
 
 - With DevOps one does not simply hit the ground running.
 - One must first crawl, walk and then ultimately run as you embrace the necessary culture change, methods and repeated practices.
@@ -1028,7 +1039,7 @@ Vagrant.configure('2') do |config|
   end
 ```
 
-This section uses `vagrant-ca-certificates` to as the plugin's documentation puts it _configures the virtual machine to inject the specified certificates into the guest's root bundle. This is useful, for example, if your enterprise network has a firewall (or appliance) which utilizes SSL interception._ So, we aren't the only ones that have to deal with the havoc SSL interception brings to development.
+This section uses `vagrant-ca-certificates` to as the plugin's documentation puts it _configures the virtual machine to inject the specified certificates into the guest's root bundle. This is useful, for example, if your enterprise network has a firewall (or appliance) which utilizes SSL interception._ So, the existence of this plugin tell us more broadly others have to deal with the havoc SSL interception brings to development.
 
 ##### 9.5.1.4.5. Configuring the cache plugin to speed things along
 
@@ -1125,7 +1136,7 @@ This section provisions and configures a `development` vagrant used for developm
   - `development.vm.box` loads the vagrant with this `centos/7` vagrant base box.  Vagrant curates a listing of base boxes here https://app.vagrantup.com/boxes/search
   - `development.vm.synced_folder` mounts the class's project folder to `/vagrant` path in the vagrant.
   -  The `development.vm.provider` section tells the hypervisor how to configure the vagrant (i.e., how much memory, how many procesors)
-- `ansible_local` does not require one to have Ansible installed on the host. Vagrant handles installing it on the vagrant and executing the specified playbook. 
+  - `ansible_local` does not require one to have Ansible installed on the host. Vagrant handles installing it on the vagrant and executing the specified playbook. 
   - In this instance, I have `ansible.verbose` jacked to its highest setting providing loads of `development` logging.  If too much information about what is going on unnerves you changing this to `false` will disable verbose logging.
 
 ##### 9.5.1.4.9. Configuring the *toolchain* vagrant
@@ -1190,9 +1201,9 @@ This section provisions and configures the `toolchain` vagrant. This is the beef
 
 Ansible is a "configuration management" tool that automates software provisioning, configuration management and application deployment, two core repeated practices in DevOps, so for the purposes of the class Ansible addresses this concern in configuring of two vagrants.
 
-Ansible was open source and then subsumed by Red Hat.
+Ansible was open-sourced and then subsumed by Red Hat.
 
-There are other "configuration management" tools, such as Chef and Puppet. There are of course even more, but they hold little or no community practice or market share (e.g., BOSH, Salt.)
+There are other "configuration management" tools, such as Chef and Puppet. There are of course others, but they hold little or no community practice or market share (e.g., BOSH, Salt.)  
 
 #### 9.5.2.1. Inventory file
 
