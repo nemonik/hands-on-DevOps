@@ -409,15 +409,22 @@ Let me explain.
 
 ### 7.17.2. Laziness
 
-_The quality that makes you go to great effort to reduce overall energy expenditure. It makes you write labor-saving programs that other people will find useful, and document what you wrote so you don't have to answer so many questions about it. Hence, the first great virtue of a programmer._ (p.609)
+> The quality that makes you go to great effort to reduce overall energy expenditure. 
+> It makes you write labor-saving programs that other people will find useful, and 
+> document what you wrote so you don't have to answer so many questions about it. 
+> Hence, the first great virtue of a programmer._ (p.609)
 
 ### 7.17.3. Impatience
 
-_The anger you feel when the computer is being lazy. This makes you write programs that don't just react to your needs, but actually anticipate them. Or at least pretend to. Hence, the second great virtue of a programmer._ (p.608)
+> The anger you feel when the computer is being lazy. This makes you write programs 
+> that don't just react to your needs, but actually anticipate them. Or at least 
+> pretend to. Hence, the second great virtue of a programmer._ (p.608)
 
 ### 7.17.4. Hubris
 
-_Excessive pride, the sort of thing Zeus zaps you for. Also, the quality that makes you write (and maintain) programs that other people won't want to say bad things about. Hence, the third great virtue of a programmer._ (p.607)
+> Excessive pride, the sort of thing Zeus zaps you for. Also, the quality that makes 
+> you write (and maintain) programs that other people won't want to say bad things 
+> about. Hence, the third great virtue of a programmer._ (p.607)
 
 ### 7.17.5. We automate for
 
@@ -846,7 +853,7 @@ This class uses Vagrant and Ansible IaC frameworks and the following sections wi
 
 This class uses Vagrant, a command line utility for managing the lifecycle of virtual machines as a vagrant in that the VMs are not meant to hang around in the same place for long.
 
-Unless you want to pollute your machine with every imaginable programming language, framework and library version you'll find yourself often creating a virtual machine (VM) for each software project. Sometimes more than one. And if you're like me of the past you'll end up with a VirtualBox full of VMs. If you haven't gone about this the right way, you'll end up wondering what VM went with which project and now how did I create it? The anti-pattern around this problem is to write documentation. A better way that aligns with a DevOps repeatable practices to create automation to provision and configure your development VMs. This is where Vagrant comes in as it is "a command line utility for managing the lifecycle of virtual machines."
+Unless you want to pollute your machine with every imaginable programming language, framework and library version you'll find yourself often creating a virtual machine (VM) for each software project. Sometimes more than one. And if you're like me of the past you'll end up with a VirtualBox full of VMs. If you haven't gone about this the right way, you'll end up wondering what VM went with which project and now how did I create it? The anti-pattern around this problem is to write documentation. A better way that aligns with a DevOps repeatable practices is to create automation to provision and configure your development VMs. This is where Vagrant comes in as it is "a command line utility for managing the lifecycle of virtual machines."
 
 #### 9.5.1.1. Vagrant documentation and source
 
@@ -1203,11 +1210,18 @@ This section provisions and configures the `toolchain` vagrant. This is the beef
 
 ### 9.5.2. Ansible
 
-Ansible is a "configuration management" tool that automates software provisioning, configuration management and application deployment, two core repeated practices in DevOps, so for the purposes of the class Ansible addresses this concern in configuring of two vagrants.
+Ansible is a "configuration management" tool that automates software provisioning, configuration management and application deployment, two core repeated practices in DevOps, so for the purposes of the class Ansible addresses this concern in its configuration of two vagrants.
 
 Ansible was open-sourced and then subsumed by Red Hat.
 
-There are other "configuration management" tools, such as Chef and Puppet. There are of course others, but they hold little or no community practice or market share (e.g., BOSH, Salt.)  
+There are other notable open-source "configuration management" tools, such as Chef and Puppet. Further still there are others, such as BOSH and Salt, but they hold little or no community of practice or market share.
+
+In his seminal essay, ["The Cathedral and the Bazaar"](http://www.catb.org/~esr/writings/cathedral-bazaar/cathedral-bazaar/), Eric S. Raymond states
+
+> while coding remains an essentially solitary activity, the really great hacks
+> come from harnessing the attention and brainpower of entire communities
+
+You want to leverage the work of vibrate community and not some back water effort.
 
 #### 9.5.2.1. Inventory file
 
