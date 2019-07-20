@@ -257,7 +257,7 @@ DevOps will also not entirely stop all bugs nor all vulnerabilities from making 
 
 The tools and an origanization's tailored processes around them come __after__ performing these two efforts:
 
-1. To succeed at DevOps you must __combine software development and information technology operations in the systems development life cycle__ with __a focus on shorting its life cycle while delivering features, fixes, and updates frequently in close alignment with business objectives__. If the effort cannot combine these both Dev and Ops with this focus the effort will most certainly fail.
+1. To succeed at DevOps you must __combine software development and information technology operations in the systems development life cycle__ with __a focus on shorting its life cycle while delivering features, fixes, and updates frequently in close alignment with business objectives__. If the effort cannot combine both Dev and Ops with this focus the effort will most certainly fail.
  
 2. If effort doesn't __grok (i.e, understand intuitively) what DevOps actually is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.  I say this because culture is largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
 
@@ -282,12 +282,16 @@ Again, in DevOps everyone is developing software, so it is my view DevOps builds
 
 ## 7.6. How do they differ?
 
-While Agile Software Development encourages collaboration between cross-functional teams, the focus in DevOps is on the
+While Agile Software Development encourages collaboration between cross-functional teams, the focus in DevOps is on, but not limited to, the inclusion of
 
-- inclusion of analysis,
+- analysis,
 - design,
-- development, and
-- quality assurance functionaries as stakeholders into the development effort.
+- development,
+- network and infrastructure,
+- security, and
+- quality assurance
+
+functionaries as stakeholders into the development effort.
 
 ## 7.7. Why?
 
@@ -312,7 +316,7 @@ After tools, this is what is commonly (albeit mistakenly) thought to be the tota
 
 ## 7.10. What is Continuous Integration (CI)?
 
-It is a repeated Agile software development practice, lifted specifically from Extreme programming, where members of a development team frequently integrate their work in order to detect integration issues as quickly as possible thereby shifting discovery of issues "left" (i.e., early) in the software release.
+It is a repeated Agile software development practice lifted specifically from Extreme programming, where members of a development team frequently integrate their work in order to detect integration issues as quickly as possible thereby shifting discovery of issues "left" (i.e., early) in the software release.
 
 ## 7.11. How?
 
