@@ -71,6 +71,15 @@
   tags:
     - k3s-server
 
+- name: does the /vagrant/k3s_token.txt exist?
+  stat: 
+    path: /vagrant/k3s_token.txt
+  register: k3s_token_test
+
+- name: Move /vagrant/k3s_token.txt to backup if it already exist
+  command: "mv /vagrant/k3s_token.txt /vagrant/{{ ansible_date_time.epoch }}.k3s_token.txt"
+  when: k3s_token_test.stat.exists == true
+
 - name: ensure K3S_TOKEN is copied to /vagrant/k3s_token.txt, so that it can be easily retrieve to configure K3s agents
   become: yes
   copy:
@@ -165,6 +174,15 @@
       line: 'export KUBECONFIG="/home/{{ ansible_user_id }}/kubeconfig.yml"'
       insertafter: EOF
 
+  - name: does the /vagrant/kubeconfig.yml exist?
+    stat: 
+      path: /vagrant/kubeconfig.yml
+    register: kubeconfig_yml
+
+  - name: Move /vagrant/kubeconfig.yml to backup if it already exist
+    command: "mv /vagrant/kubeconfig.yml /vagrant/{{ ansible_date_time.epoch }}.kubeconfig.yml"
+    when: kubeconfig_yml.stat.exists == true
+
   - name: ensure kubeconfig.yml ise written to /vagrant so that it can be easily retrieved
     become: yes
     copy:
@@ -214,6 +232,15 @@
       TOKEN=$(kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml --namespace=kube-system get secret $SECRET -o jsonpath='{.data.token}' | base64 --decode)
       echo $TOKEN
     register: token_results
+
+  - name: does the /vagrant/vagrant-token.txt exist?
+    stat: 
+      path: /vagrant/vagrant-token.txt
+    register: vagrant_token_test
+
+  - name: Move /vagrant/vagrant-token.txt to backup if it already exist
+    command: "mv /vagrant/vagrant-token.txt /vagrant/{{ ansible_date_time.epoch }}.vagrant-token.txt"
+    when: vagrant_token_test.stat.exists == true
 
   - name: ensure kubernetes admin user token is written to /vagrant/vagrant-token.txt, so that it can be easily retrievaed
     copy:
