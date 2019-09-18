@@ -1,0 +1,59 @@
+---
+# tasks file for docker
+# Based on https://docs.docker.com/install/linux/docker-ce/centos/
+
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: uninstall old versions of docker
+  become: yes
+  yum:
+    name: 
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-selinux
+      - docker-engine-selinux
+      - docker-engine
+    state: absent
+  tags:
+    - docker
+
+- name: ensure docker group exists
+  become: yes
+  group:
+    name: docker
+    state: present
+  tags:
+    - docker
+
+- name: ensure Docker CE repository is added
+  become: yes
+  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  tags:
+    - docker
+
+- name: ensure the latest version of Docker CE is installed
+  become: yes
+  yum: 
+    state: latest 
+    name: docker-ce
+  tags:
+    - docker
+
+- name: ensure docker service is enabled
+  become: yes
+  service:
+    name: docker
+    enabled: yes
+    state: started
+  tags:
+    - docker

@@ -1,0 +1,130 @@
+---
+# tasks file for common
+
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: upgrade all packages
+  become: yes
+  yum:
+    name: "*"
+    state: latest
+  tags:
+    - common
+
+- name: install epel-release
+  become: yes
+  yum: 
+    name: epel-release
+    state: latest 
+  tags:
+    - common
+
+- name: ensure an up-to-date git is installed
+  become: yes
+  block:
+    - name: remove present version
+      yum:
+        name: git
+        state: absent
+
+#    - name: ensure ius.io repo key is installed
+#      rpm_key:
+#        state: present
+#        key: https://repo.ius.io/RPM-GPG-KEY-IUS-7
+
+    - name: ensure iuscommunity.org repo is installed.
+      yum:
+        name: https://centos7.iuscommunity.org/ius-release.rpm
+        disable_gpg_check: yes
+        state: present
+
+    - name: ensure git2u is installed
+      yum:
+        name: git2u
+        state: latest
+  tags:
+    - common
+
+- name: ensure development related packages are installed
+  become: yes
+  yum: 
+    name: 
+      - sudo
+      - unzip
+      - wget
+      - lynx
+      - nano
+      - vim
+      - emacs
+      - bind-utils
+      - ruby
+    state: latest     
+  tags:
+    - common
+
+#- name: ensure kompose is installed
+#  block:
+#  - name: is kompose installed?
+#    stat: 
+#      path: /usr/local/bin/kompose
+#    register: kompose
+#
+#  - name: ensure kompose is installed, if not
+#    become: yes
+#    get_url:
+#      url: "https://github.com/kubernetes/kompose/releases/download/v{{ kompose_version }}/kompose-linux-amd64"
+#      dest: /usr/local/bin/kompose
+#      mode: 755
+#    when: kompose.stat.exists == false
+#  tags:
+#    - common
+#     - kompose
+
+- name: ensure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+  become: yes
+  tags:
+    - common
+
+- name: configure 'wheel' group to have passwordless sudo
+  become: yes
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: "^%wheel"
+    line: "%wheel ALL=(ALL) NOPASSWD: ALL"
+    validate: "visudo -cf %s"
+  tags:
+    - common
+
+- name: ensure {{ ansible_user_id  }} is added to wheel group
+  become: yes
+  user: 
+    name: "{{ ansible_user_id  }}"
+    groups: wheel 
+    append: yes 
+    state: present 
+  tags:
+    - common
+
+- name: ensure /usr/local/bin is included in everyone's PATH env
+  become: yes
+  copy:
+    dest: /etc/profile.d/usr_local_bin.sh
+    content: |
+      pathmunge /usr/local/bin
+    mode: '0644' 
+   
+- name: ensure sudo can run /usr/local/bin files
+  become: yes  
+  lineinfile:
+   path: /etc/sudoers
+   regexp: '^Defaults    secure_path ='
+   line: Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin

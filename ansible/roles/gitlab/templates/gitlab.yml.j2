@@ -1,0 +1,322 @@
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gitlab
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-local-path-pvc
+  namespace: gitlab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: gitlab
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: sameersbn/redis:4.0.9-1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: redis
+          containerPort: 6379
+        volumeMounts:
+        - mountPath: /var/lib/redis
+          name: data
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: redis-local-path-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: gitlab
+spec:
+  ports:
+    - name: redis
+      targetPort: redis
+      port: 6379
+  selector:
+    app: redis
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-local-path-pvc
+  namespace: gitlab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  namespace: gitlab
+  labels:
+    app: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+      - name: postgresql
+        image: sameersbn/postgresql:10-2
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DB_NAME
+          value: gitlabhq_production
+        - name: DB_USER
+          value: gitlab
+        - name: DB_PASS
+          value: password
+        - name: DB_EXTENSION
+          value: pg_trgm
+        ports:
+        - name: postgres
+          containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql
+          name: data
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -h
+            - localhost
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -h
+            - localhost
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: postgresql-local-path-pvc
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  namespace: gitlab
+spec:
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: postgres
+  selector:
+    app: postgresql
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gitlab-local-path-pvc
+  namespace: gitlab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment  
+metadata:
+  name: gitlab
+  namespace: gitlab
+  labels:
+    app: gitlab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitlab
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      containers:
+      - name: gitlab
+        image: nemonik/gitlab:{{ gitlab_version }}
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: GITLAB_HOST
+          value: {{ gitlab_host }}
+        - name: GITLAB_PORT
+          value: "{{ gitlab_port }}"
+        - name: GITLAB_SSH_PORT
+          value: "{{ gitlab_ssh_port }}"
+        - name: GITLAB_SECRETS_DB_KEY_BASE
+          value: long-and-random-alpha-numeric-string
+        - name: GITLAB_SECRETS_SECRET_KEY_BASE
+          value: long-and-random-alpha-numeric-string
+        - name: GITLAB_SECRETS_OTP_KEY_BASE
+          value: long-and-random-alpha-numeric-string
+        - name: TZ
+          value: Eastern Time (US & Canada)
+        - name: GITLAB_TIMEZONE
+          value: Eastern Time (US & Canada)
+        - name: DB_ADAPTER
+          value: postgresql
+        - name: DB_ENCODING
+          value: unicode
+        - name: DB_HOST
+          value: postgresql
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: gitlabhq_production
+        - name: DB_USER
+          value: gitlab
+        - name: DB_PASS
+          value: password
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"
+        - name: GITLAB_ROOT_PASSWORD
+          value: {{ gitlab_root_password }}
+{% if http_proxy %}
+        - name: http_proxy
+          value: {{ http_proxy }}
+        - name: HTTP_PROXY
+          value: {{ http_proxy }}
+{% endif %}
+{% if https_proxy %}
+        - name: https_proxy
+          value: {{ https_proxy }}
+        - name: HTTPS_PROXY
+          value: {{ https_proxy }}
+{% endif %}
+{% if no_proxy %}
+        - name: no_proxy
+          value: {{ no_proxy }}
+        - name: NO_PROXY
+          value: {{ no_proxy }}
+{% endif %}
+        ports:
+        - name: http
+          containerPort: 80
+        - name: ssh
+          containerPort: 22
+        volumeMounts:
+        - mountPath: /home/git/data
+          name: data
+        livenessProbe:
+          httpGet:
+            path: /favicon.ico
+            port: 80
+          initialDelaySeconds: 180
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /favicon.ico
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          failureThreshold: 12
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: gitlab-local-path-pvc
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitlab
+  namespace: gitlab
+spec:
+  ports:
+    - name: http
+      targetPort: http
+      port: {{ gitlab_port }}
+    - name: ssh
+      targetPort: ssh
+      port: {{ gitlab_ssh_port }}
+  selector:
+    app: gitlab
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster

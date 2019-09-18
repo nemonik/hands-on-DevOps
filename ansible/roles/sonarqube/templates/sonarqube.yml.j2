@@ -1,0 +1,160 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sonarqube
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  namespace: sonarqube
+  labels:
+    app: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+      - name: postgresql
+        image: sameersbn/postgresql:10-2
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DB_NAME
+          value: sonardb
+        - name: DB_USER
+          value: sonar
+        - name: DB_PASS
+          value: sonar
+        ports:
+        - name: postgres
+          containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql
+          name: data
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -h
+            - localhost
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -h
+            - localhost
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+      volumes:
+      - name: data
+        emptyDir: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  namespace: sonarqube
+spec:
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: postgres
+  selector:
+    app: postgresql
+
+---
+
+apiVersion: apps/v1
+kind: Deployment  
+metadata:
+  name: sonarqube
+  namespace: sonarqube
+  labels:
+    app: sonarqube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarqube
+  template:
+    metadata:
+      labels:
+        app: sonarqube
+    spec:
+      containers:
+      - name: sonarqube
+        image: nemonik/sonarqube:{{ sonarqube_version }}
+        imagePullPolicy: IfNotPresent
+{% if http_proxy  %}
+        command: -Dhttp.nonProxyHosts={{ no_proxy }} -Dhttp.proxyHost={{ http_proxy.split("http://")[1].split(":")[0]}} -Dhttp.proxyPort={{ http_proxy.split("http://")[1].split(":")[1]}}
+{% endif %}
+        env:
+        - name: SONARQUBE_JDBC_URL
+          value: jdbc:postgresql://postgresql:5432/sonardb
+{% if http_proxy %}
+        - name: http_proxy
+          value: {{ http_proxy }}
+        - name: HTTP_PROXY
+          value: {{ http_proxy }}
+{% endif %}
+{% if https_proxy %}
+        - name: https_proxy
+          value: {{ https_proxy }}
+        - name: HTTPS_PROXY
+          value: {{ https_proxy }}
+{% endif %}
+{% if no_proxy %}
+        - name: no_proxy
+          value: {{ no_proxy }}
+        - name: NO_PROXY
+          value: {{ no_proxy }}
+{% endif %}
+        ports:
+        - name: http
+          containerPort: 9000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 9000
+          initialDelaySeconds: 180
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 9000
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          failureThreshold: 12
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarqube
+  namespace: sonarqube
+spec:
+  ports:
+    - name: http
+      targetPort: http
+      port: {{ sonarqube_port }}
+  selector:
+    app: sonarqube
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster

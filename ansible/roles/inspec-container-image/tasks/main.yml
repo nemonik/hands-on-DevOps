@@ -52,12 +52,13 @@
     repository: "{{ hostvars['toolchain']['ansible_host'] }}:5000/nemonik/inspec"
     push: yes
     tag: "{{ inspec_version }}"
-    buildargs:
-      http_proxy: "{{ http_proxy|default('') }}"
-      HTTP_PROXY: "{{ http_proxy|default('') }}"
-      https_proxy: "{{ https_proxy|default('') }}"
-      HTTPS_PROXY: "{{ https_proxy|default('') }}"
-      NO_PROXY: "{{ no_proxy|default('') }}"
-      no_proxy: "{{ no_proxy|default('') }}" 
+    build:
+      args:
+        http_proxy: "{{ http_proxy|default('') }}"
+        HTTP_PROXY: "{{ http_proxy|default('') }}"
+        https_proxy: "{{ https_proxy|default('') }}"
+        HTTPS_PROXY: "{{ https_proxy|default('') }}"
+        NO_PROXY: "{{ no_proxy|default('') }}"
+        no_proxy: "{{ no_proxy|default('') }}" 
   tags:    
     - inspec-container-image

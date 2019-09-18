@@ -9,20 +9,100 @@
 # this file. If not, please email <mjwalsh@nemonik.com>
 
 - name: "create /home/{{ ansible_user_id }}/drone"
-  become: yes
   file:
     path: "{{ item.path }}"
     state: directory
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
   with_items:
     - { path: "/home/{{ ansible_user_id }}/drone/drone-server" }
     - { path: "/home/{{ ansible_user_id }}/drone/drone-agent" }
   tags:
     - drone 
 
+- name: wait for GitLab to be available
+  uri:
+    url: "http://{{ gitlab_host }}:{{ gitlab_port }}/favicon.ico"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 5
+  tags:
+    - drone
+
+- name: retrieve personal_access_token to access GitLAb 
+  block:
+  - name: get personal_access_token to GitLab
+    shell: |
+      body_header=$(curl -s -c cookies.txt -i "http://{{ gitlab_host }}:{{ gitlab_port }}/users/sign_in" -s)
+      csrf_token=$(echo $body_header | perl -ne 'print "$1\n" if /new_user.*?authenticity_token"[[:blank:]]value="(.+?)"/' | sed -n 1p)
+      curl -s -b cookies.txt -c cookies.txt -i "http://{{ gitlab_host }}:{{ gitlab_port }}/users/sign_in" --data "user[login]=root&user[password]={{ gitlab_root_password }}" --data-urlencode "authenticity_token=${csrf_token}" &>/dev/null
+      body_header=$(curl -s -H 'user-agent: curl' -b cookies.txt -i "http://{{ gitlab_host }}:{{ gitlab_port }}/profile/personal_access_tokens" -s)
+      csrf_token=$(echo $body_header | perl -ne 'print "$1\n" if /authenticity_token"[[:blank:]]value="(.+?)"/' | sed -n 1p)
+      body_header=$(curl -s -L -b cookies.txt "http://{{ gitlab_host }}:{{ gitlab_port }}/profile/personal_access_tokens" --data-urlencode "authenticity_token=${csrf_token}" --data 'personal_access_token[name]=golab-generated&personal_access_token[expires_at]=&personal_access_token[scopes][]=api')
+      echo $body_header | perl -ne 'print "$1\n" if /created-personal-access-token"[[:blank:]]value="(.+?)"/' | sed -n 1p
+    args:
+      executable: /bin/bash
+    register: gitlab_personal_access_token_result
+
+  - name: set the gitlab_personal_access_token
+    set_fact: gitlab_personal_access_token={{ gitlab_personal_access_token_result.stdout }}
+
+  when: gitlab_personal_access_token is undefined
+  tags:
+    - drone
+
+- name: test for gitlab_personal_access_token
+  debug:
+    msg: "{{ gitlab_personal_access_token }}"
+  tags:
+    - drone
+
+- name: integrate with GitLab
+  block: 
+  - name: list GitLab applications
+    uri:
+      url: "http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/applications"
+      method: GET
+      body_format: form-urlencoded
+      return_content: yes
+      status_code: 200
+      headers:
+        PRIVATE-TOKEN: "{{ gitlab_personal_access_token }}"
+    register: applications
+
+  - name: delete existing Drone CI application registration
+    uri:
+      url: "http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/applications/{{ item.id }}"
+      method: DELETE
+      status_code: 204
+      headers:
+        PRIVATE-TOKEN: "{{ gitlab_personal_access_token }}"
+    with_items: "{{ applications.json }}"
+    when: item.application_name == "Drone CI"
+ 
+  - name: configure a GitLab integration 
+    uri:
+      url: "http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/applications"
+      method: POST
+      body_format: form-urlencoded
+      body:
+      - [ name, "Drone CI" ]
+      - [ redirect_uri, "http://{{ drone_host }}:{{ drone_port }}/login" ]
+      - [ scopes, "" ]
+      return_content: yes
+      status_code: 201
+      headers:
+        PRIVATE-TOKEN: "{{ gitlab_personal_access_token }}"
+    register: drone
+
+  - set_fact:
+      drone_gitlab_client_id: "{{ drone.json.application_id }}"
+      drone_gitlab_client_secret: "{{ drone.json.secret }}"
+
+  tags:
+    - drone
+
 - name: "template files into /home/{{ ansible_user_id }}/drone"
-  become: yes
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -30,17 +110,16 @@
     group: "{{ ansible_user_id }}"
     force: yes
   with_items:
-    - { src: "templates/README.j2", dest: "/home/{{ ansible_user_id }}/drone/README.MD" }
-    - { src: "templates/docker-compose.j2", dest: "/home/{{ ansible_user_id }}/drone/docker-compose.yml" }
+    - { src: "templates/README.MD.j2", dest: "/home/{{ ansible_user_id }}/drone/README.MD" }
+    - { src: "templates/docker-compose.yml.j2", dest: "/home/{{ ansible_user_id }}/drone/docker-compose.yml" }
     - { src: "templates/drone-server/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-server/Dockerfile" }
-    - { src: "templates/drone-server/dockerfile_build.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-server/dockerfile_build.sh" }
+    - { src: "templates/drone-server/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-server/dockerfile_build.sh" }
     - { src: "templates/drone-agent/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-agent/Dockerfile" }
-    - { src: "templates/drone-agent/dockerfile_build.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-agent/dockerfile_build.sh" }
+    - { src: "templates/drone-agent/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-agent/dockerfile_build.sh" }
   tags:
     - drone 
 
 - name: make dockerfile_build.sh scripts executable
-  become: yes
   file: 
     path: "{{ item.path }}"
     mode: "u=rwx,g=r,o=r"  
@@ -53,24 +132,50 @@
     - drone 
 
 - name: "build nemonik/agent:{{ drone_version }} and nemonik/drone:{{ drone_version }} docker images"
-  become: yes
   docker_image:
     path: "{{ item.path }}"
     name: "{{ item.name }}"
-    buildargs:
-      http_proxy: "{{ http_proxy|default('') }}"
-      HTTP_PROXY: "{{ http_proxy|default('') }}"
-      https_proxy: "{{ https_proxy|default('') }}"
-      HTTPS_PROXY: "{{ https_proxy|default('') }}"
-      NO_PROXY: "{{ no_proxy|default('') }}"
-      no_proxy: "{{ no_proxy|default('') }}" 
+    build:
+      args:
+        http_proxy: "{{ http_proxy|default('') }}"
+        HTTP_PROXY: "{{ http_proxy|default('') }}"
+        https_proxy: "{{ https_proxy|default('') }}"
+        HTTPS_PROXY: "{{ https_proxy|default('') }}"
+        NO_PROXY: "{{ no_proxy|default('') }}"
+        no_proxy: "{{ no_proxy|default('') }}" 
   with_items:
     - { path: "/home/{{ ansible_user_id }}/drone/drone-agent", name: "nemonik/agent:{{ drone_version }}" }
     - { path: "/home/{{ ansible_user_id }}/drone/drone-server", name: "nemonik/drone:{{ drone_version }}" }
   tags:
     - drone
 
-- debug:
-    msg: "Drone will need to be stood up by hand as per the README.md"
+
+- name: fail if drone_deploy_via is not set to 'docker-compose'
+  fail:
+    msg: drone_deploy_via must be set to'docker-compose'.
+  when: drone_deploy_via is undefined or  drone_deploy_via != "docker-compose"
   tags:
     - drone
+
+- name: spin up Drone CI via docker-compose
+  become: yes
+  docker_service:
+    build: no
+    debug: yes
+    project_src: "/home/{{ ansible_user_id }}/drone"
+  when: drone_deploy_via == "docker-compose"
+  tags:
+    - drone
+
+# TODO: Alternatively, use Helm Chart for drone https://github.com/helm/charts/tree/master/stable/drone
+#- name: spin up Drone CI via Kubernetes
+#  shell: 
+#  args:
+#    chdir: "/home/{{ ansible_user_id }}/gitlab"
+#  when: drone_deploy_via == "helm"
+#  tags:
+#    - drone
+
+
+
+

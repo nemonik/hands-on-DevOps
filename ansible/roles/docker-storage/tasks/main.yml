@@ -1,0 +1,161 @@
+---
+# tasks file for docker-storage
+
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: ensure required packages to create the docker storage are installed
+  become: yes
+  yum:
+    state: latest
+    name:
+     - yum-utils
+     - device-mapper-persistent-data
+     - lvm2
+     - yum-plugin-ovl
+  tags:
+    - docker-storage
+
+- name: does docker storage volume group exit?
+  become: yes
+  shell: echo -n $(vgdisplay | grep "docker_storage" && echo "Found" || echo "Not found")
+  register: docker_storage
+  tags:
+    - docker-storage
+
+- name: create docker storage 
+  become: yes
+  block:
+
+  - name: debug /dev
+    shell: findmnt /dev
+
+  - name: verify or create docker storage volume group
+    lvg:
+      vg: docker_storage
+      pvs: /dev/sdb
+      pesize: "4"
+      state: present
+
+  - name: verify or create the docker storage volume
+    lvol:
+      vg: docker_storage
+      lv: vol_docker_storage
+      size: 95%VG
+      state: present
+      active: yes
+
+  - name: verify or apply filesystem to docker storage
+    filesystem:
+      fstype: ext4
+      dev: /dev/docker_storage/vol_docker_storage
+
+  - name: Mount the docker volume
+    mount:
+      name: /var/lib/docker
+      src: /dev/docker_storage/vol_docker_storage
+      fstype: ext4
+      state: mounted
+  when: docker_storage.stdout == "Not found"
+  tags:
+    - docker-storage
+        
+# vagrant-proxyconf doesn't take effect until later, but we need this after docker has been installed for the first time othewise the service will refuse to start
+- name: template in /etc/sysconfig/docker
+  become: true
+  template:
+    src: templates/etc/sysconfig/docker.j2
+    dest: /etc/sysconfig/docker
+    force: yes
+  register: sysconfigDocker
+  tags:
+    - docker-storage
+
+- name: debug
+  become: true
+  command: /bin/bash -c "cat /etc/sysconfig/docker"
+  when: sysconfigDocker.changed
+  tags:
+    - docker-storage
+
+- name: create /etc/docker/
+  become: yes
+  file:
+    path: /etc/docker/
+    state: directory
+  tags:
+    - docker-storage
+
+- name: configured Docker options (e.g., insecure registry, DNS)
+  become: yes
+  template:
+    src: templates/etc/docker/daemon.json.j2
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  register: daemon
+  tags:
+    - docker-storage
+
+- name: debug
+  become: yes
+  command: /bin/bash -c "cat /etc/docker/daemon.json"
+  when: daemon.changed
+  tags:
+    - docker-storage
+
+- name: configure EnvironmentFile
+  become: yes
+  lineinfile:
+    path: /etc/systemd/system/multi-user.target.wants/docker.service
+    insertafter: "^\\[Service\\]"
+    regexp: "^aEnvironmentFile="
+    line: "EnvironmentFile=/etc/sysconfig/docker"
+  register: environmentFile  
+  tags:
+    - docker-storage
+
+- name: stop and reload docker service
+  block:
+  - name: stop docker service
+    service:
+      name: docker
+      enabled: yes
+      state: stopped
+  - name: reload docker service
+    systemd:
+      name: docker
+      daemon_reload: yes
+  become: yes
+  when: daemon.changed or (docker_storage.stdout == "Not found")
+  tags:
+    - docker-storage
+
+- name: start and enable docker service
+  become: yes
+  service:
+    name: docker
+    enabled: yes
+    state: started
+  tags:
+    - docker-storage
+
+- name: debug
+  command: /bin/bash -c "systemctl is-active docker"
+  tags:
+    - docker-storage
+
+- name: "add {{ ansible_user_id }} user to docker group"
+  become: yes
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes
+  tags:
+    - docker-storage

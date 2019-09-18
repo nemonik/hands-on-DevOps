@@ -1,0 +1,65 @@
+---
+# tasks file for microK8s
+
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: ensure epel-release is installed
+  become: yes
+  yum:
+    name: epel-release
+    state: latest
+  tags:
+    - microK8s
+
+- name: install COPR plugin
+  become: yes
+  yum:
+    name: yum-plugin-copr
+    state: latest
+  tags:
+    - microK8s
+
+- name: ensure snapd is installed
+  become: yes
+  yum:
+    name: snapd
+    state: latest
+  tags:
+    - microK8s
+
+- name: ensure snapd socket is enabled
+  become: yes
+  service:
+    name: snapd.socket
+    state: started
+    enabled: yes
+  tags:
+    - microK8s
+
+- name: ensure snap symlink is created
+  become: yes
+  file:
+    src: /var/lib/snapd/snap
+    dest: /snap
+    owner: root
+    group: root
+    state: link
+  tags:
+    - microK8s
+
+# Retry until snap is ready...
+- name: ensure MicroK8s is installed
+  become: yes
+  shell: snap install microk8s --classic --channel=1.14/stable
+  register: result
+  until: result.rc == 0
+  retries: 10
+  delay: 5
+  ignore_errors: yes
+  tags:
+    - microK8s

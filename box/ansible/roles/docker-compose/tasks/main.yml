@@ -1,0 +1,27 @@
+---
+# tasks file for docker-compose
+
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: install docker-compose
+  become: yes
+  shell: |
+    curl -L https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+  args:
+    warn: no
+  tags:
+    - docker-compose
+
+#- name: pip install docker-compose
+#  become: yes
+#  pip:
+#    name: docker-compose
+#    executable: pip3
+#  tags:
+#    - docker-compose

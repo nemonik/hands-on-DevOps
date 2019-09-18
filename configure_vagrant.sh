@@ -35,10 +35,10 @@ if [ -n "$CA_CERTIFICATES" ]; then
   unset IFS
 
 else
-  echo "ca_certificates environmental variable is not set"
+  echo "CA_CERTIFICATES environmental variable is not set"
 fi
 
-vagrant plugin install vagrant-ca-certificates
+vagrant plugin install vagrant-certificates
 vagrant plugin install vagrant-cachier
 vagrant plugin install vagrant-disksize
 vagrant plugin install vagrant-proxyconf

@@ -1,0 +1,116 @@
+---
+# tasks file for k3s-agent
+
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: "ensure /home/{{ ansible_user_id }}/k3s exists"
+  file:
+    path: "/home/{{ ansible_user_id }}/k3s"
+    state: directory
+  tags:
+    - k3s-agent
+
+- name: populate service facts
+  service_facts:
+  tags:
+    - k3s-agent
+
+- debug:
+    msg: K3s installed!
+  when: 
+    "'k3s' in services"
+  tags:
+    - k3s-agent
+
+- name: install and spin up k3s agent, if needed
+  block:
+
+  - name: does the /vagrant/k3s_token.txt exist?
+    stat: 
+      path: /vagrant/k3s_token.txt
+    register: k3s_token
+
+  - name: fail if /vagrant/k3s_token.txt doesn't exist
+    fail:
+      msg: /vagrant/k3s_token.txt doesn't exist, you likey need to `vagrant up toolchain` first before starting the development vagrant.
+    when: k3s_token.stat.exists == false
+
+  - name: get the k3s_token
+    shell: cat /vagrant/k3s_token.txt
+    register: k3s_token
+    
+  - name: emplace install_k3s script
+    copy:
+      src: files/install_k3s.sh
+      dest: "/home/{{ ansible_user_id }}/k3s/"
+      mode: u=rwx,g=r,o=r
+
+  - debug:
+      msg: "hostvars['toolchain']['ansible_host'] = {{ hostvars['toolchain']['ansible_host'] }}"
+
+  - name: install K3s as an agent
+    become: yes
+    shell: K3S_URL=https://{{ hostvars['toolchain']['ansible_host'] }}:6443 K3S_CLUSTER_SECRET=turdblossom INSTALL_K3S_EXEC="--flannel-iface=eth1 --docker" /home/{{ ansible_user_id }}/k3s/install_k3s.sh agent
+   
+  - name: alias `kubectl` to `k3s kubectl`
+    become: yes
+    copy:
+      dest: /etc/profile.d/alias_kubectl.sh
+      content: |
+        alias kubectl="k3s kubectl"
+  when:  
+    "'k3s' not in services"
+  tags:
+    - k3s-agent
+
+- name: ensure K3s is started
+  become: yes
+  service:
+    name: k3s-agent
+    state: started
+  tags:
+    - k3s-agent
+
+- name: ensure {{ ansible_user_id }} can access Kubernetes
+  block:
+  - name: ensure the {{ ansible_user_id }} user has an kubeconfig.yml file to access kubernetes
+    become: yes
+    shell: |
+      cp /vagrant/kubeconfig.yml /home/{{ ansible_user_id }}/kubeconfig.yml
+      chown vagrant:vagrant /home/{{ ansible_user_id }}/kubeconfig.yml
+      chmod 640 /home/{{ ansible_user_id }}/kubeconfig.yml
+
+  - name: ensure KUBECONFIG is removed from {{ ansible_user_id }}'s bash_profile
+    lineinfile:
+      dest: /home/{{ ansible_user_id }}/.bash_profile
+      regexp: '^export KUBECONFIG'
+      state: absent
+
+  - name: ensure KUBECONFIG is in {{ ansible_user_id }}'s bash_profile
+    lineinfile:
+      dest:  /home/{{ ansible_user_id }}/.bash_profile
+      line: 'export KUBECONFIG="/home/{{ ansible_user_id }}/kubeconfig.yml"'
+      insertafter: EOF
+  tags:
+    - k3s-agent
+
+- name: ensure local-path-provisioner is installed
+  block:
+  - name: is local-path-provisioner installed?
+    become: yes
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml -n local-path-storage get pod | grep Running | wc -l
+    register: result
+
+  - name: install local-path-provisioner    
+    become: yes
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+    when: result.stdout == '0'
+  tags:
+    - k3s-agent
+    - local-path-provisioner
+

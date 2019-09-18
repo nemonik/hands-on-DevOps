@@ -38,14 +38,25 @@ RUN useradd -g 0 taiga
 #         apt-get clean && \
 #         rm -rf /var/lib/apt/lists/*
 
+#RUN  cd /tmp && \
+#        echo "deb http://security.debian.org/debian-security jessie/updates main" >> /etc/apt/sources.list && \
+#        curl -sL http://nginx.org/packages/keys/nginx_signing.key | apt-key add - && \
+#        echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list && \
+#        apt-get update && \
+#        apt-get install -y --no-install-recommends apt-transport-https && \
+#        curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+#        apt-get install -y --no-install-recommends libssl1.0.0 nginx=1.13.9-1~jessie curl wget gettext nano postgresql-client locales nodejs && \
+#        rm -rf /var/lib/apt/lists/* && \
+#        apt-get clean
+
+
 RUN  cd /tmp && \
-        echo "deb http://security.debian.org/debian-security jessie/updates main" >> /etc/apt/sources.list && \
-        curl -sL http://nginx.org/packages/keys/nginx_signing.key | apt-key add - && \
-        echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list && \
         apt-get update && \
-        apt-get install -y --no-install-recommends apt-transport-https && \
-        curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
-        apt-get install -y --no-install-recommends libssl1.0.0 nginx=1.13.9-1~jessie curl wget gettext nano postgresql-client locales nodejs && \
+        apt-get install -y --no-install-recommends  build-essential binutils-doc autoconf flex bison libjpeg-dev libfreetype6-dev zlib1g-dev libzmq3-dev libgdbm-dev libncurses5-dev automake libtool libffi-dev libssl-dev curl git tmux gettext && \
+        apt-get install -y --no-install-recommends nginx curl wget gettext nano postgresql-client locales && \
+        curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+        apt-get install -y --no-install-recommends nodejs && \
+        curl -L https://npmjs.org/install.sh | sh && \
         rm -rf /var/lib/apt/lists/* && \
         apt-get clean
 
@@ -72,17 +83,28 @@ RUN mkdir -p /taiga/media && \
 WORKDIR /taiga
 
 RUN mkdir taiga-back && \
-        curl -sL https://codeload.github.com/taigaio/taiga-back/tar.gz/{{ taiga_version }} | tar xvz -C taiga-back --strip-components=1 && \
+        git clone https://github.com/taigaio/taiga-back.git taiga-back && \
         cd taiga-back && \
+        git checkout stable && \
         sed -i 's/git+git/git+https/g' requirements.txt && \
         pip install --no-cache-dir -r requirements.txt
 
 RUN mkdir taiga-front-dist &&  \
-        curl -sL https://codeload.github.com/taigaio/taiga-front-dist/tar.gz/{{ taiga_version }}-stable | tar xvz -C taiga-front-dist --strip-components=1 && \
-        cd taiga-front-dist && \{% if (http_proxy and https_proxy) %}        
-        npm config set proxy {{ http_proxy }} && \
-        npm config set https-proxy {{ https_proxy }} && \{% endif %}  
+        git clone https://github.com/taigaio/taiga-front-dist.git taiga-front-dist && \
+        cd taiga-front-dist && \
+        git checkout stable && \
         npm install
+
+#RUN mkdir taiga-back && \
+#        curl -sL https://codeload.github.com/taigaio/taiga-back/tar.gz/4.0.4 | tar xvz -C taiga-back --strip-components=1 && \
+#        cd taiga-back && \
+#        sed -i 's/git+git/git+https/g' requirements.txt && \
+#        pip install --no-cache-dir -r requirements.txt
+
+#RUN mkdir taiga-front-dist &&  \
+#        curl -sL https://codeload.github.com/taigaio/taiga-front-dist/tar.gz/4.0.4-stable | tar xvz -C taiga-front-dist --strip-components=1 && \
+#        cd taiga-front-dist && \
+#        npm install
 
 RUN mkdir -p /etc/nginx/conf.d
 

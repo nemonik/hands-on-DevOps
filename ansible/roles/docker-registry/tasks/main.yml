@@ -9,60 +9,68 @@
 # this file. If not, please email <mjwalsh@nemonik.com>
  
 - name: "copy to docker-registry files to /home/{{ ansible_user_id }}/docker-registry"
-  become: yes
   copy:
     src: files/
     dest: /home/{{ ansible_user_id }}/docker-registry
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
   tags:
     - docker-registry 
 
 - name: "template files into /home/{{ ansible_user_id }}/docker-registry"
-  become: yes
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"   
   with_items:
-    - { src: "templates/README.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/README.MD" }
+    - { src: "templates/README.MD.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/README.MD" }
     - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/Dockerfile" }
-    - { src: "templates/dockerfile_build.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/dockerfile_build.sh" }
-    - { src: "templates/docker-compose.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/docker-compose.yml" }
+    - { src: "templates/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/dockerfile_build.sh" }
+    - { src: "templates/docker-compose.yml.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/docker-compose.yml" }
+    - { src: "templates/registry.yml.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/registry.yml" }
   tags:
     - docker-registry 
 
 - name: "make /home/{{ ansible_user_id }}/docker-registry/dockerfile_build.sh executable"
-  become: yes
   file: 
     path: "/home/{{ ansible_user_id }}/docker-registry/dockerfile_build.sh"
     mode: "u=rwx,g=r,o=r"  
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
   tags:
     - docker-registry 
 
 - name: "build nemonik/registry:{{ registry_version }} docker image "
-  become: yes
   docker_image:
-    path: "/home/{{ ansible_user_id }}/docker-registry"
     name: "nemonik/registry:{{ registry_version }}"
-    buildargs:
-      http_proxy: "{{ http_proxy|default('') }}"
-      HTTP_PROXY: "{{ http_proxy|default('') }}"
-      https_proxy: "{{ https_proxy|default('') }}"
-      HTTPS_PROXY: "{{ https_proxy|default('') }}"
-      NO_PROXY: "{{ no_proxy|default('') }}"
-      no_proxy: "{{ no_proxy|default('') }}" 
+    source: build
+    build:
+      path: "/home/{{ ansible_user_id }}/docker-registry"
+      args:
+        http_proxy: "{{ http_proxy|default('') }}"
+        HTTP_PROXY: "{{ http_proxy|default('') }}"
+        https_proxy: "{{ https_proxy|default('') }}"
+        HTTPS_PROXY: "{{ https_proxy|default('') }}"
+        NO_PROXY: "{{ no_proxy|default('') }}"
+        no_proxy: "{{ no_proxy|default('') }}" 
   tags:
     - docker-registry 
 
-- name: spin up private docker-registry via docker-compose
-  become: yes
-  docker_service:
+- name: fail if registry_deploy_via is not set to either 'docker-compose' or 'kubectl'
+  fail:
+    msg: registry_deploy_via must be set to either 'kubectl' or 'docker-compose'.
+  when: registry_deploy_via is undefined or ( registry_deploy_via != "docker-compose" and registry_deploy_via != "kubectl" )
+  tags:
+    - docker-registry
+
+- name: spin up Docker Registry via docker-compose
+  docker_compose:
     build: no
     debug: yes
     project_src: "/home/{{ ansible_user_id }}/docker-registry"
+  when: registry_deploy_via == "docker-compose"
   tags:
-    - docker-registry 
+    - docker-registry
+
+- name: spin up Docker Registry via Kubernetes
+  shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f registry.yml
+  args:
+    chdir: "/home/{{ ansible_user_id }}/docker-registry"
+  when: registry_deploy_via == "kubectl"
+  tags:
+    - docker-registry

@@ -3,11 +3,18 @@
 
 # Ansible
 *.retry
+# vault_pass
 
 # Vagrant
 .vagrant/
 *.vdi
 *.box
+vagrant_private_key
 
 # InSpec
 inspec_hellworld.json
+
+# Kubernetes / K3s
+K3S_TOKEN.txt
+kubeconfig.yml
+vagrant-token.txt

@@ -1,16 +1,33 @@
-controller  ansible_connection=local
-development ansible_connection=local
-toolchain   ansible_connection=local
+controller  ansible_connection=local ansible_python_interpreter=/usr/bin/python2
+development ansible_connection=local ansible_python_interpreter=/usr/bin/python2
+toolchain   ansible_connection=local ansible_python_interpreter=/usr/bin/python2
+
+[boxes]
+box
+
+[boxes:vars]
+sonarqube_host=192.168.0.11
 
 [nodes]
 development ansible_host=192.168.0.10
 toolchain ansible_host=192.168.0.11
 
+[nodes:vars]
+ansible_python_interpreter=/usr/bin/python2
+
 [developments]
-development ansible_host=192.168.0.10
+development
+
+[developments:vars]
+ansible_host=192.168.0.10 
+ansible_python_interpreter=/usr/bin/python2
 
 [toolchains]
-toolchain ansible_host=192.168.0.11
+toolchain 
+
+[toolchains:vars]
+ansible_host=192.168.0.11 
+ansible_python_interpreter=/usr/bin/python2
 
 # Used by Ansible roles to configure Docker DNS server settings
 [dns]
@@ -18,12 +35,12 @@ toolchain ansible_host=192.168.0.11
 #ns1 ansible_host=10.0.1.1
 
 # MITRE DNS
-#ns1 ansible_host=10.20.100.53
-#ns2 ansible_host=10.20.200.53
+ns1 ansible_host=10.20.100.53
+ns2 ansible_host=10.20.200.53
 
 # Google / Starbux DNS
-ns1 ansible_host=8.8.8.8
-ns2 ansible_host=8.8.4.4
+#ns1 ansible_host=8.8.8.8
+#ns2 ansible_host=8.8.4.4
 
 # HAMP LAB DNS
 #ns1 ansible_host=192.168.1.1

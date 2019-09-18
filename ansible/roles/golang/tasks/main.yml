@@ -33,14 +33,10 @@
 
 - name: download and install golang binary release
   become: yes
-  block:
-    - command: /bin/bash -c "wget https://dl.google.com/go/go{{ golang_version }}.linux-amd64.tar.gz"
-      args:
-        chdir: /tmp
-
-    - unarchive:
-        src: "/tmp/go{{ golang_version }}.linux-amd64.tar.gz"
-        dest: /usr/local
+  unarchive:
+    src: "https://dl.google.com/go/go{{ golang_version }}.linux-amd64.tar.gz"
+    dest: /usr/local
+    remote_src: yes
   when: go_installed.stat.exists == False 
   tags:
     - golang

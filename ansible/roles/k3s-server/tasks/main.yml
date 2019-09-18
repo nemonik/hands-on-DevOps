@@ -1,0 +1,231 @@
+---
+# tasks file for k3s-server
+
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: "ensure /home/{{ ansible_user_id }}/k3s exists"
+  file:
+    path: "/home/{{ ansible_user_id }}/k3s"
+    state: directory
+  tags:
+    - k3s-server
+
+- name: Populate service facts
+  service_facts:
+  tags:
+    - k3s-server
+
+- debug:
+    msg: K3s installed!
+  when: 
+    "'k3s' in services"
+  tags:
+    - k3s-server
+
+- name: an i in the docker group?
+  shell: groups
+  tags:
+    - k3s-server
+
+- name: install and spin up k3s, if needed
+  block:
+  - name: emplace install_k3s script
+    copy:
+      src: files/install_k3s.sh
+      dest: "/home/{{ ansible_user_id }}/k3s/"
+      mode: u=rwx,g=r,o=r
+
+  - name: install K3s 
+    become: yes
+    shell: INSTALL_K3S_EXEC="--flannel-iface=eth1 --cluster-secret=turdblossom --docker --no-deploy traefik" /home/{{ ansible_user_id }}/k3s/install_k3s.sh
+   
+  - name: alias `kubectl` to `k3s kubectl`
+    become: yes
+    copy:
+      dest: /etc/profile.d/alias_kubectl.sh
+      content: |
+        alias kubectl="k3s kubectl"
+  when:  
+    "'k3s' not in services"
+  tags:
+    - k3s-server
+
+- name: start and enable k3s service
+  become: yes
+  service:
+    name: k3s
+    enabled: yes
+    state: started
+  tags:
+    - k3s-server
+
+- name: get uid for /vagrant/Vagranfile
+  become: yes
+  shell: echo $(stat -c '%U' /vagrant/Vagrantfile)
+  register: owner
+  tags:
+    - k3s-server
+
+- name: ensure K3S_TOKEN is copied to /vagrant/k3s_token.txt, so that it can be easily retrieve to configure K3s agents
+  become: yes
+  copy:
+    src: /var/lib/rancher/k3s/server/node-token
+    dest: /vagrant/k3s_token.txt
+    remote_src: yes
+    owner: "{{ owner.stdout }}"
+    group: "{{ owner.stdout }}"
+    mode: u=r,g=r
+  tags:
+    - k3s-server
+
+- name: ensure local-path-provisioner is installed
+  block:
+  - name: is local-path-provisioner installed?
+    become: yes
+    shell: kubectl -n local-path-storage get pod | grep Running | wc -l
+    register: result
+
+  - name: install local-path-provisioner    
+    become: yes
+    shell: kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+    when: result.stdout == '0'
+  tags:
+    - k3s-server
+    - local-path-provisioner
+
+- name: ensure traefik is running
+  block:
+  - name: "ensure /home/{{ ansible_user_id }}/traefik exists"
+    file:
+      path: "/home/{{ ansible_user_id }}/traefik"
+      state: directory
+
+  - name: ensure traefik.yml is in place at /home/{{ ansible_user_id }}/traefik
+    template:
+      src: templates/traefik.yml.j2
+      dest: /home/{{ ansible_user_id }}/traefik/traefik.yml
+      force: yes
+      mode: u=rw,g=r
+
+  - name: ensure traefik is running
+    become: yes
+    shell: kubectl apply -f /home/{{ ansible_user_id }}/traefik/traefik.yml
+  tags:
+    - k3s-server
+    - traefik
+
+#- name: ensure kubernetes api proxy is running
+#  become: yes
+#  block:    
+#  - name: install kubectlproxy systemd unit file
+#    copy:
+#     src: files/etc/systemd/system/kubectlproxy.service
+#     dest: /etc/systemd/system/
+#     mode: u=rwx,g=r,o=r
+#
+#  - name: enable and start kubectlproxy.service
+#    systemd: 
+#      name: kubectlproxy
+#      daemon_reload: yes
+#      state: started 
+#      enabled: yes
+#  tags:
+#    - k3s-server
+#    - kubectlproxy        
+
+- name: ensure {{ ansible_user_id }} can access Kubernetes 
+  block:
+  - name: ensure the {{ ansible_user_id }} user has an kubeconfig.yml file to access kubernetes
+    become: yes
+    shell: |
+      cp /etc/rancher/k3s/k3s.yaml /home/{{ ansible_user_id }}/kubeconfig.yml
+      chown vagrant:vagrant /home/{{ ansible_user_id }}/kubeconfig.yml
+      chmod 640 /home/{{ ansible_user_id }}/kubeconfig.yml
+
+  - name: ensure localhost is replaced with {{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}
+    replace:
+      path: /home/{{ ansible_user_id }}/kubeconfig.yml
+      regexp: '^    server: https://localhost:6443'
+      replace: '    server: https://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:6443'
+ 
+  - name: ensure KUBECONFIG is removed from {{ ansible_user_id }}'s bash_profile
+    lineinfile:
+      dest: /home/{{ ansible_user_id }}/.bash_profile
+      regexp: '^export KUBECONFIG'
+      state: absent
+
+  - name: ensure KUBECONFIG is in {{ ansible_user_id }}'s bash_profile
+    lineinfile:
+      dest:  /home/{{ ansible_user_id }}/.bash_profile
+      line: 'export KUBECONFIG="/home/{{ ansible_user_id }}/kubeconfig.yml"'
+      insertafter: EOF
+
+  - name: ensure kubeconfig.yml ise written to /vagrant so that it can be easily retrieved
+    become: yes
+    copy:
+      src: /home/{{ ansible_user_id }}/kubeconfig.yml
+      dest: /vagrant/kubeconfig.yml
+      remote_src: yes
+      owner: "{{ owner.stdout }}"
+      group: "{{ owner.stdout }}"
+      mode: u=r,g=r
+  tags:
+    - k3s-server
+    - vagrant-kubeconfig
+
+- name: ensure Kubernetes Dashbaord is installed and running
+  block:
+  - name: ensure /home/{{ ansible_user_id }}/kubernetes-dashboard path exists
+    file:
+      path: "/home/{{ ansible_user_id }}/kubernetes-dashboard"
+      state: directory
+
+  - name: emplace Kubernetes Dashboard manifest
+    copy:
+      src: files/kubernetes-dashboard.yml
+      dest: "/home/{{ ansible_user_id }}/kubernetes-dashboard/"
+  
+  - name: emplace Kubernetes Dashboard admin manifest
+    copy:
+      src: files/vagrant-user.yml
+      dest: "/home/{{ ansible_user_id }}/kubernetes-dashboard/"
+
+  - name: ensure Kubrnetes Dashbaord is running in Kubernetes
+    shell: |
+      kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f kubernetes-dashboard.yml
+      kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f vagrant-user.yml
+    args:
+      chdir: "/home/{{ ansible_user_id }}/kubernetes-dashboard"    
+
+  - name: emplace get_token.sh bash script
+    copy:
+      src: files/get_token.sh
+      dest: "/home/{{ ansible_user_id }}/kubernetes-dashboard/"
+      mode: u=rwx,g=r,o=r
+   
+  - name: grab kubernetes vagrant user's token to authenticate into Kubernetes Dashboard
+    shell: |
+      SECRET=$(kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml --namespace=kube-system get secret | grep vagrant | awk '{print $1}')
+      TOKEN=$(kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml --namespace=kube-system get secret $SECRET -o jsonpath='{.data.token}' | base64 --decode)
+      echo $TOKEN
+    register: token_results
+
+  - name: ensure kubernetes admin user token is written to /vagrant/vagrant-token.txt, so that it can be easily retrievaed
+    copy:
+      content: "{{ token_results.stdout }}\n"
+      dest: /vagrant/vagrant-token.txt
+      remote_src: yes
+      owner: "{{ owner.stdout }}"
+      group: "{{ owner.stdout }}"
+      mode: u=r,g=r
+
+  - debug:
+      msg: 'The Kubernetes dashbaord should now be accessible at http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy and authenticate with token = "{{ token_results.stdout }}".  The user name and password are in /home/{{ ansible_user_id }}/kubeconfig.yml.'
+  tags:
+    - k3s-server
+    - kubernetes-dashbaord

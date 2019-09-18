@@ -1,0 +1,90 @@
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: plantuml-server
+
+---
+
+apiVersion: apps/v1
+kind: Deployment  
+metadata:
+  name: plantuml-server
+  namespace: plantuml-server
+  labels:
+    app: plantuml-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plantuml-server
+  template:
+    metadata:
+      labels:
+        app: plantuml-server
+    spec:
+      containers:
+      - name: plantuml-server
+        image: nemonik/plantuml-server:{{ plantuml_server_version }}
+        imagePullPolicy: IfNotPresent
+{% if http_proxy  %}
+        command: -Dhttp.nonProxyHosts={{ no_proxy }} -Dhttp.proxyHost={{ http_proxy.split("http://")[1].split(":")[0]}} -Dhttp.proxyPort={{ http_proxy.split("http://")[1].split(":")[1]}}
+{% endif %}
+        env:
+{% if http_proxy %}
+        - name: http_proxy
+          value: {{ http_proxy }}
+        - name: HTTP_PROXY
+          value: {{ http_proxy }}
+{% endif %}
+{% if https_proxy %}
+        - name: https_proxy
+          value: {{ https_proxy }}
+        - name: HTTPS_PROXY
+          value: {{ https_proxy }}
+{% endif %}
+{% if no_proxy %}
+        - name: no_proxy
+          value: {{ no_proxy }}
+        - name: NO_PROXY
+          value: {{ no_proxy }}
+{% endif %}
+        ports:
+        - name: http
+          containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 180
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          failureThreshold: 12
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: plantuml-server
+  namespace: plantuml-server
+spec:
+  ports:
+    - name: http
+      targetPort: http
+      port: {{ plantuml_port }}
+  selector:
+    app: plantuml-server
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster

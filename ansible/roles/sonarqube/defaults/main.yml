@@ -1,2 +1,3 @@
 ---
 # defaults file for sonarqube
+sonarqube_port: "9000"

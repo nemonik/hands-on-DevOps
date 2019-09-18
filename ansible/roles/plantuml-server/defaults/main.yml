@@ -1,2 +1,4 @@
 ---
 # defaults file for plantuml-server
+plantuml_host: "{{ hostvars['toolchain']['ansible_host'] }}"
+plantuml_port: '8081'
