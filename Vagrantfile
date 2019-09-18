@@ -161,7 +161,7 @@ Vagrant.configure('2') do |config|
     toolchain.vm.network :private_network, ip: '192.168.0.11'
 #    toolchain.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'
     toolchain.vm.hostname = 'toolchain'
-    toolchain.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
+    toolchain.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=664"]
     toolchain.vm.provider :virtualbox do |virtualbox|
       virtualbox.name = 'DevOps Class - toolchain'
       virtualbox.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 10]
@@ -207,7 +207,7 @@ Vagrant.configure('2') do |config|
     development.vm.network :private_network, ip: '192.168.0.10'
 #    development.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
     development.vm.hostname = 'development'
-    development.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
+    development.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=664"]
     development.vm.provider :virtualbox do |virtualbox|
       virtualbox.name = 'DevOps Class - development'
       virtualbox.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 10]
