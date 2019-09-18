@@ -101,9 +101,6 @@ spec:
       - name: sonarqube
         image: nemonik/sonarqube:{{ sonarqube_version }}
         imagePullPolicy: IfNotPresent
-{% if http_proxy  %}
-        command: -Dhttp.nonProxyHosts={{ no_proxy }} -Dhttp.proxyHost={{ http_proxy.split("http://")[1].split(":")[0]}} -Dhttp.proxyPort={{ http_proxy.split("http://")[1].split(":")[1]}}
-{% endif %}
         env:
         - name: SONARQUBE_JDBC_URL
           value: jdbc:postgresql://postgresql:5432/sonardb
