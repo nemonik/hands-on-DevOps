@@ -33,9 +33,6 @@ spec:
       - name: plantuml-server
         image: nemonik/plantuml-server:{{ plantuml_server_version }}
         imagePullPolicy: IfNotPresent
-{% if http_proxy  %}
-        command: -Dhttp.nonProxyHosts={{ no_proxy }} -Dhttp.proxyHost={{ http_proxy.split("http://")[1].split(":")[0]}} -Dhttp.proxyPort={{ http_proxy.split("http://")[1].split(":")[1]}}
-{% endif %}
         env:
 {% if http_proxy %}
         - name: http_proxy
