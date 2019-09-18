@@ -684,12 +684,12 @@ The following `set_env.sh` BASH script is included in the root of the project an
 
 # Example values chage for your environment...
 
-#export PROXY=http://gatekeeper.mitre.org:80
-#export proxy=$PROXY
-#export https_proxy=$PROXY
-#export http_proxy=$PROXY
-#export HTTP_PROXY=$PROXY
-#export ALL_PROXY=$PROXY
+export PROXY=http://gatekeeper.mitre.org:80
+export proxy=$PROXY
+export https_proxy=$PROXY
+export http_proxy=$PROXY
+export HTTP_PROXY=$PROXY
+export ALL_PROXY=$PROXY
 export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,$(echo 192.168.0.{1..255} | sed 's/ /,/g')"
 export no_proxy=$NO_PROXY
 export CA_CERTIFICATES=http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt
@@ -752,9 +752,9 @@ Now if, if you are on Windows you cam perform the following to set the same  env
 
 | Variable Name                      | Value                                                            |
 | ---------------------------------- | ---------------------------------------------------------------- |
-| proxy                              | No longer needed here at MITRE. You're environment may need.     |
-| http_proxy                         | No longer needed here at MITRE. You're environment may need.     |
-| https_proxy                        | No longer needed here at MITRE. You're environment may need.     |
+| proxy                              | http://gatekeeper.mitre.org:80                                   |
+| http_proxy                         | http://gatekeeper.mitre.org:80                                   |
+| https_proxy                        | http://gatekeeper.mitre.org:80                                   |
 | no_proxy                           | 127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11  |
 | CA_CERTIFICATES                    | http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt |
 | VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS | 0                                                                |
@@ -7437,6 +7437,8 @@ Granted our microservice doesn't do much, but we can get a peak at the possibili
 
 #### 8.13.1.1. So, let's experiment with our little "microservice"
 
+#### 8.13.1.1.1. Modify the helloworld-web application
+
 In the `helloworld-web` project On the `development` vagrant edit the `go/src/github.com/nemonik/helloworld-web/main.go` 
 
 ```go
@@ -7481,6 +7483,14 @@ Changes made:
 
 Why these changes were made will become apparent.
 
+Build the container and push to the registry
+
+```bash
+make docker-push
+```
+
+#### 8.13.1.1.2. Create a Kubernetes manifest for the application
+
 At the root of the `hellworld-web` application create a new file named `helloworld.yml` and add to it the following content
 
 ```yaml
@@ -7501,7 +7511,7 @@ metadata:
   labels:
     app: helloworld
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: helloworld
@@ -7603,7 +7613,7 @@ metadata:
   labels:
     app: helloworld
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: helloworld
@@ -7615,7 +7625,7 @@ spec:
       containers:
       - name: helloworld-container
         image: 192.168.0.11:5000/nemonik/helloworld-web:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - name: http
           containerPort: 3000
@@ -7734,136 +7744,160 @@ spec:
           servicePort: http
 ```
 
-An `Ingress` exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.  We are exposing out service via http://192.168.0.11:8082/helloworld.
+An `Ingress` exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.  We are exposing out service via Traefik, who in turn exposes out application at http://192.168.0.11:8082/helloworld.
 
+Once our application is deployed to the cluster, Traefik's dashboard will permit a view into this at http://192.168.0.11:8083/dashboard/
 
-To spin up our app
+#### 8.13.1.1.3. Deploy your application
+
+To deploy our application to the cluster, on the `development` vagrant enter
 
 ```bash
-docker-compose build
-docker stack deploy -c docker-compose.yml helloworld
+kubectl apply -f helloworld.yml
 ```
 
-The output will resemeble
+Whose output will resemble
 
 ```
-WARNING: Some services (helloworld) use the 'deploy' key, which will be ignored. Compose does not support 'deploy' configuration - use `docker stack deploy` to deploy to a swarm.
-Building helloworld
-Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.12.6
- ---> 6aa2d9de5f78
-Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
- ---> Using cache
- ---> 17abd315c43e
-Step 3/8 : RUN mkdir /app
- ---> Using cache
- ---> 3ae5aef96fce
-Step 4/8 : ADD main.go /app/
- ---> Using cache
- ---> dffac9d00543
-Step 5/8 : WORKDIR /app
- ---> Using cache
- ---> b1e5d8c118fb
-Step 6/8 : RUN go build -o helloworld-web .
- ---> Using cache
- ---> a8d30237b993
-Step 7/8 : CMD ["/app/helloworld-web"]
- ---> Using cache
- ---> b2668738c4ea
-Step 8/8 : EXPOSE 3000
- ---> Using cache
- ---> e999d0f3737d
-Successfully built e999d0f3737d
-Successfully tagged nemonik/helloworld-web:latest
-Ignoring unsupported options: build
-
-Creating network helloworld_web
-Creating service helloworld_helloworld
+[vagrant@development helloworld-web]$ kubectl apply -f helloworld.yml
+namespace/helloworld created
+deployment.apps/helloworld-deployment created
+service/helloworld-service created
+ingress.extensions/helloworld-ingress created
 ```
 
-Now list the services Docker is running via
+To monitor porgress enter into the command-line
+
+```bash
+kubectl --namespace=helloworld get all
+```
+
+Whose output will resemble
 
 ```
-docker service list
+[vagrant@development helloworld-web]$ kubectl --namespace=helloworld get all
+NAME                                        READY   STATUS    RESTARTS   AGE
+pod/helloworld-deployment-f767b5b57-4tg62   1/1     Running   0          67s
+
+
+NAME                         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/helloworld-service   ClusterIP   10.43.171.227   <none>        80/TCP    67s
+
+NAME                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/helloworld-deployment   1/1     1            1           67s
+
+NAME                                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/helloworld-deployment-f767b5b57   1         1         1       67s
 ```
 
-The output will look like
+I often prepend the command with `watch` to monitor progress
+
+```bash
+monitor kubectl --namespace=helloworld get all
+```
+
+What you see above is the cluster is managing 1 pod of the `192.168.0.11:5000/nemonik/helloworld-web:latest` container.
+
+You can retrieve more information about this pod with 
+
+```bash
+kubectl --namespace=helloworld get pods -o wide
+```
+
+Whose output will resemble.  
 
 ```
-ID                  NAME                    MODE                REPLICAS            IMAGE                           PORTS
-mgra793avso7        helloworld_helloworld   replicated          1/1                 nemonik/helloworld-web:latest   *:3000->3000/tcp
+[vagrant@development helloworld-web]$ kubectl --namespace=helloworld get pods -o wide
+NAME                                    READY   STATUS    RESTARTS   AGE     IP           NODE        NOMINATED NODE   READINESS GATES
+helloworld-deployment-f767b5b57-4tg62   1/1     Running   0          4m52s   10.42.0.58   toolchain   <none>           <none>
 ```
+
+One service is being managage and replicatset is maintaining the speficied 1 pod at any given time.
+
+#### 8.13.1.1.4. Test your application
 
 Now test your service
 
 ```
-[vagrant@development helloworld-web]$ curl http://192.168.0.10:3000
+[vagrant@development helloworld-web]$ curl http://192.168.0.11:3000
 ```
 
 The output will look like
 
 ```
-Hello world! b6835470176e
+[vagrant@development helloworld-web]$ curl http://192.168.0.11:8082/helloworld
+Hello world! helloworld-deployment-cf4667475-pqhk4
 ```
 
 That random hex number is the result of our code change.  It is the hostname of the container that responded to your request.
 
-Now lets scale from 1 to 5 replicas via
+Now lets scale from 1 to 4 replicas via
+
+```bash
+kubectl scale --namespace=helloworld --replicas=4 deployment.apps/helloworld-deployment
+```
+
+whose output will resemble
 
 ```
-docker service scale helloworld_helloworld=5
-```
-
-The output will resemble
-
-```
-helloworld_helloworld scaled to 5
-overall progress: 5 out of 5 tasks
-1/5: running
-2/5: running
-3/5: running
-4/5: running
-5/5: running
-verify: Service converged
+[vagrant@development helloworld-web]$ kubectl scale --namespace=helloworld --replicas=4 deployment.apps/helloworld-deployment
+deployment.apps/helloworld-deployment scaled
 ```
 
 Re-running 
 
 ```bash
-docker service list
+kubectl --namespace=helloworld get all
 ```
 
-Will also show we've scale to 5 replicas.
+whose output will resemble
 
 ```
-ID                  NAME                    MODE                REPLICAS            IMAGE                           PORTS
-mgra793avso7        helloworld_helloworld   replicated          5/5                 nemonik/helloworld-web:latest   *:3000->3000/tcp
+[vagrant@development helloworld-web]$ kubectl --namespace=helloworld get all
+NAME                                        READY   STATUS    RESTARTS   AGE
+pod/helloworld-deployment-cf4667475-5d77b   1/1     Running   0          16m
+pod/helloworld-deployment-cf4667475-755jr   1/1     Running   0          100s
+pod/helloworld-deployment-cf4667475-jh2hz   1/1     Running   0          100s
+pod/helloworld-deployment-cf4667475-vvhqn   1/1     Running   0          16m
+
+NAME                         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/helloworld-service   ClusterIP   10.43.231.201   <none>        80/TCP    16m
+
+NAME                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/helloworld-deployment   4/4     4            4           16m
+
+NAME                                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/helloworld-deployment-cf4667475   4         4         4       16m
 ```
+
+The cluster is now running 4 replicas.
 
 Now run curl several times via
 
 ```bash
 for i in {1..10}
 do
-curl http://192.168.0.10:3000
+curl http://192.168.0.10:8083/helloworld
 done
 ```
 
 The output will resemble 
 
 ```
-Hello world! 6a0e64e07f27
-Hello world! 899d588cae34
-Hello world! 3fd46049e8bb
-Hello world! 743630bf2f8b
-Hello world! b6835470176e
-Hello world! 6a0e64e07f27
-Hello world! 899d588cae34
-Hello world! 3fd46049e8bb
-Hello world! 743630bf2f8b
-Hello world! b6835470176e
+[vagrant@development helloworld-web]$ for i in {1..10}; do curl http://192.168.0.11:8082/helloworld; done
+Hello world! helloworld-deployment-cf4667475-vvhqn
+Hello world! helloworld-deployment-cf4667475-5d77b
+Hello world! helloworld-deployment-cf4667475-755jr
+Hello world! helloworld-deployment-cf4667475-jh2hz
+Hello world! helloworld-deployment-cf4667475-vvhqn
+Hello world! helloworld-deployment-cf4667475-5d77b
+Hello world! helloworld-deployment-cf4667475-755jr
+Hello world! helloworld-deployment-cf4667475-jh2hz
+Hello world! helloworld-deployment-cf4667475-vvhqn
+Hello world! helloworld-deployment-cf4667475-5d77b
 ```
 
-Notice how the `curl` requests are Round-robin load balanced across each replica container.  Typically, these containers would be spread across a container platform's cluster thereby permiting you to scale your application to accommodate shifting capacity needs. In other words, to be become elastic.  Further, the approach permits iterative software development and deployment (thereby benefitting from DevOps methods and repeated practices), isolation, and resiliency.
+Notice how the `curl` requests are Round-robin load balanced across the replicas. 
 
 ## 8.14. Using what you've learned
 

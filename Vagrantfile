@@ -149,6 +149,11 @@ Vagrant.configure('2') do |config|
   if (ARGV.include? 'destroy')
     if (File.file?(File.join(vagrantfilePath, 'toolchain_docker.vdi')) && (ARGV.include?('toolchain') || !ARGV.include?('development')))
       File.delete(File.join(vagrantfilePath, 'toolchain_docker.vdi'))
+
+      # Vagrant on Windows cannot overwrite these files, so remove em now. 
+      File.delete(File.join(vagrantfilePath, 'k3s_token.txt'))
+      File.delete(File.join(vagrantfilePath, 'kubeconfig.yml'))
+      File.delete(File.join(vagrantfilePath, 'vagrant-token.txt'))
     end 
     if (File.file?(File.join(vagrantfilePath, 'development_docker.vdi')) && (ARGV.include?('development') || !ARGV.include?('toolchain')))
       File.delete(File.join(vagrantfilePath, 'development_docker.vdi'))
