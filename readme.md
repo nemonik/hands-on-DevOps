@@ -7912,6 +7912,7 @@ and develop a pipeline for.
 If you're done with your vagrants, shoo them away from the root of the project on the host
 
 ```bash
+vagrant halt
 vagrant destroy -f
 ```
 
