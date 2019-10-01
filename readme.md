@@ -2,7 +2,7 @@
 
 A hands-on DevOps course covering the culture, methods and repeated practices of modern software development involving Vagrant, VirtualBox, Ansible, Kubernetes, Docker-Compose, Docker, Taiga, GitLab, Drone CI, SonarQube, Selenium, InSpec...
 
-A reveal.js presention written to accompany this course can found at [https://nemonik.github.io/hands-on-DevOps/](https://nemonik.github.io/hands-on-DevOps/).
+A reveal.js presentation written to accompany this course can found at [https://nemonik.github.io/hands-on-DevOps/](https://nemonik.github.io/hands-on-DevOps/).
 
 This course will
 1. Discuss DevOps,
@@ -12,8 +12,8 @@ This course will
 After this course you will
 1. Be able to describe and have hands on experience the DevOps methods and repeated practices (e.g., use of Agile methods, configuration management, build automations, test automation and deployment automation orchestrated under continuous integration and delivery orchestrator), and why it matters;
 2. Identify what diverse tools and resources that exist in the DevOps ecosystem;
-3. Be able to address challenges sponsors face by transitioning to DevOps methods and repeated practices;
-4. Have had hands-on experience with Infrastructure as Code( Vagrant and Ansible ) to provision and configure an entire DevOps toolchain and development environment on VirtualBox including Docker Registry, GitLab, Drone CI, and SonarQube;
+3. Address challenges transitioning to DevOps methods and repeated practices;
+4. Have had hands-on experience with Infrastructure as Code( Vagrant and Ansible ) to provision and configure an entire DevOps toolchain and development environment on VirtualBox including Docker Registry, Taiga, GitLab, Drone CI, and SonarQube;
 5. Have had hands-on experience authoring code to include authoring and running automated tests in a CI/CD pipeline all under Configuration Management to insure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected;
 6. Have had hands-on experience with (a) using Infrastructure as Code (IaC) in Vagrant and Ansible; (b) creating and using Kanban board in Taiga; (c) code configuration in git and GitLab; (d) authoring code in Go; (e) using style checkers and linters; (f) authoring a Makefile; (g) various commands in Docker (e.g., building a container image, pushing a container into a registry, creating and running a container); (h) authoring a pipeline for Drone CI; (i) using Sonar Scanner CLI to perform static analysis; (j) authoring security test in InSpec; (k) author an automated functional test in Selenium; (l) authoring a dynamic security test in OWASP Zap; an (m) using container platform to author and scale services;
 7. Have had hands-on experience authoring code to include authoring and running automated tests in a CI/CD pipeline all under Configuration Management to insure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected.
@@ -172,12 +172,6 @@ What you should bring:
             - [8.12.9.3. Perform static analysis (run *sonar-scanner*) on the command line](#81293-perform-static-analysis-run-sonar-scanner-on-the-command-line)
         - [8.12.10. Automated the build (i.e., write the Makefile)](#81210-automated-the-build-ie-write-the-makefile)
         - [8.12.11. Dockerize the application](#81211-dockerize-the-application)
-        - [8.12.12. Run the Docker container](#81212-run-the-docker-container)
-            - [8.12.12.1. Option 1](#812121-option-1)
-            - [8.12.12.2. Option 2](#812122-option-2)
-        - [8.12.13. Push the container image to the private Docker registry](#81213-push-the-container-image-to-the-private-docker-registry)
-        - [8.12.14. Configure Drone to execute your CI/CD pipeline](#81214-configure-drone-to-execute-your-cicd-pipeline)
-        - [8.12.15. Add Static Analysis (*SonarQube*) step to pipeline](#81215-add-static-analysis-sonarqube-step-to-pipeline)
         - [8.12.16. Add the build step to the pipeline](#81216-add-the-build-step-to-the-pipeline)
         - [8.12.17. Add container image publish step to pipeline](#81217-add-container-image-publish-step-to-pipeline)
         - [8.12.18. Add container deploy step to pipeline](#81218-add-container-deploy-step-to-pipeline)
@@ -187,7 +181,7 @@ What you should bring:
             - [8.12.19.3. The results](#812193-the-results)
             - [8.12.19.4. Add InSpec to the pipeline](#812194-add-inspec-to-the-pipeline)
             - [8.12.19.5. Viewing the results in Heimdall-lite](#812195-viewing-the-results-in-heimdall-lite)
-        - [8.12.20. Add automated funtional test to pipeline](#81220-add-automated-funtional-test-to-pipeline)
+        - [8.12.20. Add automated functional test to pipeline](#81220-add-automated-functional-test-to-pipeline)
             - [8.12.20.1. Run the *helloworld-web* application](#812201-run-the-helloworld-web-application)
             - [8.12.20.2. Pull and run Selenium Firefox Standalone](#812202-pull-and-run-selenium-firefox-standalone)
             - [8.12.20.3. Create our test automation](#812203-create-our-test-automation)
@@ -197,6 +191,10 @@ What you should bring:
     - [8.13. Microservices](#813-microservices)
         - [8.13.1. What's cloud-native?](#8131-whats-cloud-native)
             - [8.13.1.1. So, let's experiment with our little "microservice"](#81311-so-lets-experiment-with-our-little-microservice)
+            - [8.13.1.1.1. Modify the helloworld-web application](#813111-modify-the-helloworld-web-application)
+            - [8.13.1.1.2. Create a Kubernetes manifest for the application](#813112-create-a-kubernetes-manifest-for-the-application)
+            - [8.13.1.1.3. Deploy your application](#813113-deploy-your-application)
+            - [8.13.1.1.4. Test your application](#813114-test-your-application)
     - [8.14. Using what you've learned](#814-using-what-youve-learned)
     - [8.15. Shoo away your vagrants](#815-shoo-away-your-vagrants)
     - [8.16. That's it](#816-thats-it)
@@ -5814,6 +5812,77 @@ INFO: ------------------------------------------------------------------------``
 
 ### 8.12.16. Add the build step to the pipeline
 
+```plantuml
+skinparam shadowing false
+
+skinparam title {
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 30
+}
+
+skinparam activity {
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam activityDiamond {
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam activityStart {
+  Color #0B5C92
+}
+
+skinparam activityEnd {
+  Color #0B5C92
+}
+
+skinparam arrow {
+  Color #0B5C92
+}
+
+skinparam note {
+  BorderColor #0B5C92
+  BackgroundColor #FEFECE
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 15
+}
+
+(*) -right->”Create\nthe project's\nbacklog”
+-right->"Create\nthe project\nin GitLab"
+-right->"Setup the project\nin the development\nVagrant"
+-right->"Author\nthe application"
+-right->"Build and run\nthe application"
+-right->"Run gometalinter.v2\non application"
+-down->"Fix\nthe application"
+-left->"Author\nunit tests"
+-left->"Perform\nstatic analysis\non the CLI"
+-left->"Write\nthe Makefile"
+-left->"Dockerize\nthe application"
+-left->"Run the\nDocker container"
+-down->"Push the container\nimage to the\nprivate registry"
+-right->"Configure Drone\nto execute\nthe CI/CD pipeline"
+-right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline" 
+-right->"Add build step\nto pipeline" #FFFFFF
+-right->"Add container\nimage publish\nstep to pipeline"
+-right->"Add container\ndeploy step\nto pipeline"
+-down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
+-left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
+
+-left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
+-left-> (*)
+```
+
+
 Add a build step to our `.drone.yml`
 
 ```yaml
@@ -6594,11 +6663,11 @@ docker stop helloworld-web
 docker rm helloworld-web
 ```
 
-And then in the root of your `helloworld-web` project 
+And then in the root of your `helloworld-web` project
 
-``bash
+```bash
 cd ..
-``
+```
 
 run the inspec test
 
@@ -7577,7 +7646,7 @@ metadata:
 
 for our `helloworld` application.  A namespace is used to provide.
 
-To query for the current namespaces in the cluster perform the following 
+To query for the current namespaces in the cluster perform the following
 
 ```bash
 kubectl get namespace
@@ -7634,7 +7703,7 @@ spec:
 A `Deployment` is used to define the desired state of our `helloworld` application.
 
 
-To query the cluster for all the `Deployment`s type 
+To query the cluster for all the `Deployment`s type
 
 ```bash
 kubectl get deployment --all-namespaces
@@ -7819,7 +7888,7 @@ One service is being managage and replicatset is maintaining the speficied 1 pod
 Now test your service
 
 ```
-[vagrant@development helloworld-web]$ curl http://192.168.0.11:3000
+curl http://192.168.0.11:8082/helloworld
 ```
 
 The output will look like
