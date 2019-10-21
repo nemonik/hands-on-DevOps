@@ -68,9 +68,7 @@ module AnsibleExtraVars
 
       golang_version: '1.13',
 
-#      selenium_standalone_chrome_version: '3.14.0',
       selenium_standalone_chrome_version: '3.141',
-#      selenium_standalone_firefox_version: '3.14.0',
       selenium_standalone_firefox_version: '3.141',
 
       zap2docker_stable_version: '2.8.0',
