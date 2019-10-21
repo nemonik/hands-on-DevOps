@@ -5,22 +5,23 @@ A hands-on DevOps course covering the culture, methods and repeated practices of
 A reveal.js presentation written to accompany this course can found at [https://nemonik.github.io/hands-on-DevOps/](https://nemonik.github.io/hands-on-DevOps/).
 
 This course will
+
 1. Discuss DevOps,
 2. Have you spin up a DevOps toolchain and development environment, and then
 3. Author two applications and their accompanying pipelines, the first a continuous integration (CI) and the second a continuous delivery (CD) pipeline.
 
-After this course you will
-1. Be able to describe and have hands on experience the DevOps methods and repeated practices (e.g., use of Agile methods, configuration management, build automations, test automation and deployment automation orchestrated under continuous integration and delivery orchestrator), and why it matters;
+After this course, you will
+1. Be able to describe and have hands-on experience the DevOps methods and repeated practices (e.g., use of Agile methods, configuration management, build automation, test automation and deployment automation orchestrated under continuous integration and delivery orchestrator), and why it matters;
 2. Identify what diverse tools and resources that exist in the DevOps ecosystem;
 3. Address challenges transitioning to DevOps methods and repeated practices;
 4. Have had hands-on experience with Infrastructure as Code( Vagrant and Ansible ) to provision and configure an entire DevOps toolchain and development environment on VirtualBox including Docker Registry, Taiga, GitLab, Drone CI, and SonarQube;
-5. Have had hands-on experience authoring code to include authoring and running automated tests in a CI/CD pipeline all under Configuration Management to insure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected;
+5. Have had hands-on experience authoring code to include authoring and running automated tests in a CI/CD pipeline all under Configuration Management to ensure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected;
 6. Have had hands-on experience with (a) using Infrastructure as Code (IaC) in Vagrant and Ansible; (b) creating and using Kanban board in Taiga; (c) code configuration in git and GitLab; (d) authoring code in Go; (e) using style checkers and linters; (f) authoring a Makefile; (g) various commands in Docker (e.g., building a container image, pushing a container into a registry, creating and running a container); (h) authoring a pipeline for Drone CI; (i) using Sonar Scanner CLI to perform static analysis; (j) authoring security test in InSpec; (k) author an automated functional test in Selenium; (l) authoring a dynamic security test in OWASP Zap; an (m) using container platform to author and scale services;
-7. Have had hands-on experience authoring code to include authoring and running automated tests in a CI/CD pipeline all under Configuration Management to insure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected.
+7. Have had hands-on experience authoring code to include authoring and running automated tests in a CI/CD pipeline all under Configuration Management to ensure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected.
 
 We will be spending most of the course hands-on working with the tools and in the Unix command line making methods and repeated practices of DevOps happen, so as to grow an understanding of how DevOps actually works.
 
-Don't fixate on the tools used, nor the apps we develop in the course of learning how and why.  How and why is far more important.  This course like DevOps is not about tools although we'll be using them. You'll spend far more time writing code.  (Or at the very least cutting-and-pasting code.) 
+Don't fixate on the tools used, nor the apps we develop in the course of learning how and why. How and why is far more important. This course like DevOps is not about tools although we'll be using them. You'll spend far more time writing code. (Or at the very least cutting-and-pasting code.)
 
 # 2. Author
 
@@ -32,11 +33,11 @@ See the License file at the root of this project.
 
 # 4. Prerequisites
 
-The following skills would be useful in following along, but aren't strictly necessary.
+The following skills would be useful in following along but aren't strictly necessary.
 
 What you should bring:
 
-- Managing Linux or Unix-like systems would be tremendously helpful, but not necessary, as we will living largely within the terminal.
+- Managing Linux or Unix-like systems would be tremendously helpful, but not necessary, as we will be living largely within the terminal.
 - A basic understanding of Vagrant, Docker, and Ansible would also be helpful, but not necessary.
 - Mostly being a software engineer, but not necessary.
 
@@ -228,9 +229,9 @@ And collectively all this coding is occurring left in the delivery pipeline, wit
 
 DevOps is not entirely about tools.
 
-Or as I like to put it, "Its not about the tools."
+Or as I like to put it, "It's not about the tools."
 
-DevOps will also not entirely stop all bugs or vulnerabilities from making it into production, but that's not really the point.
+DevOps will also not entirely stop all bugs or vulnerabilities from making it into production, but that's not the point.
 
 ![My Pillow Guy](./images/my_pillow_guy.png)
 
@@ -242,11 +243,11 @@ The tools and an organization's tailored processes around them come __after__ pe
 
 1. To succeed at DevOps you must __combine software development and information technology operations in the systems development life cycle__ with __a focus on shorting its life cycle while delivering features, fixes, and updates frequently in close alignment with business objectives__. If the effort cannot combine both Dev and Ops with this focus the effort will most certainly fail.
  
-2. If your effort doesn't __grok (i.e, understand intuitively) what DevOps actually is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.  I say this because culture is largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
+2. If your effort doesn't __grok (i.e, understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.  I say this because the culture is the largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
 
 ## 6.4. DevOps is really about
 
-Providing the culture, methods and repeated practices that once a bug or vulnerability is discovered, the concern can to be quickly remediated and functionality returned back to the user.
+Providing the culture, methods and repeated practices that once a bug or vulnerability is discovered, the concern can to be quickly remediated and functionality returned to the user.
 
 ## 6.5. How is it related to the Agile?
 
@@ -261,11 +262,11 @@ Agile Software Development shares the same goal, but DevOps extends Agile method
 
 For Agile, solutions evolve through collaboration between self-organizing, cross-functional teams utilizing the appropriate practices for their context.
 
-Again, in DevOps everyone is developing software, so it is my view DevOps builds on Agile.
+Again, in DevOps, everyone is developing software, so it is my view DevOps builds on Agile.
 
 ## 6.6. How do they differ?
 
-While Agile Software Development encourages collaboration between cross-functional teams, the focus in DevOps is on, but not limited to, the inclusion of
+While Agile Software Development encourages collaboration between cross-functional teams, collaboration is a primary focus in DevOps  including, but not limiting
 
 - analysis,
 - design,
@@ -274,11 +275,11 @@ While Agile Software Development encourages collaboration between cross-function
 - security, and
 - quality assurance
 
-functionaries as stakeholders into the development effort.
+functionaries as stakeholders into the broader effort.
 
 ## 6.7. Why?
 
-In Agile Software Development, there is rarely an integration of these individuals outside the immediate application development team with members of technology operations (e.g., network engineers administrators, testers, cyber security engineers.)
+In Agile Software Development, there is rarely an integration of these individuals outside the immediate application development team with members of technology operations (e.g., network engineers administrators, testers, cybersecurity engineers.)
 
 ## 6.8. What are the principles of DevOps?
 
@@ -299,7 +300,7 @@ After tools, this is what is commonly (albeit mistakenly) thought to be the tota
 
 ## 6.10. What is Continuous Integration (CI)?
 
-It is a repeated Agile software development practice lifted specifically from Extreme programming, where members of a development team frequently integrate their work in order to detect integration issues as quickly as possible thereby shifting discovery of issues "left" (i.e., early) in the software release.
+It is a repeated Agile software development practice lifted specifically from Extreme programming, where members of a development team frequently integrate their work to detect integration issues as quickly as possible thereby shifting discovery of issues "left" (i.e., early) in the software release. After tools, this is what is commonly (albeit mistakenly) thought to be the totality of DevOps.
 
 ## 6.11. How?
 
@@ -309,7 +310,7 @@ Each integration is orchestrated through a CI service/orchestrator (e.g., Jenkin
 
 ### 6.12.1. Utilize a Configuration Management System
 
-For the software's source code, where the mainline (i.e., master branch) is the most the most recent working version, past releases held in branches, and new features not yet merged into the mainline branch being worked on their own branches.
+For the software's source code, where the mainline (i.e., master branch) is the most recent working version, past releases held in branches, and new features not yet merged into the mainline branch worked in their own branches.
 
 ### 6.12.2. Automate the build
 
@@ -317,11 +318,11 @@ By accompanying build automation (e.g., Gradle, Apache Maven, Make) alongside th
 
 ### 6.12.3. Employ one or more CI services/orchestrators
 
-Perform source code analysis via automate formal code inspection and assessment.
+Perform source code analysis via automating formal code inspection and assessment.
 
 ### 6.12.4. Make builds self-testing
 
-In other words, ingrain testing by including unit and integration tests (e.g., Spock, JUnit, Mockito, SOAPUI, go package *Testing*) with the source code so as to be executed by the build automation to be execute by the CI service.
+In other words, ingrain testing by including unit and integration tests (e.g., Spock, JUnit, Mockito, SOAPUI, go package *Testing*) with the source code to be executed by the build automation to be executed by the CI service.
 
 ### 6.12.5. Never commit broken
 
@@ -353,11 +354,11 @@ A pipeline automates the various stages/steps (e.g., Static Application Security
 
 ## 6.15. How is a pipeline manifested?
 
-Each delivery pipeline is manifested as **Pipeline as Code** (i.e., software automation) accompanying software's source code in its version control repository.
+Each delivery pipeline is manifested as **Pipeline as Code** (i.e., software automation) accompanying the application's source code in its version control repository.
 
 ## 6.16. What underlines all of this?
 
-I and the community of practice argues DevOps will strugge without ubiquitous access to shared pools of software configurable system resources and higher-level services that can be rapidly provisioned (i.e., cloud).
+I and the community of practice argue DevOps will struggle without ubiquitous access to shared pools of software configurable system resources and higher-level services that can be rapidly provisioned (i.e., cloud).
 
 Although, it is actually possible to DevOps on mainframes.
 
@@ -421,7 +422,7 @@ Let me explain.
 
 Once deployed, the work is done, right?
 
-A development team's work is not complete once a product leaves CI/CD and enters production; especially, under DevOps where the development teams include members of operations.
+So, that improvements can be gauged and anomalies detected.A development team's work is not complete once a product leaves CI/CD and enters production; especially, under DevOps where the development team includes members of operations.
 
 ### 6.18.1. The most important metric
 
@@ -457,7 +458,7 @@ Further, monitoring may result in the re-scoping of requirements, re-prioritizin
 > the set of shared attitudes, values, goals, and practices that characterizes an institution or
 > organization
 
-Now that everyone is a coder using the same tools, methods and repeated practices for their particular discipline you have the foundations of a ***culture***.
+Now that everyone is a "coder" using the same tools, methods and repeated practices for their particular discipline you have the foundations of ***culture***.
 
 ### 6.19.1. We were taught the requisite skills as children
 
@@ -480,8 +481,8 @@ Now that everyone is a coder using the same tools, methods and repeated practice
 ### 6.20.1. Ultimately, DevOps is Goal
 
 - With DevOps one does not simply hit the ground running.
-- One must first crawl, walk and then ultimately run as you embrace the necessary culture change, methods and repeated practices.
-- Collaboration and automation are expected continually improve so to achieve more frequent and more reliable releases.
+- One must first crawl, walk and then ultimately run as you embrace the necessary culture change, methods, and repeated practices.
+- Collaboration and automation are expected to continually improve so to achieve more frequent and more reliable releases.
 
 # 7. Reading list
 
@@ -529,11 +530,11 @@ The SlideShare can be found here https://www.slideshare.net/abhiujjwal/how-2-dea
 
 # 8. Now the hands-on part
 
-In this class you will spin up the following developent and toolchain environment.
+In this class, you will spin up the following development and toolchain environment.
 
 **NOTE**
 - If your web-based Git-repository manager is paired with a PlantUML server you will see a diagram rendered below otherwise you will only the PlantUML source code for the diagram. Don't worry the course's Ansible automation will spin up both a GitLab and PlantUML.
-- This class makes use of **NOTE** sections to call out things that are important to know or will drop a few tidbits.  Reading these notes may save you some aggrevation.
+- This class makes use of **NOTE** sections to call out things that are important to know or will drop a few tidbits. Reading these notes may save you some aggravation.
 
 ```plantuml
 @startuml
@@ -599,19 +600,19 @@ rectangle "Host" {
 
 			rectangle "Taiga" {
 				component "nemonik/taiga:latest" as taiga
-        component "sameersbn/postgresql:10-2" as taiga_postgresql
+        			component "sameersbn/postgresql:10-2" as taiga_postgresql
 			}
 
 			rectangle "GitLab" {
 				component "nemonik/gitlab:12.1.6"" as gitlab
-        component "sameersbn/postgresql:10-2" as gitlab_postgresql
-        component "redis:4.0.9-1" as gitlab_redis
+			        component "sameersbn/postgresql:10-2" as gitlab_postgresql
+        			component "redis:4.0.9-1" as gitlab_redis
 			}
 
 			rectangle "Drone CI" {
-        component "drone/server:1.3.1" as drone_server
-        component "drone/agent:1.3.1" as drone_agent
-        component "sameersbn/postgresql:10-2" as drone_postgresql
+		        	component "drone/server:1.3.1" as drone_server
+    			   	component "drone/agent:1.3.1" as drone_agent
+        			component "sameersbn/postgresql:10-2" as drone_postgresql
 			}
 
 			rectangle "SonarQube" {
@@ -625,14 +626,14 @@ rectangle "Host" {
 			rectangle "Registry" {
 				component "registry:2.7.1" as registry
 			}
-    }
+		}
 	}
 
 	rectangle "Development Vagrant" {
-    rectangle "Docker CE" as docker2 {
-      component "helloworld" as helloworld
-      component "helloworld-web" as helloworld_web
-    }
+    		rectangle "Docker CE" as docker2 {
+			component "helloworld" as helloworld
+			component "helloworld-web" as helloworld_web
+    		}
 	}
 }
 
@@ -688,13 +689,13 @@ export https_proxy=$PROXY
 export http_proxy=$PROXY
 export HTTP_PROXY=$PROXY
 export ALL_PROXY=$PROXY
-export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,$(echo 192.168.0.{1..255} | sed 's/ /,/g')"
+export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11"
 export no_proxy=$NO_PROXY
 export CA_CERTIFICATES=http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt
 export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
 ```
 
-When in the root of the project, the script can be execute in terminal session via
+When in the root of the project, the script can be executed in the terminal session via
 
 ```
 . ./set_env.sh
@@ -746,7 +747,7 @@ Now if, if you are on Windows you cam perform the following to set the same  env
 1. In the Windows taskbar, enter `edit the system environment variables` into `Search Windows` and select the icon with the corresponding name. 
 3. The `Systems Property` window will likely open in the background, so you will likely need to go find it and bring it forward.
 4. In the `Systems Property`'s `Advanced` tab select `Environment Variables...` button.
-5. In `Environment Variables` windows that opens, under `User variables for...`press `New ...` to  open a `New User Variable` window, enter each `Variable Name` and and its respective `Value` for each pair in the table below
+5. In `Environment Variables` windows that opens, under `User variables for...` press `New ...` to open a `New User Variable` window, enter each `Variable Name` and and its respective `Value` for each pair in the table below
 
 | Variable Name                      | Value                                                            |
 | ---------------------------------- | ---------------------------------------------------------------- |
@@ -804,7 +805,7 @@ If you are on Windows, you'll need to install `git`.
 
 ## 8.4. Retrieve the course material
 
-If you are reading this on paper and have nothing else, you only have a small portion of the class material. You will need to download the class project containing all the automation to spin up a DevOps toolchain and development, etc.
+If you are reading this on paper and have nothing else, you only have a small portion of the class material. You will need to download the class project containing all the automation to spin up a DevOps toolchain and development virtual machines, etc.
 
 In a shell, for the purposes of the class, this means in `Git Bash`, clone the project from [https://github.com/nemonik/hands-on-DevOps.git](https://github.com/nemonik/hands-on-DevOps.git) via git like so:
 
@@ -815,7 +816,6 @@ git -c http.sslVerify=false clone https://github.com/nemonik/hands-on-DevOps.git
 Output will resemble (i.e., will not be precisely the same):
 
 ```
-$ git -c http.sslVerify=false clone https://github.com/nemonik/hands-on-DevOps.git
 Cloning into 'hands-on-DevOps'...
 remote: Counting objects: 1184, done.
 remote: Compressing objects: 100% (203/203), done.
@@ -826,15 +826,15 @@ Resolving deltas: 100% (480/480), done.
 
 ## 8.5. Infrastructure as code (IaC)
 
-This class uses Infrastructure as code (IaC) to set up the class environment (i.e., two virtual machines that will later be referred to as "vagrants".) IaC is the process of provisioning, and configuring (i.e., managing) computr systems through code, rather than directly manipulating the systems by hand (i.e., through a manual processes). 
+This class uses Infrastructure as code (IaC) to set up the class environment (i.e., two virtual machines that will later be referred to as "vagrants".) IaC is the process of provisioning, and configuring (i.e., managing) computer systems through code, rather than directly manipulating the systems by hand (i.e., through manual processes).
 
 This class uses Vagrant and Ansible IaC frameworks and the following sections will unpack each.
 
 ### 8.5.1. Vagrant
 
-This class uses Vagrant, a command line utility for managing the lifecycle of virtual machines as a vagrant in that the VMs are not meant to hang around in the same place for long.
+This class uses Vagrant, a command-line utility for managing the lifecycle of virtual machines as a vagrant in that the VMs are not meant to hang around in the same place for long.
 
-Unless you want to pollute your machine with every imaginable programming language, framework and library version you'll find yourself often creating a virtual machine (VM) for each software project. Sometimes more than one. And if you're like me of the past you'll end up with a VirtualBox full of VMs. If you haven't gone about this the right way, you'll end up wondering what VM went with which project and now how did I create it? The anti-pattern around this problem is to write documentation. A better way that aligns with a DevOps repeatable practices is to create automation to provision and configure your development VMs. This is where Vagrant comes in as it is "a command line utility for managing the lifecycle of virtual machines."
+Unless you want to pollute your machine with every imaginable programming language, framework and library version you'll find yourself often creating a virtual machine (VM) for each software project. Sometimes more than one. And if you're like me of the past you'll end up with a VirtualBox full of VMs. If you haven't gone about this the right way, you'll end up wondering what VM went with which project and now how did I create it? The anti-pattern around this problem is to write documentation. A better way that aligns with a DevOps repeatable practices is to create automation to provision and configure your development VMs. This is where Vagrant comes in as it is "a command-line utility for managing the lifecycle of virtual machines."
 
 #### 8.5.1.1. Vagrant documentation and source
 
@@ -846,7 +846,7 @@ It's canonical (i.e., authoritative) source can be found at
 
 <https://github.com/hashicorp/vagrant/>
 
-Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL.
+Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL and I make full use of this to extend the functionality of the Vagrantfile..
 
 #### 8.5.1.2. Installing Vagrant
 
@@ -856,7 +856,7 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL.
 
    Version 2.2.5 was tested.  Newer version may or may not work.
 
-2. Click on the installer once downloaded and follow along. On Windows, the installer may stall calculating for a bit and may bury modals you'll need to respond to in the Windows Task bar, so keep an eye out for that. The installer will automatically add the `vagrant` command to your system path so that it is available on the command line. If it is not found, the documentation advises to try logging out and logging back into your system. This is particularly necessary sometimes for Windows. Windows will require a reboot, so remember to **come back and complete step-3**.
+2. Click on the installer once downloaded and follow along. On Windows, the installer may stall calculating for a bit and may bury modals you'll need to respond to in the Windows Task bar, so keep an eye out for that. The installer will automatically add the vagrant command to your system path so that it is available on the command line. If it is not found, the documentation advises you to try logging out and logging back into your system. This is particularly necessary sometimes for Windows. Windows will require a reboot, so remember to **come back and complete step-3**.
 
 3. **If you're not on the MITRE corporate network skip this step.**  On Windows, use the File Explorer to replace the existing `C:\Hashicorp\vagrant\embedded\cacert.pem` file with the project's `vagrant_files/cacert.pem` by using the File Explorer.
 
@@ -893,6 +893,7 @@ vagrant-cachier (1.2.1, global)
 vagrant-certificates (2.0.0, global)
 vagrant-disksize (0.1.3, global)
 vagrant-proxyconf (2.0.6, global)
+vagrant-reload (0.0.1, global)
 vagrant-vbguest (0.19.0, global)
 ```
 
@@ -911,9 +912,9 @@ Vagrant's own documentation puts it best:
 > in the project to check out the code, run vagrant up, and be on their way. 
 > Vagrantfiles are portable across every platform Vagrant supports.
 
-If we were instead provisioning Amazon EC2 instances, we'd alternatively use [Terraform](https://www.terraform.io/), a tool for building, changing, and versioning infrastructure
+If we were instead provisioning Amazon EC2 instances, we'd alternatively use [Terraform](https://www.terraform.io/), a tool for building, changing, and versioning infrastructure.
 
-The following sub sections enumerate the various sections of the  `Vagrantfile` broken apart in order to discuss.
+The following sub-sections enumerate the various sections of the `Vagrantfile` broken apart in order to discuss.
 
 ##### 8.5.1.4.1. Modelines
 
@@ -946,14 +947,27 @@ Which includes the Anible extra_vars defined in the `ansible_extra_vars.rb` Ruby
 
 module AnsibleExtraVars
 
-  @@alreadyShowedDNSWarning = false
-
   # Define extra_vars for Ansible
   ANSIBLE_EXTRA_VARS = {
+
+      ansible_version: '2.8.6',
+
+      docker_timeout: '300',
+      docker_retries: '60',
+      docker_delay: '5',
+
+      k3s_version: 'v0.9.1',
+      k3s_flannel_iface: 'eth1',
+      k3s_cluster_secret: 'kluster_secret',
+
+      local_path_provisioner_version: 'v0.0.11',
+      kubernetes_dashboard_version: 'v1.10.1',
+      traefik_version: '1.7.16',
 
       kompose_version: '1.18.0',
 
       docker_compose_version: '1.24.1',
+      docker_compose_pip_version: '1.25.0rc2',
 
       registry_deploy_via: 'kubectl',
       registry_version: '2.7.1',
@@ -964,13 +978,13 @@ module AnsibleExtraVars
       taiga_port: '8080',
 
       gitlab_deploy_via: 'kubectl',
-      gitlab_version: '12.2.1-1',
+      gitlab_version: '12.3.5',
       gitlab_port: '10080',
       gitlab_ssh_port: '10022',
       gitlab_user: 'root',
 
       drone_deploy_via: 'docker-compose',
-      drone_version: '1.3.1',
+      drone_version: '1.6',
       drone_port: '80',
 
       drone_cli_version: '1.1.0',
@@ -991,9 +1005,7 @@ module AnsibleExtraVars
 
       golang_version: '1.13',
 
-#      selenium_standalone_chrome_version: '3.14.0',
       selenium_standalone_chrome_version: '3.141',
-#      selenium_standalone_firefox_version: '3.14.0',
       selenium_standalone_firefox_version: '3.141',
 
       zap2docker_stable_version: '2.8.0',
@@ -1033,11 +1045,11 @@ module AnsibleExtraVars
 end
 ```
 
-Containing all the extra variable used by Ansible roles found in `ansible/roles` path of the project.
+Containing all the extra variables used by Ansible roles found in `ansible/roles` and `box/ansible/roles` paths of the project.
 
 ##### 8.5.1.4.3. Inserting Proxy setting via host environmental variables
 
-Later in the Vagrantfile, a bit of code makes use of the `vagrant-proxyconf` plugin configure the HTTP proxy setitngs for the vagrants (i.e., the transient VMs).
+Later in the Vagrantfile, a bit of code makes use of the `vagrant-proxyconf` plugin configure the HTTP proxy settings for the vagrants (i.e., the transient VMs).
 
 ```ruby
   # Set proxy settings for all vagrants
@@ -1080,7 +1092,6 @@ Later in the Vagrantfile, a bit of code makes use of the `vagrant-proxyconf` plu
     config.proxy.no_proxy = nil
     config.proxy.enabled = false
   end
-
 ```
 
 ##### 8.5.1.4.4. Inserting enterprise CA certificates
@@ -1165,8 +1176,9 @@ This section uses the `vagrant-disksize` plugin to to resize disks in VirtualBox
   end
 ```
 
-Calls a Bash script to build a Vagrant box on which each Vagrant is based for the same reaons one 
-can build a Amazon Machine Image (AMI) or VMWare Image.
+Calls a Bash script to build a Vagrant box on which each Vagrant is based for the same reasons one 
+can build a Amazon Machine Image (AMI) or VMWare Image. An alternative would be to use Hashicorp's
+Packer, but we can do pretty much the same thing here by building of the existing `centos/7` Vagrant box.
 
 ##### 8.5.1.4.8. Requiring _vagrant-vbquest_ for Windows
 
@@ -1185,38 +1197,32 @@ can build a Amazon Machine Image (AMI) or VMWare Image.
   config.vm.define "development" do |development|
     development.vm.box = 'nemonik/devops'
     development.vm.network :private_network, ip: '192.168.0.10'
-#    development.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
     development.vm.hostname = 'development'
-    development.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
+    development.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=664"]
     development.vm.provider :virtualbox do |virtualbox|
       virtualbox.name = 'DevOps Class - development'
       virtualbox.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 10]
       virtualbox.memory = 2048
       virtualbox.cpus = 2
       virtualbox.gui = false
-
-      development_docker_disk = File.join(vagrantfilePath, 'development_docker.vdi')
-
-      unless File.exist?(development_docker_disk)
-        virtualbox.customize ['createmedium', '--filename', development_docker_disk, '--size', 40 * 1024]
-      end
-
-      # the value of storage_system_bus depends on your platform
-      storage_system_bus = "IDE"
-
-      # Provisions a drive for Docker storage
-      virtualbox.customize ['storageattach', :id, '--storagectl', storage_system_bus, '--port', 1, '--device', 0, '--type', 'hdd', '--medium', development_docker_disk]
     end
 
     ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
 
-    $script = <<-SCRIPT
-      echo Configuring...
-      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="developments" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/development-playbook.yml"
-      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="developments" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/development-playbook.yml
-    SCRIPT
+    ssh_insecure_key = File.read("#{Dir.home}/.vagrant.d/insecure_private_key")
 
-    development.vm.provision "shell", inline: $script, privileged: false, reset: true
+    development.vm.provision "shell", privileged: false, reset: true, inline: <<-SHELL
+      echo Copy insecure key to /home/vagrant/.ssh/id_rsa...
+      rm -Rf /home/vagrant/.ssh/id_rsa
+      echo "#{ssh_insecure_key}" > /home/vagrant/.ssh/id_rsa
+      chown vagrant /home/vagrant/.ssh/id_rsa
+      chmod 400 /home/vagrant/.ssh/id_rsa
+
+      echo Configuring...
+      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook --limit="developments" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/development-playbook.yml"
+      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook --limit="developments" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/development-playbook.yml
+    SHELL
+
   end
 ```
 
@@ -1224,7 +1230,7 @@ This section provisions and configures a `development` vagrant used for developm
 
 - The `config.vm.provision` block uses `ansible_local` to configure the `development` vagrant. I've written Ansible roles under `ansible/roles` to automate the configuration of the vagrants.
 
-  - `development.vm.box` loads the vagrant with this `centos/7` vagrant base box.  Vagrant curates a listing of base boxes here https://app.vagrantup.com/boxes/search
+  - `development.vm.box` loads the vagrant with this `centos/7` Vagrant base box.  Vagrant curates a listing of base boxes here https://app.vagrantup.com/boxes/search
   - `development.vm.synced_folder` mounts the class's project folder to `/vagrant` path in the vagrant
   - The `development.vm.provider` section tells the hypervisor how to configure the vagrant (i.e., how much memory, how many procesors)
   - `development.vm.provision` handles configuring the vagrant by executing the `ansible/development-playbook.yml` playbook
@@ -1237,58 +1243,36 @@ This section provisions and configures a `development` vagrant used for developm
   config.vm.define 'toolchain' do |toolchain|
     toolchain.vm.box = 'nemonik/devops'
     toolchain.vm.network :private_network, ip: '192.168.0.11'
-#    toolchain.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'
     toolchain.vm.hostname = 'toolchain'
-    toolchain.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
+    toolchain.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=664"]
     toolchain.vm.provider :virtualbox do |virtualbox|
       virtualbox.name = 'DevOps Class - toolchain'
       virtualbox.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 10]
       virtualbox.memory = 6144 #4096
       virtualbox.cpus = 4
       virtualbox.gui = false
-
-      toolchain_docker_disk = File.join(vagrantfilePath, 'toolchain_docker.vdi')
-
-      unless File.exist?(toolchain_docker_disk)
-        virtualbox.customize ['createmedium', '--filename', toolchain_docker_disk, '--size', 40 * 1024]
-      end
-
-      # the value of storage_system_bus depends on your platform
-      storage_system_bus = "IDE"
-
-      # Provisions a drive for Docker storage
-      virtualbox.customize ['storageattach', :id, '--storagectl', storage_system_bus, '--port', 1, '--device', 0, '--type', 'hdd', '--medium', toolchain_docker_disk]
     end
 
     ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
 
-    $script = <<-SCRIPT
-      echo Installing the base...
-      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-base-playbook.yml"
-      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-base-playbook.yml
-    SCRIPT
-
-    toolchain.vm.provision "shell", inline: $script, privileged: false, reset: true
-
-    $script = <<-SCRIPT
+    toolchain.vm.provision "shell", privileged: false, reset: true, inline: <<-SHELL
       echo Installing the tools...
-      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-tools-playbook.yml"
-      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-tools-playbook.yml
-    SCRIPT
+      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -e 'ansible_python_interpreter=/usr/bin/python' --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-playbook.yml"
+      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -e 'ansible_python_interpreter=/usr/bin/python' --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-playbook.yml
+    SHELL
 
-    toolchain.vm.provision "shell", inline: $script, privileged: false, reset: true
   end
 ```
 
-This section provisions and configures the `toolchain` vagrant. This is the beefy vagrant running Kubernetes, GitLab. Drone CI, a private Docker registry, SonarQube, Selenium, Taiga... Two `toolchain.vm.provision` calls a made to execute two ssh sessions thereby permitting the effect of adding `vagrant` to the `docker` group to take effect.
+This section provisions and configures the `toolchain` vagrant. This is the beefy vagrant running Kubernetes (K3s), GitLab. Drone CI, a private Docker registry, SonarQube, Selenium, Taiga... 
 
 ### 8.5.2. Ansible
 
-Ansible is a "configuration management" tool that automates software provisioning, configuration management and application deployment, two core repeated practices in DevOps, so for the purposes of the class Ansible addresses this concern in its configuration of two vagrants.
+Ansible is a "configuration management" tool that automates software provisioning, configuration management and application deployment, two core repeated practices in DevOps, so for the class Ansible addresses this concern in its configuration of two vagrants.
 
 Ansible was open-sourced and then subsumed by Red Hat.
 
-There are other notable open-source "configuration management" tools, such as Chef and Puppet. Further still there are others, such as BOSH and Salt, but they hold little or no community of practice or market share.
+There are other notable open-source "configuration management" tools, such as Chef and Puppet. Further, still there are others, such as BOSH and Salt, but they hold little or no community of practice or market share.
 
 In his seminal essay, ["The Cathedral and the Bazaar"](http://www.catb.org/~esr/writings/cathedral-bazaar/cathedral-bazaar/), Eric S. Raymond states
 
@@ -1341,12 +1325,12 @@ ansible_python_interpreter=/usr/bin/python2
 #ns1 ansible_host=10.0.1.1
 
 # MITRE DNS
-ns1 ansible_host=10.20.100.53
-ns2 ansible_host=10.20.200.53
+#ns1 ansible_host=10.20.100.53
+#ns2 ansible_host=10.20.200.53
 
 # Google / Starbux DNS
-#ns1 ansible_host=8.8.8.8
-#ns2 ansible_host=8.8.4.4
+ns1 ansible_host=8.8.8.8
+ns2 ansible_host=8.8.4.4
 
 # HAMP LAB DNS
 #ns1 ansible_host=192.168.1.1
@@ -1357,21 +1341,6 @@ ns2 ansible_host=10.20.200.53
 ```
 
 The inventory collects all the vagrants under a `[nodes]` group, and then defines each vagrant under their respective group either `[developments]` or `[toolchains]`.  
-
-**NOTE**
-
-- The inventory also defines a `[dns]` group to define DNS (domain name service) server hosts for your vagrants, whose value will vary between environment.  These values are esspecially important. 
-
-  For example if during configuring the `toolchain` vagrant, the Ansible playbook was to error out with some thing like
-
-  > toolchain:     "msg": "Error building nemonik/taiga - code: 100, message: The command '/bin/sh -c cd /tmp &&         apt-get update &&         apt-get install -y --no-install-recommends  build-essential binutils-doc autoconf flex bison libjpeg-dev libfreetype6-dev zlib1g-dev libzmq3-dev libgdbm-dev libncurses5-dev automake libtool libffi-dev libssl-dev curl git tmux gettext &&         apt-get install -y --no-install-recommends nginx curl wget gettext nano postgresql-client locales &&         curl -sL https://deb.nodesource.com/setup_8.x | bash - &&         apt-get install -y --no-install-recommends nodejs &&         curl -L https://npmjs.org/install.sh | sh &&         rm -rf /var/lib/apt/lists/* &&         apt-get clean' returned a non-zero code: 100, logs: [u'Step 1/28 : FROM python:3.6', u'\\n', u' ---> a08c6226131a\\n', u'Step 2/28 : MAINTAINER Michael Joseph Walsh <github.com@nemonik.com>', u'\\n', u' ---> Using cache\\n', u' ---> 2893c9d792c9\\n', u'Step 3/28 : ENV DEBIAN_FRONTEND noninteractive', u'\\n', u' ---> Using cache\\n', u' ---> 7f03ac7af6d3\\n', u'Step 4/28 : ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE true', u'\\n', u' ---> Using cache\\n', u' ---> 25921060cd9c\\n', u'Step 5/28 : RUN useradd -g 0 taiga', u'\\n', u' ---> Using cache\\n', u' ---> 0ec4ad953b60\\n', u'Step 6/28 : RUN  cd /tmp &&         apt-get update &&         apt-get install -y --no-install-recommends  build-essential binutils-doc autoconf flex bison libjpeg-dev libfreetype6-dev zlib1g-dev libzmq3-dev libgdbm-dev libncurses5-dev automake libtool libffi-dev libssl-dev curl git tmux gettext &&         apt-get install -y --no-install-recommends nginx curl wget gettext nano postgresql-client locales &&         curl -sL https://deb.nodesource.com/setup_8.x | bash - &&         apt-get install -y --no-install-recommends nodejs &&         curl -L https://npmjs.org/install.sh | sh &&         rm -rf /var/lib/apt/lists/* &&         apt-get clean', u'\\n', u' ---> Running in 4af093bb0eab\\n', u\"Err:1 http://deb.debian.org/debian buster InRelease\\n  Temporary failure resolving 'deb.debian.org'\\n\", u\"Err:2 http://security.debian.org/debian-security buster/updates InRelease\\n  Temporary failure resolving 'security.debian.org'\\n\", u\"Err:3 http://deb.debian.org/debian buster-updates InRelease\\n  Temporary failure resolving 'deb.debian.org'\\n\", u'Reading package lists...', u'\\n', u\"\\x1b[91mW: Failed to fetch http://deb.debian.org/debian/dists/buster/InRelease  Temporary failure resolving 'deb.debian.org'\\nW: Failed to fetch http://security.debian.org/debian-security/dists/buster/updates/InRelease  Temporary failure resolving 'security.debian.org'\\nW: Failed to fetch http://deb.debian.org/debian/dists/buster-updates/InRelease  Temporary failure resolving 'deb.debian.org'\\nW: Some index files failed to download. They have been ignored, or old ones used instead.\\n\\x1b[0m\", u'Reading package lists...', u'\\n', u'Building dependency tree...', u'\\nReading state information...', u'\\n', u'Package gettext is not available, but is referred to by another package.\\nThis may mean that the package is missing, has been obsoleted, or\\nis only available from another source\\n\\nPackage binutils-doc is not available, but is referred to by another package.\\nThis may mean that the package is missing, has been obsoleted, or\\nis only available from another source\\n\\nPackage build-essential is not available, but is referred to by another package.\\nThis may mean that the package is missing, has been obsoleted, or\\nis only available from another source\\n\\nPackage flex is not available, but is referred to by another package.\\nThis may mean that the package is missing, has been obsoleted, or\\nis only available from another source\\n\\nPackage bison is not available, but is referred to by another package.\\nThis may mean that the package is missing, has been obsoleted, or\\nis only available from another source\\n\\n', u\"\\x1b[91mE: Package 'build-essential' has no installation candidate\\nE: Package 'binutils-doc' has no installation candidate\\nE: Package 'flex' has no installation candidate\\nE: Package 'bison' has no installation candidate\\nE: Unable to locate package libzmq3-dev\\nE: Unable to locate package tmux\\nE: Package 'gettext' has no installation candidate\\n\\x1b[0m\"]"
-    toolchain: }
-
-  The operative portion of this error message is
-
-  > Temporary failure resolving 'deb.debian.org'
-
-  This means the vagrant cannot DNS resolve `deb.debian.org` and most likely you need to edit the project's inventory file, `hosts`, to properly reflect the DNS server(s) for your environment.
 
 #### 8.5.2.2. Playbooks
 
@@ -1393,7 +1362,6 @@ The `development` vagrant Ansible playbook (`ansible/development-playbook.yml`) 
 - hosts: [developments]
   remote_user: vagrant
   roles:
-    - docker-storage
     - golang
     - golint
     - k3s-agent
@@ -1418,14 +1386,26 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: "copy to taiga files to /home/{{ ansible_user_id }}/taiga"
-  copy:
-    src: files/
-    dest: "/home/{{ ansible_user_id }}/taiga"
+- name: pull python:3.6 docker image
+  docker_image:
+    name: python:3.6
+    source: pull
+    timeout: "{{ docker_timeout }}"
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:
     - taiga
 
-- name: "template files into /home/{{ ansible_user_id }}/taiga"
+- name: copy to taiga files to /home/{{ ansible_user_id }}/taiga
+  copy:
+    src: files/
+    dest: /home/{{ ansible_user_id }}/taiga
+  tags:
+    - taiga
+
+- name: template files into /home/{{ ansible_user_id }}/taiga
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -1434,46 +1414,20 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
     - { src: "templates/README.MD.j2", dest: "/home/{{ ansible_user_id }}/taiga/README.MD" }
     - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/taiga/Dockerfile" }
     - { src: "templates/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/taiga/dockerfile_build.sh" }
-    - { src: "templates/docker-compose.yml.j2", dest: "/home/{{ ansible_user_id }}/taiga/docker-compose.yml" }
-    - { src: "templates/taiga.yml.j2", dest: "/home/{{ ansible_user_id }}/taiga/taiga.yml" }
   tags:
     - taiga
 
-- name: "make /home/{{ ansible_user_id }}/taiga/dockerfile_build.sh executable"
+- name: make /home/{{ ansible_user_id }}/taiga/dockerfile_build.sh executable
   file:
-    path: "/home/{{ ansible_user_id }}/taiga/dockerfile_build.sh"
+    path: /home/{{ ansible_user_id }}/taiga/dockerfile_build.sh
     mode: "u=rwx,g=r,o=r"
   tags:
     - taiga
 
-- name: ensure user 'default' with a 1001 uid and a primary group of 'ROOT' exists
-  become: yes
-  user:
-    name: default
-    uid: 1001
-    group: root
-  tags:
-    - taiga
-
-- name: ensure ./volumes exist
-  become: yes
-  file:
-    path: "{{ item.path }}"
-    state: directory
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
-  with_items:
-    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/" , owner: root, group: root }
-    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/admin", owner: default, group: root }
-    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/", owner: root, group: root }
-    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/user", owner: default, group: root }
-  tags:
-    - taiga
-
-- name: "build nemonik/taiga:{{ taiga_version }} docker image"
+- name: build nemonik/taiga:{{ taiga_version }} docker image
   docker_image:
-    path: "/home/{{ ansible_user_id }}/taiga"
-    name: "nemonik/taiga:{{ taiga_version }}"
+    path: /home/{{ ansible_user_id }}/taiga
+    name: nemonik/taiga:{{ taiga_version }}
     build:
       args:
         http_proxy: "{{ http_proxy|default('') }}"
@@ -1482,6 +1436,10 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
         HTTPS_PROXY: "{{ https_proxy|default('') }}"
         NO_PROXY: "{{ no_proxy|default('') }}"
         no_proxy: "{{ no_proxy|default('') }}"
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:
    - taiga
 
@@ -1493,24 +1451,60 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
     - taiga
 
 - name: spin up taiga via docker-compose
-  docker_compose:
-    build: no
-    debug: yes
-    project_src: "/home/{{ ansible_user_id }}/taiga"
+  block:
+  - name: template docker-compose.yml into /home/{{ ansible_user_id }}/taiga
+    template:
+      src: templates/docker-compose.yml.j2
+      dest: /home/{{ ansible_user_id }}/taiga/docker-compose.yml
+      force: yes
+
+  - name: ensure user 'default' with a 1001 uid and a primary group of 'ROOT' exists
+    become: yes
+    user:
+      name: default
+      uid: 1001
+      group: root
+
+  - name: ensure ./volumes exist
+    become: yes
+    file:
+      path: "{{ item.path }}"
+      state: directory
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+    with_items:
+      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/" , owner: root, group: root }
+      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/admin", owner: default, group: root }
+      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/", owner: root, group: root }
+      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/user", owner: default, group: root }
+
+  - name: spin up via docker-compose
+    docker_compose:
+      build: no
+      debug: yes
+      project_src: /home/{{ ansible_user_id }}/taiga
   when: gitlab_deploy_via == "docker-compose"
   tags:
     - taiga
 
 - name: spin up Taiga via Kubernetes
-  shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f taiga.yml
-  args:
-    chdir: "/home/{{ ansible_user_id }}/taiga"
+  block:
+  - name: template taiga.yml into /home/{{ ansible_user_id }}/taiga
+    template:
+      src: templates/taiga.yml.j2
+      dest: /home/{{ ansible_user_id }}/taiga/taiga.yml
+      force: yes
+
+  - name: spin up via kubectl
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f taiga.yml
+    args:
+      chdir: /home/{{ ansible_user_id }}/taiga
   when: gitlab_deploy_via == "kubectl"
   tags:
-    - taigab
+    - taiga
 ```
 
-The `Taiga` role dependes on `docker-compose`, `docker`, and `common` all roles used to configure the `nemonik/devops` Vagrant Box.
+The `Taiga` role dependes on the Ansible roles used to configure the `nemonik/devops` Vagrant box.
 
 ## 8.6. Docker image and containers
 
