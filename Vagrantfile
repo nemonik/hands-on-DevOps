@@ -162,7 +162,6 @@ Vagrant.configure('2') do |config|
   config.vm.define 'toolchain' do |toolchain|
     toolchain.vm.box = 'nemonik/devops'
     toolchain.vm.network :private_network, ip: '192.168.0.11'
-#   toolchain.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
     toolchain.vm.hostname = 'toolchain'
     toolchain.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=664"]
     toolchain.vm.provider :virtualbox do |virtualbox|
@@ -187,7 +186,6 @@ Vagrant.configure('2') do |config|
   config.vm.define "development" do |development|
     development.vm.box = 'nemonik/devops'
     development.vm.network :private_network, ip: '192.168.0.10'
-    development.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'
     development.vm.hostname = 'development'
     development.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=664"]
     development.vm.provider :virtualbox do |virtualbox|
