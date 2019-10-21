@@ -1510,18 +1510,18 @@ The `Taiga` role dependes on the Ansible roles used to configure the `nemonik/de
 
 *So, what is Docker?*
 
-Docker is a platform to develop, deploy, and run Linux containers.  
+Docker is a platform to develop, deploy, and run Linux containers.
 
 *What are Containers?*
 
 - Containers are a form of lightweight virtualization first existing in 1979’s Version 7 UNIX operating system when the chroot command was developed.
-- Since chroot, containers have continued to evolve within the Linux kernel to decouple applications from the operating system and run them in an isolated manner. 
-- A container is essentially an isolated processes running in user space.  
-- The benefit over Virtual Machines in that multiple containers can run on the same machine (in case of this class, a vagrant) sharing the OS kernel with other containers.  Whereas a VM would require a full copy of an operating system in order to run the application.  This makes containers insanely light-weight.
+- Since chroot, containers have continued to evolve within the Linux kernel to decouple applications from the operating system and run them in an isolated manner.
+- A container is essentially an isolated process running in userspace.
+- The benefit over Virtual Machines in that multiple containers can run on the same machine (in case of this class, a vagrant) sharing the OS kernel with other containers. Whereas a VM would require a full copy of an operating system to run the application. This makes containers insanely light-weight.
 - Container support has thrived and seen popular adoption across various operating systems outside of the Linux including Windows Containers and Window’s direct ability to run Linux containers from the Hyper-V isolation work done by Microsoft.
 - The Open Container Initiative (OCI), formed in 2015 maintains open industry standards for containers that focus on Runtime Specification (runtime-spec) and its partner project, the Image Specification (image-spec).
 
-What are container images?
+*What are container images?*
 
 A container image is a lightweight, self-contained, executable package that includes everything needed to run your application including runtime, system tools, system libraries, and settings.
 
@@ -1529,23 +1529,25 @@ More can be read on the topic at
 
 <https://www.docker.com/what-container>
 
-You will build a couple Docker images and spin up a containers in this class.
+You will build a couple of Docker images and spin up containers in this class.
 
 ## 8.7. Docker-compose
 
 *What is docker-compose?*
 
-Docker-compose is a tool and domain specific language based on YAML used to define and run multi-container Docker applications.
+Docker-compose is a tool and domain-specific language based on YAML used to define and run multi-container Docker applications.
 
-What is YAML?  YAML bills itself as _a human-friendly data serialization standard for all programming languages._ YAML also follows in in the computing tradition of being a recursive acronym, _YAML Ain't Markup Language._  Many of the tools used in this course make use of YAML, so you will see plenty examples of it.
+*What is YAML?*
+
+YAML bills itself as a human-friendly data serialization standard for all programming languages. YAML also follows in the computing tradition of being a recursive acronym, _YAML Ain't Markup Language._ Many of the tools used in this course make use of YAML, so you will see plenty of examples of it.
 
 ## 8.8. Kubernetes
 
 *What is Kubernetes?*
 
-Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications. Essentially, it serves as an operating system for a cluster of computing resources and manages the lifecycle  and discovery of the applications running upon it.  In the case of this course, the computing resourses I'm speaking of are your two vagrants: `toolchain` and `development`.  When vagrant executes the ansible playbook `ansible/toolchain-tools-playbook.yml` on the `toolchain` vagrant it uses the `k3s-server` role to configures the vagrant as a Kubernetes master node.  On the `development` vagrant, the `ansible/devellopment-playbook.yml` playbook uses the `k3s-agent` role to configure the vagrant as a Kubernetes worker node. 
+Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications. Essentially, it serves as an operating system for a cluster of computing resources and manages the lifecycle and discovery of the applications running upon it. In the case of this course, the computing resources I'm speaking of are your two vagrants: `toolchain` and `development`. When Vagrant executes the ansible-playbook `ansible/toolchain-tools-playbook.yml` on the `toolchain` vagrant it uses the `k3s-server` role to configures the vagrant as a Kubernetes master node. On the development vagrant, the `ansible/development-playbook.yml` playbook uses the `k3s-agent` role to configure the vagrant as a Kubernetes worker node.
 
-Once, both `toolchain` and `development` vagrant are proivsioned and configured, if you ssh into the `toolchain` vagrant via typing
+Once, both `toolchain` and `development` vagrant are provisioned and configured, if you ssh into the `toolchain` vagrant via typing
 
 ```bash
 vagrant ssh toolchain
@@ -1576,39 +1578,57 @@ It will return all the pods, where a pod is container or group of containers tha
 In our case the the command will return something resembling:
 
 ```
-NAMESPACE            NAME                                    READY   STATUS             RESTARTS   AGE
-gitlab               gitlab-549cf5fc94-nbxm2                 1/1     Running            0          71m
-gitlab               postgresql-77b6c7876b-x2x2r             1/1     Running            0          71m
-gitlab               redis-f4c654dc6-d5jx8                   1/1     Running            0          71m
-gitlab               svclb-gitlab-pt9pt                      2/2     Running            0          71m
-gitlab               svclb-gitlab-vp77f                      2/2     Running            0          10m
-kube-system          coredns-b7464766c-7vh9v                 1/1     Running            0          116m
-kube-system          kubernetes-dashboard-5f7b999d65-rtgdp   1/1     Running            0          116m
-kube-system          svclb-traefik-fkvcr                     1/1     Running            0          116m
-kube-system          svclb-traefik-jkb89                     1/1     Running            0          10m
-kube-system          svclb-traefik-web-ui-hbrxx              1/1     Running            0          10m
-kube-system          svclb-traefik-web-ui-jfxqz              1/1     Running            0          116m
-kube-system          traefik-d8df46f8f-wsfk4                 1/1     Running            0          116m
-local-path-storage   local-path-provisioner-848fdcff-m8fcm   1/1     Running            0          116m
-plantuml-server      plantuml-server-7c846b64f5-d6hz8        1/1     Running            0          61m
-plantuml-server      svclb-plantuml-server-7glg9             1/1     Running            0          10m
-plantuml-server      svclb-plantuml-server-mv77x             1/1     Running            0          61m
-registry             registry-7f589d847-kbtbv                1/1     Running            0          116m
-registry             svclb-registry-l5zz4                    1/1     Running            0          116m
-registry             svclb-registry-v64kf                    1/1     Running            0          10m
-sonarqube            postgresql-695b96d59f-kmlhx             1/1     Running            0          52m
-sonarqube            sonarqube-5c4f4457dd-hp5l8              1/1     Running            0          52m
-sonarqube            svclb-sonarqube-nb22t                   1/1     Running            0          52m
-sonarqube            svclb-sonarqube-tdrg9                   1/1     Running            0          10m
-taiga                postgresql-6bb74d5bd4-cbwcb             1/1     Running            0          99m
-taiga                svclb-taiga-57vxt                       1/1     Running            0          10m
-taiga                svclb-taiga-k47p5                       1/1     Running            0          99m
-taiga                taiga-75c89d796-zwf74                   1/1     Running            2          99m
+NAMESPACE            NAME                                     READY   STATUS    RESTARTS   AGE
+local-path-storage   local-path-provisioner-ccbdd96dc-n2gcv   1/1     Running   0          149m
+kube-system          coredns-66f496764-45tsr                  1/1     Running   0          149m
+kube-system          traefik-66f759c696-qxr8v                 1/1     Running   0          149m
+kube-system          svclb-traefik-web-ui-n8j5z               1/1     Running   0          149m
+kube-system          svclb-traefik-l86nq                      1/1     Running   0          149m
+kube-system          kubernetes-dashboard-7d75c474bb-8c5ml    1/1     Running   0          149m
+registry             svclb-registry-zktfc                     1/1     Running   0          149m
+registry             registry-779f7b957b-w2grb                1/1     Running   0          149m
+taiga                svclb-taiga-wbg28                        1/1     Running   0          145m
+taiga                postgresql-55867bd4cc-pf5sm              1/1     Running   0          145m
+taiga                taiga-c7cddb697-8gb9c                    1/1     Running   0          145m
+gitlab               svclb-gitlab-czlnz                       2/2     Running   0          142m
+gitlab               redis-9bc4f4f77-x645s                    1/1     Running   0          142m
+gitlab               postgresql-57694695f-vm8ls               1/1     Running   0          142m
+gitlab               gitlab-fd84dc8dd-8f9cx                   1/1     Running   0          142m
+plantuml-server      svclb-plantuml-server-ljzxz              1/1     Running   0          140m
+plantuml-server      plantuml-server-54df8b596d-7dz8s         1/1     Running   0          140m
+sonarqube            svclb-sonarqube-b96jn                    1/1     Running   0          139m
+sonarqube            postgresql-f557c84d8-cljqk               1/1     Running   0          138m
+sonarqube            sonarqube-5dfbc585cc-tfbjw               1/1     Running   0          139m
+taiga                svclb-taiga-9qjnt                        1/1     Running   0          121m
+gitlab               svclb-gitlab-pbs2p                       2/2     Running   0          121m
+registry             svclb-registry-tlr29                     1/1     Running   0          121m
+sonarqube            svclb-sonarqube-77ffb                    1/1     Running   0          121m
+kube-system          svclb-traefik-web-ui-62j47               1/1     Running   0          121m
+plantuml-server      svclb-plantuml-server-k4tr7              1/1     Running   0          121m
+kube-system          svclb-traefik-zqn8r                      1/1     Running   0          121m
+```
+
+The logs for an application can be tailed (i.e., continuously read) by for example executing
+
+```bash
+kubectl logs plantuml-server-54df8b596d-7dz8s -n plantuml-server -f
+```
+
+The last few lines of output will resemble
+
+```
+2019-10-21 15:48:59.556:INFO:oeja.AnnotationConfiguration:main: Scanning elapsed time=458ms
+2019-10-21 15:48:59.941:INFO:oejs.session:main: DefaultSessionIdManager workerName=node0
+2019-10-21 15:48:59.941:INFO:oejs.session:main: No SessionScavenger set, using defaults
+2019-10-21 15:48:59.943:INFO:oejs.session:main: node0 Scavenging every 660000ms
+2019-10-21 15:49:00.018:INFO:oejsh.ContextHandler:main: Started o.e.j.w.WebAppContext@5e5792a0{plantuml,/,[file:///tmp/jetty-0.0.0.0-8080-ROOT.war-_-any-7602101517969586601.dir/webapp/, jar:file:///tmp/jetty-0.0.0.0-8080-ROOT.war-_-any-7602101517969586601.dir/webapp/WEB-INF/lib/codemirror-3.21.jar!/META-INF/resources],AVAILABLE}{/ROOT.war}
+2019-10-21 15:49:00.070:INFO:oejs.AbstractConnector:main: Started ServerConnector@2145b572{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+2019-10-21 15:49:00.070:INFO:oejs.Server:main: Started @2044ms
 ```
 
 ## 8.9. Spinning up the _toolchain_ vagrant
 
-In the command line of the host in the root of the class project, open `ansible/toolchain-tools-playbook.yml` playbook and make sure the roles are like so:
+In the command line of the host in the root of the class project, open `ansible/toolchain-playbook.yml` playbook and make sure the roles are like so:
 
 ```yaml
 ---
@@ -1627,7 +1647,6 @@ In the command line of the host in the root of the class project, open `ansible/
     - golang
     - golint
     - k3s-server
-##    - microK8s
     - docker-registry
     - taiga
     - gitlab
@@ -1648,21 +1667,6 @@ vagrant up toolchain
 ```
 
 You will see a good deal of output and on the Windows OS, it will pester you to approve certain things.  As a trust exercise blindly approve everything.
-
-Once complete, open a secure shell (ssh) to the `toolchain` vagrant
-
-```bash
-vagrant ssh toolchain
-```
-
-The command line will open a prompt a bash shell on the vagrant
-
-```bash
-[vagrant@toolchain ~]$
-```
-
-On this vagrant a number of DevOps tools will be running.  This will take a while, so let's discuss what is being installed.  
-TODO: Insert the tail end of succesful output here.
 
 **NOTE**
 
