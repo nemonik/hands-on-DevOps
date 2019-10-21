@@ -11,6 +11,7 @@ This course will
 3. Author two applications and their accompanying pipelines, the first a continuous integration (CI) and the second a continuous delivery (CD) pipeline.
 
 After this course, you will
+
 1. Be able to describe and have hands-on experience the DevOps methods and repeated practices (e.g., use of Agile methods, configuration management, build automation, test automation and deployment automation orchestrated under continuous integration and delivery orchestrator), and why it matters;
 2. Identify what diverse tools and resources that exist in the DevOps ecosystem;
 3. Address challenges transitioning to DevOps methods and repeated practices;
@@ -125,24 +126,26 @@ What you should bring:
             - [8.5.2.1. Inventory file](#8521-inventory-file)
             - [8.5.2.2. Playbooks](#8522-playbooks)
             - [8.5.2.3. Roles](#8523-roles)
-    - [8.6. Docker image and containers](#86-docker-image-and-containers)
-    - [8.7. Docker-compose](#87-docker-compose)
-    - [8.8. Kubernetes](#88-kubernetes)
-    - [8.9. Spinning up the _toolchain_ vagrant](#89-spinning-up-the-_toolchain_-vagrant)
-        - [8.9.1. Taiga, an example of Agile project management software](#891-taiga-an-example-of-agile-project-management-software)
-            - [8.9.1.1. Documentation, source, container image](#8911-documentation-source-container-image)
-            - [8.9.1.2. URL, Username and password](#8912-url-username-and-password)
-        - [8.9.2. GitLab CE, an example of configuration management software](#892-gitlab-ce-an-example-of-configuration-management-software)
-            - [8.9.2.1. Documentation, source, container image](#8921-documentation-source-container-image)
-            - [8.9.2.2. URL, Username and password](#8922-url-username-and-password)
-        - [8.9.3. Drone CI, an example of CI/CD orchestrator](#893-drone-ci-an-example-of-cicd-orchestrator)
-            - [8.9.3.1. Documentation, source, container image](#8931-documentation-source-container-image)
-            - [8.9.3.2. URL, Username and password](#8932-url-username-and-password)
-            - [8.9.3.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab](#8933-optionally-add-the-hands-on-devops-repository-to-the-toolchains-gitlab)
-        - [8.9.4. SonarQube, an example of a platform for the inspection of code quality](#894-sonarqube-an-example-of-a-platform-for-the-inspection-of-code-quality)
-            - [8.9.4.1. Documentation, source, container image](#8941-documentation-source-container-image)
-            - [8.9.4.2. URL, Username and password](#8942-url-username-and-password)
-    - [8.10. Spin up the _development_ vagrant](#810-spin-up-the-_development_-vagrant)
+    - [8.6. Spinning up the _toolchain_ vagrant](#86-spinning-up-the-_toolchain_-vagrant)
+    - [8.7. Technologies underlying the tools](#87-technologies-underlying-the-tools)
+        - [8.7.1. Docker image and containers](#871-docker-image-and-containers)
+        - [8.7.2. Docker-compose](#872-docker-compose)
+        - [8.7.3. Kubernetes](#873-kubernetes)
+    - [8.8. The long-running tools](#88-the-long-running-tools)
+        - [8.8.1. Taiga, an example of Agile project management software](#881-taiga-an-example-of-agile-project-management-software)
+            - [8.8.1.1. Documentation, source, container image](#8811-documentation-source-container-image)
+            - [8.8.1.2. URL, Username and password](#8812-url-username-and-password)
+        - [8.8.2. GitLab CE, an example of configuration management software](#882-gitlab-ce-an-example-of-configuration-management-software)
+            - [8.8.2.1. Documentation, source, container image](#8821-documentation-source-container-image)
+            - [8.8.2.2. URL, Username and password](#8822-url-username-and-password)
+        - [8.8.3. Drone CI, an example of CI/CD orchestrator](#883-drone-ci-an-example-of-cicd-orchestrator)
+            - [8.8.3.1. Documentation, source, container image](#8831-documentation-source-container-image)
+            - [8.8.3.2. URL, Username and password](#8832-url-username-and-password)
+        - [8.8.4. SonarQube, an example of a platform for the inspection of code quality](#884-sonarqube-an-example-of-a-platform-for-the-inspection-of-code-quality)
+            - [8.8.4.1. Documentation, source, container image](#8841-documentation-source-container-image)
+            - [8.8.4.2. URL, Username and password](#8842-url-username-and-password)
+    - [8.9. Spin up the _development_ vagrant](#89-spin-up-the-_development_-vagrant)
+    - [8.10. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab](#810-optionally-add-the-hands-on-devops-repository-to-the-toolchains-gitlab)
     - [8.11. Golang _helloworld_ project](#811-golang-_helloworld_-project)
         - [8.11.1. Create the project's backlog](#8111-create-the-projects-backlog)
         - [8.11.2. Create the project in GitLab](#8112-create-the-project-in-gitlab)
@@ -1506,7 +1509,67 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
 
 The `Taiga` role dependes on the Ansible roles used to configure the `nemonik/devops` Vagrant box.
 
-## 8.6. Docker image and containers
+## 8.6. Spinning up the _toolchain_ vagrant
+
+In the command line of the host in the root of the class project, open `ansible/toolchain-playbook.yml` playbook and make sure the roles are like so:
+
+```yaml
+---
+# Toolchain Ansible playbook
+
+# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- hosts: toolchains
+  remote_user: vagrant
+  roles:
+    - golang
+    - golint
+    - k3s-server
+    - docker-registry
+    - taiga
+    - gitlab
+    - plantuml-server
+    - drone
+    - sonarqube
+    - golang-container-image
+    - python-container-image
+    - golang-sonarqube-scanner-image
+    - standalone-firefox-container-image
+    - owasp-zap2docker-stable-image
+```
+
+Then enter into the command-line of the host at the root of the class project and enter into shell (I'll drop from time to time stating "into the shell" as it should understood.)
+
+```bash
+vagrant up toolchain
+```
+
+You will see a good deal of output and on the Windows OS, it will pester you to approve certain things.  As a trust exercise blindly approve everything.
+
+**NOTE**
+
+- It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you can comment out the roles that proceeded and re-run the automation with:
+  ```
+  vagrant up toolchain --provision
+  ```
+- Caution, it is easy to forget DevOps is as much about culture as it is about a methodology and repeated practices (often further mistakenly thought as "tools and automation"), so keep this in mind.  
+- The tools, methodology and repeated practices exist to support the culture.
+- Again, I'll drop from time to time stating "into the shell" when instruction you to enter things in the CLI as it should understood.
+
+The toolchain IaC will spin up a number of tools.  The following sections unpack what theses tools are.
+
+## 8.7. Technologies underlying the tools
+
+The tools used in the class leverage a number of popular technologies.
+
+### 8.7.1. Docker image and containers
+
+The DevOps tools are all containerized via Docker.
 
 *So, what is Docker?*
 
@@ -1531,7 +1594,9 @@ More can be read on the topic at
 
 You will build a couple of Docker images and spin up containers in this class.
 
-## 8.7. Docker-compose
+### 8.7.2. Docker-compose
+
+The class can be reconfigure to spin up the long-running tools (e.g., Tagia, GitLab, Drone, SonarQube) via Docker-compose.  By default Drone is the only tool spun via Docker-compose leaving the rest of the applications to be orchestrated by Kubernetes.  (Kubernetes is explained in the following section.)
 
 *What is docker-compose?*
 
@@ -1541,11 +1606,15 @@ Docker-compose is a tool and domain-specific language based on YAML used to defi
 
 YAML bills itself as a human-friendly data serialization standard for all programming languages. YAML also follows in the computing tradition of being a recursive acronym, _YAML Ain't Markup Language._ Many of the tools used in this course make use of YAML, so you will see plenty of examples of it.
 
-## 8.8. Kubernetes
+### 8.7.3. Kubernetes
+
+Kubernetes; specicifically, K3s is used to orchestrate the lifecycle of the bulk of long-running tools.
 
 *What is Kubernetes?*
 
 Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications. Essentially, it serves as an operating system for a cluster of computing resources and manages the lifecycle and discovery of the applications running upon it. In the case of this course, the computing resources I'm speaking of are your two vagrants: `toolchain` and `development`. When Vagrant executes the ansible-playbook `ansible/toolchain-tools-playbook.yml` on the `toolchain` vagrant it uses the `k3s-server` role to configures the vagrant as a Kubernetes master node. On the development vagrant, the `ansible/development-playbook.yml` playbook uses the `k3s-agent` role to configure the vagrant as a Kubernetes worker node.
+
+Kubernetes is managed via the command-line using the `kubectl` command-line tool.
 
 Once, both `toolchain` and `development` vagrant are provisioned and configured, if you ssh into the `toolchain` vagrant via typing
 
@@ -1626,59 +1695,9 @@ The last few lines of output will resemble
 2019-10-21 15:49:00.070:INFO:oejs.Server:main: Started @2044ms
 ```
 
-## 8.9. Spinning up the _toolchain_ vagrant
+## 8.8. The long-running tools
 
-In the command line of the host in the root of the class project, open `ansible/toolchain-playbook.yml` playbook and make sure the roles are like so:
-
-```yaml
----
-# Toolchain Ansible playbook
-
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
-# You may use, distribute and modify this code under the
-# terms of the the license.
-#
-# You should have received a copy of the license with
-# this file. If not, please email <mjwalsh@nemonik.com>
-
-- hosts: toolchains
-  remote_user: vagrant
-  roles:
-    - golang
-    - golint
-    - k3s-server
-    - docker-registry
-    - taiga
-    - gitlab
-    - plantuml-server
-    - drone
-    - sonarqube
-    - golang-container-image
-    - python-container-image
-    - golang-sonarqube-scanner-image
-    - standalone-firefox-container-image
-    - owasp-zap2docker-stable-image
-```
-
-Then enter into the command-line of the host at the root of the class project and enter into shell (I'll drop from time to time stating "into the shell" as it should understood.)
-
-```bash
-vagrant up toolchain
-```
-
-You will see a good deal of output and on the Windows OS, it will pester you to approve certain things.  As a trust exercise blindly approve everything.
-
-**NOTE**
-
-- It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you can comment out the roles that proceeded and re-run the automation with:
-  ```
-  vagrant up toolchain --provision
-  ```
-- Caution, it is easy to forget DevOps is as much about culture as it is about a methodology and repeated practices (often further mistakenly thought as "tools and automation"), so keep this in mind.  
-- The tools, methodology and repeated practices exist to support the culture.
-- Again, I'll drop from time to time stating "into the shell" when instruction you to enter things in the CLI as it should understood.
-
-### 8.9.1. Taiga, an example of Agile project management software
+### 8.8.1. Taiga, an example of Agile project management software
 
 Taiga is an Open Source project management platform for agile development.
 
@@ -1705,7 +1724,7 @@ The 800lb Gorilla in this market segment is JIRA Software. Some of my co-workers
 
 - Lean-Agile Project Management software's primary purpose is to integrare people and really not much else.
 
-#### 8.9.1.1. Documentation, source, container image
+#### 8.8.1.1. Documentation, source, container image
 
 Taiga's documentation can be found at
 
@@ -1721,7 +1740,7 @@ dedicated to the back-end.
 
 Taiga doesn't directly offer a Docker container image for, but I've authored a container image that collapses both taiga-front-dist and -back behind an NGINX reverse proxy onto single container.
 
-#### 8.9.1.2. URL, Username and password
+#### 8.8.1.2. URL, Username and password
 
 Once, stood up your instance of Taiga will reachable at
 
@@ -1732,7 +1751,7 @@ The default admin accont username and password are
 **admin**  
 **123123**
 
-### 8.9.2. GitLab CE, an example of configuration management software
+### 8.8.2. GitLab CE, an example of configuration management software
 
 GitLab is installed on the `toolchain` vagrant, where it will be accessible at <http://192.168.0.11:10080/>.
 
@@ -1786,7 +1805,7 @@ A CMS must facilitate best practices, not limited to:
 
 - Trigger follow-on activities orchestrated by the Continuous Integration Service.
 
-#### 8.9.2.1. Documentation, source, container image
+#### 8.8.2.1. Documentation, source, container image
 
 GitLab's documentation can be found at
 
@@ -1806,7 +1825,7 @@ And its canonical source is located at
 
 <https://github.com/sameersbn/docker-gitlab>
 
-#### 8.9.2.2. URL, Username and password
+#### 8.8.2.2. URL, Username and password
 
 Once, stood up your instance of GitLab will reachable at
 
@@ -1816,7 +1835,7 @@ You will be using the GitLab's **root** account to host your repositories vice c
 
 For the purposes of the class the **root** account's password has been set to the ubber secure "**password**".
 
-### 8.9.3. Drone CI, an example of CI/CD orchestrator
+### 8.8.3. Drone CI, an example of CI/CD orchestrator
 
 Drone CI often referred to simply as "Drone" is installed on the `toolchain` vagrant, where it will be accessible at <http://192.168.0.11/> after some user configuration that will be explained later in the _Integrate Drone CI with GitLab_ section.
 
@@ -1891,7 +1910,7 @@ To deploy the web application to [Heroku](https://www.heroku.com/), one of the f
 
 More details on Drone is sprinkled across the class. As you can see I favor being a polyglot when it comes to software development to include CI/CD.
 
-#### 8.9.3.1. Documentation, source, container image
+#### 8.8.3.1. Documentation, source, container image
 
 Drone's main site is at
 
@@ -1917,7 +1936,7 @@ and
 
 <https://hub.docker.com/r/drone/agent/>
 
-#### 8.9.3.2. URL, Username and password
+#### 8.8.3.2. URL, Username and password
 
 Once, stood up your instance of Drone CI will reachable at
 
@@ -1925,44 +1944,11 @@ Once, stood up your instance of Drone CI will reachable at
 
 Drone will authenticate you off GitLab once integrated.
 
-#### 8.9.3.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab
-
-I'd encourage you to perform the following as GitLab will make use of the PlantUML-server the class autmation spins up to render the embedded UML diagrams in the class readme.md.  The diagrams are especially helpful to visual learners.
-
-To do this, perform the following:
-
-1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left.
-   a. Select `Create Project`.  
-   b. Or click <http://192.168.0.11:10080/projects/new>  
-2. Leave the `Project path` defaulted to `http://192.168.0.11:10080/root/`.
-3. Enter `hands-on-DevOps` (the form field the page defaults to) for the `Project name`.
-4. Provide an optional `Project description`. Something descriptive, such as, _"An awesome DevOps class"_.
-5. Make the application `public` to save yourself from entering your username and password when cloning.
-6. Click the green `Create Project` button on the lower left.
-
-The UI will refresh to show you a landing page for the project that should be accessible from <http://192.168.0.11:10080/root/hands-on-DevOps>
-
-On your host in the DevOps class project:
-
-1. Enter into the following into the command line 
-   ```
-   git config --global user.name "Administrator"
-   git config --global user.email "admin@example.com"
-   ```
-2. Then enter the following 
-   ```
-   git remote add toolchain http://192.168.0.11:10080/root/hands-on-DevOps.git
-   git push -u toolchain --all
-   git push -u toolchain --tags
-   ```
-
-You now have a clone of the project hosted in the GitLab running on the `toolchain` vagrant.  This way you can open the readme.md and follow along with rendered PlanUML diagrams.
-
-### 8.9.4. SonarQube, an example of a platform for the inspection of code quality
+### 8.8.4. SonarQube, an example of a platform for the inspection of code quality
 
 SonarQube provides the capability to show the health of an application's source code, highlighting issues as they are introduced. SonarQube can be extended by language-specific extensions/plugins to report on duplicated code, coding standards, unit tests, code coverage, code complexity, comments, bugs, and security vulnerabilities.
 
-#### 8.9.4.1. Documentation, source, container image
+#### 8.8.4.1. Documentation, source, container image
 
 SonarQube's main site is at
 
@@ -1980,7 +1966,7 @@ I'm using the container image provided at
 
 <https://hub.docker.com/_/sonarqube/>
 
-#### 8.9.4.2. URL, Username and password
+#### 8.8.4.2. URL, Username and password
 
 Once, stood up your instance of SonarQube will reachable at
 
@@ -1990,7 +1976,7 @@ The default admin account username and password is
 
 **admin**
 
-## 8.10. Spin up the _development_ vagrant
+## 8.9. Spin up the _development_ vagrant
 
 In another command line of the host in the root of the class project
 
@@ -2031,6 +2017,39 @@ Once complete open a secure shell to the `development` vagrant
   ```
   vagrant up development --provision
   ```
+
+## 8.10. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab
+
+I'd encourage you to perform the following as GitLab will make use of the PlantUML server the class automation spins up to render the embedded UML diagrams in the class readme.md.  The diagrams are especially helpful to visual learners.
+
+To do this, perform the following:
+
+1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left.
+   a. Select `Create Project`.  
+   b. Or click <http://192.168.0.11:10080/projects/new>  
+2. Leave the `Project path` defaulted to `http://192.168.0.11:10080/root/`.
+3. Enter `hands-on-DevOps` (the form field the page defaults to) for the `Project name`.
+4. Provide an optional `Project description`. Something descriptive, such as, _"An awesome DevOps class"_.
+5. Make the application `public` to save yourself from entering your username and password when cloning.
+6. Click the green `Create Project` button on the lower left.
+
+The UI will refresh to show you a landing page for the project that should be accessible from <http://192.168.0.11:10080/root/hands-on-DevOps>
+
+On your host in the DevOps class project:
+
+1. Enter into the following into the command line 
+   ```
+   git config --global user.name "Administrator"
+   git config --global user.email "admin@example.com"
+   ```
+2. Then enter the following 
+   ```
+   git remote add toolchain http://192.168.0.11:10080/root/hands-on-DevOps.git
+   git push -u toolchain --all
+   git push -u toolchain --tags
+   ```
+
+You now have a clone of the project hosted in the GitLab running on the `toolchain` vagrant.  This way you can open the readme.md and follow along with rendered PlanUML diagrams.
 
 ## 8.11. Golang _helloworld_ project
 
