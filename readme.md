@@ -697,13 +697,13 @@ export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
 
 When in the root of the project, the script can be executed in the terminal session via
 
-```
+```bash
 . ./set_env.sh
 ```
 
 If you have no HTTP proxy and no SSL inspection to be concerned about, the alternative is to execute `unset.sh` BASH script to unset all these values:
 
-```
+```bash
 #!/usr/bin/env bash
 
 # Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
@@ -736,7 +736,7 @@ unset CA_CERTIFICATES
 
 Execute in terminal session via
 
-```
+```bash
 . ./unset.sh
 ``` 
 
