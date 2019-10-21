@@ -1719,7 +1719,7 @@ dedicated to the front-end, and
 
 dedicated to the back-end.
 
-Taiga doesn't directly offer a Docker container image for, but I've authored a container image that collapses both taiga-front-dist and -back behind an NGINX reverse proxy onto single container. 
+Taiga doesn't directly offer a Docker container image for, but I've authored a container image that collapses both taiga-front-dist and -back behind an NGINX reverse proxy onto single container.
 
 #### 8.9.1.2. URL, Username and password
 
@@ -1814,7 +1814,7 @@ Once, stood up your instance of GitLab will reachable at
 
 You will be using the GitLab's **root** account to host your repositories vice creating your own, but if you want you can. There is nothing stopping you.
 
-For the purposes of the class the **root** account's password has been set to "**password**".
+For the purposes of the class the **root** account's password has been set to the ubber secure "**password**".
 
 ### 8.9.3. Drone CI, an example of CI/CD orchestrator
 
@@ -1927,6 +1927,10 @@ Drone will authenticate you off GitLab once integrated.
 
 #### 8.9.3.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab
 
+I'd encourage you to perform the following as GitLab will make use of the PlantUML-server the class autmation spins up to render the embedded UML diagrams in the class readme.md.  The diagrams are especially helpful to visual learners.
+
+To do this, perform the following:
+
 1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left.
    a. Select `Create Project`.  
    b. Or click <http://192.168.0.11:10080/projects/new>  
@@ -1952,7 +1956,7 @@ On your host in the DevOps class project:
    git push -u toolchain --tags
    ```
 
-You now have a clone of the project hosted in the GitLab running on the `toolchain`vagrant.  This way you can open the readme.md and follow along with rendered PlanUML diagrams.
+You now have a clone of the project hosted in the GitLab running on the `toolchain` vagrant.  This way you can open the readme.md and follow along with rendered PlanUML diagrams.
 
 ### 8.9.4. SonarQube, an example of a platform for the inspection of code quality
 
@@ -2006,7 +2010,8 @@ Open `ansible/development-playbook.yml` and make sure these roles are uncommente
 - hosts: [developments]
   remote_user: vagrant
   roles:
-    - docker-storage
+    - golang
+    - golint
     - k3s-agent
 ```
 
@@ -2018,19 +2023,7 @@ vagrant up development
 
 You will see a good deal of output.
 
-TODO: Insert the tail end of succesful output here.
-
 Once complete open a secure shell to the `development` vagrant
-
-```bash
-vagrant ssh development
-```
-
-Command line will open a prompt to the vagrant
-
-```bash
-[vagrant@development ~]$
-```
 
 **NOTE**
 
@@ -2105,7 +2098,6 @@ skinparam note {
 -left->“Author Drone-based Continuous Integration”
 -left-> (*)
 ```
-
 
 A backlog is essentially your to-do list, a prioritized list of work derived from the roadmap (e.g., the outline for future product functionality and when new features will be released) and its requirements.
 
