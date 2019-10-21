@@ -8,6 +8,10 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
+- name: "Ansible | List all known variables and facts"
+  debug:
+    var: hostvars[inventory_hostname]
+
 - name: install docker-compose
   become: yes
   shell: |
@@ -15,13 +19,16 @@
     chmod +x /usr/local/bin/docker-compose
   args:
     warn: no
+  retries: 60
+  delay: 5
+  register: result
+  until: result is succeeded
   tags:
     - docker-compose
 
-#- name: pip install docker-compose
-#  become: yes
-#  pip:
-#    name: docker-compose
-#    executable: pip3
-#  tags:
-#    - docker-compose
+- name: pip install docker-compose pip
+  become: yes
+  pip:
+    name: docker-compose=={{ docker_compose_pip_version }}
+  tags:
+    - docker-compose

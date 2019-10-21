@@ -8,17 +8,29 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: "create /home/{{ ansible_user_id }}/inspec-container-image"
+- name: pull ruby:alpine image
+  docker_image:
+    name: ruby:alpine
+    source: pull
+    timeout: "{{ docker_timeout }}"
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
+  tags:
+    - inspec-container-image
+
+- name: create /home/{{ ansible_user_id }}/inspec-container-image
   become: yes
   file:
-    path: "/home/{{ ansible_user_id }}/inspec-container-image"
+    path: /home/{{ ansible_user_id }}/inspec-container-image
     state: directory
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
   tags:    
     - inspec-container-image
 
-- name: "template files into /home/{{ ansible_user_id }}/inspec-container-image"
+- name: template files into /home/{{ ansible_user_id }}/inspec-container-image
   become: yes
   template:
     src: "{{ item.src }}"
@@ -33,7 +45,7 @@
   tags:    
     - inspec-container-image
 
-- name: "make scripts executable"
+- name: make scripts executable
   become: yes
   file: 
     path: "{{ item.path }}"
@@ -60,5 +72,9 @@
         HTTPS_PROXY: "{{ https_proxy|default('') }}"
         NO_PROXY: "{{ no_proxy|default('') }}"
         no_proxy: "{{ no_proxy|default('') }}" 
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:    
     - inspec-container-image

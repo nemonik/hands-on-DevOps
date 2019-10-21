@@ -7,16 +7,27 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-rm -f ./devops.box
-vagrant destroy --force default
-vagrant box remove nemonik/devops
-vagrant up
-echo 
-echo "Ignore the above error. CentOS nuked http://vault.centos.org/7.7.1908/os/x86_64/ at 2019-09-17 12:22"
-echo
-vagrant ssh -- -t 'sudo yum -y update'
-vagrant halt
-vagrant up --provision
-vagrant package --output ./devops.box
-vagrant box add nemonik/devops ./devops.box
-vagrant destroy --force default
+set -e
+
+time {
+
+  if [[ $(vagrant box list | grep nemonik/devops | wc -c) -eq 0 ]]; then
+
+    # remove prior nemonik/devops box
+    rm -f ./virtualbox-devops.box
+    vagrant destroy --force default || true 
+
+    # build nemonik/devops box
+    echo "Building nemonik/devops box via Vagrant..."
+    vagrant up
+    vagrant package --output ./virtualbox-devops.box
+    echo "Ignore error messages, this step will retry..."
+    n=0;until [ $n -ge 5 ]; do vagrant box add nemonik/devops ./virtualbox-devops.box && break; n=$[$n+1]; sleep 15; done;
+
+    #clean up
+    vagrant destroy --force default
+
+  else
+    echo "Not creating nemonik/devops box as it already exists."
+  fi
+}

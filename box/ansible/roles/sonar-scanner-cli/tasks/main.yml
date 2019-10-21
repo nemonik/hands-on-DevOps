@@ -28,6 +28,10 @@
         dest: /usr/local/
         remote_src: yes
 #        mode: 755
+      retries: 60
+      delay: 5
+      register: result
+      until: result is succeeded
       when: sonar_scanner_installed.stat.exists == False 
   tags:
     - sonar-scanner

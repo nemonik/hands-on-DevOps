@@ -120,20 +120,34 @@ Vagrant.configure("2") do |config|
     raise "Missing vagrant-vbguest plugin.  Install via: vagrant plugin install vagrant-vbguest"
   end
 
-  config.vm.box = 'centos/7'
+  # keep insecure private key, because we're creating a vagrant box
+  config.ssh.insert_key = false
+
+  config.vm.box = "centos/7"
   config.vm.box_version = '1905.1'
   config.vm.synced_folder '..', '/vagrant', type: 'virtualbox'
 
   ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
 
+  # run as root
   config.vm.provision "shell", inline: <<-SHELL
-    sudo su
     yum install -y epel-release 
     yum install -y python-pip
     pip install --upgrade pip
-    pip install ansible==2.8.4 docker-compose
+  SHELL
+
+  # run as vagrant user
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    pip install --user ansible==#{AnsibleExtraVars::ANSIBLE_EXTRA_VARS[:ansible_version]} paramiko
+
+    # run playbook
     cd /vagrant
-    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook box/ansible/box-playbook.yml -e 'ansible_python_interpreter=/usr/bin/python' --limit="boxes" --extra-vars=#{ansible_extra_vars_string} -vvvv --connection=local --inventory hosts
+    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook box/ansible/box-playbook.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} -vvvv --connection=local --inventory hosts
+  SHELL
+
+  # run as root
+  config.vm.provision "shell", inline: <<-SHELL
+    # clean up
     yum clean all --verbose
     dd if=/dev/zero of=/EMPTY bs=1M
     rm -f /EMPTY

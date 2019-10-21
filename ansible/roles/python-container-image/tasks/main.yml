@@ -8,7 +8,19 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: "create /home/{{ ansible_user_id }}/python-container-image"
+- name: pull python:{{ python_version }} image
+  docker_image:
+    name: python:{{ python_version }}
+    source: pull
+    timeout: "{{ docker_timeout }}"
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
+  tags:
+    - python-container-image
+
+- name: create /home/{{ ansible_user_id }}/python-container-image
   become: yes
   file:
     path: "/home/{{ ansible_user_id }}/python-container-image"
@@ -18,7 +30,7 @@
   tags:
     - python-container-image
 
-- name: "template files into /home/{{ ansible_user_id }}/python-container-image"
+- name: template files into /home/{{ ansible_user_id }}/python-container-image
   become: yes
   template:
     src: "{{ item.src }}"
@@ -47,7 +59,7 @@
 - name: build python image and push into private registry
   become: yes
   docker_image:
-    path: "/home/{{ ansible_user_id }}/python-container-image"
+    path: /home/{{ ansible_user_id }}/python-container-image
     name: nemonik/python
     repository: "{{ hostvars['toolchain']['ansible_host'] }}:5000/nemonik/python"
     push: yes
@@ -60,5 +72,9 @@
         HTTPS_PROXY: "{{ https_proxy|default('') }}"
         NO_PROXY: "{{ no_proxy|default('') }}"
         no_proxy: "{{ no_proxy|default('') }}" 
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:
     - python-container-image

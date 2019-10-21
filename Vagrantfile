@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+$VERBOSE = nil
+
 # Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
@@ -26,9 +28,6 @@ require File.join(vagrantfilePath, 'ansible_extra_vars.rb')
 require File.join(vagrantfilePath, '/string.rb')
 
 Vagrant.configure('2') do |config|
-
-  puts "WARN: Remember To configure DNS servers in ./hosts file's [dns] group".pink
-  puts "WARN: for your network.  Sometimes Google's DNS servers are blocked.".pink
 
   # Set proxy settings for all vagrants
   #
@@ -74,12 +73,23 @@ Vagrant.configure('2') do |config|
   # Print Docker DNS servers configured in host file
   puts "INFO: Docker is configured to us the folllowing DNS server(s):".green
   f = File.open(File.join(vagrantfilePath, 'hosts'),'r')
+  dns_servers = Array.new
   f.each_line do |line|
     if line =~ /^ns[1-2] ansible_host/
-       puts "INFO: - #{line.split('=')[1].chomp}".green
+       dns_server = line.split('=')[1].chomp
+       dns_servers.push dns_server
+       puts "INFO: - #{dns_server}".green
     end
   end
   f.close
+
+  require 'Resolv'
+  
+  begin   
+    Resolv::DNS.new(:nameserver => dns_servers).getaddress("www.nemonik.com")
+  rescue
+    raise "You likely have the wrong DNS configuration in the project's ./hosts file's [dns] group or the dns server(s) could not be momentarily reach.  If you believe the later try your command again.".red
+  end
 
   # To add Enterprise CA Certificates to all vagrants
   #
@@ -145,26 +155,14 @@ Vagrant.configure('2') do |config|
     end
   end
 
-  # Clean up docker volumes...
-  if (ARGV.include? 'destroy')
-    if (File.file?(File.join(vagrantfilePath, 'toolchain_docker.vdi')) && (ARGV.include?('toolchain') || !ARGV.include?('development')))
-      File.delete(File.join(vagrantfilePath, 'toolchain_docker.vdi'))
-
-      # Vagrant on Windows cannot overwrite these files, so remove em now. 
-      File.delete(File.join(vagrantfilePath, 'k3s_token.txt'))
-      File.delete(File.join(vagrantfilePath, 'kubeconfig.yml'))
-      File.delete(File.join(vagrantfilePath, 'vagrant-token.txt'))
-    end 
-    if (File.file?(File.join(vagrantfilePath, 'development_docker.vdi')) && (ARGV.include?('development') || !ARGV.include?('toolchain')))
-      File.delete(File.join(vagrantfilePath, 'development_docker.vdi'))
-    end
-  end
+  # use the default insecure key
+  config.ssh.insert_key = false
 
   ## Provision the toolchain vagrant
   config.vm.define 'toolchain' do |toolchain|
     toolchain.vm.box = 'nemonik/devops'
     toolchain.vm.network :private_network, ip: '192.168.0.11'
-#    toolchain.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'
+#   toolchain.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
     toolchain.vm.hostname = 'toolchain'
     toolchain.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=664"]
     toolchain.vm.provider :virtualbox do |virtualbox|
@@ -173,44 +171,23 @@ Vagrant.configure('2') do |config|
       virtualbox.memory = 6144 #4096
       virtualbox.cpus = 4
       virtualbox.gui = false
-
-      toolchain_docker_disk = File.join(vagrantfilePath, 'toolchain_docker.vdi')
-
-      unless File.exist?(toolchain_docker_disk)
-        virtualbox.customize ['createmedium', '--filename', toolchain_docker_disk, '--size', 40 * 1024]
-      end
-
-      # the value of storage_system_bus depends on your platform
-      storage_system_bus = "IDE"
-
-      # Provisions a drive for Docker storage
-      virtualbox.customize ['storageattach', :id, '--storagectl', storage_system_bus, '--port', 1, '--device', 0, '--type', 'hdd', '--medium', toolchain_docker_disk]
     end
 
     ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
 
-    $script = <<-SCRIPT
-      echo Installing the base...
-      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-base-playbook.yml"
-      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-base-playbook.yml
-    SCRIPT
-
-    toolchain.vm.provision "shell", inline: $script, privileged: false, reset: true
-
-    $script = <<-SCRIPT
+    toolchain.vm.provision "shell", privileged: false, reset: true, inline: <<-SHELL
       echo Installing the tools...
-      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-tools-playbook.yml"
-      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-tools-playbook.yml
-    SCRIPT
+      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -e 'ansible_python_interpreter=/usr/bin/python' --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-playbook.yml"
+      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -e 'ansible_python_interpreter=/usr/bin/python' --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-playbook.yml
+    SHELL
 
-    toolchain.vm.provision "shell", inline: $script, privileged: false, reset: true
   end
 
   ## Provision development vagrant
   config.vm.define "development" do |development|
     development.vm.box = 'nemonik/devops'
     development.vm.network :private_network, ip: '192.168.0.10'
-#    development.vm.network :forwarded_port, guest: 22, host: 2222, id: 'ssh'
+    development.vm.network :forwarded_port, guest: 22, host: 2223, id: 'ssh'
     development.vm.hostname = 'development'
     development.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=664"]
     development.vm.provider :virtualbox do |virtualbox|
@@ -219,28 +196,23 @@ Vagrant.configure('2') do |config|
       virtualbox.memory = 2048
       virtualbox.cpus = 2
       virtualbox.gui = false
-
-      development_docker_disk = File.join(vagrantfilePath, 'development_docker.vdi')
-
-      unless File.exist?(development_docker_disk)
-        virtualbox.customize ['createmedium', '--filename', development_docker_disk, '--size', 40 * 1024]
-      end
-
-      # the value of storage_system_bus depends on your platform
-      storage_system_bus = "IDE"
-
-      # Provisions a drive for Docker storage
-      virtualbox.customize ['storageattach', :id, '--storagectl', storage_system_bus, '--port', 1, '--device', 0, '--type', 'hdd', '--medium', development_docker_disk]
     end
 
     ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
 
-    $script = <<-SCRIPT
-      echo Configuring...
-      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="developments" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/development-playbook.yml"
-      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --limit="developments" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/development-playbook.yml
-    SCRIPT
+    ssh_insecure_key = File.read("#{Dir.home}/.vagrant.d/insecure_private_key")
 
-    development.vm.provision "shell", inline: $script, privileged: false, reset: true
+    development.vm.provision "shell", privileged: false, reset: true, inline: <<-SHELL
+      echo Copy insecure key to /home/vagrant/.ssh/id_rsa...
+      rm -Rf /home/vagrant/.ssh/id_rsa
+      echo "#{ssh_insecure_key}" > /home/vagrant/.ssh/id_rsa
+      chown vagrant /home/vagrant/.ssh/id_rsa
+      chmod 400 /home/vagrant/.ssh/id_rsa
+
+      echo Configuring...
+      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook --limit="developments" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/development-playbook.yml"
+      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook --limit="developments" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/development-playbook.yml
+    SHELL
+
   end
 end

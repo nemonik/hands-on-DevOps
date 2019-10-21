@@ -12,7 +12,7 @@
 - name: uninstall old versions of docker
   become: yes
   yum:
-    name: 
+    name:
       - docker
       - docker-client
       - docker-client-latest
@@ -43,9 +43,13 @@
 
 - name: ensure the latest version of Docker CE is installed
   become: yes
-  yum: 
-    state: latest 
+  yum:
+    state: latest
     name: docker-ce
+  retries: 60
+  delay: 5
+  register: result
+  until: result is succeeded
   tags:
     - docker
 
@@ -55,5 +59,92 @@
     name: docker
     enabled: yes
     state: started
+  tags:
+    - docker
+
+- name: template in /etc/sysconfig/docker
+  become: true
+  template:
+    src: templates/etc/sysconfig/docker.j2
+    dest: /etc/sysconfig/docker
+    force: yes
+  register: sysconfigDocker
+  tags:
+    - docker
+
+- name: debug
+  become: true
+  command: /bin/bash -c "cat /etc/sysconfig/docker"
+  when: sysconfigDocker.changed
+  tags:
+    - docker
+
+- name: configured Docker options (e.g., insecure registry, DNS)
+  become: yes
+  template:
+    src: templates/etc/docker/daemon.json.j2
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  register: daemon
+  tags:
+    - docker
+
+- name: debug
+  become: yes
+  command: /bin/bash -c "cat /etc/docker/daemon.json"
+  when: daemon.changed
+  tags:
+    - docker
+
+- name: configure EnvironmentFile
+  become: yes
+  lineinfile:
+    path: /etc/systemd/system/multi-user.target.wants/docker.service
+    insertafter: "^\\[Service\\]"
+    regexp: "^aEnvironmentFile="
+    line: "EnvironmentFile=/etc/sysconfig/docker"
+  register: environmentFile
+  tags:
+    - docker
+
+- name: stop and reload docker service
+  block:
+  - name: stop docker service
+    service:
+      name: docker
+      enabled: yes
+      state: stopped
+  - name: reload docker service
+    systemd:
+      name: docker
+      daemon_reload: yes
+  become: yes
+  when: daemon.changed
+  tags:
+    - docker
+
+- name: start and enable docker service
+  become: yes
+  service:
+    name: docker
+    enabled: yes
+    state: started
+  tags:
+    - docker
+
+- name: debug
+  command: /bin/bash -c "systemctl is-active docker"
+  tags:
+    - docker
+
+- name: "add {{ ansible_user_id }} user to docker group"
+  become: yes
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes
   tags:
     - docker

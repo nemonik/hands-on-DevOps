@@ -1,6 +1,6 @@
 # 1. DevOps
 
-A hands-on DevOps course covering the culture, methods and repeated practices of modern software development involving Vagrant, Packer, VirtualBox, Ansible, Kubernetes, Docker-Compose, Docker, Taiga, GitLab, Drone CI, SonarQube, Selenium, InSpec...
+A hands-on DevOps course covering the culture, methods and repeated practices of modern software development involving Vagrant, VirtualBox, Ansible, Kubernetes, K3s, Docker, Docker-Compose, Taiga, GitLab, Drone CI, SonarQube, Selenium, InSpec...
 
 A reveal.js presentation written to accompany this course can found at [https://nemonik.github.io/hands-on-DevOps/](https://nemonik.github.io/hands-on-DevOps/).
 
@@ -6341,7 +6341,7 @@ Host toolchain
   UserKnownHostsFile /dev/null
   StrictHostKeyChecking no
   PasswordAuthentication no
-  IdentityFile /Users/nemonik/.vagrant.d/boxes/nemonik-VAGRANTSLASH-devops/0/virtualbox/vagrant_private_key
+  IdentityFile /Users/mjwalsh/.vagrant.d/insecure_private_key
   IdentitiesOnly yes
   LogLevel FATAL
 ```
@@ -6349,7 +6349,7 @@ Host toolchain
 Find the line starting with `IdentityFile` copy the private key to the root of the class project like so
 
 ```bash
-cp /Users/nemonik/.vagrant.d/boxes/nemonik-VAGRANTSLASH-devops/0/virtualbox/vagrant_private_key
+cp /Users/mjwalsh/.vagrant.d/insecure_private_key .
 ```
 
 We can access the private key from inside each vagrant, because we configured each vagrant to mount the class project to the path `/vagrant` with the line like

@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - /vagrant/ansible/roles/standalon-chrome-container-image
+    - /vagrant/ansible/roles/standalone-chrome-container-image

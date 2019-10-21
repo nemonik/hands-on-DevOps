@@ -1,0 +1,4 @@
+{ 
+"dns": [{% for host in groups['dns'] %}"{{ hostvars[host]['ansible_host'] }}"{% if loop.index != groups['dns']|length %}, {% endif %}{% endfor %}],
+"insecure-registries": ["{{ hostvars['toolchain']['ansible_host'] }}:5000"{% if (inventory_hostname == 'toolchain') %}, "172.30.0.0/16"{% endif %}]
+}

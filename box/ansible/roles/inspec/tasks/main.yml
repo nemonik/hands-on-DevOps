@@ -13,5 +13,9 @@
   yum:
     name: "https://packages.chef.io/files/stable/inspec/{{ inspec_version }}/el/7/inspec-{{ inspec_version }}-1.el7.x86_64.rpm"
     state: present
+  retries: 60
+  delay: 5
+  register: result
+  until: result is succeeded
   tags:
     - inspec

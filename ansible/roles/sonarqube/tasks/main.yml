@@ -8,6 +8,22 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
+- name: pull docker images
+  docker_image:
+    name: "{{ item }}"
+    source: pull
+    timeout: "{{ docker_timeout }}"
+  with_items:
+    - sameersbn/postgresql:10-2
+    - alpine:3.10.2
+    - sonarqube:{{ sonarqube_version }}
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
+  tags:
+    - sonarqube
+
 - name: ensure virtual memory is icreased to support SonarQube's embedded ElasticSearch
   become: yes
   sysctl:
@@ -17,14 +33,14 @@
   tags:
     - sonarqube
 
-- name: "create /home/{{ ansible_user_id }}/sonarqube"
+- name: create /home/{{ ansible_user_id }}/sonarqube
   file:
-    path: "/home/{{ ansible_user_id }}/sonarqube"
+    path: /home/{{ ansible_user_id }}/sonarqube
     state: directory
   tags:
     - sonarqube
 
-- name: "template files into /home/{{ ansible_user_id }}/sonarqube"
+- name: template files into /home/{{ ansible_user_id }}/sonarqube
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -34,19 +50,17 @@
     - { src: "templates/README.MD.j2", dest: "/home/{{ ansible_user_id }}/sonarqube/README.MD" }
     - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/sonarqube/Dockerfile" }
     - { src: "templates/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/sonarqube/dockerfile_build.sh" }
-    - { src: "templates/docker-compose.yml.j2", dest: "/home/{{ ansible_user_id }}/sonarqube/docker-compose.yml" }
-    - { src: "templates/sonarqube.yml.j2", dest: "/home/{{ ansible_user_id }}/sonarqube/sonarqube.yml" }
   tags:
     - sonarqube
 
-- name: "make /home/{{ ansible_user_id }}/sonarqube/dockerfile_build.sh executable"
+- name: make /home/{{ ansible_user_id }}/sonarqube/dockerfile_build.sh executable
   file: 
     path: /home/{{ ansible_user_id }}/sonarqube/dockerfile_build.sh
     mode: "u=rwx,g=r,o=r"  
   tags:
     - sonarqube
 
-- name: "create /home/{{ ansible_user_id }}/sonarqube/volumes/sonarqube-extensions/plugins/ if it doesn't exist"
+- name: create /home/{{ ansible_user_id }}/sonarqube/volumes/sonarqube-extensions/plugins/ if it doesn't exist
   become: yes
   file:
     path: /home/{{ ansible_user_id }}/sonarqube/volumes/sonarqube-extensions/plugins/
@@ -54,10 +68,10 @@
   tags:
     - sonarqube
  
-- name: "build nemonik/sonarqube:{{ sonarqube_version }} docker image"
+- name: build nemonik/sonarqube:{{ sonarqube_version }} docker image
   docker_image:
-    path: "/home/{{ ansible_user_id }}/sonarqube"
-    name: "nemonik/sonarqube:{{ sonarqube_version }}"
+    path: /home/{{ ansible_user_id }}/sonarqube
+    name: nemonik/sonarqube:{{ sonarqube_version }}
     build:
       args:
         http_proxy: "{{ http_proxy }}"
@@ -66,13 +80,17 @@
         HTTPS_PROXY: "{{ https_proxy }}"
         NO_PROXY: "{{ no_proxy }}"
         no_proxy: "{{ no_proxy }}" 
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:
     - sonarqube
 
 - name: create data volumes
   become: yes
   file:
-    path: "/home/{{ ansible_user_id }}/sonarqube/volumes/{{ item }}"
+    path: /home/{{ ansible_user_id }}/sonarqube/volumes/{{ item }}
     state: directory
     owner: "999"
     group: "999"
@@ -93,19 +111,36 @@
     - sonarqube
 
 - name: spin up SonarQube via docker-compose
-  docker_compose:
-    build: no
-    debug: yes
-    project_src: "/home/{{ ansible_user_id }}/sonarqube/"
+  block:
+  - name: template docker-compose.yml into /home/{{ ansible_user_id }}/sonarqube
+    template:
+      src: templates/docker-compose.yml.j2
+      dest: /home/{{ ansible_user_id }}/sonarqube/docker-compose.yml
+      mode: "u=rwx,g=r,o=r"
+      force: yes
+
+  - name: spin up via docker-compose
+    docker_compose:
+      build: no
+      debug: yes
+      project_src: /home/{{ ansible_user_id }}/sonarqube/
   when: sonarqube_deploy_via == "docker-compose"
   tags:
     - sonarqube
 
 - name: spin up SonarQube via Kubernetes
-  shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f sonarqube.yml
-  args:
-    chdir: "/home/{{ ansible_user_id }}/sonarqube"
+  block:
+  - name: template files into /home/{{ ansible_user_id }}/sonarqube
+    template:
+      src: templates/sonarqube.yml.j2
+      dest: /home/{{ ansible_user_id }}/sonarqube/sonarqube.yml
+      mode: "u=rwx,g=r,o=r"
+      force: yes 
+
+  - name: spin up via kubectl
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f sonarqube.yml
+    args:
+      chdir: /home/{{ ansible_user_id }}/sonarqube
   when: sonarqube_deploy_via == "kubectl"
   tags:
     - sonarqube
-

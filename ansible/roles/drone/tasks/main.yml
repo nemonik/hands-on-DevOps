@@ -8,7 +8,24 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: "create /home/{{ ansible_user_id }}/drone"
+- name: pull docker images
+  docker_image:
+    name: "{{ item }}"
+    source: pull
+    timeout: "{{ docker_timeout }}"
+  with_items:
+    - sameersbn/postgresql:10-2
+    - alpine:3.10.2
+    - drone/agent:{{ drone_version }}
+    - drone/drone:{{ drone_version }}
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
+  tags:
+    - drone
+
+- name: create /home/{{ ansible_user_id }}/drone
   file:
     path: "{{ item.path }}"
     state: directory
@@ -20,7 +37,7 @@
 
 - name: wait for GitLab to be available
   uri:
-    url: "http://{{ gitlab_host }}:{{ gitlab_port }}/favicon.ico"
+    url: http://{{ gitlab_host }}:{{ gitlab_port }}/favicon.ico
     status_code: 200
   register: result
   until: result.status == 200
@@ -61,7 +78,7 @@
   block: 
   - name: list GitLab applications
     uri:
-      url: "http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/applications"
+      url: http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/applications
       method: GET
       body_format: form-urlencoded
       return_content: yes
@@ -72,7 +89,7 @@
 
   - name: delete existing Drone CI application registration
     uri:
-      url: "http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/applications/{{ item.id }}"
+      url: http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/applications/{{ item.id }}
       method: DELETE
       status_code: 204
       headers:
@@ -82,7 +99,7 @@
  
   - name: configure a GitLab integration 
     uri:
-      url: "http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/applications"
+      url: http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/applications
       method: POST
       body_format: form-urlencoded
       body:
@@ -102,7 +119,7 @@
   tags:
     - drone
 
-- name: "template files into /home/{{ ansible_user_id }}/drone"
+- name: template files into /home/{{ ansible_user_id }}/drone
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -131,7 +148,7 @@
   tags:
     - drone 
 
-- name: "build nemonik/agent:{{ drone_version }} and nemonik/drone:{{ drone_version }} docker images"
+- name: build nemonik/agent:{{ drone_version }} and nemonik/drone:{{ drone_version }} docker images
   docker_image:
     path: "{{ item.path }}"
     name: "{{ item.name }}"
@@ -146,9 +163,12 @@
   with_items:
     - { path: "/home/{{ ansible_user_id }}/drone/drone-agent", name: "nemonik/agent:{{ drone_version }}" }
     - { path: "/home/{{ ansible_user_id }}/drone/drone-server", name: "nemonik/drone:{{ drone_version }}" }
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:
     - drone
-
 
 - name: fail if drone_deploy_via is not set to 'docker-compose'
   fail:
@@ -162,7 +182,7 @@
   docker_service:
     build: no
     debug: yes
-    project_src: "/home/{{ ansible_user_id }}/drone"
+    project_src: /home/{{ ansible_user_id }}/drone
   when: drone_deploy_via == "docker-compose"
   tags:
     - drone

@@ -10,47 +10,8 @@ RUN cd /usr/local/share/ca-certificates/ && {% for ca in CA_CERTIFICATES %} wget
 
 RUN useradd -g 0 taiga
 
-# RUN set -x \
-# 	&& apt-get update \
-# 	&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 apt-transport-https ca-certificates \
-# 	&& \
-#         NGINX_GPGKEY=ABF5BD827BD9BF62; \
-# 	for server in \
-# 		ha.pool.sks-keyservers.net \
-# 		hkp://keyserver.ubuntu.com:80 \
-# 		hkp://p80.pool.sks-keyservers.net:80 \
-# 		pgp.mit.edu \
-# 	; do \
-# 		echo "Fetching GPG key $NGINX_GPGKEY from $server"; \
-# 		apt-key adv --no-tty --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && break; \
-# 	done
-
-# RUN  cd /tmp && \
-#         echo "deb http://security.debian.org/debian-security jessie/updates main" >> /etc/apt/sources.list && \
-#         curl -s http://nginx.org/packages/keys/nginx_signing.key -o nginx_signing.key && \
-#         cat nginx_signing.key | apt-key add - && \
-#         echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list && \
-#         apt-get update
-
-# RUN  apt-get install -y --no-install-recommends apt-transport-https && \
-#         curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
-#         apt-get install -y --no-install-recommends libssl1.0.0 nginx=1.13.9-1~jessie curl wget gettext nano postgresql-client locales nodejs && \
-#         apt-get clean && \
-#         rm -rf /var/lib/apt/lists/*
-
-#RUN  cd /tmp && \
-#        echo "deb http://security.debian.org/debian-security jessie/updates main" >> /etc/apt/sources.list && \
-#        curl -sL http://nginx.org/packages/keys/nginx_signing.key | apt-key add - && \
-#        echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list && \
-#        apt-get update && \
-#        apt-get install -y --no-install-recommends apt-transport-https && \
-#        curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
-#        apt-get install -y --no-install-recommends libssl1.0.0 nginx=1.13.9-1~jessie curl wget gettext nano postgresql-client locales nodejs && \
-#        rm -rf /var/lib/apt/lists/* && \
-#        apt-get clean
-
-
 RUN  cd /tmp && \
+        echo "APT::Acquire::Retries \"60\";" > /etc/apt/apt.conf.d/80-retries && \
         apt-get update && \
         apt-get install -y --no-install-recommends  build-essential binutils-doc autoconf flex bison libjpeg-dev libfreetype6-dev zlib1g-dev libzmq3-dev libgdbm-dev libncurses5-dev automake libtool libffi-dev libssl-dev curl git tmux gettext && \
         apt-get install -y --no-install-recommends nginx curl wget gettext nano postgresql-client locales && \

@@ -8,14 +8,26 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: "copy to taiga files to /home/{{ ansible_user_id }}/taiga"
-  copy:
-    src: files/
-    dest: "/home/{{ ansible_user_id }}/taiga"
+- name: pull python:3.6 docker image
+  docker_image:
+    name: python:3.6
+    source: pull
+    timeout: "{{ docker_timeout }}"
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:
     - taiga
 
-- name: "template files into /home/{{ ansible_user_id }}/taiga"
+- name: copy to taiga files to /home/{{ ansible_user_id }}/taiga
+  copy:
+    src: files/
+    dest: /home/{{ ansible_user_id }}/taiga
+  tags:
+    - taiga
+
+- name: template files into /home/{{ ansible_user_id }}/taiga
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -24,46 +36,20 @@
     - { src: "templates/README.MD.j2", dest: "/home/{{ ansible_user_id }}/taiga/README.MD" }
     - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/taiga/Dockerfile" }
     - { src: "templates/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/taiga/dockerfile_build.sh" }
-    - { src: "templates/docker-compose.yml.j2", dest: "/home/{{ ansible_user_id }}/taiga/docker-compose.yml" }
-    - { src: "templates/taiga.yml.j2", dest: "/home/{{ ansible_user_id }}/taiga/taiga.yml" }
   tags:
     - taiga
 
-- name: "make /home/{{ ansible_user_id }}/taiga/dockerfile_build.sh executable"
+- name: make /home/{{ ansible_user_id }}/taiga/dockerfile_build.sh executable
   file: 
-    path: "/home/{{ ansible_user_id }}/taiga/dockerfile_build.sh"
+    path: /home/{{ ansible_user_id }}/taiga/dockerfile_build.sh
     mode: "u=rwx,g=r,o=r"  
   tags:
     - taiga
 
-- name: ensure user 'default' with a 1001 uid and a primary group of 'ROOT' exists
-  become: yes
-  user:
-    name: default
-    uid: 1001
-    group: root
-  tags:
-    - taiga 
-
-- name: ensure ./volumes exist
-  become: yes
-  file:
-    path: "{{ item.path }}"
-    state: directory
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"    
-  with_items:
-    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/" , owner: root, group: root }
-    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/admin", owner: default, group: root }
-    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/", owner: root, group: root }    
-    - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/user", owner: default, group: root }
-  tags:
-    - taiga
-
-- name: "build nemonik/taiga:{{ taiga_version }} docker image"
+- name: build nemonik/taiga:{{ taiga_version }} docker image
   docker_image:
-    path: "/home/{{ ansible_user_id }}/taiga"
-    name: "nemonik/taiga:{{ taiga_version }}"
+    path: /home/{{ ansible_user_id }}/taiga
+    name: nemonik/taiga:{{ taiga_version }}
     build:
       args:
         http_proxy: "{{ http_proxy|default('') }}"
@@ -72,6 +58,10 @@
         HTTPS_PROXY: "{{ https_proxy|default('') }}"
         NO_PROXY: "{{ no_proxy|default('') }}"
         no_proxy: "{{ no_proxy|default('') }}" 
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:
    - taiga
 
@@ -83,18 +73,54 @@
     - taiga
 
 - name: spin up taiga via docker-compose
-  docker_compose:
-    build: no
-    debug: yes
-    project_src: "/home/{{ ansible_user_id }}/taiga"
+  block:
+  - name: template docker-compose.yml into /home/{{ ansible_user_id }}/taiga
+    template:
+      src: templates/docker-compose.yml.j2
+      dest: /home/{{ ansible_user_id }}/taiga/docker-compose.yml
+      force: yes
+
+  - name: ensure user 'default' with a 1001 uid and a primary group of 'ROOT' exists
+    become: yes
+    user:
+      name: default
+      uid: 1001
+      group: root
+
+  - name: ensure ./volumes exist
+    become: yes
+    file:
+      path: "{{ item.path }}"
+      state: directory
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+    with_items:
+      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/" , owner: root, group: root }
+      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/admin", owner: default, group: root }
+      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/", owner: root, group: root }
+      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/user", owner: default, group: root }
+
+  - name: spin up via docker-compose
+    docker_compose:
+      build: no
+      debug: yes
+      project_src: /home/{{ ansible_user_id }}/taiga
   when: gitlab_deploy_via == "docker-compose"
   tags:
     - taiga
 
 - name: spin up Taiga via Kubernetes
-  shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f taiga.yml
-  args:
-    chdir: "/home/{{ ansible_user_id }}/taiga"
+  block:
+  - name: template taiga.yml into /home/{{ ansible_user_id }}/taiga
+    template:
+      src: templates/taiga.yml.j2
+      dest: /home/{{ ansible_user_id }}/taiga/taiga.yml
+      force: yes
+
+  - name: spin up via kubectl
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f taiga.yml
+    args:
+      chdir: /home/{{ ansible_user_id }}/taiga
   when: gitlab_deploy_via == "kubectl"
   tags:
-    - taigab
+    - taiga

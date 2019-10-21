@@ -3,6 +3,7 @@
 
 # Ansible
 *.retry
+cookies.txt
 # vault_pass
 
 # Vagrant
@@ -11,6 +12,9 @@
 *.box
 vagrant_private_key
 ansible/cookies.txt
+
+# Packer
+box/packer_cache
 
 # InSpec
 inspec_hellworld.json

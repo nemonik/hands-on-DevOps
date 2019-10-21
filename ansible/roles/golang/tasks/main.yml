@@ -8,23 +8,6 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: ensure an up-to-date git is installed
-  become: yes
-  block:
-    - yum:
-        name: git
-        state: absent
-
-    - yum:
-        name: https://centos7.iuscommunity.org/ius-release.rpm
-        state: present
-
-    - yum: 
-        name: git2u
-        state: latest 
-  tags:
-    - golang
-
 - name: is golang installed?
   stat: path=/usr/local/go
   register: go_installed
@@ -34,9 +17,13 @@
 - name: download and install golang binary release
   become: yes
   unarchive:
-    src: "https://dl.google.com/go/go{{ golang_version }}.linux-amd64.tar.gz"
+    src: https://dl.google.com/go/go{{ golang_version }}.linux-amd64.tar.gz
     dest: /usr/local
     remote_src: yes
+  retries: 60
+  delay: 5
+  register: result
+  until: result is succeeded
   when: go_installed.stat.exists == False 
   tags:
     - golang

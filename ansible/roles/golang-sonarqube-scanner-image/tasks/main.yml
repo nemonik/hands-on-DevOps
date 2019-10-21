@@ -8,17 +8,17 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: "create /home/{{ ansible_user_id }}/golang-sonarqube-scanner-image"
+- name: create /home/{{ ansible_user_id }}/golang-sonarqube-scanner-image
   become: yes
   file:
-    path: "/home/{{ ansible_user_id }}/golang-sonarqube-scanner-image"
+    path: /home/{{ ansible_user_id }}/golang-sonarqube-scanner-image
     state: directory
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
   tags:
     - golang-sonarqube-scanner-image
 
-- name: "template files into /home/{{ ansible_user_id }}/golang-sonarqube-scanner-image"
+- name: template files into /home/{{ ansible_user_id }}/golang-sonarqube-scanner-image
   become: yes
   template:
     src: "{{ item.src }}"
@@ -46,7 +46,7 @@
 - name: build golang-sonarqube-scanner image and push into private registry
   become: yes
   docker_image:
-    path: "/home/{{ ansible_user_id }}/golang-sonarqube-scanner-image"
+    path: /home/{{ ansible_user_id }}/golang-sonarqube-scanner-image
     name: nemonik/golang-sonarqube-scanner
     repository: "{{ hostvars['toolchain']['ansible_host'] }}:5000/nemonik/golang-sonarqube-scanner"
     push: yes
@@ -59,6 +59,10 @@
         HTTPS_PROXY: "{{ https_proxy|default('') }}"
         NO_PROXY: "{{ no_proxy|default('') }}"
         no_proxy: "{{ no_proxy|default('') }}" 
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:
     - golang-sonarqube-scanner-image
   

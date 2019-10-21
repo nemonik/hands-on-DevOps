@@ -10,16 +10,27 @@
 
 module AnsibleExtraVars
 
-  @@alreadyShowedDNSWarning = false
-
   # Define extra_vars for Ansible
   ANSIBLE_EXTRA_VARS = {
 
-      kompose_version: '1.18.0',
+      ansible_version: '2.8.6',
 
+      docker_timeout: '300',
+      docker_retries: '60',
+      docker_delay: '5',
+
+      k3s_version: 'v0.9.1',
+      k3s_flannel_iface: 'eth1',
+      k3s_cluster_secret: 'kluster_secret',
+
+      local_path_provisioner_version: 'v0.0.11',
+      kubernetes_dashboard_version: 'v1.10.1',
       traefik_version: '1.7.16',
 
+      kompose_version: '1.18.0',
+
       docker_compose_version: '1.24.1',
+      docker_compose_pip_version: '1.25.0rc2',
 
       registry_deploy_via: 'kubectl',
       registry_version: '2.7.1',
@@ -30,13 +41,13 @@ module AnsibleExtraVars
       taiga_port: '8080',
 
       gitlab_deploy_via: 'kubectl',
-      gitlab_version: '12.2.1-1',
+      gitlab_version: '12.3.5',
       gitlab_port: '10080',
       gitlab_ssh_port: '10022',
       gitlab_user: 'root',
 
       drone_deploy_via: 'docker-compose',
-      drone_version: '1.3.1',
+      drone_version: '1.6',
       drone_port: '80',
 
       drone_cli_version: '1.1.0',

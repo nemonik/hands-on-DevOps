@@ -22,6 +22,10 @@
       args:
         chdir: /tmp
         warn: false
+      retries: 60
+      delay: 5
+      register: result
+      until: result is succeeded
     - unarchive:
         src: /tmp/drone_linux_amd64.tar.gz
         dest: /usr/local/bin

@@ -8,14 +8,30 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: "ensure /home/{{ ansible_user_id }}/gitlab exists"
+- name: pull docker images
+  docker_image:
+    name: "{{ item }}"
+    source: pull
+    timeout: "{{ docker_timeout }}"
+  with_items:
+    - sameersbn/postgresql:10-2
+    - sameersbn/redis:4.0.9-1
+    - sameersbn/gitlab:{{ gitlab_version }}
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
+  tags:
+    - gitlab
+
+- name: ensure /home/{{ ansible_user_id }}/gitlab exists
   file:
-    path: "/home/{{ ansible_user_id }}/gitlab"
+    path: /home/{{ ansible_user_id }}/gitlab
     state: directory
   tags:
     - gitlab
 
-- name: "template files into /home/{{ ansible_user_id }}/gitlab"
+- name: template files into /home/{{ ansible_user_id }}/gitlab
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -24,21 +40,19 @@
     - { src: "templates/README.MD.j2", dest: "/home/{{ ansible_user_id }}/gitlab/README.MD" }
     - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/gitlab/Dockerfile" }
     - { src: "templates/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/gitlab/dockerfile_build.sh" }
-    - { src: "templates/docker-compose.yml.j2", dest: "/home/{{ ansible_user_id }}/gitlab/docker-compose.yml" }
-    - { src: "templates/gitlab.yml.j2", dest: "/home/{{ ansible_user_id }}/gitlab/gitlab.yml" }
   tags:
     - gitlab
 
-- name: "make //home/{{ ansible_user_id }}/gitlab/dockerfile_build.sh executable"
+- name: make //home/{{ ansible_user_id }}/gitlab/dockerfile_build.sh executable
   file: 
     path: "/home/{{ ansible_user_id }}/gitlab/dockerfile_build.sh"
     mode: "u=rwx,g=r,o=r"  
   tags:
     - gitlab
 
-- name: "build nemonik/gitlab:{{ gitlab_version }} docker image"
+- name: build nemonik/gitlab:{{ gitlab_version }} docker image
   docker_image:
-    path: "/home/{{ ansible_user_id }}/gitlab"
+    path: /home/{{ ansible_user_id }}/gitlab
     name: nemonik/gitlab:{{ gitlab_version }}
     source: build    
     build:
@@ -49,6 +63,10 @@
         HTTPS_PROXY: "{{ https_proxy|default('') }}"
         NO_PROXY: "{{ no_proxy|default('') }}"
         no_proxy: "{{ no_proxy|default('') }}" 
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:
     - gitlab
 
@@ -60,25 +78,41 @@
     - gitlab
   
 - name: spin up GitLab via docker-compose
-  docker_compose:
-    build: no
-    debug: yes
-    project_src: "/home/{{ ansible_user_id }}/gitlab"
+  block:
+  - name: template docker-compose.yml file into /home/{{ ansible_user_id }}/gitlab
+    template:
+      src: templates/docker-compose.yml.j2
+      dest: /home/{{ ansible_user_id }}/gitlab/docker-compose.yml
+      force: yes
+
+  - name: spin up via docker-compose
+    docker_compose:
+      build: no
+      debug: yes
+      project_src: "/home/{{ ansible_user_id }}/gitlab"
   when: gitlab_deploy_via == "docker-compose"
   tags:
     - gitlab
 
 - name: spin up GitLab via Kubernetes
-  shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f gitlab.yml
-  args:
-    chdir: "/home/{{ ansible_user_id }}/gitlab"
+  block:
+  - name: template gitlab.yml file into /home/{{ ansible_user_id }}/gitlab
+    template:
+      src: templates/gitlab.yml.j2  
+      dest: /home/{{ ansible_user_id }}/gitlab/gitlab.yml
+      force: yes
+
+  - name: spin up via kubectl
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f gitlab.yml
+    args:
+      chdir: /home/{{ ansible_user_id }}/gitlab
   when: gitlab_deploy_via == "kubectl"
   tags:
     - gitlab
 
 - name: wait for GitLab to come up
   uri:
-    url: "http://{{ gitlab_host }}:{{ gitlab_port }}/favicon.ico"
+    url: http://{{ gitlab_host }}:{{ gitlab_port }}/favicon.ico
     status_code: 200
   register: result
   until: result.status == 200
@@ -88,11 +122,11 @@
     - gitlab
 
 # See: https://docs.gitlab.com/ee/api/settings.html
-- name: ensure allow local requests from hooks and services is enabled, auto devops is disabled and plantuml integration is configured
+- name: ensure allow local requests from hooks and services is enabled, auto devops is disabled, plantuml integration is configured, disable regitration, and email confirmation...
   block:
   - name: wait for GitLab to come up
     uri:
-      url: "http://{{ gitlab_host }}:{{ gitlab_port }}/favicon.ico"
+      url: http://{{ gitlab_host }}:{{ gitlab_port }}/favicon.ico
       status_code: 200
     register: result
     until: result.status == 200
@@ -108,6 +142,7 @@
       csrf_token=$(echo $body_header | perl -ne 'print "$1\n" if /authenticity_token"[[:blank:]]value="(.+?)"/' | sed -n 1p)
       body_header=$(curl -s -L -b cookies.txt "http://{{ gitlab_host }}:{{ gitlab_port }}/profile/personal_access_tokens" --data-urlencode "authenticity_token=${csrf_token}" --data 'personal_access_token[name]=golab-generated&personal_access_token[expires_at]=&personal_access_token[scopes][]=api')
       echo $body_header | perl -ne 'print "$1\n" if /created-personal-access-token"[[:blank:]]value="(.+?)"/' | sed -n 1p
+      rm cookies.txt
     args:
       executable: /bin/bash
     register: gitlab_personal_access_token_result
@@ -117,7 +152,7 @@
 
   - name: set GitLab applicaton settings
     uri:
-      url: "http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/application/settings?allow_local_requests_from_hooks_and_services=true&auto_devops_enabled=false&plantuml_enabled=true&plantuml_url=http://{{ plantuml_host }}:{{ plantuml_port }}"
+      url: http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/application/settings?allow_local_requests_from_hooks_and_services=true&auto_devops_enabled=false&plantuml_enabled=true&plantuml_url=http://{{ plantuml_host }}:{{ plantuml_port }}&signup_enabled=false&send_user_confirmation_email=false
       method: PUT
       headers:
         PRIVATE-TOKEN: "{{ gitlab_personal_access_token }}"

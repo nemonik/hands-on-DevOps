@@ -8,17 +8,29 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: "create /home/{{ ansible_user_id }}/golang-container-image"
+- name: pull golang:{{ golang_version }} docker image
+  docker_image:
+    name: golang:{{ golang_version }}
+    source: pull
+    timeout: "{{ docker_timeout }}"
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
+  tags:
+    - golang-container-image
+
+- name: create /home/{{ ansible_user_id }}/golang-container-image
   become: yes
   file:
-    path: "/home/{{ ansible_user_id }}/golang-container-image"
+    path: /home/{{ ansible_user_id }}/golang-container-image
     state: directory
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
   tags:    
     - golang-container-image
 
-- name: "template files into /home/{{ ansible_user_id }}/golang-container-image"
+- name: template files into /home/{{ ansible_user_id }}/golang-container-image
   become: yes
   template:
     src: "{{ item.src }}"
@@ -33,7 +45,7 @@
   tags:    
     - golang-container-image
 
-- name: "make scripts executable"
+- name: make scripts executable
   become: yes
   file: 
     path: "{{ item.path }}"
@@ -59,6 +71,10 @@
         https_proxy: "{{ https_proxy|default('') }}"
         HTTPS_PROXY: "{{ https_proxy|default('') }}"
         NO_PROXY: "{{ no_proxy|default('') }}"
-        no_proxy: "{{ no_proxy|default('') }}" 
+        no_proxy: "{{ no_proxy|default('') }}"
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:    
     - golang-container-image

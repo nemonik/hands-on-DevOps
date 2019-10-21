@@ -12,7 +12,12 @@
   become: yes
   yum:
     name: "*"
+    exclude: docker-ce
     state: latest
+  retries: 60
+  delay: 5
+  register: result
+  until: result is succeeded
   tags:
     - common
 
@@ -21,32 +26,39 @@
   yum: 
     name: epel-release
     state: latest 
+  retries: 60
+  delay: 5
+  register: result
+  until: result is succeeded
   tags:
     - common
 
 - name: ensure an up-to-date git is installed
   become: yes
   block:
-    - name: remove present version
-      yum:
-        name: git
-        state: absent
+  - name: remove present version
+    yum:
+      name: git
+      state: absent
 
-#    - name: ensure ius.io repo key is installed
-#      rpm_key:
-#        state: present
-#        key: https://repo.ius.io/RPM-GPG-KEY-IUS-7
+  - name: ensure iuscommunity.org repo is installed.
+    yum:
+      name: https://centos7.iuscommunity.org/ius-release.rpm
+      disable_gpg_check: yes
+      state: present
+    retries: 60
+    delay: 5
+    register: result
+    until: result is succeeded
 
-    - name: ensure iuscommunity.org repo is installed.
-      yum:
-        name: https://centos7.iuscommunity.org/ius-release.rpm
-        disable_gpg_check: yes
-        state: present
-
-    - name: ensure git2u is installed
-      yum:
-        name: git2u
-        state: latest
+  - name: ensure git2u is installed
+    yum:
+      name: git2u
+      state: latest
+    retries: 60
+    delay: 5
+    register: result
+    until: result is succeeded
   tags:
     - common
 
@@ -62,8 +74,10 @@
       - vim
       - emacs
       - bind-utils
-      - ruby
-    state: latest     
+  retries: 60
+  delay: 5
+  register: result
+  until: result is succeeded
   tags:
     - common
 

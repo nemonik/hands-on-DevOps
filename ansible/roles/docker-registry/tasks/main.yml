@@ -7,15 +7,27 @@
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: pull registry docker image
+  docker_image:
+    name: registry:{{ registry_version }}
+    source: pull
+    timeout: "{{ docker_timeout }}"
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded  
+  tags:
+    - docker-registry
  
-- name: "copy to docker-registry files to /home/{{ ansible_user_id }}/docker-registry"
+- name: copy to docker-registry files to /home/{{ ansible_user_id }}/docker-registry
   copy:
     src: files/
     dest: /home/{{ ansible_user_id }}/docker-registry
   tags:
     - docker-registry 
 
-- name: "template files into /home/{{ ansible_user_id }}/docker-registry"
+- name: template files into /home/{{ ansible_user_id }}/docker-registry
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -23,24 +35,22 @@
     - { src: "templates/README.MD.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/README.MD" }
     - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/Dockerfile" }
     - { src: "templates/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/dockerfile_build.sh" }
-    - { src: "templates/docker-compose.yml.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/docker-compose.yml" }
-    - { src: "templates/registry.yml.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/registry.yml" }
   tags:
     - docker-registry 
 
-- name: "make /home/{{ ansible_user_id }}/docker-registry/dockerfile_build.sh executable"
+- name: make /home/{{ ansible_user_id }}/docker-registry/dockerfile_build.sh executable
   file: 
-    path: "/home/{{ ansible_user_id }}/docker-registry/dockerfile_build.sh"
+    path: /home/{{ ansible_user_id }}/docker-registry/dockerfile_build.sh
     mode: "u=rwx,g=r,o=r"  
   tags:
     - docker-registry 
 
-- name: "build nemonik/registry:{{ registry_version }} docker image "
+- name: build nemonik/registry:{{ registry_version }} docker image 
   docker_image:
-    name: "nemonik/registry:{{ registry_version }}"
+    name: nemonik/registry:{{ registry_version }}
     source: build
     build:
-      path: "/home/{{ ansible_user_id }}/docker-registry"
+      path: /home/{{ ansible_user_id }}/docker-registry
       args:
         http_proxy: "{{ http_proxy|default('') }}"
         HTTP_PROXY: "{{ http_proxy|default('') }}"
@@ -48,6 +58,10 @@
         HTTPS_PROXY: "{{ https_proxy|default('') }}"
         NO_PROXY: "{{ no_proxy|default('') }}"
         no_proxy: "{{ no_proxy|default('') }}" 
+  retries: 60
+  delay: 5
+  register: result
+  until: result is succeeded
   tags:
     - docker-registry 
 
@@ -59,18 +73,47 @@
     - docker-registry
 
 - name: spin up Docker Registry via docker-compose
-  docker_compose:
-    build: no
-    debug: yes
-    project_src: "/home/{{ ansible_user_id }}/docker-registry"
+  block:
+  - name: "template docker-compose.yml into /home/{{ ansible_user_id }}/docker-registry"
+    template:
+      src: templates/docker-compose.yml.j2
+      dest: "/home/{{ ansible_user_id }}/docker-registry/docker-compose.yml"
+  
+  - name: spin up via docker-compose
+    docker_compose:
+      build: no
+      debug: yes
+      project_src: "/home/{{ ansible_user_id }}/docker-registry"
   when: registry_deploy_via == "docker-compose"
   tags:
     - docker-registry
 
 - name: spin up Docker Registry via Kubernetes
-  shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f registry.yml
-  args:
-    chdir: "/home/{{ ansible_user_id }}/docker-registry"
+  block:
+  - name: template registry.yml into /home/{{ ansible_user_id }}/docker-registry
+    template:
+      src: templates/registry.yml.j2
+      dest: /home/{{ ansible_user_id }}/docker-registry/registry.yml
+
+  - name: is registry running?
+    shell: kubectl -n registry get pod | grep Running | wc -l
+    register: result
+
+  - name: spin up via kubectl
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f registry.yml
+    args:
+      chdir: /home/{{ ansible_user_id }}/docker-registry
+    when: result.stdout == '0'
+
+  - name: wait for registry to spin up
+    become: yes
+    shell: kubectl -n registry get pod | grep Running
+    retries: 60
+    delay: 5
+    register: retry_result
+    until: retry_result is succeeded
+    when: result.stdout == '0'
+
   when: registry_deploy_via == "kubectl"
   tags:
     - docker-registry

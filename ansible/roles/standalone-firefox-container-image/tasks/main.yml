@@ -8,7 +8,19 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: "create /home/{{ ansible_user_id }}/standalone-firefox-container-image"
+- name: pull selenium/standalone-firefox:{{ selenium_standalone_firefox_version }} docker image
+  docker_image:
+    name: selenium/standalone-firefox:{{ selenium_standalone_firefox_version }}
+    source: pull
+    timeout: "{{ docker_timeout }}"
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
+  tags:
+    - standalone-firefox-container-image
+
+- name: create /home/{{ ansible_user_id }}/standalone-firefox-container-image
   become: yes
   file:
     path: "/home/{{ ansible_user_id }}/standalone-firefox-container-image"
@@ -18,7 +30,7 @@
   tags:
     - standalone-firefox-container-image
 
-- name: "template files into /home/{{ ansible_user_id }}/standalone-firefox-container-image"
+- name: template files into /home/{{ ansible_user_id }}/standalone-firefox-container-image
   become: yes
   template:
     src: "{{ item.src }}"
@@ -32,7 +44,7 @@
   tags:
     - standalone-firefox-container-image
 
-- name: "make /home/{{ ansible_user_id }}/standalone-firefox-container-image/dockerfile_build.sh executable"
+- name: make /home/{{ ansible_user_id }}/standalone-firefox-container-image/dockerfile_build.sh executable
   become: yes
   file: 
     path: "{{ item.path }}"
@@ -43,10 +55,10 @@
   tags:
     - standalone-firefox-container-image
 
-- name: "build nemonik/standalone-firefox:{{ selenium_standalone_firefox_version }} image and push into private registry"
+- name: build nemonik/standalone-firefox:{{ selenium_standalone_firefox_version }} image and push into private registry
   become: yes
   docker_image:
-    path: "/home/{{ ansible_user_id }}/standalone-firefox-container-image"
+    path: /home/{{ ansible_user_id }}/standalone-firefox-container-image
     name: nemonik/standalone-firefox
     repository: "{{ hostvars['toolchain']['ansible_host'] }}:5000/nemonik/standalone-firefox"
     push: yes
@@ -59,6 +71,10 @@
         HTTPS_PROXY: "{{ https_proxy|default('') }}"
         NO_PROXY: "{{ no_proxy|default('') }}"
         no_proxy: "{{ no_proxy|default('') }}" 
+  retries: "{{ docker_retries }}"
+  delay: "{{ docker_delay }}"
+  register: result
+  until: result is succeeded
   tags:
     - standalone-firefox-container-image
   
