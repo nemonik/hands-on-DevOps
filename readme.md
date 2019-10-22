@@ -127,10 +127,11 @@ What you should bring:
             - [8.5.2.2. Playbooks](#8522-playbooks)
             - [8.5.2.3. Roles](#8523-roles)
     - [8.6. Spinning up the _toolchain_ vagrant](#86-spinning-up-the-_toolchain_-vagrant)
-    - [8.7. Technologies underlying the tools](#87-technologies-underlying-the-tools)
+    - [8.7. The cloud-native technologies underlying the tools](#87-the-cloud-native-technologies-underlying-the-tools)
         - [8.7.1. Docker image and containers](#871-docker-image-and-containers)
         - [8.7.2. Docker-compose](#872-docker-compose)
         - [8.7.3. Kubernetes](#873-kubernetes)
+            - [8.7.3.1. Kubectl](#8731-kubectl)
     - [8.8. The long-running tools](#88-the-long-running-tools)
         - [8.8.1. Taiga, an example of Agile project management software](#881-taiga-an-example-of-agile-project-management-software)
             - [8.8.1.1. Documentation, source, container image](#8811-documentation-source-container-image)
@@ -144,64 +145,67 @@ What you should bring:
         - [8.8.4. SonarQube, an example of a platform for the inspection of code quality](#884-sonarqube-an-example-of-a-platform-for-the-inspection-of-code-quality)
             - [8.8.4.1. Documentation, source, container image](#8841-documentation-source-container-image)
             - [8.8.4.2. URL, Username and password](#8842-url-username-and-password)
+        - [8.8.5. PlantUML Server, an example of light-weight documentation](#885-plantuml-server-an-example-of-light-weight-documentation)
+            - [8.8.5.1. Documentation, source, container image](#8851-documentation-source-container-image)
+            - [8.8.5.2. URL](#8852-url)
+            - [8.8.5.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab](#8853-optionally-add-the-hands-on-devops-repository-to-the-toolchains-gitlab)
     - [8.9. Spin up the _development_ vagrant](#89-spin-up-the-_development_-vagrant)
-    - [8.10. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab](#810-optionally-add-the-hands-on-devops-repository-to-the-toolchains-gitlab)
-    - [8.11. Golang _helloworld_ project](#811-golang-_helloworld_-project)
+    - [8.10. Golang _helloworld_ project](#810-golang-_helloworld_-project)
+        - [8.10.1. Create the project's backlog](#8101-create-the-projects-backlog)
+        - [8.10.2. Create the project in GitLab](#8102-create-the-project-in-gitlab)
+        - [8.10.3. Setup the project on the _development_ Vagrant](#8103-setup-the-project-on-the-_development_-vagrant)
+        - [8.10.4. Author the application](#8104-author-the-application)
+        - [8.10.5. Align source code with Go coding standards](#8105-align-source-code-with-go-coding-standards)
+        - [8.10.6. Lint your code](#8106-lint-your-code)
+        - [8.10.7. Build the application](#8107-build-the-application)
+        - [8.10.8. Run your application](#8108-run-your-application)
+        - [8.10.9. Author the unit tests](#8109-author-the-unit-tests)
+        - [8.10.10. Automated the build (i.e., write the Makefile)](#81010-automated-the-build-ie-write-the-makefile)
+        - [8.10.11. Author Drone-based Continuous Integration](#81011-author-drone-based-continuous-integration)
+            - [8.10.11.1. Configure Drone to execute your pipeline](#810111-configure-drone-to-execute-your-pipeline)
+            - [8.10.11.2. Trigger the build](#810112-trigger-the-build)
+        - [8.10.12. The completed source for *helloworld*](#81012-the-completed-source-for-helloworld)
+    - [8.11. Golang *helloworld-web* project](#811-golang-helloworld-web-project)
         - [8.11.1. Create the project's backlog](#8111-create-the-projects-backlog)
         - [8.11.2. Create the project in GitLab](#8112-create-the-project-in-gitlab)
         - [8.11.3. Setup the project on the _development_ Vagrant](#8113-setup-the-project-on-the-_development_-vagrant)
         - [8.11.4. Author the application](#8114-author-the-application)
-        - [8.11.5. Align source code with Go coding standards](#8115-align-source-code-with-go-coding-standards)
-        - [8.11.6. Lint your code](#8116-lint-your-code)
-        - [8.11.7. Build the application](#8117-build-the-application)
-        - [8.11.8. Run your application](#8118-run-your-application)
-        - [8.11.9. Author the unit tests](#8119-author-the-unit-tests)
+        - [8.11.5. Build and run the application](#8115-build-and-run-the-application)
+        - [8.11.6. Run gometalinter.v2 on application](#8116-run-gometalinterv2-on-application)
+        - [8.11.7. Fix the application](#8117-fix-the-application)
+        - [8.11.8. Author unit tests](#8118-author-unit-tests)
+        - [8.11.9. Perform static analysis (i.e., sonar-scanner) on the command line](#8119-perform-static-analysis-ie-sonar-scanner-on-the-command-line)
+            - [8.11.9.1. Optionally, register your app in SonarQube](#81191-optionally-register-your-app-in-sonarqube)
+            - [8.11.9.2. Install the SonarGo plugin](#81192-install-the-sonargo-plugin)
+            - [8.11.9.3. Perform static analysis (run *sonar-scanner*) on the command line](#81193-perform-static-analysis-run-sonar-scanner-on-the-command-line)
         - [8.11.10. Automated the build (i.e., write the Makefile)](#81110-automated-the-build-ie-write-the-makefile)
-        - [8.11.11. Author Drone-based Continuous Integration](#81111-author-drone-based-continuous-integration)
-            - [8.11.11.1. Configure Drone to execute your pipeline](#811111-configure-drone-to-execute-your-pipeline)
-            - [8.11.11.2. Trigger the build](#811112-trigger-the-build)
-        - [8.11.12. The completed source for *helloworld*](#81112-the-completed-source-for-helloworld)
-    - [8.12. Golang *helloworld-web* project](#812-golang-helloworld-web-project)
-        - [8.12.1. Create the project's backlog](#8121-create-the-projects-backlog)
-        - [8.12.2. Create the project in GitLab](#8122-create-the-project-in-gitlab)
-        - [8.12.3. Setup the project on the _development_ Vagrant](#8123-setup-the-project-on-the-_development_-vagrant)
-        - [8.12.4. Author the application](#8124-author-the-application)
-        - [8.12.5. Build and run the application](#8125-build-and-run-the-application)
-        - [8.12.6. Run gometalinter.v2 on application](#8126-run-gometalinterv2-on-application)
-        - [8.12.7. Fix the application](#8127-fix-the-application)
-        - [8.12.8. Author unit tests](#8128-author-unit-tests)
-        - [8.12.9. Perform static analysis (i.e., sonar-scanner) on the command line](#8129-perform-static-analysis-ie-sonar-scanner-on-the-command-line)
-            - [8.12.9.1. Optionally, register your app in SonarQube](#81291-optionally-register-your-app-in-sonarqube)
-            - [8.12.9.2. Install the SonarGo plugin](#81292-install-the-sonargo-plugin)
-            - [8.12.9.3. Perform static analysis (run *sonar-scanner*) on the command line](#81293-perform-static-analysis-run-sonar-scanner-on-the-command-line)
-        - [8.12.10. Automated the build (i.e., write the Makefile)](#81210-automated-the-build-ie-write-the-makefile)
-        - [8.12.11. Dockerize the application](#81211-dockerize-the-application)
-        - [8.12.16. Add the build step to the pipeline](#81216-add-the-build-step-to-the-pipeline)
-        - [8.12.17. Add container image publish step to pipeline](#81217-add-container-image-publish-step-to-pipeline)
-        - [8.12.18. Add container deploy step to pipeline](#81218-add-container-deploy-step-to-pipeline)
-        - [8.12.19. Add complaince and policy automation (InSpec) test to the pipeline](#81219-add-complaince-and-policy-automation-inspec-test-to-the-pipeline)
-            - [8.12.19.1. First author an InSpec test](#812191-first-author-an-inspec-test)
-            - [8.12.19.2. Execute your test](#812192-execute-your-test)
-            - [8.12.19.3. The results](#812193-the-results)
-            - [8.12.19.4. Add InSpec to the pipeline](#812194-add-inspec-to-the-pipeline)
-            - [8.12.19.5. Viewing the results in Heimdall-lite](#812195-viewing-the-results-in-heimdall-lite)
-        - [8.12.20. Add automated functional test to pipeline](#81220-add-automated-functional-test-to-pipeline)
-            - [8.12.20.1. Run the *helloworld-web* application](#812201-run-the-helloworld-web-application)
-            - [8.12.20.2. Pull and run Selenium Firefox Standalone](#812202-pull-and-run-selenium-firefox-standalone)
-            - [8.12.20.3. Create our test automation](#812203-create-our-test-automation)
-            - [8.12.20.4. Add a *selenium* step to the pipeline](#812204-add-a-selenium-step-to-the-pipeline)
-        - [8.12.21. Add DAST step (*OWASP ZAP*) to pipeline](#81221-add-dast-step-owasp-zap-to-pipeline)
-        - [8.12.22. All the source for *helloworld-web*](#81222-all-the-source-for-helloworld-web)
-    - [8.13. Microservices](#813-microservices)
-        - [8.13.1. What's cloud-native?](#8131-whats-cloud-native)
-            - [8.13.1.1. So, let's experiment with our little "microservice"](#81311-so-lets-experiment-with-our-little-microservice)
-            - [8.13.1.1.1. Modify the helloworld-web application](#813111-modify-the-helloworld-web-application)
-            - [8.13.1.1.2. Create a Kubernetes manifest for the application](#813112-create-a-kubernetes-manifest-for-the-application)
-            - [8.13.1.1.3. Deploy your application](#813113-deploy-your-application)
-            - [8.13.1.1.4. Test your application](#813114-test-your-application)
-    - [8.14. Using what you've learned](#814-using-what-youve-learned)
-    - [8.15. Shoo away your vagrants](#815-shoo-away-your-vagrants)
-    - [8.16. That's it](#816-thats-it)
+        - [8.11.11. Dockerize the application](#81111-dockerize-the-application)
+        - [8.11.12. Add the build step to the pipeline](#81112-add-the-build-step-to-the-pipeline)
+        - [8.11.13. Add container image publish step to pipeline](#81113-add-container-image-publish-step-to-pipeline)
+        - [8.11.14. Add container deploy step to pipeline](#81114-add-container-deploy-step-to-pipeline)
+        - [8.11.15. Add complaince and policy automation (InSpec) test to the pipeline](#81115-add-complaince-and-policy-automation-inspec-test-to-the-pipeline)
+            - [8.11.15.1. First author an InSpec test](#811151-first-author-an-inspec-test)
+            - [8.11.15.2. Execute your test](#811152-execute-your-test)
+            - [8.11.15.3. The results](#811153-the-results)
+            - [8.11.15.4. Add InSpec to the pipeline](#811154-add-inspec-to-the-pipeline)
+            - [8.11.15.5. Viewing the results in Heimdall-lite](#811155-viewing-the-results-in-heimdall-lite)
+        - [8.11.16. Add automated functional test to pipeline](#81116-add-automated-functional-test-to-pipeline)
+            - [8.11.16.1. Run the *helloworld-web* application](#811161-run-the-helloworld-web-application)
+            - [8.11.16.2. Pull and run Selenium Firefox Standalone](#811162-pull-and-run-selenium-firefox-standalone)
+            - [8.11.16.3. Create our test automation](#811163-create-our-test-automation)
+            - [8.11.16.4. Add a *selenium* step to the pipeline](#811164-add-a-selenium-step-to-the-pipeline)
+        - [8.11.17. Add DAST step (*OWASP ZAP*) to pipeline](#81117-add-dast-step-owasp-zap-to-pipeline)
+        - [8.11.18. All the source for *helloworld-web*](#81118-all-the-source-for-helloworld-web)
+    - [8.12. Microservices](#812-microservices)
+        - [8.12.1. What's cloud-native?](#8121-whats-cloud-native)
+            - [8.12.1.1. So, let's experiment with our little "microservice"](#81211-so-lets-experiment-with-our-little-microservice)
+            - [8.12.1.2. Modify the helloworld-web application](#81212-modify-the-helloworld-web-application)
+            - [8.12.1.3. Create a Kubernetes manifest for the application](#81213-create-a-kubernetes-manifest-for-the-application)
+            - [8.12.1.4. Deploy your application](#81214-deploy-your-application)
+            - [8.12.1.5. Test your application](#81215-test-your-application)
+    - [8.13. Using what you've learned](#813-using-what-youve-learned)
+    - [8.14. Shoo away your vagrants](#814-shoo-away-your-vagrants)
+    - [8.15. That's it](#815-thats-it)
 
 <!-- /TOC -->
 
@@ -1267,7 +1271,7 @@ This section provisions and configures a `development` vagrant used for developm
   end
 ```
 
-This section provisions and configures the `toolchain` vagrant. This is the beefy vagrant running Kubernetes (K3s), GitLab. Drone CI, a private Docker registry, SonarQube, Selenium, Taiga... 
+This section provisions and configures the `toolchain` vagrant. This is the beefy vagrant running Kubernetes (K3s), GitLab. Drone CI, a private Docker registry, SonarQube, Selenium, Taiga...
 
 ### 8.5.2. Ansible
 
@@ -1563,9 +1567,9 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
 
 The toolchain IaC will spin up a number of tools.  The following sections unpack what theses tools are.
 
-## 8.7. Technologies underlying the tools
+## 8.7. The cloud-native technologies underlying the tools
 
-The tools used in the class leverage a number of popular technologies.
+The tools leverage technoligies that underline cloud-native development, where applications are packaged in containers and dynamically orchestrated to optimize resource utilization.
 
 ### 8.7.1. Docker image and containers
 
@@ -1614,7 +1618,9 @@ Kubernetes; specicifically, K3s is used to orchestrate the lifecycle of the bulk
 
 Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications. Essentially, it serves as an operating system for a cluster of computing resources and manages the lifecycle and discovery of the applications running upon it. In the case of this course, the computing resources I'm speaking of are your two vagrants: `toolchain` and `development`. When Vagrant executes the ansible-playbook `ansible/toolchain-tools-playbook.yml` on the `toolchain` vagrant it uses the `k3s-server` role to configures the vagrant as a Kubernetes master node. On the development vagrant, the `ansible/development-playbook.yml` playbook uses the `k3s-agent` role to configure the vagrant as a Kubernetes worker node.
 
-Kubernetes is managed via the command-line using the `kubectl` command-line tool.
+#### 8.7.3.1. Kubectl
+
+Kubernetes is managed in the command-line via the `kubectl`.
 
 Once, both `toolchain` and `development` vagrant are provisioned and configured, if you ssh into the `toolchain` vagrant via typing
 
@@ -1697,6 +1703,10 @@ The last few lines of output will resemble
 
 ## 8.8. The long-running tools
 
+The class makes use of two types of tools: those that are long-running (e.g., GitLab, Drone, SonarQube) and those used to peform short-lived individual tasks (e.g., Makefile, InSpec, OWASP-ZAP.)  
+
+This section will describe the long-running tools leaving subsiquent sections to describe the later.
+
 ### 8.8.1. Taiga, an example of Agile project management software
 
 Taiga is an Open Source project management platform for agile development.
@@ -1718,7 +1728,7 @@ Further, the Lean-Agile Software tools should provide the following capabilities
 - Facilitating the selection and assignment of individual requirements to resources, and the tracking of progress for a release.
 - Permit collaboration with external third parties.
 
-The 800lb Gorilla in this market segment is JIRA Software. Some of my co-workers hate it. It is part of the Atlassian suite providing provides collaboration software for teams with products including JIRA Software, Confluence, Bitbucket, and Stash.
+The 800 pound Gorilla in this market segment is JIRA Software. Some of my co-workers hate it. It is part of the Atlassian suite providing provides collaboration software for teams with products including JIRA Software, Confluence, Bitbucket, and Stash.  Back when Atalassiam (Stocker ticker: TEAM) was trading at 50-dollars it was a good investment.
 
 **NOTE**
 
@@ -1813,15 +1823,13 @@ GitLab's documentation can be found at
 
 It's canonical source can be found at
 
-<https://hub.docker.com/r/sameersbn/gitlab/>
-
 <https://gitlab.com/gitlab-org/gitlab-ce>
 
 I'm using Sameer Naik's Docker container image for GitLab. The image can be found at
 
 <https://hub.docker.com/r/sameersbn/gitlab/>
 
-And its canonical source is located at
+Whose canonical source is located at
 
 <https://github.com/sameersbn/docker-gitlab>
 
@@ -1976,6 +1984,75 @@ The default admin account username and password is
 
 **admin**
 
+### 8.8.5. PlantUML Server, an example of light-weight documentation
+
+The second value in the Agile Manifesto is 
+
+> Working software over comprehensive documentation
+
+The documentation for this class, this `readme.md` file, is authored in Markdown, a light-weight markup language.  The course's diagrams included inline in the readme are authored to assist the reader are authored in PlantUML, a domain-specific language used to author well-formed and human-readable code to render UML diagrams. 
+
+For me, I don't need to see the diagrams rendered to follow them.  The code alone is sufficient.  
+
+PlantUML supports a number of UML diagrams: Sequence, Usecase, Class diagram, Activity diagram, Component, State, Object, Deployment, and Timing. The DSL also supports a number of other non-UML diagrams: Wireframe graphical interface, Specification and Description Language (SDL), Ditaa diagram... 
+
+This class makes use of just two types: State and Deployment diagrams.  
+
+The PlantUML effort also provides server for rendering diagrams in PNG, SVG or LaTeX format. Plugins for Microsoft Code, Atom, and editors have been authored to assist in auhoring in the PlantUML DSL.
+
+#### 8.8.5.1. Documentation, source, container image
+
+PlantUML's main site and documentation is at
+
+<https://www.plantuml.org/>
+
+PlantUML's canonical source can be found here
+
+<https://github.com/plantuml>
+
+I'm using the container image provided at
+
+<https://hub.docker.com/r/plantuml/plantuml-server/>
+
+#### 8.8.5.2. URL
+
+Once, stood up your instance of PlantUML server will reachable at
+
+<http://192.168.0.11:8081>
+
+#### 8.8.5.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab
+
+I'd encourage you to perform the following as GitLab will make use of the PlantUML server the class automation spins up to render the embedded UML diagrams in the class `readme.md`. The diagrams are especially helpful to visual learners.
+
+To read this document with rendered PlantUML diagrams perform the following:
+
+1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left.
+   a. Select `Create Project`.  
+   b. Or click <http://192.168.0.11:10080/projects/new>  
+2. Leave the `Project path` defaulted to `http://192.168.0.11:10080/root/`.
+3. Enter `hands-on-DevOps` (the form field the page defaults to) for the `Project name`.
+4. Provide an optional `Project description`. Something descriptive, such as, _"An awesome DevOps class"_.
+5. Make the application `public` to save yourself from entering your username and password when cloning.
+6. Click the green `Create Project` button on the lower left.
+
+The UI will refresh to show you a landing page for the project that should be accessible from <http://192.168.0.11:10080/root/hands-on-DevOps>
+
+On your host in the DevOps class project:
+
+1. Enter into the following into the command line 
+   ```
+   git config --global user.name "Administrator"
+   git config --global user.email "admin@example.com"
+   ```
+2. Then enter the following 
+   ```
+   git remote add toolchain http://192.168.0.11:10080/root/hands-on-DevOps.git
+   git push -u toolchain --all
+   git push -u toolchain --tags
+   ```
+
+You now have a clone of the project hosted in the GitLab running on the `toolchain` vagrant.  This way you can open the readme.md and follow along with rendered PlanUML diagrams.
+
 ## 8.9. Spin up the _development_ vagrant
 
 In another command line of the host in the root of the class project
@@ -2018,46 +2095,13 @@ Once complete open a secure shell to the `development` vagrant
   vagrant up development --provision
   ```
 
-## 8.10. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab
-
-I'd encourage you to perform the following as GitLab will make use of the PlantUML server the class automation spins up to render the embedded UML diagrams in the class readme.md.  The diagrams are especially helpful to visual learners.
-
-To do this, perform the following:
-
-1. In GitLab (<http://192.168.0.11:10080/>) click on `Projects` in the upper left.
-   a. Select `Create Project`.  
-   b. Or click <http://192.168.0.11:10080/projects/new>  
-2. Leave the `Project path` defaulted to `http://192.168.0.11:10080/root/`.
-3. Enter `hands-on-DevOps` (the form field the page defaults to) for the `Project name`.
-4. Provide an optional `Project description`. Something descriptive, such as, _"An awesome DevOps class"_.
-5. Make the application `public` to save yourself from entering your username and password when cloning.
-6. Click the green `Create Project` button on the lower left.
-
-The UI will refresh to show you a landing page for the project that should be accessible from <http://192.168.0.11:10080/root/hands-on-DevOps>
-
-On your host in the DevOps class project:
-
-1. Enter into the following into the command line 
-   ```
-   git config --global user.name "Administrator"
-   git config --global user.email "admin@example.com"
-   ```
-2. Then enter the following 
-   ```
-   git remote add toolchain http://192.168.0.11:10080/root/hands-on-DevOps.git
-   git push -u toolchain --all
-   git push -u toolchain --tags
-   ```
-
-You now have a clone of the project hosted in the GitLab running on the `toolchain` vagrant.  This way you can open the readme.md and follow along with rendered PlanUML diagrams.
-
-## 8.11. Golang _helloworld_ project
+## 8.10. Golang _helloworld_ project
 
 The prior `toolchain` and `development` vagrants are required to be up and running for the following sections.
 
 In this next part, we will create a simple helloworld GoLang project to demonstrate Continuous Integration. GoLang lends itself well to DevOps and underlines almost every new tool you can think of related to DevOps and cloud (e.g., [golang / go](https://github.com/golang/go), [docker / docker-ce](https://github.com/docker/docker-ce), [kubernetes / kubernetes](https://github.com/kubernetes/kubernetes), [openshift / origin ](https://github.com/openshift/origin),[hashicorp / terraform](https://github.com/hashicorp/terraform), [coreos / etcd](https://github.com/coreos/etcd), [hashicorp / vault](https://github.com/hashicorp/vault), [hashicorp / packer](https://github.com/hashicorp/packer), [hashicorp / consul](https://github.com/hashicorp/consul), [gogits / gogs](https://github.com/gogits/gogs), [drone / drone](https://github.com/drone/drone).)
 
-### 8.11.1. Create the project's backlog
+### 8.10.1. Create the project's backlog
 
 ```plantuml
 skinparam shadowing false
@@ -2158,7 +2202,7 @@ Complete the follow to track your progress in completing the Golang *helloworld*
 
 Track your progress in Taiga as you work through each section.
 
-### 8.11.2. Create the project in GitLab
+### 8.10.2. Create the project in GitLab
 
 ```plantuml
 skinparam shadowing false
@@ -2234,7 +2278,7 @@ The UI will refresh to show you a landing page for the project that should be ac
 
 - Sometimes GitLab with release `11.5.1` will throw an error on the step 6 above.  Simply click the green `Create Project` button again.
 
-### 8.11.3. Setup the project on the _development_ Vagrant
+### 8.10.3. Setup the project on the _development_ Vagrant
 
 ```plantuml
 skinparam shadowing false
@@ -2345,7 +2389,7 @@ helloworld
 - Make sure you pre-pend that dot (`.`) at the start of `.gitignore`. In *NIX Dot-files are hidden files. 
 - `.gitignore` will not show up if you simply list the file system via the `ls` command, but they do if you use `ls -a` or `ls --all`.  Either arguments configures `ls` to not ignore entries starting with `.`.
 
-### 8.11.4. Author the application
+### 8.10.4. Author the application
 
 ```plantuml
 skinparam shadowing false
@@ -2423,7 +2467,7 @@ func HelloWorld() string {
 }
 ```
 
-### 8.11.5. Align source code with Go coding standards
+### 8.10.5. Align source code with Go coding standards
 
 ```plantuml
 skinparam shadowing false
@@ -2513,7 +2557,7 @@ You'll see the difference if you `cat` your source
 cat main.go
 ```
 
-### 8.11.6. Lint your code
+### 8.10.6. Lint your code
 
 ```plantuml
 skinparam shadowing false
@@ -2608,7 +2652,7 @@ func HelloWorld() string {
 
 Run `golint` again and it should return no output indicating it sees nothing wrong.
 
-### 8.11.7. Build the application
+### 8.10.7. Build the application
 
 Build the project by executing
 
@@ -2618,7 +2662,7 @@ go build -o helloworld .
 
 Success returns no command line output.  What?  Did you want a cookie?  No cookie for you.  This is GoLangs way of doing things.  Silence is golden and means things went fine. Otherwise, go back and fix the mistakes in your code.
 
-### 8.11.8. Run your application
+### 8.10.8. Run your application
 
 ```plantuml
 skinparam shadowing false
@@ -2692,7 +2736,7 @@ The command line output will be
 hello world
 ```
 
-### 8.11.9. Author the unit tests
+### 8.10.9. Author the unit tests
 
 ```plantuml
 skinparam shadowing false
@@ -2802,7 +2846,7 @@ ok  	github.com/nemonik/helloworld	0.002s
 
 This step and all the proceeding follows of a DevOps tenant where "Developers are expected to pre-flight new code."
 
-### 8.11.10. Automated the build (i.e., write the Makefile)
+### 8.10.10. Automated the build (i.e., write the Makefile)
 
 ```plantuml
 skinparam shadowing false
@@ -2922,7 +2966,7 @@ ok  	github.com/nemonik/helloworld	(cached)	coverage: 50.0% of statements
 go build -o helloworld -v
 ```
 
-### 8.11.11. Author Drone-based Continuous Integration
+### 8.10.11. Author Drone-based Continuous Integration
 
 ```plantuml
 skinparam shadowing false
@@ -3020,7 +3064,7 @@ The pipeline is authored in YAML like almost all the CI orchestrators out there 
 - `image: 192.168.0.11:5000/nemonik/golang:1.13` - The build step is using the nemonik/golang container tagged `1.12.1` retrieved from private Docker registry located at `192.168.0.11:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
 - `commands` - Is a collection of terminal commands to be executed. These are all the same commands we executed previously in the command line. If anyone of these commands were to fail returning a non-zero exit code, the pipeline will immediately end resulting in a failed build.
 
-#### 8.11.11.1. Configure Drone to execute your pipeline
+#### 8.10.11.1. Configure Drone to execute your pipeline
 
 1. Open <http://192.168.0.11/> in your browser and authenticate through GitLab on into Drone, if you need to.
 2. Then select `SYNC`.  The arrows will chase each other for a bit.
@@ -3029,7 +3073,7 @@ The pipeline is authored in YAML like almost all the CI orchestrators out there 
 
 You won't have any builds to start, but when you do the builds will increment starting from 1. Red is failed the build. Yellow-orange is a presently executing build. Green is a build that passed. When a build does start, click on its row to open and monitor it. The UI will update as the build proceeds informing you as to its progress.
 
-#### 8.11.11.2. Trigger the build
+#### 8.10.11.2. Trigger the build
 
 To trigger the build, in your ssh connection to the `development` vagrant simply commit your code:
 
@@ -3092,17 +3136,17 @@ Our build was successful.  Drone uses a container's exit code to determine succe
 
 That's it.  This is essentially CI. Remember, CI stands for Continuous Integration.  Scintillating isn't it?
 
-### 8.11.12. The completed source for *helloworld*
+### 8.10.12. The completed source for *helloworld*
 
 The `helloworld` project can be viewed completed at
 
 https://github.com/nemonik/helloworld
 
-## 8.12. Golang *helloworld-web* project
+## 8.11. Golang *helloworld-web* project
 
 Like `helloworld`, the `helloworld-web` project is a very simple application that we will use to explore Continuous Deliver.  Remember, Continuous Delivery builds upon Continuous Integration.  You've accomplished Continuous Integration. Wah
 
-### 8.12.1. Create the project's backlog
+### 8.11.1. Create the project's backlog
 
 ```plantuml
 skinparam shadowing false
@@ -3217,7 +3261,7 @@ Complete the follow to track your progress in completing the _helloworld-web_ pr
 
 Track your progress in Taiga as you work through each section.
 
-### 8.12.2. Create the project in GitLab
+### 8.11.2. Create the project in GitLab
 
 ```plantuml
 skinparam shadowing false
@@ -3301,7 +3345,7 @@ The UI will refresh to show you landing page for the project that should be acce
 
 <http://192.168.0.11:10080/root/helloworld-web>
 
-### 8.12.3. Setup the project on the _development_ Vagrant
+### 8.11.3. Setup the project on the _development_ Vagrant
 
 ```plantuml
 skinparam shadowing false
@@ -3408,7 +3452,7 @@ report.json
 helloworld-web
 ```
 
-### 8.12.4. Author the application
+### 8.11.4. Author the application
 
 ```plantuml
 skinparam shadowing false
@@ -3514,7 +3558,7 @@ go fmt
 golint
 ```
 
-### 8.12.5. Build and run the application
+### 8.11.5. Build and run the application
 
 ```plantuml
 skinparam shadowing false
@@ -3628,7 +3672,7 @@ Your browser is looking for a `favicon.ico`, but we don't serve that up of cours
 
 `crl-c` will stop your application.
 
-### 8.12.6. Run gometalinter.v2 on application
+### 8.11.6. Run gometalinter.v2 on application
 
 ```plantuml
 skinparam shadowing false
@@ -3780,7 +3824,7 @@ Oops. Line 11 and line 15 have problems:
 
 - `fmt.Fprintf` on line 17 returns the number of bytes written and any write error encountered. We need to handle that too. We can swallow the number of bytes return via `_`, collect the `err`, log it, and exit.
 
-### 8.12.7. Fix the application
+### 8.11.7. Fix the application
 
 ```plantuml
 skinparam shadowing false
@@ -3891,7 +3935,7 @@ gometalinter.v2
 
 And after some time, nothing is returned.  Problem solved.  If they could all be this easy.
 
-### 8.12.8. Author unit tests
+### 8.11.8. Author unit tests
 
 ```plantuml
 skinparam shadowing false
@@ -4056,7 +4100,7 @@ ok  	github.com/nemonik/helloworld-web	0.004s
 
 Notice we only scored 55.6% coverage, but had unit tests for all our methods?  This where dicernment comes in.  Do you battle for a 100% or call this a win.  Up to you or really your team.
 
-### 8.12.9. Perform static analysis (i.e., sonar-scanner) on the command line
+### 8.11.9. Perform static analysis (i.e., sonar-scanner) on the command line
 ```plantuml
 skinparam shadowing false
 
@@ -4128,7 +4172,7 @@ skinparam note {
 
 SonarQube provides the capability to show the health of an application's source code, highlighting issues as they are introduced. 
 
-#### 8.12.9.1. Optionally, register your app in SonarQube
+#### 8.11.9.1. Optionally, register your app in SonarQube
 
 This section is optional as the `sonar-scanner`command line tool will do all this automagically for you.  
 
@@ -4150,7 +4194,7 @@ Provide the `key` of
 
 **helloworld-web**  
 
-#### 8.12.9.2. Install the SonarGo plugin
+#### 8.11.9.2. Install the SonarGo plugin
 
 The SonarGo plugin was an optional install now it comes installed by default, but lets update it if need be.
 
@@ -4163,7 +4207,7 @@ The SonarGo plugin was an optional install now it comes installed by default, bu
 
 After some time the server will update the plugin.
 
-#### 8.12.9.3. Perform static analysis (run *sonar-scanner*) on the command line
+#### 8.11.9.3. Perform static analysis (run *sonar-scanner*) on the command line
 
 Before you run sonar-scanner you have to commit your code so Sonar knows who to blame, so first 
 
@@ -4317,7 +4361,7 @@ Open in your host's web browser
 
 to view your SonarQube report.
 
-### 8.12.10. Automated the build (i.e., write the Makefile)
+### 8.11.10. Automated the build (i.e., write the Makefile)
 
 ```plantuml
 skinparam shadowing false
@@ -4594,7 +4638,7 @@ go build -o helloworld-web -v
 github.com/nemonik/helloworld-web
 ```
 
-### 8.12.11. Dockerize the application
+### 8.11.11. Dockerize the application
 
 ```plantuml
 skinparam shadowing false
@@ -5819,7 +5863,7 @@ INFO: Total time: 7.857s
 INFO: Final Memory: 12M/44M
 INFO: ------------------------------------------------------------------------```
 
-### 8.12.16. Add the build step to the pipeline
+### 8.11.12. Add the build step to the pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -5923,7 +5967,7 @@ _/drone/src
 
 Mirroring what you saw in development in your local environment.
 
-### 8.12.17. Add container image publish step to pipeline
+### 8.11.13. Add container image publish step to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6242,7 +6286,7 @@ Total reclaimed space: 0B
 
 Indicating the `publish` step executed, successfully.
 
-### 8.12.18. Add container deploy step to pipeline
+### 8.11.14. Add container deploy step to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6508,7 +6552,7 @@ Hello world!
 
 So, now we have beginnings of a real CI/CD pipeline. There are no strings on me err. you.
 
-### 8.12.19. Add complaince and policy automation (InSpec) test to the pipeline
+### 8.11.15. Add complaince and policy automation (InSpec) test to the pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6600,7 +6644,7 @@ A really good tutorial focused on InSpec can be found here:
 
 http://www.anniehedgie.com/inspec-basics-1
 
-#### 8.12.19.1. First author an InSpec test
+#### 8.11.15.1. First author an InSpec test
 
 Back in the `development` vagrant at the root of the `helloworld-web` project, we'll initialize an InSpec profile to verify your container's compliance to policy and configuration guidance.  Yep, you're "gonna" be a security engineer. 
 
@@ -6657,7 +6701,7 @@ attributes:
     value: '3000'
 ```
 
-#### 8.12.19.2. Execute your test
+#### 8.11.15.2. Execute your test
 
 First, we'll execute the test against container running locally by first spinning up a `192.168.0.11:5000/nemonik/helloworld-web:latest` container via
 
@@ -6692,7 +6736,7 @@ inspec exec helloworld
   docker rm -f helloworld-web
   ```
 
-#### 8.12.19.3. The results
+#### 8.11.15.3. The results
 
 The result will be a comparsion of the expected state against the current state of the container and will look like
 
@@ -6723,7 +6767,7 @@ Test Summary: 5 successful, 0 failures, 0 skipped
 inspec exec --chef-license=accept-silent helloworld
 ```
 
-#### 8.12.19.4. Add InSpec to the pipeline
+#### 8.11.15.4. Add InSpec to the pipeline
 
 We really should have an InSpec container to execute this step.  Maybe I'll do this in the next revision of my class, but since InSpec is already installed on the `toolchain` vagrant, we'll use `appleboy/drone-ssh` container to ssh into `toolchain` and execute our InSpec profile from the pipeline.
 
@@ -6794,7 +6838,7 @@ Successfully executed commands to all host.
 ==========================================
 ```
 
-#### 8.12.19.5. Viewing the results in Heimdall-lite
+#### 8.11.15.5. Viewing the results in Heimdall-lite
 
 MITRE maintains two projects for viewing of InSpec profiles and evaluations in a convenient interface.
 
@@ -6816,7 +6860,7 @@ inspec exec --chef-license=accept-silent helloworld --reporter json > /vagrant/i
 
 Open Heimdall-lite https://mitre.github.io/heimdall-lite/, select `Load JSON`, the `Browse` to navigate to `inspec_hellworld.json` in the root of the class project and upload to view the results. 
 
-### 8.12.20. Add automated functional test to pipeline
+### 8.11.16. Add automated functional test to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6895,7 +6939,7 @@ http://www.seleniumhq.org/
 
 You'll need a couple of shells open to your `development` vagrant to complete this section.
 
-#### 8.12.20.1. Run the *helloworld-web* application
+#### 8.11.16.1. Run the *helloworld-web* application
 
 In the first `vagrant ssh development` enter
 
@@ -6907,7 +6951,7 @@ docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web:latest
 
 - If you don't mind running more than a couple shells you can drop the `-d` argument and not daemonize the container, so you can watch its log.
 
-#### 8.12.20.2. Pull and run Selenium Firefox Standalone
+#### 8.11.16.2. Pull and run Selenium Firefox Standalone
 
 In another `vagrant ssh` to `development` enter
 
@@ -6944,7 +6988,7 @@ A good start outputs to the command line
 15:04:56.296 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
 ```
 
-#### 8.12.20.3. Create our test automation
+#### 8.11.16.3. Create our test automation
 
 In another terminal `vagrant ssh` to `development`, so we can author and run our automated test.  
 
@@ -7095,7 +7139,7 @@ The `standalone-firefox` container will output
   docker rm -f helloworld-web
   ```
 
-#### 8.12.20.4. Add a *selenium* step to the pipeline
+#### 8.11.16.4. Add a *selenium* step to the pipeline
 
 In one of your existing `vagrant ssh` to `development` enter into the commmand line
 
@@ -7230,7 +7274,7 @@ If you click on the `firefox` service for this build, you will see similiar outp
 1568819761779	Marionette	INFO	Stopped listening on port 46302
 ```
 
-### 8.12.21. Add DAST step (*OWASP ZAP*) to pipeline
+### 8.11.17. Add DAST step (*OWASP ZAP*) to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -7475,13 +7519,13 @@ FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 1	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 31
 
 Our application is relatively simple, so it was doubtful anything would be found, but there is a warning that a *X-Content-Type-Options Header* is missing that could be resolved by adding addtional handlers to the helloworld-web's main.go.
 
-### 8.12.22. All the source for *helloworld-web*
+### 8.11.18. All the source for *helloworld-web*
 
 The `helloworld-web` project can be viewed completed at
 
 <https://github.com/nemonik/helloworld-web>
 
-## 8.13. Microservices
+## 8.12. Microservices
 
 So, you may not realize it, but with the `helloworld-web` application you've actually written a microservice.
 
@@ -7507,15 +7551,15 @@ The benefit
 
 So, with the `helloworld-web` application, you've developed a micrsoservice, packaged it into a container (i.e., containerized it), and by doing so essentially created a cloud-native application.
 
-### 8.13.1. What's cloud-native?
+### 8.12.1. What's cloud-native?
 
 Cloud-native computing deploys applications as microservices, packaging each into its own container, and by doing so have opened yourself up to the capability of being able to dynamically orchestrate the container to optimize resource utilization, elastic scaling, security issolation...  
 
 Granted our microservice doesn't do much, but we can get a peak at the possibilities as both the `toolchain` and `develoment` vagrants are infact a Kubernetes (K8s) cluster.
 
-#### 8.13.1.1. So, let's experiment with our little "microservice"
+#### 8.12.1.1. So, let's experiment with our little "microservice"
 
-#### 8.13.1.1.1. Modify the helloworld-web application
+#### 8.12.1.2. Modify the helloworld-web application
 
 In the `helloworld-web` project On the `development` vagrant edit the `go/src/github.com/nemonik/helloworld-web/main.go` 
 
@@ -7567,7 +7611,7 @@ Build the container and push to the registry
 make docker-push
 ```
 
-#### 8.13.1.1.2. Create a Kubernetes manifest for the application
+#### 8.12.1.3. Create a Kubernetes manifest for the application
 
 At the root of the `hellworld-web` application create a new file named `helloworld.yml` and add to it the following content
 
@@ -7826,7 +7870,7 @@ An `Ingress` exposes HTTP and HTTPS routes from outside the cluster to services 
 
 Once our application is deployed to the cluster, Traefik's dashboard will permit a view into this at http://192.168.0.11:8083/dashboard/
 
-#### 8.13.1.1.3. Deploy your application
+#### 8.12.1.4. Deploy your application
 
 To deploy our application to the cluster, on the `development` vagrant enter
 
@@ -7892,7 +7936,7 @@ helloworld-deployment-f767b5b57-4tg62   1/1     Running   0          4m52s   10.
 
 One service is being managage and replicatset is maintaining the speficied 1 pod at any given time.
 
-#### 8.13.1.1.4. Test your application
+#### 8.12.1.5. Test your application
 
 Now test your service
 
@@ -7977,7 +8021,7 @@ Hello world! helloworld-deployment-cf4667475-5d77b
 
 Notice how the `curl` requests are Round-robin load balanced across the replicas. 
 
-## 8.14. Using what you've learned
+## 8.13. Using what you've learned
 
 Git clone the Python+Flask Magic Eight Ball web app
 
@@ -7985,7 +8029,7 @@ https://github.com/nemonik/magiceightball
 
 and develop a pipeline for.
 
-## 8.15. Shoo away your vagrants
+## 8.14. Shoo away your vagrants
 
 If you're done with your vagrants, shoo them away from the root of the project on the host
 
@@ -7996,6 +8040,6 @@ vagrant destroy -f
 
 And they're gone.
 
-## 8.16. That's it
+## 8.15. That's it
 
 That's a wrap.
