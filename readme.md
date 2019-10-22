@@ -2066,6 +2066,12 @@ On your host in the DevOps class project:
    git push -u toolchain --tags
    ```
 
+**NOTE**
+
+- Since we have not registered an SSH key with GitLab, during the push we will be prompted to enter a `Username` and `Password`.
+- Your `Username` is `root` and your `Password` is `password`. 
+- The git command-line client will not display your password as you enter it. 
+
 You now have a clone of the project hosted in the GitLab running on the `toolchain` vagrant.  This way you can open the readme.md and follow along with rendered PlanUML diagrams.
 
 ## 8.9. Spin up the _development_ vagrant
@@ -2466,7 +2472,7 @@ skinparam note {
 -left-> (*)
 ```
 
-In the project follder (i.e., `/home/vagrant/go/src/github.com/nemonik/helloworld`), create `main.go` in emacs, nano, vi, or vim with this content:
+In the project follder (i.e., `/home/vagrant/go/src/github.com/nemonik/helloworld`), create `main.go` in `emacs`, `nano`, `vi` or `vim` with this content:
 
 ```go
 package main
@@ -3074,10 +3080,10 @@ steps:
 
 The pipeline is authored in YAML like almost all the CI orchestrators out there except for Jenkin's Pipelines, whose you author in Groovy-based DSL.
 
-- `steps:` - defines a list of steps to build, test and deploy your code.
-- `build` and `run` - are the names of the step. These are  yours to name. Name steps something meaningful as to what the step is orchestrating. Each step is executed serially, in the order defined.
-- `image: 192.168.0.11:5000/nemonik/golang:1.13` - The build step is using the nemonik/golang container tagged `1.12.1` retrieved from private Docker registry located at `192.168.0.11:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
-- `commands` - Is a collection of terminal commands to be executed. These are all the same commands we executed previously in the command line. If anyone of these commands were to fail returning a non-zero exit code, the pipeline will immediately end resulting in a failed build.
+- `steps:` - defines the list of steps followed to build, test and deploy your code.
+- `build` and `run` - defines the names of the step. These are yours to name. Name steps something meaningful as to what the step is orchestrating. Each step is executed serially, in the order defined.
+- `image: 192.168.0.11:5000/nemonik/golang:1.13` - defines the container image to execute the step.  The nemonik/golang container tagged `1.12.1` will be retrieved from private Docker registry located at `192.168.0.11:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
+- `commands` - defines a collection of terminal commands to be executed. These are all the same commands we executed previously in the command line. If anyone of these commands were to fail returning a non-zero exit code, the pipeline will immediately end resulting in a failed build.
 
 #### 8.10.11.1. Configure Drone to execute your pipeline
 
@@ -3086,7 +3092,15 @@ The pipeline is authored in YAML like almost all the CI orchestrators out there 
 3. Then click `root/helloworld` repo and `ACTIVATE REPOSITORY`, then `SAVE` under the `Main` section to enable Drone orchestration for the project.
 4. Then click the Drone logo in the upper left of the page to return home.
 
-You won't have any builds to start, but when you do the builds will increment starting from 1. Red is failed the build. Yellow-orange is a presently executing build. Green is a build that passed. When a build does start, click on its row to open and monitor it. The UI will update as the build proceeds informing you as to its progress.
+You won't have any builds to start, but when you do the builds will increment starting from 1. 
+
+The build colors mean something:
+
+- `Red`- indicates a failed build. 
+- `Yellow-orange` - is the presently executing build. 
+- `Green` - is a build that passed. 
+
+When a build does start, click on its row to open and monitor it. The UI will update as the build proceeds informing you as to its progress.
 
 #### 8.10.11.2. Trigger the build
 
@@ -3097,6 +3111,12 @@ git add .
 git commit -m "Added Drone pipeline"
 git push origin master
 ```
+
+**NOTE**
+
+- Since we have not registered an SSH key with GitLab, during the push we will be prompted to enter a `Username` and `Password`.
+- Your `Username` is `root` and your `Password` is `password`. 
+- The git command-line client will not display your password as you enter it. 
 
 Immediately after you enter your GitLab username/password open <http://192.168.0.11/root/hello> in your browser, if you re-use an existing tab to this page refresh the page.
 
@@ -3149,7 +3169,7 @@ hello world
 
 Our build was successful.  Drone uses a container's exit code to determine success or failure. A container's non-zero exit code will cause the pipeline to exit immediately.
 
-That's it.  This is essentially CI. Remember, CI stands for Continuous Integration.  Scintillating isn't it?
+That's it.  This is essentially CI. Remember, CI stands for "Continuous Integration".  Scintillating isn't it?
 
 ### 8.10.12. The completed source for *helloworld*
 
@@ -3159,7 +3179,7 @@ https://github.com/nemonik/helloworld
 
 ## 8.11. Golang *helloworld-web* project
 
-Like `helloworld`, the `helloworld-web` project is a very simple application that we will use to explore Continuous Deliver.  Remember, Continuous Delivery builds upon Continuous Integration.  You've accomplished Continuous Integration. Wah
+Like `helloworld`, the `helloworld-web` project is a very simple application that we will use to explore Continuous Deliver.  Remember, Continuous Delivery builds upon Continuous Integration.  You've accomplished Continuous Integration. Wahoo.
 
 ### 8.11.1. Create the project's backlog
 
@@ -3433,7 +3453,7 @@ skinparam note {
 
 You'll now clone the new `helloworld-web` GitLab hosted repo as you did prior for the `helloworld` project.
 
-If you do not already have a shell open on `development` vagrant, on your host in a shell at the root of the class project enter the following
+If you don't already have a shell open on `development` vagrant, on your host in a shell at the root of the class project enter the following
 
 ```bash
 vagrant ssh development
@@ -3538,7 +3558,7 @@ skinparam note {
 -left-> (*)
 ```
 
-Create `main.go` in emacs, nano, vi, or vim with this content:
+Create `main.go` in `emacs`, `nano`, `vi` or `vim` with this content:
 
 ```Go
 package main
@@ -3668,7 +3688,7 @@ listening on :3000
 To run the application, either
 
 - Open <http://192.168.0.10:3000> in a web browser, or
-- Enter ```curl http://192.168.0.10:3000``` into the command-line.
+- Enter ```curl http://192.168.0.10:3000``` into the command-line of another terminal.
 
 Both will return:
 
@@ -3676,7 +3696,7 @@ Both will return:
 Hello world!
 ```
 
-The command line will output
+`./helloworld-web` will output in the terminal window
 
 ```
 192.168.0.1:63201  GET  /
@@ -3758,7 +3778,7 @@ skinparam note {
 -left-> (*)
 ```
 
-The following command line steps are optional as you have installed these dependencies for the `helloworld` application
+If you authored the first helloworld application, you will have already installed the `gometalinter.v2`, so you can skip to the next step, but incase you didn't here is the command to install
 
 ```bash
 go get -u gopkg.in/alecthomas/gometalinter.v2
@@ -3804,7 +3824,7 @@ Run our linters
 gometalinter.v2 
 ```
 
-`Gometalinter` then runs all these Go linters:
+`gometalinter.v2` will then runs all these linters:
 
 * `go vet` - Reports potential errors that otherwise compile.
 * `go tool vet --shadow` - Reports variables that may have been unintentionally shadowed.
@@ -3825,7 +3845,7 @@ gometalinter.v2
 * `goconst` - Finds repeated strings that could be replaced by a constant.
 * `gosec` - Inspects source code for security problems by scanning the Go AST.
 
-And after some time, it will output something like the follwing
+And after some time, it will output something like the following
 
 ```
 main.go:11::warning: Errors unhandled.,LOW,HIGH (gosec)
@@ -4021,9 +4041,9 @@ skinparam note {
 -left-> (*)
 ```
 
-We don't have any unit tests, so let's fix that.
+Like most software written for the government, we don't have any unit tests, so let's fix that.
 
-Create the text file `main_test.go` in emacs, nano, vi, or vim with this content:
+Create the text file `main_test.go` in `emacs`, `nano`, `vi` or `vim` with this content:
 
 ```Go
 package main
@@ -4093,7 +4113,7 @@ func TestMain(m *testing.M) {
 }
 ```
 
-A lot more code than the application itself, huh.
+A lot more code than the application itself, huh.  Maybe this is the reason so few unit tests are written.
 
 Execute the unit test by entering
 
@@ -4113,7 +4133,7 @@ coverage: 55.6% of statements
 ok  	github.com/nemonik/helloworld-web	0.004s
 ```
 
-Notice we only scored 55.6% coverage, but had unit tests for all our methods?  This where dicernment comes in.  Do you battle for a 100% or call this a win.  Up to you or really your team.
+Notice we only scored 55.6% coverage, but we appear to of had unit tests for all our methods?  This where dicernment comes in.  Do you battle for a 100% or call this a win.  Up to you or really your team.
 
 ### 8.11.9. Perform static analysis (i.e., sonar-scanner) on the command line
 ```plantuml
@@ -4185,11 +4205,11 @@ skinparam note {
 -left-> (*)
 ```
 
-SonarQube provides the capability to show the health of an application's source code, highlighting issues as they are introduced. 
+SonarQube provides a static analysis capability to show the health of an application's source code, highlighting issues as they are introduced. 
 
 #### 8.11.9.1. Optionally, register your app in SonarQube
 
-This section is optional as the `sonar-scanner`command line tool will do all this automagically for you.  
+This section is optional as the `sonar-scanner`command line tool will do all this "auto-magically" for you, so you can skip ahead to the next section.
 
 Open in your browser
 
@@ -4231,7 +4251,7 @@ git add main.go main_test.go
 git commit -m "added application code and unit test"
 ```
 
-Then generate the reports and submit to SonarQube
+and then generate the reports and submit to SonarQube
 
 ```bash
 gometalinter.v2 > gometalinter-report.out
@@ -4344,11 +4364,10 @@ INFO: Final Memory: 12M/44M
 INFO: ------------------------------------------------------------------------
 ```
 
-
 **NOTE**
 
-- If you see an error concerned about blame files not being found you didn't commit your code.  Go back commit your code.  You don't need to push it.  Just commit it.
-
+- If you see an error concerned about blame files not being found you didn't first commit your code.  Go back commit your code.  You don't need to `push` it.  Just commit it.
+- Also, notice I didn't say `push` your code.  Your code hasn't been pushed to GitLab, but has only been committed to your local copy of your repository.
 - If you see this outputed
 
   ```
@@ -4360,7 +4379,7 @@ INFO: ------------------------------------------------------------------------
 
 Let me unpack what the above commands are doing
 
-The first line `go get github.com/alecthomas/gometalinter` installs the `gometalinter` dependency for concurrently run Go lint tools and normalise their output
+The first line `go get github.com/alecthomas/gometalinter` installs the `gometalinter` dependency to concurrently run Go lint tools and normalise their output
 
 `gometalinter.v2 > gometalinter-report.out` executes all the above linters and consolidates their results into a single `gometalinter-report.out` report.  Go is a very quiet language. As you may have noticed.  So, when `gometalinter.v2` runs and everything passes the output of report will contain nothing if there are no problems.  If you want to be assured it called the linters it claims to call, you run `gometalinter.v2` if debug like so `gometalinter.v2 --debug`.
 
@@ -4805,8 +4824,8 @@ Successfully tagged nemonik/helloworld-web:latest
 
 What just happened?
 
-- The `FROM` line instructs Docker to retreive the `nemonik/golang:1.12.6` from the private Docker registry running on our Toolchain vagrant, which it did.
-- Then the rest of the commands in the `Dockerfile` are executed building a new docker image.
+- The `FROM` line instructs Docker to retreive the `nemonik/golang:1.13` from the private Docker registry running on our `toolchain` vagrant, which it did.  And then use this as the basis of your application's docker image.
+- Then the rest of the commands in the `Dockerfile` are executed laying down layers ontop of the `nemonik/golang:1.13` image thereby building a new docker image entitled `nemonik/helloworld-web` and tagging it `latests`.
 - `docker build` then places the image with the name `nemonik/helloworld-web` in the `Development`'s local Docker registry so that containers can be created off this image locally. 
 
 Check the local Docker registry via
@@ -5109,10 +5128,10 @@ skinparam note {
 -left-> (*)
 ```
 
-Spin up a new `nemonik/helloworld-web` container by either entering
+Spin up a new `nemonik/helloworld-web` container by entering either
 
-- ``` docker run -p 3000:3000 --name helloworld-web  nemonik/helloworld-web``` and hitting <http://192.168.0.10:3000> in your web browser, or
-- ``` docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web``` and hitting the same URL via ```curl http://192.168.0.10:3000```.
+- option 1 - ``` docker run -p 3000:3000 --name helloworld-web  nemonik/helloworld-web``` and hitting <http://192.168.0.10:3000> in your web browser, or
+- option 2 - ``` docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web``` and hitting the same URL via ```curl http://192.168.0.10:3000```.
 
 Where
 
@@ -5238,7 +5257,7 @@ skinparam note {
 -left-> (*)
 ```
 
-In the development vagrant, push the `nemonik/hellowrold-web` container image into the private Docker registry running on the `Toolchain` vagrant, so that both vagrants can create containers from the image with the commands
+In the development vagrant, push the `nemonik/hellowrold-web` container image into the private Docker registry running on the `toolchain` vagrant, so that both vagrants can create containers from the image with the commands
 
 ```bash
 docker tag nemonik/helloworld-web 192.168.0.11:5000/nemonik/helloworld-web
@@ -5248,7 +5267,7 @@ docker push 192.168.0.11:5000/nemonik/helloworld-web
 Command line output will be
 
 ```
-^C[vagrant@development helloworld-web]$ docker tag nemonik/helloworld-web 192.168.0.11:5000/nemonik/helloworld-web
+[vagrant@development helloworld-web]$ docker tag nemonik/helloworld-web 192.168.0.11:5000/nemonik/helloworld-web
 [vagrant@development helloworld-web]$ docker push 192.168.0.11:5000/nemonik/helloworld-web
 The push refers to repository [192.168.0.11:5000/nemonik/helloworld-web]
 aebae46b215a: Pushed
@@ -5503,7 +5522,7 @@ Returns in the command line
 {"repositories":["nemonik/golang","nemonik/golang-sonarqube-scanner","nemonik/helloworld-web","nemonik/python","nemonik/standalone-firefox","nemonik/zap2docker-stable"]}
 ```
 
-The Docker registry on our `Toolchain` vagrant doesn't have a human readable web UI, but you can query for the container you pushed and read the JSON:
+To list container images the registy holds for the `helloworld-web` container image enter
 
 ```bash
 curl -X GET http://192.168.0.11:5000/v2/nemonik/helloworld-web/tags/list
@@ -5583,7 +5602,6 @@ skinparam note {
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
 -left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
-
 -left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
 -left-> (*)
 ```
@@ -5664,7 +5682,6 @@ skinparam note {
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
 -left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
-
 -left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
 -left-> (*)
 ```
@@ -5698,26 +5715,27 @@ steps:
 Things to note in the above
 
 - This step uses an image, `nemonik/golang-sonarqube-scanner:4.0.0.1744`, built ontop of the `nemonik/golang:1.13` image to speed builds along. 
-- Cut-and-pasting may split the last `-sonar-scanner` line into multiple line resulting in your build failing.  Correct in the editor. 
+- Cut-and-pasting may split the last `-sonar-scanner` line into multiple line resulting in your build failing. If this happens, correct in your editor. 
+- The following commands is a bit of filesystem juggling, so that the scan can executed
 
-```yaml
-  - export DRONESRC=`pwd`
-  - export GOBIN=$GOPATH/bin
-  - mkdir -p $GOPATH/src/github.com/nemonik
-  - cd $GOPATH/src/github.com/nemonik
-  - ln -s $DRONESRC helloworld-web
-``` 
+  ```yaml
+    - export DRONESRC=`pwd`
+    - export GOBIN=$GOPATH/bin
+    - mkdir -p $GOPATH/src/github.com/nemonik
+    - cd $GOPATH/src/github.com/nemonik
+    - ln -s $DRONESRC helloworld-web
+  ``` 
 
-What follows handles running the scan absorbing errors as they arise, so as to not break the build.
+  What follows handles running the scan absorbing errors as they arise, so as to not break the build.
 
-```yaml
-  - gometalinter.v2 --install
-  - gometalinter.v2 --deadline=120s --checkstyle > gometalinter-report.out || true
-  - go lint > golint-report.out || true
-  - go test -v ./... -coverprofile=coverage.out || true
-  - go test -v ./... -json > report.json || true
-  - sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
-```
+  ```yaml
+    - gometalinter.v2 --install
+    - gometalinter.v2 --deadline=120s --checkstyle > gometalinter-report.out || true
+    - go lint > golint-report.out || true
+    - go test -v ./... -coverprofile=coverage.out || true
+    - go test -v ./... -json > report.json || true
+    - sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
+  ```
 
 Commit the code to GitLab hosted remote repo
 
@@ -5945,11 +5963,9 @@ skinparam note {
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
 -left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
-
 -left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
 -left-> (*)
 ```
-
 
 Add a build step to our `.drone.yml`
 
@@ -5967,8 +5983,6 @@ git add .
 git commit -m "added build step to pipeline"
 git push origin master
 ```
-
-Since we have not registered an SSH key with GitLab, we will need to enter a `Username` and `Password` when prompted.
 
 In the browser open Drone at <http://192.168.0.11/root/helloworld-web> and click on the build being executed to monitor progress.
 
@@ -6044,12 +6058,11 @@ skinparam note {
 -down->"Push the container\nimage to the\nprivate registry"
 -right->"Configure Drone\nto execute\nthe CI/CD pipeline"
 -right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" #FFFFFF
--right->"Add container\nimage publish\nstep to pipeline"
+-right->"Add build step\nto pipeline"
+-right->"Add container\nimage publish\nstep to pipeline" #FFFFFF
 -right->"Add container\ndeploy step\nto pipeline"
 -down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
 -left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
-
 -left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
 -left-> (*)
 ```
@@ -6077,7 +6090,7 @@ git commit -m "added publish step to pipeline"
 git push origin master
 ```
 
-The publish step takes quite a bit of time and resembles:
+The publish step is painfully slow and resembles:
 
 ```
 + /usr/local/bin/dockerd --data-root /var/lib/docker -s overlay --insecure-registry 192.168.0.11:5000 --dns 10.20.100.53 --dns 10.20.200.53
@@ -6389,11 +6402,7 @@ Enable the `Trusted` setting for the repository in Drone by opening
 
 4. Then click the Drone icon in the upper left of the page to return home.
 
-The `toolchain` vagrant's private key used to ssh into the it used to exists at
-
-`/vagrant/.vagrant/machines/toolchain/virtualbox/private_key`
-
-But it appears to move, but luckily vagrant has a command to find the key as we'll need to copy the private key to the root of the project.  To find the key enter the following on your host meaning not inside a vagrant
+Vagrant has a command to tell us what private key is used to secure shell into each vagrant.  Enter the following on your host meaning not inside a vagrant
 
 ```bash
 vagrant ssh-config toolchain
@@ -6523,11 +6532,13 @@ Successfully executed commands to all host.
 ==========================================
 ```
 
-Open on your host
+Open
 
-<http://192.168.0.11/root/helloworld-web>
+<http://192.168.0.11/root/helloworld-web> 
 
-And monitor the progress of the build. The pipeline should execute in a few minutes.
+on your host and monitor the progress of the build. 
+
+The pipeline should execute in a few minutes.
 
 Once completed sucessfully, on your host open secure shell to your `toolchain` vagrant via
 
@@ -6638,9 +6649,13 @@ skinparam note {
 -left-> (*)
 ```
 
-InSpec tests permit you to author compliance as code thereby turing compliance, security, and other policy requirements into automated tests.
+First let me segway into discussing DevSecOps.  
 
-InSpec has a very robust support for both the docker container and its host, see: https://lollyrock.com/posts/inspec-for-docker/ for more information for using InSpec with Docker.
+As previously stated, the `Dev` part of the `DevOps` clipped compound stands for "development" (i.e., the application developers), and `Ops` stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  DevSecOps has recently emerged to embed security thought and collaboration into your team's culture when working an applications SDLC and "security-as-code" into your application pipelines.  If you're doing DevOps correctly you're also inherently performing methods and repeated practices of DevSecOps.  Every technology operational stakeholder discipline must be included in the team without needing to fork DevOps in direction to include said disccipline.  We don't need "DevNetOps" or "DevTestOps"... 
+ 
+Authoring InSpec tests permit you to author compliance-as-code, a form of security-as-code, thereby turning compliance, security, and other policy requirements into automated tests.
+
+InSpec has a very robust support for both the Docker container and its host, see: https://lollyrock.com/posts/inspec-for-docker/ for more information for using InSpec with Docker.
 
 More on InSpec in general can be found here
 
@@ -6653,7 +6668,6 @@ https://www.inspec.io/docs/reference/resources/docker_container/
 https://www.inspec.io/docs/reference/resources/docker/
 
 https://www.inspec.io/docs/reference/resources/docker_image/
-
 
 A really good tutorial focused on InSpec can be found here:
 
