@@ -779,10 +779,10 @@ You will need to install VirtualBox, a general-purpose full virtualizer for x86 
 For the class when I teach it, it is assumed VirtualBox is installed, but below are the instructions for installing it on Windows 10.
 
 1. Open your browser to <https://www.virtualbox.org/wiki/Downloads>
-2. Click `Windows hosts` link under `VirtualBox 6.0.12 platform packages`.
+2. Click `Windows hosts` link under `VirtualBox  6.0.14 platform packages`.
 3. Find and click the installer to install.
 
-Then turn for Windows 10 turn off Hyper-V
+You will also need to turn off Hyper-V
 
 1. Click Windows `Start` and then type `turn Windows features on or off` into the search bar.
 2. Select the icon with the corresponding name. 
@@ -859,9 +859,9 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL and 
 
 1. Download Vagrant  
 
-   <https://releases.hashicorp.com/vagrant/2.2.5/>  
+   <https://releases.hashicorp.com/vagrant/2.2.6/>  
 
-   Version 2.2.5 was tested.  Newer version may or may not work.
+   Version 2.2.6 was tested.  Newer version may or may not work.
 
 2. Click on the installer once downloaded and follow along. On Windows, the installer may stall calculating for a bit and may bury modals you'll need to respond to in the Windows Task bar, so keep an eye out for that. The installer will automatically add the vagrant command to your system path so that it is available on the command line. If it is not found, the documentation advises you to try logging out and logging back into your system. This is particularly necessary sometimes for Windows. Windows will require a reboot, so remember to **come back and complete step-3**.
 
@@ -897,11 +897,17 @@ Whose output resembles this
 
 ```
 vagrant-cachier (1.2.1, global)
+  - Version Constraint: > 0
 vagrant-certificates (2.0.0, global)
+  - Version Constraint: > 0
 vagrant-disksize (0.1.3, global)
+  - Version Constraint: > 0
 vagrant-proxyconf (2.0.6, global)
+  - Version Constraint: > 0
 vagrant-reload (0.0.1, global)
-vagrant-vbguest (0.19.0, global)
+  - Version Constraint: > 0
+vagrant-vbguest (0.20.0, global)
+  - Version Constraint: > 0
 ```
 
 **NOTE**
@@ -1557,19 +1563,28 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
 
 **NOTE**
 
-- It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you can comment out the roles that proceeded and re-run the automation with:
-  ```
+- It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you can comment out the roles that proceeded and re-run the automation by entering into the command-line at the root of the project
+  ```bash
   vagrant up toolchain --provision
   ```
-- Caution, it is easy to forget DevOps is as much about culture as it is about a methodology and repeated practices (often further mistakenly thought as "tools and automation"), so keep this in mind.  
-- The tools, methodology and repeated practices exist to support the culture.
-- Again, I'll drop from time to time stating "into the shell" when instruction you to enter things in the CLI as it should understood.
+- To halt the `toolchain` vagrant once provisioned and configured perfrom the following in the command-line
+  ```bash
+  vagrant halt toolchain
+  ```
+- To restart the `toolchain` vagrant once provisioned and configured perfrom the following in the command-line
+  ```bash
+  vagrant up toolchain --no-provision
+  ```
+  Give the vagrant time to restart all the long-running tools.
+- Caution, it is easy to forget DevOps is not about tools and automaton, but is as much about culture, methods and repeated practices, so keep this in mind.  
+- The tools, methods and repeated practices exist to support the culture.
+- Again, I'll drop from time to time stating "into the shell" ot "into the command-line" when instructing you to enter things in the CLI.
 
-The toolchain IaC will spin up a number of tools.  The following sections unpack what theses tools are.
+The toolchain IaC will spin up a number of tools.  Following sections unpack what theses tools are, but first I'd like to unpack the cloud-native technologies underrunning the long-running tools.
 
 ## 8.7. The cloud-native technologies underlying the tools
 
-The tools leverage technoligies that underline cloud-native development, where applications are packaged in containers and dynamically orchestrated to optimize resource utilization.
+The tools leverage technologies that underline cloud-native development, where applications are packaged in containers and dynamically orchestrated to optimize resource utilization.
 
 ### 8.7.1. Docker image and containers
 
@@ -1606,7 +1621,7 @@ The class can be reconfigure to spin up the long-running tools (e.g., Tagia, Git
 
 Docker-compose is a tool and domain-specific language based on YAML used to define and run multi-container Docker applications.
 
-*What is YAML?*
+*As an aside, what is YAML?*
 
 YAML bills itself as a human-friendly data serialization standard for all programming languages. YAML also follows in the computing tradition of being a recursive acronym, _YAML Ain't Markup Language._ Many of the tools used in this course make use of YAML, so you will see plenty of examples of it.
 
@@ -1628,7 +1643,7 @@ Once, both `toolchain` and `development` vagrant are provisioned and configured,
 vagrant ssh toolchain
 ```
 
-at the root of project and enter into the bash command line:
+and then enter:
 
 ```bash
 kubectl get nodes
@@ -1648,7 +1663,7 @@ If you enter
 kubectl --all-namespaces=true get pods
 ```
 
-It will return all the pods, where a pod is container or group of containers that are deployed together.  
+it will return all the pods, where a pod is container or group of containers that are deployed together.  
 
 In our case the the command will return something resembling:
 
@@ -1705,7 +1720,7 @@ The last few lines of output will resemble
 
 The class makes use of two types of tools: those that are long-running (e.g., GitLab, Drone, SonarQube) and those used to peform short-lived individual tasks (e.g., Makefile, InSpec, OWASP-ZAP.)  
 
-This section will describe the long-running tools leaving subsiquent sections to describe the later.
+This section will describe the long-running tools leaving subsequent sections to describe the later as you use the short-lived tools.
 
 ### 8.8.1. Taiga, an example of Agile project management software
 
@@ -1853,7 +1868,7 @@ Drone is distributed as a set of Docker images. Drone CI can be run with an inte
 
 Drone and its brethren (e.g., Jenkins CI, GitLab CI/CD) are used to facilitate Continuous Integration (CI), a software development practice where members of an Agile team frequently integrate their work in order to detect integration issues as soon as possible. Each integration is orchestrated through a service that essentially assembles a build and runs tests every time a predetermined trigger has been met; and then reports with immediate feedback.
 
-I don't use Jenkins unless I have to. Why? I'm simply not a fan. Initially, because its plugin architecture is painful to manage and with prior version your pipelines existed entirely in the Jenkins CI tool itself. Later, Jenkins CI introduced Groovy-based Jenkin Pipelines that are CMed with your project's source. Every orchestrator has based their DSL on YAML and although I love the Groovy language for its power, I don't find it makes for a good orchestration language. Your opinion may differ. I'm okay with that. Really. I am.
+I don't use Jenkins unless I have to. Why? I'm simply not a fan. Initially, because its plugin architecture is painful to manage and with prior versions your pipelines existed entirely in the Jenkins CI tool itself. Later, Jenkins CI introduced Groovy-based Jenkin Pipelines that are CMed (i.e., placed under configuration management) with your project's source. And while every orchestrator has based their DSL on YAML and although I love the Groovy language for its power, I don't think it makes for a good orchestration language. Your opinion may differ. I'm okay with that. Really. I am.
 
 There are also SaaS CI/CD tools, such as Travis CI and Circle CI. These are great, free CI/CD orchestrators.
 
@@ -1990,9 +2005,9 @@ The second value in the Agile Manifesto is
 
 > Working software over comprehensive documentation
 
-The documentation for this class, this `readme.md` file, is authored in Markdown, a light-weight markup language.  The course's diagrams included inline in the readme are authored to assist the reader are authored in PlantUML, a domain-specific language used to author well-formed and human-readable code to render UML diagrams. 
+The documentation for this class, this `readme.md` file, is authored in Markdown, a light-weight markup language.  The course's diagrams included inline in the readme are authored to assist the reader are authored in PlantUML, a domain-specific language used to author well-formed and human-readable code to render UML diagrams.
 
-For me, I don't need to see the diagrams rendered to follow them.  The code alone is sufficient.  
+For me, I don't need to see the diagrams rendered to follow them. The code alone is sufficient.  
 
 PlantUML supports a number of UML diagrams: Sequence, Usecase, Class diagram, Activity diagram, Component, State, Object, Deployment, and Timing. The DSL also supports a number of other non-UML diagrams: Wireframe graphical interface, Specification and Description Language (SDL), Ditaa diagram... 
 
@@ -2040,12 +2055,12 @@ The UI will refresh to show you a landing page for the project that should be ac
 On your host in the DevOps class project:
 
 1. Enter into the following into the command line 
-   ```
+   ```bash
    git config --global user.name "Administrator"
    git config --global user.email "admin@example.com"
    ```
 2. Then enter the following 
-   ```
+   ```bash
    git remote add toolchain http://192.168.0.11:10080/root/hands-on-DevOps.git
    git push -u toolchain --all
    git push -u toolchain --tags
@@ -2078,7 +2093,7 @@ Open `ansible/development-playbook.yml` and make sure these roles are uncommente
     - k3s-agent
 ```
 
-Then in the command-line of the host (not while ssh'ed into the toolchain vagrant) at the root of the class project type
+Then in the command-line of the host (i.e., not while ssh'ed into the toolchain vagrant) at the root of the class project type
 
 ```bash
 vagrant up development
@@ -2086,13 +2101,19 @@ vagrant up development
 
 You will see a good deal of output.
 
-Once complete open a secure shell to the `development` vagrant
-
 **NOTE**
 
-- Again, it is very possible a network anomaly may result in Ansible failing, if you can determine the role automation failed in you can comment out the proceeding roles proceeding the role the failure occured in and re-run the automation:
-  ```
+- Again, it is very possible a network anomaly may result in Ansible failing, if you can determine the role automation failed in you can comment out the proceeding roles proceeding the role the failure occured in and re-run the automation in the root of the project:
+  ```bash
   vagrant up development --provision
+  ```
+- To halt the `development` vagrant once provisioned and configured perfrom the following in the command-line:
+  ```bash
+  vagrant halt development
+  ```
+- To restart the `development` vagrant once provisioned and configured perfrom the following in the command-line:
+  ```bash
+  vagrant up development --no-provision
   ```
 
 ## 8.10. Golang _helloworld_ project
@@ -2162,7 +2183,7 @@ skinparam note {
 -left-> (*)
 ```
 
-A backlog is essentially your to-do list, a prioritized list of work derived from the roadmap (e.g., the outline for future product functionality and when new features will be released) and its requirements.
+A backlog is essentially your (or your team's) to-do list, a prioritized list of work derived from the roadmap (e.g., the outline for future product functionality and when new features will be released) and its requirements.
 
 Open Taiga in your web browser
 
@@ -2274,10 +2295,6 @@ skinparam note {
 
 The UI will refresh to show you a landing page for the project that should be accessible from <http://192.168.0.11:10080/root/helloworld>
 
-**NOTE**
-
-- Sometimes GitLab with release `11.5.1` will throw an error on the step 6 above.  Simply click the green `Create Project` button again.
-
 ### 8.10.3. Setup the project on the _development_ Vagrant
 
 ```plantuml
@@ -2370,7 +2387,6 @@ cd helloworld
 
 - Ignore the `warning: You appear to have cloned an empty repository.` warning.  This is perfectly normal.  Then move into the clone of your repository via
 
-
 So that you do not commit certain files to GitLab when you push, create a `.gitignore` file with your editor with the following contents
 
 ```
@@ -2387,7 +2403,7 @@ helloworld
 **NOTE**
 
 - Make sure you pre-pend that dot (`.`) at the start of `.gitignore`. In *NIX Dot-files are hidden files. 
-- `.gitignore` will not show up if you simply list the file system via the `ls` command, but they do if you use `ls -a` or `ls --all`.  Either arguments configures `ls` to not ignore entries starting with `.`.
+- `.gitignore` will not show up if you simply list the file system via the `ls` command, but if you use `ls -a` or `ls --all` it will.  Either arguments configures `ls` to not ignore entries starting with `.`.
 
 ### 8.10.4. Author the application
 
@@ -2449,7 +2465,6 @@ skinparam note {
 -left->“Author Drone-based\nContinuous Integration”
 -left-> (*)
 ```
-
 
 In the project follder (i.e., `/home/vagrant/go/src/github.com/nemonik/helloworld`), create `main.go` in emacs, nano, vi, or vim with this content:
 
@@ -2527,7 +2542,6 @@ skinparam note {
 -left->“Author Drone-based\nContinuous Integration”
 -left-> (*)
 ```
-
 
 Format source code according to Go coding standards using
 
@@ -3029,7 +3043,7 @@ skinparam note {
 
 CI integrates all of the steps we have worked to ensure a high quality build into a pipeline, so let's do that.
 
-We're going to author a continuous integration pipeline for our application and execute it on Drone. Drone expects a `.drone.yml` to exist at the root of the project and will execute the pipeline it contains when the project is committed to GitLab.
+We're going to author a continuous integration pipeline for our application and execute it on Drone. Drone expects a `.drone.yml` to exist at the root of the project and will execute the pipeline it contains when the project is committed to GitLab. 
 
 A pipeline is broken up into multiple named steps, where each step executes in an ephemeral (i.e., does its job and then poof it is gone) Docker container with shared disk access to the project's workspace. The benefit of this approach is that it relieves you from having to create and maintain slaves to execute your pipelines.
 
@@ -3056,6 +3070,7 @@ steps:
 **NOTE**
 
 - Make sure you pre-pend that dot (`.`) at the start of `.drone.yml`.
+- Like the `.gitignore` file, `.drone.yml` is a hidden file and will not show up if you list the directory contents with `ls` alone.  You will need to enter `ls -las`.
 
 The pipeline is authored in YAML like almost all the CI orchestrators out there except for Jenkin's Pipelines, whose you author in Groovy-based DSL.
 
