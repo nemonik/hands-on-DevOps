@@ -6628,7 +6628,7 @@ Hello world!
 
 So, now we have beginnings of a real CI/CD pipeline. There are no strings on me err. you.
 
-### 8.11.15. Add complaince and policy automation (InSpec) test to the pipeline
+### 8.11.15. Add compliance and policy automation (InSpec) test to the pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6830,7 +6830,7 @@ The output of InSpec test will resemble
 
 #### 8.11.15.3. The results
 
-The result will be a comparsion of the expected state against the current state of the container and will look like
+The result will be a comparsion of the expected state against the current state of the container and will resemble
 
 ```
 [vagrant@development helloworld-web]$ inspec exec helloworld
@@ -6851,14 +6851,6 @@ Profile Summary: 1 successful control, 0 control failures, 0 controls skipped
 Test Summary: 5 successful, 0 failures, 0 skipped
 ```
 
-**Note**
-
-- Notice you had to accept a chef product license?  We cannot have that during the execution of a pipeline. To prevent that from blocking execution one can execute the `inspect` command like so
-
-```
-inspec exec --chef-license=accept-silent helloworld
-```
-
 #### 8.11.15.4. Add InSpec to the pipeline
 
 We really should have an InSpec container to execute this step.  Maybe I'll do this in the next revision of my class, but since InSpec is already installed on the `toolchain` vagrant, we'll use `appleboy/drone-ssh` container to ssh into `toolchain` and execute our InSpec profile from the pipeline.
@@ -6868,14 +6860,12 @@ In the `helloworld-web` project, edit  `.drone.yml` and add the following step
 ```yaml
 - name: inspec
   image: appleboy/drone-ssh
-  volumes:
-  - name: private_key
-    path: /root/ssh/drone_rsa
   settings:
+    key:
+      from_secret: insecure_private_key
     host: 192.168.0.11
     port: 22
     username: vagrant
-    key_path: /root/ssh/drone_rsa
     command_timeout: 5m
     script:
       - cd /tmp
