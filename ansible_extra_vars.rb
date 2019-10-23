@@ -47,7 +47,7 @@ module AnsibleExtraVars
       gitlab_user: 'root',
 
       drone_deploy_via: 'docker-compose',
-      drone_version: '1.6',
+      drone_version: '1.6.1',
       drone_port: '80',
 
       drone_cli_version: '1.1.0',

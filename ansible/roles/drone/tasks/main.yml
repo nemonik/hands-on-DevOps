@@ -18,6 +18,9 @@
     - alpine:3.10.2
     - drone/agent:{{ drone_version }}
     - drone/drone:{{ drone_version }}
+    - drone/git
+    - plugins/docker
+    - appleboy/drone-ssh
   retries: "{{ docker_retries }}"
   delay: "{{ docker_delay }}"
   register: result
