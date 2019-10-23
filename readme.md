@@ -4235,10 +4235,10 @@ The SonarGo plugin was an optional install now it comes installed by default, bu
 
 1. Open you browser to <http://192.168.0.11:9000/admin/marketplace>
 2. If you need to login as `admin` with the pasword `admin`.
-3. Search for `SonarGo` in the search box with `Search by features, tags, or categories...` in it.
-3. Click a box if it exists update.
-4. Click `Restart Server`.
-5. Yes, your sure.  Click `Restart` in the modal.
+3. Submit `SonarGo` in the search box with `Search by features, tags, or categories...` in it.
+3. In the result, look for the button starting with `Update to`, click it and the plugin will be updated.
+4. The button will be replaced with "Update Pending" and info message will be rendered at the top of the page. Click `Restart Server` in this info message.
+5. A modal with appear asking, "Are you sure you want to restart the server?" Yes, your sure.  Click `Restart` in the modal.
 
 After some time the server will update the plugin.
 
@@ -4831,18 +4831,16 @@ What just happened?
 Check the local Docker registry via
 
 ```bash
-docker images
+docker images "nemonik/helloworld-web"
 ```
 
 The command line output will resemble
 
 ```
-[vagrant@development helloworld-web]$ docker images
-REPOSITORY                         TAG                 IMAGE ID            CREATED             SIZE
-nemonik/helloworld-web             latest              d39ae8428d0c        45 seconds ago      1.06GB
-192.168.0.11:5000/nemonik/golang   1.13                d47187ceffb2        About an hour ago   1.05GB
-rancher/klipper-lb                 v0.1.1              4a065d8dfa58        7 months ago        6.1MB
-k8s.gcr.io/pause                   3.1                 da86e6ba6ca1        21 months ago       742kB```
+[vagrant@development helloworld-web]$ docker images "nemonik/helloworld-web"
+REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
+nemonik/helloworld-web   latest              580633f46dd7        3 minutes ago       1.06GB
+```
 
 **NOTE:**
 
@@ -5130,8 +5128,27 @@ skinparam note {
 
 Spin up a new `nemonik/helloworld-web` container by entering either
 
-- option 1 - ``` docker run -p 3000:3000 --name helloworld-web  nemonik/helloworld-web``` and hitting <http://192.168.0.10:3000> in your web browser, or
-- option 2 - ``` docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web``` and hitting the same URL via ```curl http://192.168.0.10:3000```.
+- Option 1 - Run the container in the foreground
+  
+  ```bash
+  docker run -p 3000:3000 --name helloworld-web  nemonik/helloworld-web
+  ``` 
+  
+  and then hitting 
+  
+  <http://192.168.0.10:3000> 
+  
+  in your web browser, or
+- Option 2 - Run the container in the background 
+  
+  ```
+  docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web
+  ``` 
+  and the hit the same URL via 
+
+  ```bash
+  curl http://192.168.0.10:3000
+  ```
 
 Where
 
@@ -6651,7 +6668,7 @@ skinparam note {
 
 First let me segway into discussing DevSecOps.  
 
-As previously stated, the `Dev` part of the `DevOps` clipped compound stands for "development" (i.e., the application developers), and `Ops` stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  DevSecOps has recently emerged to embed security thought and collaboration into your team's culture when working an applications SDLC and "security-as-code" into your application pipelines.  If you're doing DevOps correctly you're also inherently performing methods and repeated practices of DevSecOps.  Every technology operational stakeholder discipline must be included in the team without needing to fork DevOps in direction to include said disccipline.  We don't need "DevNetOps" or "DevTestOps"... 
+As previously stated, the `Dev` part of the `DevOps` clipped compound stands for "development" (i.e., the application developers), and `Ops` stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  DevSecOps has recently emerged to embed security thought and collaboration into your team's culture when working an applications SDLC and "security-as-code" into your application pipelines.  If you're doing DevOps correctly you're also inherently performing methods and repeated practices of DevSecOps.  In DevOps, Eeery technology operational stakeholder discipline must be included in the team without needing to fork DevOps to include said disccipline.  We don't need "DevNetOps" nor do we need "DevTestOps"...
  
 Authoring InSpec tests permit you to author compliance-as-code, a form of security-as-code, thereby turning compliance, security, and other policy requirements into automated tests.
 
