@@ -5144,7 +5144,7 @@ Spin up a new `nemonik/helloworld-web` container by entering either
   ```
   docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web
   ``` 
-  and the hit the same URL via 
+  and the hit the same URL in the command-line via
 
   ```bash
   curl http://192.168.0.10:3000
@@ -5198,10 +5198,8 @@ listening on :3000
 To kill the container
 
 ```bash
-docker rm -f <the container id output when started the container>
+docker rm -f helloworld-web
 ```
-
-and the container id returned when you ran the container.
 
 ### 8.12.13. Push the container image to the private Docker registry
 
@@ -5629,7 +5627,7 @@ Complete the following:
 
 1. Open <http://192.168.0.11/> in your browser and authenticate through GitLab on into Drone, if you need to.
 2. Then select `SYNC`.  The arrows will chase each other for a bit.
-3. Then click `root/helloworld-web` repo and `ACTIVATE REPOSITORY`, then `SAVE` under the `Main` section to enable Drone orchestration for the project.
+3. Then click `root/helloworld-web` repo and `ACTIVATE REPOSITORY`, then `SAVE` under the `Main` section to enable Drone orchestration for the project.  A `Successfully saved` modal will appear for a second or two in the bottom left of the page indicating you've activated the repository.
 4. Then click the Drone logo in the upper left of the page to return home.
 
 ### 8.12.15. Add Static Analysis (*SonarQube*) step to pipeline
@@ -5732,8 +5730,8 @@ steps:
 Things to note in the above
 
 - This step uses an image, `nemonik/golang-sonarqube-scanner:4.0.0.1744`, built ontop of the `nemonik/golang:1.13` image to speed builds along. 
-- Cut-and-pasting may split the last `-sonar-scanner` line into multiple line resulting in your build failing. If this happens, correct in your editor. 
-- The following commands is a bit of filesystem juggling, so that the scan can executed
+- Cut-and-pasting may split the last command (i.e., the line beginning with `-sonar-scanner`) into multiple lines in your editor that when executed by Drone will result in your build failing. If this happens, correct in your editor and re-push. 
+- The following commands is a bit of filesystem juggling, so that the scan can be executed
 
   ```yaml
     - export DRONESRC=`pwd`
@@ -5754,7 +5752,7 @@ Things to note in the above
     - sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
   ```
 
-Commit the code to GitLab hosted remote repo
+To execute your pipeline, push your changes to GitLab
 
 ```bash
 git add .drone.yml
@@ -5993,7 +5991,7 @@ Add a build step to our `.drone.yml`
   - make build
 ```
 
-Then commit to GitLab
+To execute your pipeline, push your changes to GitLab
 
 ```bash
 git add .
@@ -6099,7 +6097,9 @@ Add the publish step to your `.drone.yml` so that the container image is publish
     - latest
 ```
 
-Push your code into GitLab
+This step makes use of `plugins/docker` container to publish the `nemonik/helloworld-web` docker image to the private registry.
+
+To execute your pipeline, push your changes to GitLab
 
 ```bash
 git add .
@@ -6403,29 +6403,17 @@ skinparam note {
 -left-> (*)
 ```
 
-Usually, one adds a Drone secret and the `appleboy/ssh` plugin, but the last I looked there appeared to be a [bug in the plugin](https://github.com/appleboy/drone-ssh/issues/51), but one can accomplish the same goal using the plugin slightly differently.
+We're going to add a `deploy` step to our Drone pipeline to secure shell into `toolchain` vagrant and deploy the `nemonik/helloworld` container image published by the prior step.
 
-Enable the `Trusted` setting for the repository in Drone by opening
+Now we could put our credentials straight into our pipeline, but keeping "security" in mind we're going to make use of a Drone Secret to store `vagrant` user's private key and then use this secret in executing the `deploy` step.  Even better would be create a service account on the `toolchain` server for the sole purpose of performing deployments. 
 
-1. <http://192.168.0.11/root/helloworld-web/settings>
-2. Under `Main` and then `Project Settings` check off `Trusted`.
-3. Leave the others to their defaults and click `SAVE` and look for Drone to float a modal at the bottom left denoting
-
-   ```
-   Successfully saved
-   ```
-
-   indicating success.
-
-4. Then click the Drone icon in the upper left of the page to return home.
-
-Vagrant has a command to tell us what private key is used to secure shell into each vagrant.  Enter the following on your host meaning not inside a vagrant
+First we need to retrieve the private key used by our vagrant user to secure shell (i.e., ssh) into the `toolchain`vagrant.  We can retrieve this by executing the following command in the root of our project on the host computer (i.e., not inside a vagrant)
 
 ```bash
 vagrant ssh-config toolchain
 ```
 
-Your output may resemble:
+Whose output will resemble
 
 ```
 Host toolchain
@@ -6435,64 +6423,118 @@ Host toolchain
   UserKnownHostsFile /dev/null
   StrictHostKeyChecking no
   PasswordAuthentication no
-  IdentityFile /Users/mjwalsh/.vagrant.d/insecure_private_key
+  IdentityFile /Users/nemonik/.vagrant.d/insecure_private_key
   IdentitiesOnly yes
   LogLevel FATAL
 ```
 
-Find the line starting with `IdentityFile` copy the private key to the root of the class project like so
+Find the line starting with `IdentityFile` and use this with the shell command `cat` to view its contents like so
 
 ```bash
-cp /Users/mjwalsh/.vagrant.d/insecure_private_key .
+cat /Users/nemonik/.vagrant.d/insecure_private_key
 ```
 
-We can access the private key from inside each vagrant, because we configured each vagrant to mount the class project to the path `/vagrant` with the line like
+`cat` will output 
+
+```
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzI
+w+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoP
+kcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2
+hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NO
+Td0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcW
+yLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQIBIwKCAQEA4iqWPJXtzZA68mKd
+ELs4jJsdyky+ewdZeNds5tjcnHU5zUYE25K+ffJED9qUWICcLZDc81TGWjHyAqD1
+Bw7XpgUwFgeUJwUlzQurAv+/ySnxiwuaGJfhFM1CaQHzfXphgVml+fZUvnJUTvzf
+TK2Lg6EdbUE9TarUlBf/xPfuEhMSlIE5keb/Zz3/LUlRg8yDqz5w+QWVJ4utnKnK
+iqwZN0mwpwU7YSyJhlT4YV1F3n4YjLswM5wJs2oqm0jssQu/BT0tyEXNDYBLEF4A
+sClaWuSJ2kjq7KhrrYXzagqhnSei9ODYFShJu8UWVec3Ihb5ZXlzO6vdNQ1J9Xsf
+4m+2ywKBgQD6qFxx/Rv9CNN96l/4rb14HKirC2o/orApiHmHDsURs5rUKDx0f9iP
+cXN7S1uePXuJRK/5hsubaOCx3Owd2u9gD6Oq0CsMkE4CUSiJcYrMANtx54cGH7Rk
+EjFZxK8xAv1ldELEyxrFqkbE4BKd8QOt414qjvTGyAK+OLD3M2QdCQKBgQDtx8pN
+CAxR7yhHbIWT1AH66+XWN8bXq7l3RO/ukeaci98JfkbkxURZhtxV/HHuvUhnPLdX
+3TwygPBYZFNo4pzVEhzWoTtnEtrFueKxyc3+LjZpuo+mBlQ6ORtfgkr9gBVphXZG
+YEzkCD3lVdl8L4cw9BVpKrJCs1c5taGjDgdInQKBgHm/fVvv96bJxc9x1tffXAcj
+3OVdUN0UgXNCSaf/3A/phbeBQe9xS+3mpc4r6qvx+iy69mNBeNZ0xOitIjpjBo2+
+dBEjSBwLk5q5tJqHmy/jKMJL4n9ROlx93XS+njxgibTvU6Fp9w+NOFD/HvxB3Tcz
+6+jJF85D5BNAG3DBMKBjAoGBAOAxZvgsKN+JuENXsST7F89Tck2iTcQIT8g5rwWC
+P9Vt74yboe2kDT531w8+egz7nAmRBKNM751U/95P9t88EDacDI/Z2OwnuFQHCPDF
+llYOUI+SpLJ6/vURRbHSnnn8a/XG+nzedGH5JGqEJNQsz+xT2axM0/W/CRknmGaJ
+kda/AoGANWrLCz708y7VYgAtW2Uf1DPOIYMdvo6fxIB5i9ZfISgcJ/bbCUkFrhoH
++vq/5CIWxCPp0f85R4qxxQ5ihxJ0YDQT9Jpx4TMss4PSavPaBH3RXow5Ohe+bYoQ
+NE5OgEXk2wVfZczCZpigBKbKZHNYcelXtTt/nP3rsCuGcM4h53s=
+-----END RSA PRIVATE KEY-----
+```
+
+Now, what's this business about `insecure_private_key`?  Well, vagrant provides an insecure key pair ot the vagrant user that is by default replaced a more secure key pair per vagrant.  Both `development` and `toolchain` vagrants were deliberately configure to use the `insecure_private_key` to ease the teaching of this class, but keeping "security" in mind it would of been more secure to permit vagrant by default toi generate a new private key for the `toolchain` vagrant.  
+
+To configure vagrant to generate a private key per vagrant replacing the `insecure_private_key` simply comment out the following line in the project's `Vagrantfile` as the default value for `config.ssh.insert_key` is `true`. 
 
 ```ruby
-toolchain.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
+  config.ssh.insert_key = false
 ```
 
-placed inside of each vagrant's `config.vm.define` block.
+In the next step you can simply cut-and-paste the contents of the `insecure_private_key` above.  Otherwise, you need to copy the contents of the generated key.
 
-For example, while on the `development` vagrant enter the following command
+In your browser you're going to add a secret to your Drone project by following these steps
 
-```
-ls /vagrant
-```
+1. <http://192.168.0.11/root/helloworld-web/settings>
+2. Under `Secrets`, enter `insecure_private_key` into the `Secret Name` form field and then cut-and-paste 
 
-It will show you class project.
+   ```
+   -----BEGIN RSA PRIVATE KEY-----
+   MIIEogIBAAKCAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzI
+   w+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoP
+   kcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2
+   hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NO
+   Td0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcW
+   yLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQIBIwKCAQEA4iqWPJXtzZA68mKd
+   ELs4jJsdyky+ewdZeNds5tjcnHU5zUYE25K+ffJED9qUWICcLZDc81TGWjHyAqD1
+   Bw7XpgUwFgeUJwUlzQurAv+/ySnxiwuaGJfhFM1CaQHzfXphgVml+fZUvnJUTvzf
+   TK2Lg6EdbUE9TarUlBf/xPfuEhMSlIE5keb/Zz3/LUlRg8yDqz5w+QWVJ4utnKnK
+   iqwZN0mwpwU7YSyJhlT4YV1F3n4YjLswM5wJs2oqm0jssQu/BT0tyEXNDYBLEF4A
+   sClaWuSJ2kjq7KhrrYXzagqhnSei9ODYFShJu8UWVec3Ihb5ZXlzO6vdNQ1J9Xsf
+   4m+2ywKBgQD6qFxx/Rv9CNN96l/4rb14HKirC2o/orApiHmHDsURs5rUKDx0f9iP
+   cXN7S1uePXuJRK/5hsubaOCx3Owd2u9gD6Oq0CsMkE4CUSiJcYrMANtx54cGH7Rk
+   EjFZxK8xAv1ldELEyxrFqkbE4BKd8QOt414qjvTGyAK+OLD3M2QdCQKBgQDtx8pN
+   CAxR7yhHbIWT1AH66+XWN8bXq7l3RO/ukeaci98JfkbkxURZhtxV/HHuvUhnPLdX
+   3TwygPBYZFNo4pzVEhzWoTtnEtrFueKxyc3+LjZpuo+mBlQ6ORtfgkr9gBVphXZG
+   YEzkCD3lVdl8L4cw9BVpKrJCs1c5taGjDgdInQKBgHm/fVvv96bJxc9x1tffXAcj
+   3OVdUN0UgXNCSaf/3A/phbeBQe9xS+3mpc4r6qvx+iy69mNBeNZ0xOitIjpjBo2+
+   dBEjSBwLk5q5tJqHmy/jKMJL4n9ROlx93XS+njxgibTvU6Fp9w+NOFD/HvxB3Tcz
+   6+jJF85D5BNAG3DBMKBjAoGBAOAxZvgsKN+JuENXsST7F89Tck2iTcQIT8g5rwWC
+   P9Vt74yboe2kDT531w8+egz7nAmRBKNM751U/95P9t88EDacDI/Z2OwnuFQHCPDF
+   llYOUI+SpLJ6/vURRbHSnnn8a/XG+nzedGH5JGqEJNQsz+xT2axM0/W/CRknmGaJ
+   kda/AoGANWrLCz708y7VYgAtW2Uf1DPOIYMdvo6fxIB5i9ZfISgcJ/bbCUkFrhoH
+   +vq/5CIWxCPp0f85R4qxxQ5ihxJ0YDQT9Jpx4TMss4PSavPaBH3RXow5Ohe+bYoQ
+   NE5OgEXk2wVfZczCZpigBKbKZHNYcelXtTt/nP3rsCuGcM4h53s=
+   -----END RSA PRIVATE KEY-----
+   ```
 
-Open `root/helloworld-web`'s `.drone.yml` in your editor and add an additional `deploy:` step below the ones you already have with the `deploy:` being indented the same as the prior `build:` and `publish:` steps.
+   into `Secret Value` form field and then click `Add A Secret`.
+
+3. Then click `ACTIVITY FEED` at the top of the page to return to project's activity feed.
+
+Now, open `root/helloworld-web`'s `.drone.yml` in your editor and add an additional `deploy:` step below the ones you already have with the `deploy:` being indented the same as the prior `build:` and `publish:` steps.
 
 ```yaml
 - name: deploy
   image: appleboy/drone-ssh
-  volumes:
-  - name: private_key
-    path: /root/ssh/drone_rsa
   settings:
+    key:
+      from_secret: insecure_private_key
     host: 192.168.0.11
     port: 22
     username: vagrant
-    key_path: /root/ssh/drone_rsa
     command_timeout: 5m
     script:
-      - docker stop helloworld-web 2>/dev/null
-      - docker rm helloworld-web 2>/dev/null
-      - docker rmi 192.168.0.11:5000/nemonik/helloworld-web 2>/dev/null
-      - docker run -d --restart=always --name helloworld-web --publish 3000:3000 192.168.0.11:5000/nemonik/helloworld-web
-
-volumes:
-- name: private_key
-  host:
-    path: /vagrant/vagrant_private_key
+    - docker stop helloworld-web 2>/dev/null
+    - docker rm helloworld-web 2>/dev/null
+    - docker rmi 192.168.0.11:5000/nemonik/helloworld-web 2>/dev/null
+    - docker run -d --restart=always --name helloworld-web --publish 3000:3000 192.168.0.11:5000/nemonik/helloworld-web
 ```
 
-**NOTE**
-
-- The last line, `path: /vagrant/vagrant_private_key` must contain the path to the private key.
-
-Commit the code to GitLab hosted remote repo
+To execute your pipeline, push your changes to GitLab
 
 ```bash
 git add .drone.yml
@@ -6500,53 +6542,44 @@ git commit -m "added deploy step to pipeline"
 git push origin master
 ```
 
-The deploy step output resembles:
+The final deploy step output will resemble:
 
 ```
-
 ======CMD======
 docker stop helloworld-web 2>/dev/null
 docker rm helloworld-web 2>/dev/null
 docker rmi 192.168.0.11:5000/nemonik/helloworld-web 2>/dev/null
 docker run -d --restart=always --name helloworld-web --publish 3000:3000 192.168.0.11:5000/nemonik/helloworld-web
 ======END======
-out: Untagged: 192.168.0.11:5000/nemonik/helloworld-web:latest
-out: Untagged: 192.168.0.11:5000/nemonik/helloworld-web@sha256:f6025e23d7853eca3baf72bc70244906c712d502366200d00c7ffd83d3a2cfdd
-out: Deleted: sha256:4ee27113f555f8c33132e84926206bebc5ba0efc5f966d6d77a2be8f9ea9928c
-out: Deleted: sha256:98a102f45b580e520b0054c969885c3b2a27449eca653f9c28dd7feb0468482e
-out: Deleted: sha256:2186afb15496042f463f971413817744a6878231c82ea7ec9efb4fb5377b684e
-out: Deleted: sha256:e89ea09302b81194ed9dd110c3c91615b4c136aa1f55db03c27d68b1f8aaafd9
 err: Unable to find image '192.168.0.11:5000/nemonik/helloworld-web:latest' locally
 err: latest: Pulling from nemonik/helloworld-web
-err: 4a56a430b2ba: Already exists
-err: 4b5cacb629f5: Already exists
-err: 14408c8d4f9a: Already exists
-err: ea67eaa7dd42: Already exists
-err: a2a2197e145e: Already exists
-err: 36ac8c11a11f: Already exists
-err: ecd7d9a67e26: Already exists
-err: 91a9d478aec5: Already exists
-err: b4aade77e38c: Already exists
-err: 11c76aa51625: Already exists
-err: 1a8bb82e7ec3: Already exists
-err: b997bbc8531e: Pulling fs layer
-err: 6e8a5d0c0ae9: Pulling fs layer
-err: 1bffaacce591: Pulling fs layer
-err: b997bbc8531e: Verifying Checksum
-err: 6e8a5d0c0ae9: Verifying Checksum
-err: 6e8a5d0c0ae9: Download complete
-err: b997bbc8531e: Download complete
-err: 1bffaacce591: Verifying Checksum
-err: 1bffaacce591: Download complete
-err: b997bbc8531e: Pull complete
-err: 6e8a5d0c0ae9: Pull complete
-err: 1bffaacce591: Pull complete
-err: Digest: sha256:f6025e23d7853eca3baf72bc70244906c712d502366200d00c7ffd83d3a2cfdd
+err: c7b7d16361e0: Already exists
+err: b7a128769df1: Already exists
+err: 1128949d0793: Already exists
+err: 667692510b70: Already exists
+err: c70d80036479: Already exists
+err: f332e1ccc3d8: Already exists
+err: 07e0a3e01633: Already exists
+err: ec735be99e82: Already exists
+err: be022fd55d0e: Already exists
+err: ab95f25eba33: Already exists
+err: d41ad463628f: Pulling fs layer
+err: 7747b2a7287f: Pulling fs layer
+err: eee887802836: Pulling fs layer
+err: d41ad463628f: Download complete
+err: 7747b2a7287f: Verifying Checksum
+err: 7747b2a7287f: Download complete
+err: eee887802836: Verifying Checksum
+err: eee887802836: Download complete
+err: d41ad463628f: Pull complete
+err: 7747b2a7287f: Pull complete
+err: eee887802836: Pull complete
+err: Digest: sha256:76e1c89fab87f1f19e8314e9e0fc8772e01a4fb7a06413a27a6866840437bc5a
 err: Status: Downloaded newer image for 192.168.0.11:5000/nemonik/helloworld-web:latest
-out: efe6d0fb9ab616ba6a4ce761fb49b023d57b5faf7f0b7f440364d48953904c94
-==========================================
-Successfully executed commands to all host.
-==========================================
+out: 148bbcf28610820a7f0fc049d166f1e78b255e33f9d8f327987a169ef84eacae
+==============================================
+✅ Successfully executed commands to all host.
+==============================================
 ```
 
 Open
@@ -6573,8 +6606,8 @@ Command line output will resemble
 
 ```
 [vagrant@toolchain ~]$ docker ps --filter "name=helloworld-web"
-CONTAINER ID        IMAGE                                      COMMAND                 CREATED             STATUS              PORTS                    NAMES
-efe6d0fb9ab6        192.168.0.11:5000/nemonik/helloworld-web   "/app/helloworld-web"   14 minutes ago      Up 14 minutes       0.0.0.0:3000->3000/tcp   helloworld-web
+CONTAINER ID        IMAGE                                      COMMAND                 CREATED              STATUS              PORTS                    NAMES
+148bbcf28610        192.168.0.11:5000/nemonik/helloworld-web   "/app/helloworld-web"   About a minute ago   Up About a minute   0.0.0.0:3000->3000/tcp   helloworld-web
 ```
 
 Then either on your docker host in a browser open
@@ -6696,6 +6729,17 @@ Back in the `development` vagrant at the root of the `helloworld-web` project, w
 
 ```bash
 inspec init profile helloworld
+```
+
+Accept product license by entering 
+
+```
+yes
+```
+
+Then complete following
+
+```bash
 cd helloworld
 cd controls
 rm example.rb
@@ -6773,6 +6817,8 @@ run the inspec test
 ```bash
 inspec exec helloworld
 ```
+
+The output of InSpec test will resemble
 
 ***Note***
 
