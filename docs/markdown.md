@@ -611,7 +611,7 @@ As it unpacks behaviors to building trust: `Talk Straight`, `Demonstrate Respect
 
 --
 
-The book and the Slideshare both cover the 13 behaviors you should seek to embolden in your indivdual team members, but <https://archive.franklincovey.com/facilitator/minisessions/handouts/13_Behaviors_MiniSession_Handout.pdf> handout is a great summary.
+The book and the Slideshare both cover the 13 behaviors you should seek to embolden in your team memebers, but [13 Behaviors MiniSession Handout](https://archive.franklincovey.com/facilitator/minisessions/handouts/13_Behaviors_MiniSession_Handout.pdf) is a great summary.
 
 ---
 
