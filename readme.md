@@ -904,8 +904,6 @@ vagrant-disksize (0.1.3, global)
   - Version Constraint: > 0
 vagrant-proxyconf (2.0.6, global)
   - Version Constraint: > 0
-vagrant-reload (0.0.1, global)
-  - Version Constraint: > 0
 vagrant-vbguest (0.20.0, global)
   - Version Constraint: > 0
 ```
@@ -6878,7 +6876,7 @@ In the `helloworld-web` project, edit  `.drone.yml` and add the following step
       - rm -Rf $WORK_DIR
 ```
 
-Then commit the your code
+To execute your pipeline, push your changes to GitLab
 
 ```bash
 git add .
@@ -6915,9 +6913,9 @@ out:
 out: 
 out: Profile Summary: 1 successful control, 0 control failures, 0 controls skipped
 out: Test Summary: 5 successful, 0 failures, 0 skipped
-==========================================
-Successfully executed commands to all host.
-==========================================
+==============================================
+✅ Successfully executed commands to all host.
+==============================================
 ```
 
 #### 8.11.15.5. Viewing the results in Heimdall-lite
@@ -7048,7 +7046,7 @@ to search for and pull then pull the `nemonik/standalone-firefox:3.141` containe
 Then enter into the command line
 
 ```bash
-docker run -p 4444:4444 192.168.0.11:5000/nemonik/standalone-firefox:3.141
+docker run -p 4444:4444 --name standalone-firefox 192.168.0.11:5000/nemonik/standalone-firefox:3.141
 ```
 
 This stands up Selenium specifically running Firefox.  The container is running in the foreground so we can watch the log output.
@@ -7074,9 +7072,10 @@ A good start outputs to the command line
 
 In another terminal `vagrant ssh` to `development`, so we can author and run our automated test.  
 
-In this other termin at the root of the `helloworld-web` project (e.g., `/home/vagrant/go/src/github.com/nemonik/helloworld-web`) enter
+In this other terminal, we'll create a folder to hold our automated functional test like so
 
 ```bash
+cd ~/go/src/github.com/nemonik/helloworld-web
 mkdir selenium-test
 cd selenium-test
 ```
@@ -7086,18 +7085,16 @@ We're going to write our test in Python.  Python is already installed on the `de
 We'll need to install a dependency, we can install by entering into the command line
 
 ```bash
- sudo pip install 'selenium==3.141'
+sudo pip install --user 'selenium==3.141'
 ```
 
 The output of looks like
 
 ```
-[vagrant@development selenium-test]$ sudo pip install 'selenium==3.141'
 DEPRECATION: Python 2.7 will reach the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 won't be maintained after that date. A future version of pip will drop support for Python 2.7. More details about Python 2 support in pip, can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support
 Collecting selenium==3.141
-  Downloading https://files.pythonhosted.org/packages/80/d6/4294f0b4bce4de0abf13e17190289f9d0613b0a44e5dd6a7f5ca98459853/selenium-3.141.0-py2.py3-none-any.whl (904kB)
-     |████████████████████████████████| 911kB 7.2MB/s
-Requirement already satisfied: urllib3 in /usr/lib/python2.7/site-packages (from selenium==3.141) (1.24.3)
+  Using cached https://files.pythonhosted.org/packages/80/d6/4294f0b4bce4de0abf13e17190289f9d0613b0a44e5dd6a7f5ca98459853/selenium-3.141.0-py2.py3-none-any.whl
+Requirement already satisfied: urllib3 in /usr/lib/python2.7/site-packages (from selenium==3.141) (1.25.6)
 Installing collected packages: selenium
 Successfully installed selenium-3.141.0
 ```
@@ -7113,7 +7110,7 @@ This allow the test's dependencies to be enumerated in a file including the spec
 Then test out the requirements.txt file by entering
 
 ```bash
-sudo pip install -r requirements.txt
+pip install --user -r requirements.txt
 ```
 
 Then in an editor create `test_helloworld.py` Python-based unit test containing
@@ -7211,22 +7208,40 @@ The `standalone-firefox` container will output
 1568819146748	Marionette	INFO	Stopped listening on port 41148
 ```
 
-`ctrl-c` to stop the containers in your other shells.  
+`ctrl-c` in the on shell running `nemonik/standalone-firefox` container to stop it and
 
-**NOTE**
+```bash
+docker rm -f helloworld-web
+```
 
-- If you pushed the `helloword-web` to the background, you'll have to remove it via
+to kill your daemonized `helloword-web` container.
 
-  ```bash
-  docker rm -f helloworld-web
-  ```
+#### 8.11.16.4. Enable `Trusted` for the repository in Drone
 
-#### 8.11.16.4. Add a *selenium* step to the pipeline
+This next Drone step will require you to change the configuration of your project in Drone, so that is trusted, thereby allowing the pipeline to access a shared memory via `/dev/shm` path.
+
+Enable the Trusted setting for the repository in Drone by opening
+
+1. http://192.168.0.11/root/helloworld-web/settings
+
+2. Under `Main` and then `Project Settings` check off `Trusted`.
+
+3. Leave the others to their defaults and click `SAVE` and look for Drone to float a modal at the bottom left denoting
+
+   ```
+   Successfully saved
+   ```
+
+   indicating success.
+
+4. Then click the Drone icon in the upper left of the page to return home.
+
+#### 8.11.16.5. Add a *selenium* step to the pipeline
 
 In one of your existing `vagrant ssh` to `development` enter into the commmand line
 
 ```bash
-cd /home/vagrant/go/src/github.com/nemonik/helloworld-web
+cd ~/go/src/github.com/nemonik/helloworld-web
 ```
 
 Edit the `.drone.yml` file at the root of your `helloworld-web` project and add the following `selenium` step, the `shared_memory` volume, and a `firefox` service.
@@ -7242,9 +7257,6 @@ Edit the `.drone.yml` file at the root of your `helloworld-web` project and add 
   - python test_helloworld.py firefox http://192.168.0.11:3000
 
 volumes:
-- name: private_key
-  host:
-    path: /vagrant/vagrant_private_key
 - name: shared_memory
   host:
     path: /dev/shm
@@ -7255,8 +7267,6 @@ services:
   volumes:
   - name: shared_memory
     path: /dev/shm
-
-
 ```
 
 **NOTE**
@@ -7284,9 +7294,10 @@ if __name__ == "__main__":
         print socket.gethostbyname( sys.argv[1] )
 ```
 
-Commit the code to GitLab hosted remote repo  
+To execute your pipeline, push your changes to GitLab
 
 ```bash
+cd ~/go/src/github.com/nemonik/helloworld-web
 git add .
 git commit -m "added selenium step to pipeline"
 git push origin master
@@ -7306,16 +7317,16 @@ Successful output for the `selenium` stage resembles
 + cd selenium-test
 + pip install -r requirements.txt
 DEPRECATION: Python 2.7 will reach the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 won't be maintained after that date. A future version of pip will drop support for Python 2.7. More details about Python 2 support in pip, can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support
-Collecting selenium==3.141 (from -r requirements.txt (line 1))
+Collecting selenium==3.141
   Downloading https://files.pythonhosted.org/packages/80/d6/4294f0b4bce4de0abf13e17190289f9d0613b0a44e5dd6a7f5ca98459853/selenium-3.141.0-py2.py3-none-any.whl (904kB)
-Collecting urllib3 (from selenium==3.141->-r requirements.txt (line 1))
-  Downloading https://files.pythonhosted.org/packages/e6/60/247f23a7121ae632d62811ba7f273d0e58972d75e58a94d329d51550a47d/urllib3-1.25.3-py2.py3-none-any.whl (150kB)
+Collecting urllib3
+  Downloading https://files.pythonhosted.org/packages/e0/da/55f51ea951e1b7c63a579c09dd7db825bb730ec1fe9c0180fc77bfb31448/urllib3-1.25.6-py2.py3-none-any.whl (125kB)
 Installing collected packages: urllib3, selenium
-Successfully installed selenium-3.141.0 urllib3-1.25.3
+Successfully installed selenium-3.141.0 urllib3-1.25.6
 + python test_helloworld.py firefox http://192.168.0.11:3000
 .
 ----------------------------------------------------------------------
-Ran 1 test in 7.656s
+Ran 1 test in 7.358s
 
 OK
 ```
@@ -7323,18 +7334,18 @@ OK
 If you click on the `firefox` service for this build, you will see similiar output as the pre-flight you executed on `development`
 
 ```
-2019-09-18 15:15:37,460 INFO Included extra file "/etc/supervisor/conf.d/selenium.conf" during parsing
-2019-09-18 15:15:37,467 INFO supervisord started with pid 7
-2019-09-18 15:15:38,473 INFO spawned: 'xvfb' with pid 10
-2019-09-18 15:15:38,479 INFO spawned: 'selenium-standalone' with pid 11
-2019-09-18 15:15:39,480 INFO success: xvfb entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
-2019-09-18 15:15:39,480 INFO success: selenium-standalone entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
-15:15:40.200 INFO [GridLauncherV3.parse] - Selenium server version: 3.141.59, revision: e82be7d358
-15:15:40.400 INFO [GridLauncherV3.lambda$buildLaunchers$3] - Launching a standalone Selenium Server on port 4444
-2019-09-18 15:15:40.501:INFO::main: Logging initialized @1863ms to org.seleniumhq.jetty9.util.log.StdErrLog
-15:15:41.068 INFO [WebDriverServlet.<init>] - Initialising WebDriverServlet
-15:15:41.318 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
-15:15:55.434 INFO [ActiveSessionFactory.apply] - Capabilities are: {
+2019-10-23 23:24:51,863 INFO Included extra file "/etc/supervisor/conf.d/selenium.conf" during parsing
+2019-10-23 23:24:51,869 INFO supervisord started with pid 7
+2019-10-23 23:24:52,871 INFO spawned: 'xvfb' with pid 10
+2019-10-23 23:24:52,874 INFO spawned: 'selenium-standalone' with pid 11
+2019-10-23 23:24:53,877 INFO success: xvfb entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2019-10-23 23:24:53,877 INFO success: selenium-standalone entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+23:24:53.984 INFO [GridLauncherV3.parse] - Selenium server version: 3.141.59, revision: e82be7d358
+23:24:54.238 INFO [GridLauncherV3.lambda$buildLaunchers$3] - Launching a standalone Selenium Server on port 4444
+2019-10-23 23:24:54.324:INFO::main: Logging initialized @1322ms to org.seleniumhq.jetty9.util.log.StdErrLog
+23:24:54.751 INFO [WebDriverServlet.<init>] - Initialising WebDriverServlet
+23:24:54.928 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
+23:27:33.936 INFO [ActiveSessionFactory.apply] - Capabilities are: {
   "acceptInsecureCerts": true,
   "browserName": "firefox",
   "marionette": true,
@@ -7342,19 +7353,24 @@ If you click on the `firefox` service for this build, you will see similiar outp
     "proxyType": "direct"
   }
 }
-15:15:55.437 INFO [ActiveSessionFactory.lambda$apply$11] - Matched factory org.openqa.selenium.grid.session.remote.ServicedSession$Factory (provider: org.openqa.selenium.firefox.GeckoDriverService)
-1568819755827	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofiletoEjDs"
-1568819757861	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
-1568819757864	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
-1568819757865	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
-1568819757865	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
-1568819761156	Marionette	INFO	Listening on port 46302
-1568819761204	Marionette	WARN	TLS certificate errors will be ignored for this session
-1568819761211	Marionette	INFO	Proxy settings initialised: {"proxyType":"direct"}
-15:16:01.304 INFO [ProtocolHandshake.createSession] - Detected dialect: W3C
-15:16:01.371 INFO [RemoteSession$Factory.lambda$performHandshake$0] - Started new session c66b7558-385e-4552-94ff-b5d394756a30 (org.openqa.selenium.firefox.GeckoDriverService)
-1568819761779	Marionette	INFO	Stopped listening on port 46302
+23:27:33.938 INFO [ActiveSessionFactory.lambda$apply$11] - Matched factory org.openqa.selenium.grid.session.remote.ServicedSession$Factory (provider: org.openqa.selenium.firefox.GeckoDriverService)
+1571873254453	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileqTOLm1"
+1571873256632	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1571873256634	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1571873256635	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1571873256635	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1571873259427	Marionette	INFO	Listening on port 34815
+1571873259512	Marionette	WARN	TLS certificate errors will be ignored for this session
+1571873259524	Marionette	INFO	Proxy settings initialised: {"proxyType":"direct"}
+23:27:39.639 INFO [ProtocolHandshake.createSession] - Detected dialect: W3C
+23:27:39.688 INFO [RemoteSession$Factory.lambda$performHandshake$0] - Started new session 3ba53f80-0f18-42d6-8008-520421e89137 (org.openqa.selenium.firefox.GeckoDriverService)
+1571873259993	Marionette	INFO	Stopped listening on port 34815
+JavaScript error: resource://gre/modules/UrlClassifierListManager.jsm, line 680: TypeError: this.tablesData[table] is undefined
 ```
+
+**NOTE**
+
+- If your build fails outright with the message `default: linter: untrusted repositories cannot mount host volumes`, you have forgotten the enable `Trusted` for the repository in Drone.  You can go back do that and `RESTART` the build.
 
 ### 8.11.17. Add DAST step (*OWASP ZAP*) to pipeline
 
@@ -7427,7 +7443,7 @@ skinparam note {
 -left-> (*)
 ```
 
-Dynamic application security testing (DAST) is used to detect security vulnerabilities in an application while it is running, so as to help you remediate these concerns while in development.
+Dynamic application security testing (DAST) is used to detect security vulnerabilities in an application while it is running, so as to help you remediate these concerns while in development.  Again, yet another example of `thinking about application and infrastructure security from the start.`
 
 The OWASP Zed Attack Proxy (ZAP) is one of the world’s most popular free DAST tools actively maintained by hundreds of international volunteers, so add a step to test the application.
 
@@ -7442,7 +7458,7 @@ At the root of the project, we need to query our Docker registry to detemine wha
 {"name":"nemonik/zap2docker-stable","tags":["2.8.0"]}
 ```
 
-We see have version `2.8.0` available, so will pull and run this tagged container.
+We see have version `2.8.0` available, so will pull and run this tagged container inspecting the `nemonik/helloworld-web` container we deployed to the `toolchain` vagrant in the prior section vice spinning up an instance on `development`. 
 
 ```
 docker pull 192.168.0.11:5000/nemonik/zap2docker-stable:2.8.0
@@ -7478,12 +7494,16 @@ Status: Downloaded newer image for 192.168.0.11:5000/nemonik/zap2docker-stable:2
 192.168.0.11:5000/nemonik/zap2docker-stable:2.8.0
 ```
 
-And the following for the `docker run`
+OWASP ZAP will take some time to run as it works to find security vulnerabilities in our running application, so give it time.
+
+When finished its output will resemble
 
 ```
+Status: Downloaded newer image for 192.168.0.11:5000/nemonik/zap2docker-stable:2.8.0
+192.168.0.11:5000/nemonik/zap2docker-stable:2.8.0
 [vagrant@development helloworld-web]$ docker run 192.168.0.11:5000/nemonik/zap2docker-stable:2.8.0 zap-baseline.py -t http://192.168.0.11:3000
-2019-09-18 15:25:06,380 Params: ['zap-x.sh', '-daemon', '-port', '56868', '-host', '0.0.0.0', '-config', 'api.disablekey=true', '-config', 'api.addrs.addr.name=.*', '-config', 'api.addrs.addr.regex=true', '-config', 'spider.maxDuration=1', '-addonupdate', '-addoninstall', 'pscanrulesBeta']
-Sep 18, 2019 3:25:10 PM java.util.prefs.FileSystemPreferences$1 run
+2019-10-23 23:35:46,233 Params: ['zap-x.sh', '-daemon', '-port', '50571', '-host', '0.0.0.0', '-config', 'api.disablekey=true', '-config', 'api.addrs.addr.name=.*', '-config', 'api.addrs.addr.regex=true', '-config', 'spider.maxDuration=1', '-addonupdate', '-addoninstall', 'pscanrulesBeta']
+Oct 23, 2019 11:35:50 PM java.util.prefs.FileSystemPreferences$1 run
 INFO: Created user preferences directory.
 Total of 3 URLs
 PASS: Cookie No HttpOnly Flag [10010]
@@ -7519,15 +7539,13 @@ PASS: Application Error Disclosure [90022]
 PASS: Loosely Scoped Cookie [90033]
 WARN-NEW: X-Content-Type-Options Header Missing [10021] x 4
 	http://192.168.0.11:3000/
+	http://192.168.0.11:3000/sitemap.xml
 	http://192.168.0.11:3000/robots.txt
 	http://192.168.0.11:3000
-	http://192.168.0.11:3000/sitemap.xml
 FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 1	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 31
 ```
 
-**NOTE**
-
-- OWASP ZAP is working to find security vulnerabilities, so give it time.
+Its only gripe is to warn that our application doesn't return a *X-Content-Type-Options Header*.
 
 Great, now lets add another step to our pipeline after the `selenium` step, but before `services:`.
 
@@ -7538,7 +7556,11 @@ Great, now lets add another step to our pipeline after the `selenium` step, but 
   - zap-baseline.py -t http://192.168.0.11:3000 || true
 ```
 
-Commit the code to GitLab hosted remote repo  
+**NOTE**
+
+- Add this new step right after the last above `volumes:`.
+
+To execute your pipeline, push your changes to GitLab
 
 ```bash
 git add .
@@ -7552,7 +7574,7 @@ http://192.168.0.11/root/helloworld-web
 
 And monitor the progress of the build. The pipeline should execute in a few minutes.
 
-Successful output for this stage resembles
+Successful output for this stage resembles the prior output
 
 ```
 + zap-baseline.py -t http://192.168.0.11:3000 || true
@@ -7599,7 +7621,7 @@ WARN-NEW: X-Content-Type-Options Header Missing [10021] x 4
 FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 1	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 31
 ```
 
-Our application is relatively simple, so it was doubtful anything would be found, but there is a warning that a *X-Content-Type-Options Header* is missing that could be resolved by adding addtional handlers to the helloworld-web's main.go.
+Our application is relatively simple, so it was doubtful anything would be found, but there again is the warning about an *X-Content-Type-Options Header* being missing that could be resolved by adding addtional handlers to the helloworld-web's main.go.
 
 ### 8.11.18. All the source for *helloworld-web*
 
@@ -7613,7 +7635,7 @@ So, you may not realize it, but with the `helloworld-web` application you've act
 
 What's a microservice?
 
-- Microservices perform a single function (i.e., a single business capability or feature.)  In our case, our application's single function is to return, "Helloworld!"
+- Microservices inidividually perform a single function (i.e., a single business capability or feature.)  In our case, our application's single function is to return, "Hello world!\n"
 - Communicate with other services via well-defined APIs.
 - Can be written using different frameworks and programming languages.
 - Can be deployed independently or as a group.
@@ -7627,17 +7649,19 @@ The benefit
 - In Microservice Architecture each feature runs as a separate service within its own container.
 - Thereby, permitting each service to be scaled and maintained independently.
 - Providing crash Isolation, so if a single piece of your service is crashing, then the rest of your application continues to work
-- Providing Isolation for Security, so a compromise of one service only gains the adversary access to the resources of that single service
+- Providing Isolation for Security (Again more security thought.), so a compromise of one service only gains the adversary access to the resources of that single service
 - Providing independent scaling, so each microservice’s compute utilization can be independently scaled up and down 
 - Increasing development velocity, lowering development risks thereby permitting teams to build faster in comparison to monolithic development.
 
 So, with the `helloworld-web` application, you've developed a micrsoservice, packaged it into a container (i.e., containerized it), and by doing so essentially created a cloud-native application.
 
+In this era of cloud computing, DevOps and cloud-native application development are heavily intertwined.
+
 ### 8.12.1. What's cloud-native?
 
 Cloud-native computing deploys applications as microservices, packaging each into its own container, and by doing so have opened yourself up to the capability of being able to dynamically orchestrate the container to optimize resource utilization, elastic scaling, security issolation...  
 
-Granted our microservice doesn't do much, but we can get a peak at the possibilities as both the `toolchain` and `develoment` vagrants are infact a Kubernetes (K8s) cluster.
+Granted our tiny insignificant microservice doesn't really do much, but we can get a peak at the possibilities as both the `toolchain` and `develoment` vagrants are infact a Kubernetes (K8s) cluster.
 
 #### 8.12.1.1. So, let's experiment with our little "microservice"
 
@@ -7693,9 +7717,11 @@ Build the container and push to the registry
 make docker-push
 ```
 
+We'll also have to remove the image from our local Docker caches
+
 #### 8.12.1.3. Create a Kubernetes manifest for the application
 
-At the root of the `hellworld-web` application create a new file named `helloworld.yml` and add to it the following content
+At the root of the `hellworld-web` application create a new file, a Kubernetes resource file for our application named `helloworld.yml` and add to it the following content
 
 ```yaml
 ---
@@ -7727,7 +7753,7 @@ spec:
       containers:
       - name: helloworld-container
         image: 192.168.0.11:5000/nemonik/helloworld-web:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - name: http
           containerPort: 3000
@@ -7766,7 +7792,7 @@ spec:
           servicePort: http
 ```
 
-This file is a collection of resource manifests used to deploy your `helloworld-web` container, exposed it via a service, and register the service with the Traefik reverse proxy via an ingress.
+This resource file is a collection of resource manifests used to deploy your `helloworld-web` container, exposed it via a service, and register the service with the Traefik reverse proxy via an ingress.
 
 The first resource defines a `Namespace`
 
@@ -7779,7 +7805,7 @@ metadata:
   name: helloworld
 ```      
 
-for our `helloworld` application.  A namespace is used to provide.
+for our `helloworld` application.  A namespace is used to provide application scope.
 
 To query for the current namespaces in the cluster perform the following
 
@@ -7792,16 +7818,16 @@ whose output will resemble
 ```
 [vagrant@development helloworld-web]$ kubectl get namespace
 NAME                 STATUS   AGE
-default              Active   13h
-gitlab               Active   13h
-kube-node-lease      Active   13h
-kube-public          Active   13h
-kube-system          Active   13h
-local-path-storage   Active   13h
-plantuml-server      Active   13h
-registry             Active   13h
-sonarqube            Active   13h
-taiga                Active   13h
+default              Active   42h
+kube-system          Active   42h
+kube-public          Active   42h
+kube-node-lease      Active   42h
+local-path-storage   Active   42h
+registry             Active   42h
+taiga                Active   42h
+gitlab               Active   42h
+plantuml-server      Active   42h
+sonarqube            Active   42h
 ```
 
 The next resource manifest is the `Deployment`
@@ -7835,8 +7861,9 @@ spec:
           containerPort: 3000
 ```
 
-A `Deployment` is used to define the desired state of our `helloworld` application.
+A `Deployment` is used to define the desired state of our `helloworld` application. 
 
+`imagePullPolicy` being set to `Always` is needed otherwise Docker will use the prior pulled image, if it exists.
 
 To query the cluster for all the `Deployment`s type
 
@@ -7849,24 +7876,24 @@ And its output will resemble.  Almost every tool is being managed via Kubernetes
 ```
 [vagrant@development helloworld-web]$ kubectl get deployment --all-namespaces
 NAMESPACE            NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
-gitlab               gitlab                   1/1     1            1           13h
-gitlab               postgresql               1/1     1            1           13h
-gitlab               redis                    1/1     1            1           13h
-kube-system          coredns                  1/1     1            1           13h
-kube-system          kubernetes-dashboard     1/1     1            1           13h
-kube-system          traefik                  1/1     1            1           13h
-local-path-storage   local-path-provisioner   1/1     1            1           13h
-plantuml-server      plantuml-server          1/1     1            1           13h
-registry             registry                 1/1     1            1           13h
-sonarqube            postgresql               1/1     1            1           13h
-sonarqube            sonarqube                1/1     1            1           13h
-taiga                postgresql               1/1     1            1           13h
-taiga                taiga                    1/1     1            1           13h
+kube-system          traefik                  1/1     1            1           42h
+kube-system          kubernetes-dashboard     1/1     1            1           42h
+kube-system          coredns                  1/1     1            1           42h
+registry             registry                 1/1     1            1           42h
+taiga                postgresql               1/1     1            1           42h
+taiga                taiga                    1/1     1            1           42h
+gitlab               redis                    1/1     1            1           42h
+gitlab               postgresql               1/1     1            1           42h
+gitlab               gitlab                   1/1     1            1           42h
+plantuml-server      plantuml-server          1/1     1            1           42h
+sonarqube            postgresql               1/1     1            1           42h
+sonarqube            sonarqube                1/1     1            1           42h
+local-path-storage   local-path-provisioner   1/1     1            1           42h
 ```
 
 A `Deployment` results in `Pod`, a group of containers being deployed together.
 
-To liste the `Pod`s in the cluster
+To list the `Pod`s in the cluster
 
 ```bash
 kubectl get pod --all-namespaces
@@ -7876,38 +7903,37 @@ whose output will resemble
 
 ```
 [vagrant@development helloworld-web]$ kubectl get pod --all-namespaces
-NAMESPACE            NAME                                    READY   STATUS    RESTARTS   AGE
-gitlab               gitlab-549cf5fc94-nfrx7                 1/1     Running   1          13h
-gitlab               postgresql-77b6c7876b-w96ln             1/1     Running   1          13h
-gitlab               redis-f4c654dc6-8dltd                   1/1     Running   1          13h
-gitlab               svclb-gitlab-dspjc                      2/2     Running   2          13h
-gitlab               svclb-gitlab-m9rjt                      2/2     Running   2          13h
-kube-system          coredns-b7464766c-h6r6r                 1/1     Running   1          13h
-kube-system          kubernetes-dashboard-5f7b999d65-79jfr   1/1     Running   2          13h
-kube-system          svclb-traefik-djd9m                     1/1     Running   1          13h
-kube-system          svclb-traefik-w7jgs                     1/1     Running   1          13h
-kube-system          svclb-traefik-web-ui-452lc              1/1     Running   1          13h
-kube-system          svclb-traefik-web-ui-6mp4h              1/1     Running   1          13h
-kube-system          traefik-6b798649c9-rp6rq                1/1     Running   1          13h
-local-path-storage   local-path-provisioner-848fdcff-qxxqz   1/1     Running   3          13h
-plantuml-server      plantuml-server-7c846b64f5-sq4cw        1/1     Running   1          13h
-plantuml-server      svclb-plantuml-server-8zvsb             1/1     Running   1          13h
-plantuml-server      svclb-plantuml-server-wfdtc             1/1     Running   1          13h
-registry             registry-7f589d847-4z8w2                1/1     Running   1          13h
-registry             svclb-registry-fk2zk                    1/1     Running   1          13h
-registry             svclb-registry-gh2sx                    1/1     Running   1          13h
-sonarqube            postgresql-695b96d59f-g9d6f             1/1     Running   1          13h
-sonarqube            sonarqube-5c4f4457dd-gk8pd              1/1     Running   1          13h
-sonarqube            svclb-sonarqube-cpch2                   1/1     Running   1          13h
-sonarqube            svclb-sonarqube-cwj7r                   1/1     Running   1          13h
-taiga                postgresql-6bb74d5bd4-zsqwm             1/1     Running   1          13h
-taiga                svclb-taiga-dz25l                       1/1     Running   1          13h
-taiga                svclb-taiga-mpgjk                       1/1     Running   1          13h
-taiga                taiga-75c89d796-k6xrh                   1/1     Running   1          13h
+NAMESPACE            NAME                                     READY   STATUS    RESTARTS   AGE
+kube-system          traefik-66f759c696-ql7hq                 1/1     Running   0          42h
+kube-system          kubernetes-dashboard-7d75c474bb-w5gx7    1/1     Running   0          42h
+kube-system          coredns-66f496764-br445                  1/1     Running   0          42h
+kube-system          svclb-traefik-6w9sk                      1/1     Running   0          42h
+registry             svclb-registry-qc7w8                     1/1     Running   0          42h
+kube-system          svclb-traefik-web-ui-cmvb9               1/1     Running   0          42h
+registry             registry-779f7b957b-9fhhd                1/1     Running   0          42h
+taiga                svclb-taiga-hzwk8                        1/1     Running   0          42h
+taiga                postgresql-55867bd4cc-ntskp              1/1     Running   0          42h
+taiga                taiga-c7cddb697-p2ltv                    1/1     Running   0          42h
+gitlab               svclb-gitlab-z6j4v                       2/2     Running   0          42h
+gitlab               redis-9bc4f4f77-plbmt                    1/1     Running   0          42h
+gitlab               postgresql-57694695f-mxrkk               1/1     Running   0          42h
+gitlab               gitlab-fd84dc8dd-lghpn                   1/1     Running   0          42h
+plantuml-server      svclb-plantuml-server-z7wwj              1/1     Running   0          42h
+plantuml-server      plantuml-server-54df8b596d-5whns         1/1     Running   0          42h
+sonarqube            svclb-sonarqube-ls24f                    1/1     Running   0          42h
+sonarqube            postgresql-f557c84d8-7tptv               1/1     Running   0          42h
+sonarqube            sonarqube-5dfbc585cc-rzfjn               1/1     Running   0          42h
+kube-system          svclb-traefik-5p8pb                      1/1     Running   0          41h
+sonarqube            svclb-sonarqube-clqcb                    1/1     Running   0          41h
+kube-system          svclb-traefik-web-ui-w72s9               1/1     Running   0          41h
+registry             svclb-registry-dcffd                     1/1     Running   0          41h
+gitlab               svclb-gitlab-58ldz                       2/2     Running   0          41h
+taiga                svclb-taiga-9n7b6                        1/1     Running   0          41h
+plantuml-server      svclb-plantuml-server-hpk5b              1/1     Running   0          41h
+local-path-storage   local-path-provisioner-ccbdd96dc-cgq6r   1/1     Running   1          42h
 ```
 
 The next resurce defines a `Service` used to expose our `helloworld` application as a network service.
-
 
 ```yaml
 ---
@@ -7948,7 +7974,7 @@ spec:
           servicePort: http
 ```
 
-An `Ingress` exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.  We are exposing out service via Traefik, who in turn exposes out application at http://192.168.0.11:8082/helloworld.
+An `c` exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.  We are exposing out service via Traefik, who in turn exposes out application at http://192.168.0.11:8082/helloworld.
 
 Once our application is deployed to the cluster, Traefik's dashboard will permit a view into this at http://192.168.0.11:8083/dashboard/
 
@@ -7970,7 +7996,7 @@ service/helloworld-service created
 ingress.extensions/helloworld-ingress created
 ```
 
-To monitor porgress enter into the command-line
+To monitor progress enter into the command-line
 
 ```bash
 kubectl --namespace=helloworld get all
@@ -7997,7 +8023,7 @@ replicaset.apps/helloworld-deployment-f767b5b57   1         1         1       67
 I often prepend the command with `watch` to monitor progress
 
 ```bash
-monitor kubectl --namespace=helloworld get all
+watch kubectl --namespace=helloworld get all
 ```
 
 What you see above is the cluster is managing 1 pod of the `192.168.0.11:5000/nemonik/helloworld-web:latest` container.
@@ -8054,7 +8080,7 @@ Re-running
 kubectl --namespace=helloworld get all
 ```
 
-whose output will resemble
+will return output resembling
 
 ```
 [vagrant@development helloworld-web]$ kubectl --namespace=helloworld get all
@@ -8074,14 +8100,31 @@ NAME                                              DESIRED   CURRENT   READY   AG
 replicaset.apps/helloworld-deployment-cf4667475   4         4         4       16m
 ```
 
-The cluster is now running 4 replicas.
+And running 
 
-Now run curl several times via
+```bash
+kubectl --namespace=helloworld get pods -o wide
+```
+
+May show you, at least in this case, that Pods are spread across the cluster and not just running on `toolchain` like so
+
+```
+[vagrant@development helloworld-web]$ kubectl --namespace=helloworld get pods -o wide
+NAME                                     READY   STATUS    RESTARTS   AGE     IP           NODE          NOMINATED NODE   READINESS GATES
+helloworld-deployment-6879449688-5d4ls   1/1     Running   0          2m35s   10.42.0.32   toolchain     <none>           <none>
+helloworld-deployment-6879449688-vj65k   1/1     Running   0          32s     10.42.1.10   development   <none>           <none>
+helloworld-deployment-6879449688-cq55w   1/1     Running   0          32s     10.42.0.33   toolchain     <none>           <none>
+helloworld-deployment-6879449688-26xsv   1/1     Running   0          32s     10.42.0.34   toolchain     <none>           <none>
+```
+
+It usually is immaterial where in the cluster the Pod is running, but the point here is to show you the replicas are spread across the cluster thereby increasing the application's availability. 
+
+So, the cluster is now running 4 replicas.  Let's explore the ramifications of this by running `curl` hitting the Traefik ingress several times in a row via
 
 ```bash
 for i in {1..10}
 do
-curl http://192.168.0.10:8083/helloworld
+curl http://192.168.0.10:8082/helloworld
 done
 ```
 
