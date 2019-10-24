@@ -607,6 +607,10 @@ I'd encourage you spend time with the *The Speed Of Trust* Slideshare.
 
 --
 
+The book and the Slideshare both cover the 13 behaviors you should seek to embolden in your indivdual team members, but <https://archive.franklincovey.com/facilitator/minisessions/handouts/13_Behaviors_MiniSession_Handout.pdf> handout is a great summary.
+
+--
+
 As it unpacks behaviors to building trust: `Talk Straight`, `Demonstrate Respect`, `Create Transparency`, `Right Wrongs`, `Show Loyalty`, `Deliver Results`, `Get Better`, `Confront Reality`, `Clarify Expectation`, `Practice Accountability`, `Listen First`, `Keep Commitments`, and `Extend Trust`. 
 
 ---
