@@ -132,6 +132,7 @@ What you should bring:
         - [8.7.2. Docker-compose](#872-docker-compose)
         - [8.7.3. Kubernetes](#873-kubernetes)
             - [8.7.3.1. Kubectl](#8731-kubectl)
+            - [8.7.3.2. Kubernetes-Dashboard](#8732-kubernetes-dashboard)
     - [8.8. The long-running tools](#88-the-long-running-tools)
         - [8.8.1. Taiga, an example of Agile project management software](#881-taiga-an-example-of-agile-project-management-software)
             - [8.8.1.1. Documentation, source, container image](#8811-documentation-source-container-image)
@@ -180,32 +181,24 @@ What you should bring:
             - [8.11.9.3. Perform static analysis (run *sonar-scanner*) on the command line](#81193-perform-static-analysis-run-sonar-scanner-on-the-command-line)
         - [8.11.10. Automated the build (i.e., write the Makefile)](#81110-automated-the-build-ie-write-the-makefile)
         - [8.11.11. Dockerize the application](#81111-dockerize-the-application)
-        - [8.11.12. Add the build step to the pipeline](#81112-add-the-build-step-to-the-pipeline)
-        - [8.11.13. Add container image publish step to pipeline](#81113-add-container-image-publish-step-to-pipeline)
-        - [8.11.14. Add container deploy step to pipeline](#81114-add-container-deploy-step-to-pipeline)
-        - [8.11.15. Add complaince and policy automation (InSpec) test to the pipeline](#81115-add-complaince-and-policy-automation-inspec-test-to-the-pipeline)
-            - [8.11.15.1. First author an InSpec test](#811151-first-author-an-inspec-test)
-            - [8.11.15.2. Execute your test](#811152-execute-your-test)
-            - [8.11.15.3. The results](#811153-the-results)
-            - [8.11.15.4. Add InSpec to the pipeline](#811154-add-inspec-to-the-pipeline)
-            - [8.11.15.5. Viewing the results in Heimdall-lite](#811155-viewing-the-results-in-heimdall-lite)
-        - [8.11.16. Add automated functional test to pipeline](#81116-add-automated-functional-test-to-pipeline)
-            - [8.11.16.1. Run the *helloworld-web* application](#811161-run-the-helloworld-web-application)
-            - [8.11.16.2. Pull and run Selenium Firefox Standalone](#811162-pull-and-run-selenium-firefox-standalone)
-            - [8.11.16.3. Create our test automation](#811163-create-our-test-automation)
-            - [8.11.16.4. Add a *selenium* step to the pipeline](#811164-add-a-selenium-step-to-the-pipeline)
-        - [8.11.17. Add DAST step (*OWASP ZAP*) to pipeline](#81117-add-dast-step-owasp-zap-to-pipeline)
-        - [8.11.18. All the source for *helloworld-web*](#81118-all-the-source-for-helloworld-web)
-    - [8.12. Microservices](#812-microservices)
-        - [8.12.1. What's cloud-native?](#8121-whats-cloud-native)
-            - [8.12.1.1. So, let's experiment with our little "microservice"](#81211-so-lets-experiment-with-our-little-microservice)
-            - [8.12.1.2. Modify the helloworld-web application](#81212-modify-the-helloworld-web-application)
-            - [8.12.1.3. Create a Kubernetes manifest for the application](#81213-create-a-kubernetes-manifest-for-the-application)
-            - [8.12.1.4. Deploy your application](#81214-deploy-your-application)
-            - [8.12.1.5. Test your application](#81215-test-your-application)
-    - [8.13. Using what you've learned](#813-using-what-youve-learned)
-    - [8.14. Shoo away your vagrants](#814-shoo-away-your-vagrants)
-    - [8.15. That's it](#815-thats-it)
+        - [8.11.12. Run the Docker container](#81112-run-the-docker-container)
+            - [8.11.12.1. Option 1](#811121-option-1)
+            - [8.11.12.2. Option 2](#811122-option-2)
+        - [8.11.13. Push the container image to the private Docker registry](#81113-push-the-container-image-to-the-private-docker-registry)
+        - [8.11.14. Configure Drone to execute your CI/CD pipeline](#81114-configure-drone-to-execute-your-cicd-pipeline)
+        - [8.11.15. Add Static Analysis (*SonarQube*) step to pipeline](#81115-add-static-analysis-sonarqube-step-to-pipeline)
+- [Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved](#copyright-c-2019-michael-joseph-walsh---all-rights-reserved)
+- [You may use, distribute and modify this code under the](#you-may-use-distribute-and-modify-this-code-under-the)
+- [terms of the the license.](#terms-of-the-the-license)
+- [You should have received a copy of the license with](#you-should-have-received-a-copy-of-the-license-with)
+- [this file. If not, please email <mjwalsh@nemonik.com>](#this-file-if-not-please-email-mjwalshnemonikcom)
+- ["noProxy":"os.environ['no_proxy']," + selenium_host # Selenium cannot handle no_proxy](#noproxyosenvironno_proxy--selenium_host--selenium-cannot-handle-no_proxy)
+- [!/usr/bin/env python](#usrbinenv-python)
+- [Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved](#copyright-c-2019-michael-joseph-walsh---all-rights-reserved-1)
+- [You may use, distribute and modify this code under the](#you-may-use-distribute-and-modify-this-code-under-the-1)
+- [terms of the the license.](#terms-of-the-the-license-1)
+- [You should have received a copy of the license with](#you-should-have-received-a-copy-of-the-license-with-1)
+- [this file. If not, please email <mjwalsh@nemonik.com>](#this-file-if-not-please-email-mjwalshnemonikcom-1)
 
 <!-- /TOC -->
 
@@ -1717,6 +1710,12 @@ The last few lines of output will resemble
 2019-10-21 15:49:00.070:INFO:oejs.AbstractConnector:main: Started ServerConnector@2145b572{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
 2019-10-21 15:49:00.070:INFO:oejs.Server:main: Started @2044ms
 ```
+
+#### 8.7.3.2. Kubernetes-Dashboard
+
+The course automation will also deploy the Kubernetes-Dashboard and for long-running tools orchestrated via Kubernetes you can view much the same data in the Kubernetes-Dashboard.
+
+<https://192.168.0.11:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/>
 
 ## 8.8. The long-running tools
 
@@ -5057,7 +5056,7 @@ Successfully tagged nemonik/helloworld-web:latest
 
 - As noted before the base image already existed in the local Docker registry thereby saving us time.
 
-### 8.12.12. Run the Docker container
+### 8.11.12. Run the Docker container
 
 ```plantuml
 skinparam shadowing false
@@ -5160,7 +5159,7 @@ Where
 - `--name helloworld-web` names the running container
 - `nemonik/helloworld-web` states what container image to use.
 
-#### 8.12.12.1. Option 1
+#### 8.11.12.1. Option 1
 
 The command line output for the first option will be
 
@@ -5172,7 +5171,7 @@ listening on :3000
 ^C
 ```
 
-#### 8.12.12.2. Option 2
+#### 8.11.12.2. Option 2
 
 For the second option there will be no output written to the screen, but you can see the same output if you run 
 
@@ -5203,7 +5202,7 @@ To kill the container
 docker rm -f helloworld-web
 ```
 
-### 8.12.13. Push the container image to the private Docker registry
+### 8.11.13. Push the container image to the private Docker registry
 
 ```plantuml
 skinparam shadowing false
@@ -5552,7 +5551,7 @@ Returns in the command line
 {"name":"nemonik/helloworld-web","tags":["latest"]}
 ```
 
-### 8.12.14. Configure Drone to execute your CI/CD pipeline
+### 8.11.14. Configure Drone to execute your CI/CD pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -5632,7 +5631,7 @@ Complete the following:
 3. Then click `root/helloworld-web` repo and `ACTIVATE REPOSITORY`, then `SAVE` under the `Main` section to enable Drone orchestration for the project.  A `Successfully saved` modal will appear for a second or two in the bottom left of the page indicating you've activated the repository.
 4. Then click the Drone logo in the upper left of the page to return home.
 
-### 8.12.15. Add Static Analysis (*SonarQube*) step to pipeline
+### 8.11.15. Add Static Analysis (*SonarQube*) step to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -7282,7 +7281,7 @@ Drone uses the `services:` section to spin up a patched version of `selenium/sta
 Create in a text editor `selenium-test/resolve.py` with
 
 ```python
-#!/usr/bin/env python
+# !/usr/bin/env python
 
 # Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
@@ -8065,7 +8064,14 @@ Hello world! helloworld-deployment-cf4667475-pqhk4
 
 That random hex number is the result of our code change.  It is the hostname of the container that responded to your request.
 
-Now lets scale from 1 to 4 replicas via
+Now open Traefik Dashboard in your web browser
+
+<http://192.168.0.11:8083/dashboard/>
+
+
+Traefik is An open-source reverse proxy and load balancer for HTTP and TCP-based applications.  You'll see `/helloworld` frontend and one `/helloworld` backend.
+
+Lets scale from 1 to 4 replicas, while keeping an eye on the Traefik Dashboard, via
 
 ```bash
 kubectl scale --namespace=helloworld --replicas=4 deployment.apps/helloworld-deployment
@@ -8078,13 +8084,15 @@ whose output will resemble
 deployment.apps/helloworld-deployment scaled
 ```
 
+And you'll see additional backends come into service in the Traefik Dashboard.
+
 Re-running 
 
 ```bash
 kubectl --namespace=helloworld get all
 ```
 
-will return output resembling
+will also return output resembling
 
 ```
 [vagrant@development helloworld-web]$ kubectl --namespace=helloworld get all
