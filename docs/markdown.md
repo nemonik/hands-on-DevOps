@@ -14,28 +14,11 @@
 
 --
 
-We will be spending most of the course hands-on working with the tools and in the Unix command line making methods and repeated practices of DevOps happen, so as to grow an understanding of how DevOps actually works.
+We will be spending most of the course hands-on working with the tools and in the Unix commandline making us of the methods and repeated practices of DevOps, so as to grow an understanding of how DevOps actually works.
 
 --
 
 Don't fixate on the tools used, nor the apps we develop in the course of learning how and why.  How and why is far more important.  This course like DevOps is not about tools although we'll be using them. You'll spend far more time writing code.  (Or at least cutting-and-pasting code.) 
-
----
-
-## Thank you to
-
-- Walter Hiranpat for running through the course material for my first class prior to me teaching it.
-- Eric McCann for assisting Walter and I work through Vagrant install issues on Microsoft Windows.
-- My first class participants for "beta" testing my class.
-- Jonathan Thomas for TA'ing my second class.
-
---
-
-## Thank you to
-
-- David Trang for TA'ing my class countless times.
-- Walter Hiranpat, David Trang, and Rony Xavier for prepping the MITRE Institute classroom for my class countless times.
-- Rony Xavier and Aaron Lippold for assisting me mature the InSpec section.
 
 ---
 
@@ -718,7 +701,19 @@ With DevOps one does not simply hit the ground running.
 
 Keep in mind, one must first `crawl`, `walk` and then ultimately `run` as you embrace the necessary culture change, methods and repeated practices...
 
+---
+
+## Let me leave you with the following
+
 --
+
+To succeed at DevOps you must __combine software development and information technology operations in the systems development life cycle__ with __a focus on shorting its life cycle while delivering features, fixes, and updates frequently in close alignment with business objectives__. If the effort cannot combine both Dev and Ops with this focus the effort will most certainly fail.
+
+--
+
+If your effort doesn't __grok (i.e, understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.  I say this because the culture is the largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
+
+---
 
 This ends my deck
 ___
