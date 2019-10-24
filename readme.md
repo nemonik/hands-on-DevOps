@@ -493,50 +493,50 @@ Now that everyone is a "coder" using the same tools, methods and repeated practi
 
 # 7. Reading list
 
-**AntiPatterns: Refactoring Software, Architectures, and Projects in Crisis**
-William J. Brown, Raphael C. Malveau, Hays W. "Skip" McCormick,  and Thomas J. Mowbray
-ISBN: 978-0-471-19713-3
+**AntiPatterns: Refactoring Software, Architectures, and Projects in Crisis**  
+William J. Brown, Raphael C. Malveau, Hays W. "Skip" McCormick,  and Thomas J. Mowbray  
+ISBN: 978-0-471-19713-3  
 Apr 1998
 
-**Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation (Addison-Wesley Signature Series (Fowler))**
-David Farley and Jez Humble
-ISBN-13: 978-0321601919
+**Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation (Addison-Wesley Signature Series (Fowler))**  
+David Farley and Jez Humble  
+ISBN-13: 978-0321601919  
 August 2010
 
-**The DevOps Handbook: How to Create World-Class Agility, Reliability, and Security in Technology Organizations**
-Gene Kim Jez Humble,  Patrick Debois, and John Willis
-ISBN-13: 978-1942788003
+**The DevOps Handbook: How to Create World-Class Agility, Reliability, and Security in Technology Organizations**  
+Gene Kim Jez Humble,  Patrick Debois, and John Willis  
+ISBN-13: 978-1942788003  
 October 2016
 
-**Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations**
-Nicole Forsgren PhD, Jez Humble, and Gene Kim
-ISBN-13: 978-1942788331
+**Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations**  
+Nicole Forsgren PhD, Jez Humble, and Gene Kim  
+ISBN-13: 978-1942788331  
 March 27, 2018
 
-**Site Reliability Engineering: How Google Runs Production Systems 1st Edition**
-Betsy Beyer, Chris Jones, Jennifer Petoff, and Niall Richard Murphy
-ISBN-13: 978-1491929124
-April 16, 2016
+**Site Reliability Engineering: How Google Runs Production Systems 1st Edition**  
+Betsy Beyer, Chris Jones, Jennifer Petoff, and Niall Richard Murphy  
+ISBN-13: 978-1491929124  
+April 16, 2016  
 Also, available online at https://landing.google.com/sre/book/index.html
 
-**Release It!: Design and Deploy Production-Ready Software 2nd Edition**
-Michael T. Nygard
-ISBN-13: 978-1680502398
+**Release It!: Design and Deploy Production-Ready Software 2nd Edition**  
+Michael T. Nygard  
+ISBN-13: 978-1680502398  
 January 18, 2018
 
-**The SPEED of TRUST: The One Thing That Changes Everything**
-Stephen M .R. Covey
-ISBN-13: 978-1416549000
-February 5, 2008
+**The SPEED of TRUST: The One Thing That Changes Everything**  
+Stephen M .R. Covey  
+ISBN-13: 978-1416549000  
+February 5, 2008  
 The gist of the book can be found at SlideShare https://www.slideshare.net/nileshchamoli/the-speed-of-trust-13205957
 
-**RELATIONSHIP TRUST: The 13 Behaviors of High-Trust  Leaders Mini Session**
-Franklin Covey Co.
+**RELATIONSHIP TRUST: The 13 Behaviors of High-Trust Leaders Mini Session**  
+Franklin Covey Co.  
 https://archive.franklincovey.com/facilitator/minisessions/handouts/13_Behaviors_MiniSession_Handout.pdf
 
-**How to Deal With Difficult People**
-Ujjwal Sinha
-Oct 25, 2014
+**How to Deal With Difficult People**  
+Ujjwal Sinha  
+Oct 25, 2014  
 The SlideShare can be found here https://www.slideshare.net/abhiujjwal/how-2-deal-wid-diiclt-ppl
 
 # 8. Now the hands-on part
