@@ -185,30 +185,20 @@ What you should bring:
             - [8.11.12.1. Option 1](#811121-option-1)
             - [8.11.12.2. Option 2](#811122-option-2)
         - [8.11.13. Push the container image to the private Docker registry](#81113-push-the-container-image-to-the-private-docker-registry)
-        - [8.11.14. Add container deploy step to pipeline](#81114-add-container-deploy-step-to-pipeline)
-        - [8.11.15. Add complaince and policy automation (InSpec) test to the pipeline](#81115-add-complaince-and-policy-automation-inspec-test-to-the-pipeline)
-            - [8.11.15.1. First author an InSpec test](#811151-first-author-an-inspec-test)
-            - [8.11.15.2. Execute your test](#811152-execute-your-test)
-            - [8.11.15.3. The results](#811153-the-results)
-            - [8.11.15.4. Add InSpec to the pipeline](#811154-add-inspec-to-the-pipeline)
-            - [8.11.15.5. Viewing the results in Heimdall-lite](#811155-viewing-the-results-in-heimdall-lite)
-        - [8.11.16. Add automated functional test to pipeline](#81116-add-automated-functional-test-to-pipeline)
-            - [8.11.16.1. Run the *helloworld-web* application](#811161-run-the-helloworld-web-application)
-            - [8.11.16.2. Pull and run Selenium Firefox Standalone](#811162-pull-and-run-selenium-firefox-standalone)
-            - [8.11.16.3. Create our test automation](#811163-create-our-test-automation)
-            - [8.11.16.4. Add a *selenium* step to the pipeline](#811164-add-a-selenium-step-to-the-pipeline)
-        - [8.11.17. Add DAST step (*OWASP ZAP*) to pipeline](#81117-add-dast-step-owasp-zap-to-pipeline)
-        - [8.11.18. All the source for *helloworld-web*](#81118-all-the-source-for-helloworld-web)
-    - [8.12. Microservices](#812-microservices)
-        - [8.12.1. What's cloud-native?](#8121-whats-cloud-native)
-            - [8.12.1.1. So, let's experiment with our little "microservice"](#81211-so-lets-experiment-with-our-little-microservice)
-            - [8.12.1.2. Modify the helloworld-web application](#81212-modify-the-helloworld-web-application)
-            - [8.12.1.3. Create a Kubernetes manifest for the application](#81213-create-a-kubernetes-manifest-for-the-application)
-            - [8.12.1.4. Deploy your application](#81214-deploy-your-application)
-            - [8.12.1.5. Test your application](#81215-test-your-application)
-    - [8.13. Using what you've learned](#813-using-what-youve-learned)
-    - [8.14. Shoo away your vagrants](#814-shoo-away-your-vagrants)
-    - [8.15. That's it](#815-thats-it)
+        - [8.11.14. Configure Drone to execute your CI/CD pipeline](#81114-configure-drone-to-execute-your-cicd-pipeline)
+        - [8.11.15. Add Static Analysis (*SonarQube*) step to pipeline](#81115-add-static-analysis-sonarqube-step-to-pipeline)
+- [Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved](#copyright-c-2019-michael-joseph-walsh---all-rights-reserved)
+- [You may use, distribute and modify this code under the](#you-may-use-distribute-and-modify-this-code-under-the)
+- [terms of the the license.](#terms-of-the-the-license)
+- [You should have received a copy of the license with](#you-should-have-received-a-copy-of-the-license-with)
+- [this file. If not, please email <mjwalsh@nemonik.com>](#this-file-if-not-please-email-mjwalshnemonikcom)
+- ["noProxy":"os.environ['no_proxy']," + selenium_host # Selenium cannot handle no_proxy](#noproxyosenvironno_proxy--selenium_host--selenium-cannot-handle-no_proxy)
+- [!/usr/bin/env python](#usrbinenv-python)
+- [Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved](#copyright-c-2019-michael-joseph-walsh---all-rights-reserved-1)
+- [You may use, distribute and modify this code under the](#you-may-use-distribute-and-modify-this-code-under-the-1)
+- [terms of the the license.](#terms-of-the-the-license-1)
+- [You should have received a copy of the license with](#you-should-have-received-a-copy-of-the-license-with-1)
+- [this file. If not, please email <mjwalsh@nemonik.com>](#this-file-if-not-please-email-mjwalshnemonikcom-1)
 
 <!-- /TOC -->
 
@@ -3129,7 +3119,7 @@ git push origin master
 - Your `Username` is `root` and your `Password` is `password`. 
 - The git command-line client will not display your password as you enter it. 
 
-Immediately after you enter your GitLab username/password open <http://192.168.0.11/root/hello> in your browser, if you re-use an existing tab to this page refresh the page.
+Immediately after you enter your GitLab username/password open <http://192.168.0.11/root/helloworld> in your browser, if you re-use an existing tab to this page refresh the page.
 
 The execution of this pipeline will follow as so:
 
