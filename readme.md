@@ -530,6 +530,10 @@ ISBN-13: 978-1416549000
 February 5, 2008
 The gist of the book can be found at SlideShare https://www.slideshare.net/nileshchamoli/the-speed-of-trust-13205957
 
+**RELATIONSHIP TRUST: The 13 Behaviors of High-Trust  Leaders Mini Session**
+Franklin Covey Co.
+https://archive.franklincovey.com/facilitator/minisessions/handouts/13_Behaviors_MiniSession_Handout.pdf
+
 **How to Deal With Difficult People**
 Ujjwal Sinha
 Oct 25, 2014
