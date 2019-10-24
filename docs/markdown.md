@@ -575,6 +575,18 @@ Now that everyone is a coder using the same tools, methods and repeated practice
 
 --
 
+> Build projects around motivated individuals.
+> Give them the environment and support they need,
+> and trust them to get the job done
+
+The 5th principle behind the Agile Manifesto
+
+--
+
+A key word here is ***trust***
+
+--
+
 > Trust means confidence
 
 --
@@ -599,7 +611,7 @@ Now that everyone is a coder using the same tools, methods and repeated practice
 
 --
 
-Essentially, Agile and DevOps are built on ***trust***.
+Essentially, both Agile and DevOps are built on ***trust***.
 
 --
 
@@ -611,7 +623,7 @@ As it unpacks behaviors to building trust: `Talk Straight`, `Demonstrate Respect
 
 --
 
-The book and the Slideshare both cover the 13 behaviors you should seek to embolden in your team memebers, but [13 Behaviors MiniSession Handout](https://archive.franklincovey.com/facilitator/minisessions/handouts/13_Behaviors_MiniSession_Handout.pdf) is a great summary.
+Both the book and the Slideshare cover the [13 Behavior](https://archive.franklincovey.com/facilitator/minisessions/handouts/13_Behaviors_MiniSession_Handout.pdf) you should embolden in your DevOps teams.
 
 ---
 
