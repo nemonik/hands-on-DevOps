@@ -547,13 +547,19 @@ Ujjwal Sinha
 Oct 25, 2014  
 The SlideShare can be found here https://www.slideshare.net/abhiujjwal/how-2-deal-wid-diiclt-ppl
 
+**Leadership Secrets of the Rouge Warrior: A Commando's Guide to Success**
+Richard Marcinko  
+ISBN-13: 978-0671545154
+June 1, 1996
+
 # 8. Now the hands-on part
 
 In this class, you will spin up the following development and toolchain environment.
 
 **NOTE**
-- If your web-based Git-repository manager is paired with a PlantUML server you will see a diagram rendered below otherwise you will only the PlantUML source code for the diagram. Don't worry the course's Ansible automation will spin up both a GitLab and PlantUML.
-- This class makes use of **NOTE** sections to call out things that are important to know or will drop a few tidbits. Reading these notes may save you some aggravation.
+
+- This class makes use of **NOTE** sections to call out things that are important to know or to drop a few tidbits. Reading these notes may save you some aggravation.
+- If your web-based Git-repository manager is paired with a PlantUML server you will see a diagram rendered below otherwise you will only the PlantUML source code for the diagram. Don't worry the course's Ansible automation will spin up both a GitLab and PlantUML, and  instructions are provided below how create a repository in GitLab for this project and push the course repository into it, so you can view the diagrams.
 
 ```plantuml
 @startuml
@@ -623,14 +629,14 @@ rectangle "Host" {
 			}
 
 			rectangle "GitLab" {
-				component "nemonik/gitlab:12.1.6"" as gitlab
+				component "nemonik/gitlab:12.3.5" as gitlab
 			        component "sameersbn/postgresql:10-2" as gitlab_postgresql
         			component "redis:4.0.9-1" as gitlab_redis
 			}
 
 			rectangle "Drone CI" {
-		        	component "drone/server:1.3.1" as drone_server
-    			   	component "drone/agent:1.3.1" as drone_agent
+		        	component "drone/server:1.6.1" as drone_server
+    			   	component "drone/agent:1.6.1" as drone_agent
         			component "sameersbn/postgresql:10-2" as drone_postgresql
 			}
 
