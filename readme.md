@@ -7590,7 +7590,7 @@ So, you may not realize it, but with the `helloworld-web` application you've act
 
 What's a microservice?
 
-- Microservices inidividually perform a single function (i.e., a single business capability or feature.)  In our case, our application's single function is to return, "Hello world!\n"
+- Inidividually, microservices perform a single function (i.e., a single business capability or feature.)  In our case, our application's single function is to return, "Hello world!\n"
 - Communicate with other services via well-defined APIs.
 - Can be written using different frameworks and programming languages.
 - Can be deployed independently or as a group.
