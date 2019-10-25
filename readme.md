@@ -7586,7 +7586,7 @@ The `helloworld-web` project can be viewed completed at
 
 ## 8.12. Microservices
 
-So, you may not realize it, but with the `helloworld-web` application you've actually written a microservice.
+So, you may not realize it, but with the `helloworld-web` application you've actually written is a microservice.
 
 What's a microservice?
 
