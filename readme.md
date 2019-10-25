@@ -187,18 +187,33 @@ What you should bring:
         - [8.11.13. Push the container image to the private Docker registry](#81113-push-the-container-image-to-the-private-docker-registry)
         - [8.11.14. Configure Drone to execute your CI/CD pipeline](#81114-configure-drone-to-execute-your-cicd-pipeline)
         - [8.11.15. Add Static Analysis (*SonarQube*) step to pipeline](#81115-add-static-analysis-sonarqube-step-to-pipeline)
-- [Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved](#copyright-c-2019-michael-joseph-walsh---all-rights-reserved)
-- [You may use, distribute and modify this code under the](#you-may-use-distribute-and-modify-this-code-under-the)
-- [terms of the the license.](#terms-of-the-the-license)
-- [You should have received a copy of the license with](#you-should-have-received-a-copy-of-the-license-with)
-- [this file. If not, please email <mjwalsh@nemonik.com>](#this-file-if-not-please-email-mjwalshnemonikcom)
-- ["noProxy":"os.environ['no_proxy']," + selenium_host # Selenium cannot handle no_proxy](#noproxyosenvironno_proxy--selenium_host--selenium-cannot-handle-no_proxy)
-- [!/usr/bin/env python](#usrbinenv-python)
-- [Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved](#copyright-c-2019-michael-joseph-walsh---all-rights-reserved-1)
-- [You may use, distribute and modify this code under the](#you-may-use-distribute-and-modify-this-code-under-the-1)
-- [terms of the the license.](#terms-of-the-the-license-1)
-- [You should have received a copy of the license with](#you-should-have-received-a-copy-of-the-license-with-1)
-- [this file. If not, please email <mjwalsh@nemonik.com>](#this-file-if-not-please-email-mjwalshnemonikcom-1)
+        - [8.11.16. Add the build step to the pipeline](#81116-add-the-build-step-to-the-pipeline)
+        - [8.11.17. Add container image publish step to pipeline](#81117-add-container-image-publish-step-to-pipeline)
+        - [8.11.18. Add container deploy step to pipeline](#81118-add-container-deploy-step-to-pipeline)
+        - [8.11.19. Add compliance and policy automation (InSpec) test to the pipeline](#81119-add-compliance-and-policy-automation-inspec-test-to-the-pipeline)
+            - [8.11.19.1. First author an InSpec test](#811191-first-author-an-inspec-test)
+            - [8.11.19.2. Execute your test](#811192-execute-your-test)
+            - [8.11.19.3. The results](#811193-the-results)
+            - [8.11.19.4. Add InSpec to the pipeline](#811194-add-inspec-to-the-pipeline)
+            - [8.11.19.5. Viewing the results in Heimdall-lite](#811195-viewing-the-results-in-heimdall-lite)
+        - [8.11.20. Add automated functional test to pipeline](#81120-add-automated-functional-test-to-pipeline)
+            - [8.11.20.1. Run the *helloworld-web* application](#811201-run-the-helloworld-web-application)
+            - [8.11.20.2. Pull and run Selenium Firefox Standalone](#811202-pull-and-run-selenium-firefox-standalone)
+            - [8.11.20.3. Create our test automation](#811203-create-our-test-automation)
+            - [8.11.20.4. Enable `Trusted` for the repository in Drone](#811204-enable-trusted-for-the-repository-in-drone)
+            - [8.11.20.5. Add a *selenium* step to the pipeline](#811205-add-a-selenium-step-to-the-pipeline)
+        - [8.11.21. Add DAST step (*OWASP ZAP*) to pipeline](#81121-add-dast-step-owasp-zap-to-pipeline)
+        - [8.11.22. All the source for *helloworld-web*](#81122-all-the-source-for-helloworld-web)
+    - [8.12. Microservices](#812-microservices)
+        - [8.12.1. What's cloud-native?](#8121-whats-cloud-native)
+            - [8.12.1.1. So, let's experiment with our little "microservice"](#81211-so-lets-experiment-with-our-little-microservice)
+            - [8.12.1.2. Modify the helloworld-web application](#81212-modify-the-helloworld-web-application)
+            - [8.12.1.3. Create a Kubernetes manifest for the application](#81213-create-a-kubernetes-manifest-for-the-application)
+            - [8.12.1.4. Deploy your application](#81214-deploy-your-application)
+            - [8.12.1.5. Test your application](#81215-test-your-application)
+    - [8.13. Using what you've learned](#813-using-what-youve-learned)
+    - [8.14. Shoo away your vagrants](#814-shoo-away-your-vagrants)
+    - [8.15. That's it](#815-thats-it)
 
 <!-- /TOC -->
 
@@ -4751,20 +4766,19 @@ FROM 192.168.0.11:5000/nemonik/golang:1.13
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
 RUN mkdir /app
-ADD main.go /app/
+ADD helloworld-web /app/
 
 WORKDIR /app
-
-RUN go build -o helloworld-web .
 
 CMD ["/app/helloworld-web"]
 
 EXPOSE 3000
 ```
 
-Then create the Docker image
+Build the application and create its Docker image
 
 ```bash
+make build
 docker build -t nemonik/helloworld-web .
 ```  
 
@@ -4775,51 +4789,33 @@ docker build -t nemonik/helloworld-web .
 After some time, the command line output will resemble
 
 ```
+[vagrant@development helloworld-web]$ make build
+go build -o helloworld-web -v
 [vagrant@development helloworld-web]$ docker build -t nemonik/helloworld-web .
-Sending build context to Docker daemon  10.78MB
-Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.13
-1.13: Pulling from nemonik/golang
-4a56a430b2ba: Pull complete
-4b5cacb629f5: Pull complete
-14408c8d4f9a: Pull complete
-ea67eaa7dd42: Pull complete
-a2a2197e145e: Pull complete
-36ac8c11a11f: Pull complete
-ecd7d9a67e26: Pull complete
-91a9d478aec5: Pull complete
-b4aade77e38c: Pull complete
-11c76aa51625: Pull complete
-1a8bb82e7ec3: Pull complete
-Digest: sha256:7806ab474366f198d34d6190a025a7f3da34bb2bb0d13ebb5d358c519cd4258e
-Status: Downloaded newer image for 192.168.0.11:5000/nemonik/golang:1.13
- ---> d47187ceffb2
-Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
- ---> Running in 9d27e7cb4ade
-Removing intermediate container 9d27e7cb4ade
- ---> e47c8ee37e3a
-Step 3/8 : RUN mkdir /app
- ---> Running in 567dd3bf1218
-Removing intermediate container 567dd3bf1218
- ---> b88c87f023a4
-Step 4/8 : ADD main.go /app/
- ---> 9e98639eddcc
-Step 5/8 : WORKDIR /app
- ---> Running in 4e22f613cbf0
-Removing intermediate container 4e22f613cbf0
- ---> fb98230d7e40
-Step 6/8 : RUN go build -o helloworld-web .
- ---> Running in de045d6b8e02
-Removing intermediate container de045d6b8e02
- ---> 71776ff9b9b4
-Step 7/8 : CMD ["/app/helloworld-web"]
- ---> Running in 3cd4f7e977a1
-Removing intermediate container 3cd4f7e977a1
- ---> 8789090b289c
-Step 8/8 : EXPOSE 3000
- ---> Running in 14d1dcbbf075
-Removing intermediate container 14d1dcbbf075
- ---> d39ae8428d0c
-Successfully built d39ae8428d0c
+Sending build context to Docker daemon  10.87MB
+Step 1/7 : FROM 192.168.0.11:5000/nemonik/golang:1.13
+ ---> fbfb15cbd86d
+Step 2/7 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
+ ---> Using cache
+ ---> b92836b86b61
+Step 3/7 : RUN mkdir /app
+ ---> Using cache
+ ---> 8acbc2bbe80e
+Step 4/7 : ADD helloworld-web /app/
+ ---> a70ff78872c5
+Step 5/7 : WORKDIR /app
+ ---> Running in 5a50eec10226
+Removing intermediate container 5a50eec10226
+ ---> ccab5e129566
+Step 6/7 : CMD ["/app/helloworld-web"]
+ ---> Running in f0fdf5d429fc
+Removing intermediate container f0fdf5d429fc
+ ---> c863511220d7
+Step 7/7 : EXPOSE 3000
+ ---> Running in 98d1052b9398
+Removing intermediate container 98d1052b9398
+ ---> 783a37c55b9e
+Successfully built 783a37c55b9e
 Successfully tagged nemonik/helloworld-web:latest
 ```
 
@@ -4832,13 +4828,13 @@ What just happened?
 Check the local Docker registry via
 
 ```bash
-docker images "nemonik/helloworld-web"
+docker images nemonik/helloworld-web
 ```
 
 The command line output will resemble
 
 ```
-[vagrant@development helloworld-web]$ docker images "nemonik/helloworld-web"
+[vagrant@development helloworld-web]$ docker images nemonik/helloworld-web
 REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
 nemonik/helloworld-web   latest              580633f46dd7        3 minutes ago       1.06GB
 ```
@@ -4873,6 +4869,7 @@ Whose output will be
 ```
 [vagrant@development helloworld-web]$ make all
 go fmt
+main.go
 go get golang.org/x/lint/golint
 golint
 go test -v -cover ./...
@@ -4922,133 +4919,138 @@ go test -v ./... -coverprofile=coverage.out
 --- PASS: TestHandler (0.00s)
 PASS
 coverage: 55.6% of statements
-ok  	github.com/nemonik/helloworld-web	0.007s	coverage: 55.6% of statements
+ok  	github.com/nemonik/helloworld-web	0.004s	coverage: 55.6% of statements
 go test -v ./... -json > report.json
 sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner-4.0.0.1744-linux/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
 INFO: SonarQube Scanner 4.0.0.1744
 INFO: Java 11.0.3 AdoptOpenJDK (64-bit)
-INFO: Linux 3.10.0-1062.1.1.el7.x86_64 amd64
+INFO: Linux 3.10.0-1062.4.1.el7.x86_64 amd64
 INFO: User cache: /home/vagrant/.sonar/cache
 INFO: SonarQube server 7.9.1
 INFO: Default locale: "en_US", source code encoding: "UTF-8" (analysis is platform dependent)
 INFO: Load global settings
-INFO: Load global settings (done) | time=75ms
-INFO: Server id: 138C7C5C-AW1CXi30rwf2z2MCjI4E
+INFO: Load global settings (done) | time=98ms
+INFO: Server id: 138C7C5C-AW3x_j69-GpxTxfZojnb
 INFO: User cache: /home/vagrant/.sonar/cache
 INFO: Load/download plugins
 INFO: Load plugins index
-INFO: Load plugins index (done) | time=60ms
-INFO: Load/download plugins (done) | time=186ms
+INFO: Load plugins index (done) | time=69ms
+INFO: Load/download plugins (done) | time=189ms
 INFO: Process project properties
 INFO: Execute project builders
-INFO: Execute project builders (done) | time=11ms
+INFO: Execute project builders (done) | time=7ms
 INFO: Project key: helloworld-web
 INFO: Base dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web
 INFO: Working dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web/.scannerwork
 INFO: Load project settings for component key: 'helloworld-web'
-INFO: Load project settings for component key: 'helloworld-web' (done) | time=21ms
+INFO: Load project settings for component key: 'helloworld-web' (done) | time=19ms
 INFO: Load quality profiles
-INFO: Load quality profiles (done) | time=50ms
+INFO: Load quality profiles (done) | time=45ms
 INFO: Load active rules
-INFO: Load active rules (done) | time=627ms
+INFO: Load active rules (done) | time=538ms
 INFO: Indexing files...
 INFO: Project configuration:
 INFO:   Excluded sources: **/*test.go
-INFO: 3 files indexed
+INFO: 11 files indexed
 INFO: 0 files ignored because of inclusion/exclusion patterns
 INFO: 0 files ignored because of scm ignore settings
 INFO: Quality profile for go: Sonar way
+INFO: Quality profile for py: Sonar way
+INFO: Quality profile for ruby: Sonar way
 INFO: ------------- Run sensors on module helloworld-web
 INFO: Load metrics repository
-INFO: Load metrics repository (done) | time=26ms
+INFO: Load metrics repository (done) | time=33ms
 WARNING: An illegal reflective access operation has occurred
 WARNING: Illegal reflective access by net.sf.cglib.core.ReflectUtils$1 (file:/home/vagrant/.sonar/cache/866bb1adbf016ea515620f1aaa15ec53/sonar-javascript-plugin.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
 WARNING: Please consider reporting this to the maintainers of net.sf.cglib.core.ReflectUtils$1
 WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
 WARNING: All illegal access operations will be denied in a future release
+INFO: Sensor Python Squid Sensor [python]
+INFO: Load project repositories
+INFO: Load project repositories (done) | time=21ms
+INFO: Sensor Python Squid Sensor [python] (done) | time=214ms
+INFO: Sensor Cobertura Sensor for Python coverage [python]
+INFO: Sensor Cobertura Sensor for Python coverage [python] (done) | time=21ms
+INFO: Sensor PythonXUnitSensor [python]
+INFO: Sensor PythonXUnitSensor [python] (done) | time=5ms
 INFO: Sensor JaCoCo XML Report Importer [jacoco]
-INFO: Sensor JaCoCo XML Report Importer [jacoco] (done) | time=4ms
+INFO: Sensor JaCoCo XML Report Importer [jacoco] (done) | time=6ms
 INFO: Sensor SonarGo [go]
 INFO: 1 source files to be analyzed
-INFO: Load project repositories
-INFO: Load project repositories (done) | time=22ms
-INFO: Sensor SonarGo [go] (done) | time=362ms
+INFO: Sensor SonarGo [go] (done) | time=290ms
 INFO: Sensor Go Unit Test Report [go]
 INFO: 1/1 source files have been analyzed
 WARN: Failed to find test file for package github.com/nemonik/helloworld-web and test TestLogRequest
 WARN: Failed to find test file for package github.com/nemonik/helloworld-web and test TestHandler
-INFO: Sensor Go Unit Test Report [go] (done) | time=9ms
+INFO: Sensor Go Unit Test Report [go] (done) | time=20ms
 INFO: Sensor Go Cover sensor for Go coverage [go]
 INFO: Load coverage report from '/home/vagrant/go/src/github.com/nemonik/helloworld-web/coverage.out'
-INFO: Sensor Go Cover sensor for Go coverage [go] (done) | time=16ms
+INFO: Sensor Go Cover sensor for Go coverage [go] (done) | time=15ms
 INFO: Sensor Import of Golint issues [go]
 INFO: GoLintReportSensor: Importing /home/vagrant/go/src/github.com/nemonik/helloworld-web/golint-report.out
-INFO: Sensor Import of Golint issues [go] (done) | time=0ms
+INFO: Sensor Import of Golint issues [go] (done) | time=1ms
 INFO: Sensor Import of GoMetaLinter issues [go]
 INFO: GoMetaLinterReportSensor: Importing /home/vagrant/go/src/github.com/nemonik/helloworld-web/gometalinter-report.out
-INFO: Sensor Import of GoMetaLinter issues [go] (done) | time=2ms
+INFO: Sensor Import of GoMetaLinter issues [go] (done) | time=0ms
+INFO: Sensor Ruby Sensor [ruby]
+INFO: 1 source files to be analyzed
+INFO: Sensor Ruby Sensor [ruby] (done) | time=4399ms
+INFO: Sensor SimpleCov Sensor for Ruby coverage [ruby]
+INFO: Sensor SimpleCov Sensor for Ruby coverage [ruby] (done) | time=7ms
 INFO: Sensor JavaXmlSensor [java]
 INFO: Sensor JavaXmlSensor [java] (done) | time=1ms
 INFO: Sensor HTML [web]
-INFO: Sensor HTML [web] (done) | time=22ms
+INFO: 1/1 source files have been analyzed
+INFO: Sensor HTML [web] (done) | time=51ms
 INFO: ------------- Run sensors on project
 INFO: Sensor Zero Coverage Sensor
-INFO: Sensor Zero Coverage Sensor (done) | time=1ms
-INFO: SCM provider for this project is: git
-INFO: 1 files to be analyzed
-INFO: 0/1 files analyzed
-WARN: Missing blame information for the following files:
-WARN:   * main.go
-WARN: This may lead to missing/broken features in SonarQube
-INFO: Calculating CPD for 1 file
+INFO: Sensor Zero Coverage Sensor (done) | time=4ms
+INFO: 1 file had no CPD blocks
+INFO: Calculating CPD for 3 files
 INFO: CPD calculation finished
-INFO: Analysis report generated in 111ms, dir size=73 KB
-INFO: Analysis report compressed in 15ms, zip size=11 KB
-INFO: Analysis report uploaded in 35ms
+INFO: Analysis report generated in 183ms, dir size=78 KB
+INFO: Analysis report compressed in 25ms, zip size=16 KB
+INFO: Analysis report uploaded in 36ms
 INFO: ANALYSIS SUCCESSFUL, you can browse http://192.168.0.11:9000/dashboard?id=helloworld-web
 INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
-INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AW1CnQb1MAzmbi818O_2
-INFO: Analysis total time: 4.814 s
+INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AW3_vXn_MxcI-de4R-nU
+INFO: Analysis total time: 8.953 s
 INFO: ------------------------------------------------------------------------
 INFO: EXECUTION SUCCESS
 INFO: ------------------------------------------------------------------------
-INFO: Total time: 6.488s
-INFO: Final Memory: 12M/44M
+INFO: Total time: 10.626s
+INFO: Final Memory: 32M/106M
 INFO: ------------------------------------------------------------------------
 go build -o helloworld-web -v
 docker build --no-cache -t nemonik/helloworld-web .
-Sending build context to Docker daemon  10.78MB
-Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.13
- ---> d47187ceffb2
-Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
- ---> Running in 2a842229b009
-Removing intermediate container 2a842229b009
- ---> faa83281a209
-Step 3/8 : RUN mkdir /app
- ---> Running in 720b56e774a2
-Removing intermediate container 720b56e774a2
- ---> 7171ec75e982
-Step 4/8 : ADD main.go /app/
- ---> 00c3fd97902e
-Step 5/8 : WORKDIR /app
- ---> Running in f4bb8d37c15d
-Removing intermediate container f4bb8d37c15d
- ---> 5a70dd4e560e
-Step 6/8 : RUN go build -o helloworld-web .
- ---> Running in 88a264a6f9a8
-Removing intermediate container 88a264a6f9a8
- ---> 5d02587b2198
-Step 7/8 : CMD ["/app/helloworld-web"]
- ---> Running in 87362672b4b5
-Removing intermediate container 87362672b4b5
- ---> 8cefea540aee
-Step 8/8 : EXPOSE 3000
- ---> Running in 52cb745b107d
-Removing intermediate container 52cb745b107d
- ---> 9d1a1995d373
-Successfully built 9d1a1995d373
+Sending build context to Docker daemon  10.87MB
+Step 1/7 : FROM 192.168.0.11:5000/nemonik/golang:1.13
+ ---> fbfb15cbd86d
+Step 2/7 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
+ ---> Running in 0bb4866cf6e2
+Removing intermediate container 0bb4866cf6e2
+ ---> b759be76089b
+Step 3/7 : RUN mkdir /app
+ ---> Running in 051c04efc996
+Removing intermediate container 051c04efc996
+ ---> 1993d50472eb
+Step 4/7 : ADD helloworld-web /app/
+ ---> e679d4ce8805
+Step 5/7 : WORKDIR /app
+ ---> Running in 2055f7ed4ad9
+Removing intermediate container 2055f7ed4ad9
+ ---> 4580939ab3e1
+Step 6/7 : CMD ["/app/helloworld-web"]
+ ---> Running in 6f2e42e10e65
+Removing intermediate container 6f2e42e10e65
+ ---> 6ce1587c726b
+Step 7/7 : EXPOSE 3000
+ ---> Running in ebb1630a9f98
+Removing intermediate container ebb1630a9f98
+ ---> 58db1e963367
+Successfully built 58db1e963367
 Successfully tagged nemonik/helloworld-web:latest
 ```
 
@@ -5188,7 +5190,7 @@ docker logs helloworld-web  -f
 returning
 
 ```
-[vagrant@development helloworld-web]$ docker logs 31257f287d26bdb8ae02d9d444f8ebb1478da183f7d6f908767e006c212fcbd8 -f
+[vagrant@development helloworld-web]$ docker logs helloworld-web -f
 listening on :3000
 192.168.0.1:55159  GET  /
 192.168.0.1:55159  GET  /favicon.ico
@@ -5273,7 +5275,7 @@ skinparam note {
 -left-> (*)
 ```
 
-In the development vagrant, push the `nemonik/hellowrold-web` container image into the private Docker registry running on the `toolchain` vagrant, so that both vagrants can create containers from the image with the commands
+In the development vagrant, push the `nemonik/helloworld-web` container image into the private Docker registry running on the `toolchain` vagrant, so that both vagrants can create containers from the image with the commands
 
 ```bash
 docker tag nemonik/helloworld-web 192.168.0.11:5000/nemonik/helloworld-web
@@ -5377,152 +5379,155 @@ go test -v ./... -coverprofile=coverage.out
 --- PASS: TestHandler (0.00s)
 PASS
 coverage: 55.6% of statements
-ok  	github.com/nemonik/helloworld-web	0.008s	coverage: 55.6% of statements
+ok  	github.com/nemonik/helloworld-web	0.006s	coverage: 55.6% of statements
 go test -v ./... -json > report.json
 sonar-scanner -D sonar.host.url=http://192.168.0.11:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner-4.0.0.1744-linux/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
 INFO: SonarQube Scanner 4.0.0.1744
 INFO: Java 11.0.3 AdoptOpenJDK (64-bit)
-INFO: Linux 3.10.0-1062.1.1.el7.x86_64 amd64
+INFO: Linux 3.10.0-1062.4.1.el7.x86_64 amd64
 INFO: User cache: /home/vagrant/.sonar/cache
 INFO: SonarQube server 7.9.1
 INFO: Default locale: "en_US", source code encoding: "UTF-8" (analysis is platform dependent)
 INFO: Load global settings
-INFO: Load global settings (done) | time=108ms
-INFO: Server id: 138C7C5C-AW1CXi30rwf2z2MCjI4E
+INFO: Load global settings (done) | time=106ms
+INFO: Server id: 138C7C5C-AW3x_j69-GpxTxfZojnb
 INFO: User cache: /home/vagrant/.sonar/cache
 INFO: Load/download plugins
 INFO: Load plugins index
-INFO: Load plugins index (done) | time=99ms
-INFO: Load/download plugins (done) | time=219ms
+INFO: Load plugins index (done) | time=73ms
+INFO: Load/download plugins (done) | time=214ms
 INFO: Process project properties
 INFO: Execute project builders
-INFO: Execute project builders (done) | time=17ms
+INFO: Execute project builders (done) | time=5ms
 INFO: Project key: helloworld-web
 INFO: Base dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web
 INFO: Working dir: /home/vagrant/go/src/github.com/nemonik/helloworld-web/.scannerwork
 INFO: Load project settings for component key: 'helloworld-web'
-INFO: Load project settings for component key: 'helloworld-web' (done) | time=33ms
+INFO: Load project settings for component key: 'helloworld-web' (done) | time=25ms
 INFO: Load quality profiles
-INFO: Load quality profiles (done) | time=55ms
+INFO: Load quality profiles (done) | time=56ms
 INFO: Load active rules
-INFO: Load active rules (done) | time=1034ms
+INFO: Load active rules (done) | time=929ms
 INFO: Indexing files...
 INFO: Project configuration:
 INFO:   Excluded sources: **/*test.go
-INFO: 3 files indexed
+INFO: 11 files indexed
 INFO: 0 files ignored because of inclusion/exclusion patterns
 INFO: 0 files ignored because of scm ignore settings
 INFO: Quality profile for go: Sonar way
+INFO: Quality profile for py: Sonar way
+INFO: Quality profile for ruby: Sonar way
 INFO: ------------- Run sensors on module helloworld-web
 INFO: Load metrics repository
-INFO: Load metrics repository (done) | time=35ms
+INFO: Load metrics repository (done) | time=42ms
 WARNING: An illegal reflective access operation has occurred
 WARNING: Illegal reflective access by net.sf.cglib.core.ReflectUtils$1 (file:/home/vagrant/.sonar/cache/866bb1adbf016ea515620f1aaa15ec53/sonar-javascript-plugin.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
 WARNING: Please consider reporting this to the maintainers of net.sf.cglib.core.ReflectUtils$1
 WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
 WARNING: All illegal access operations will be denied in a future release
+INFO: Sensor Python Squid Sensor [python]
+INFO: Load project repositories
+INFO: Load project repositories (done) | time=31ms
+INFO: Sensor Python Squid Sensor [python] (done) | time=315ms
+INFO: Sensor Cobertura Sensor for Python coverage [python]
+INFO: Sensor Cobertura Sensor for Python coverage [python] (done) | time=14ms
+INFO: Sensor PythonXUnitSensor [python]
+INFO: Sensor PythonXUnitSensor [python] (done) | time=6ms
 INFO: Sensor JaCoCo XML Report Importer [jacoco]
-INFO: Sensor JaCoCo XML Report Importer [jacoco] (done) | time=7ms
+INFO: Sensor JaCoCo XML Report Importer [jacoco] (done) | time=5ms
 INFO: Sensor SonarGo [go]
 INFO: 1 source files to be analyzed
-INFO: Load project repositories
-INFO: Load project repositories (done) | time=34ms
-INFO: Sensor SonarGo [go] (done) | time=452ms
+INFO: Sensor SonarGo [go] (done) | time=424ms
 INFO: Sensor Go Unit Test Report [go]
 INFO: 1/1 source files have been analyzed
 WARN: Failed to find test file for package github.com/nemonik/helloworld-web and test TestLogRequest
 WARN: Failed to find test file for package github.com/nemonik/helloworld-web and test TestHandler
-INFO: Sensor Go Unit Test Report [go] (done) | time=11ms
+INFO: Sensor Go Unit Test Report [go] (done) | time=14ms
 INFO: Sensor Go Cover sensor for Go coverage [go]
 INFO: Load coverage report from '/home/vagrant/go/src/github.com/nemonik/helloworld-web/coverage.out'
-INFO: Sensor Go Cover sensor for Go coverage [go] (done) | time=34ms
+INFO: Sensor Go Cover sensor for Go coverage [go] (done) | time=23ms
 INFO: Sensor Import of Golint issues [go]
 INFO: GoLintReportSensor: Importing /home/vagrant/go/src/github.com/nemonik/helloworld-web/golint-report.out
-INFO: Sensor Import of Golint issues [go] (done) | time=2ms
+INFO: Sensor Import of Golint issues [go] (done) | time=1ms
 INFO: Sensor Import of GoMetaLinter issues [go]
 INFO: GoMetaLinterReportSensor: Importing /home/vagrant/go/src/github.com/nemonik/helloworld-web/gometalinter-report.out
-INFO: Sensor Import of GoMetaLinter issues [go] (done) | time=0ms
+INFO: Sensor Import of GoMetaLinter issues [go] (done) | time=1ms
+INFO: Sensor Ruby Sensor [ruby]
+INFO: 1 source files to be analyzed
+INFO: Sensor Ruby Sensor [ruby] (done) | time=5861ms
+INFO: Sensor SimpleCov Sensor for Ruby coverage [ruby]
+INFO: Sensor SimpleCov Sensor for Ruby coverage [ruby] (done) | time=1ms
 INFO: Sensor JavaXmlSensor [java]
-INFO: Sensor JavaXmlSensor [java] (done) | time=3ms
+INFO: Sensor JavaXmlSensor [java] (done) | time=2ms
 INFO: Sensor HTML [web]
+INFO: 1/1 source files have been analyzed
 INFO: Sensor HTML [web] (done) | time=37ms
 INFO: ------------- Run sensors on project
 INFO: Sensor Zero Coverage Sensor
-INFO: Sensor Zero Coverage Sensor (done) | time=1ms
-INFO: SCM provider for this project is: git
-INFO: 1 files to be analyzed
-INFO: 0/1 files analyzed
-WARN: Missing blame information for the following files:
-WARN:   * main.go
-WARN: This may lead to missing/broken features in SonarQube
-INFO: Calculating CPD for 1 file
+INFO: Sensor Zero Coverage Sensor (done) | time=9ms
+INFO: 1 file had no CPD blocks
+INFO: Calculating CPD for 3 files
 INFO: CPD calculation finished
-INFO: Analysis report generated in 188ms, dir size=73 KB
-INFO: Analysis report compressed in 14ms, zip size=11 KB
-INFO: Analysis report uploaded in 51ms
+INFO: Analysis report generated in 173ms, dir size=78 KB
+INFO: Analysis report compressed in 29ms, zip size=16 KB
+INFO: Analysis report uploaded in 45ms
 INFO: ANALYSIS SUCCESSFUL, you can browse http://192.168.0.11:9000/dashboard?id=helloworld-web
 INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
-INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AW1CodqCMAzmbi818O_3
-INFO: Analysis total time: 6.617 s
+INFO: More about the report processing at http://192.168.0.11:9000/api/ce/task?id=AW3_w3BeMxcI-de4R-nV
+INFO: Analysis total time: 11.717 s
 INFO: ------------------------------------------------------------------------
 INFO: EXECUTION SUCCESS
 INFO: ------------------------------------------------------------------------
-INFO: Total time: 8.784s
-INFO: Final Memory: 12M/44M
+INFO: Total time: 13.504s
+INFO: Final Memory: 32M/93M
 INFO: ------------------------------------------------------------------------
 go build -o helloworld-web -v
 docker build --no-cache -t nemonik/helloworld-web .
-Sending build context to Docker daemon  10.78MB
-Step 1/8 : FROM 192.168.0.11:5000/nemonik/golang:1.13
- ---> d47187ceffb2
-Step 2/8 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
- ---> Running in 793e3aef15af
-Removing intermediate container 793e3aef15af
- ---> bb6d8a959e3b
-Step 3/8 : RUN mkdir /app
- ---> Running in 59c0e6686142
-Removing intermediate container 59c0e6686142
- ---> d523e837e3e8
-Step 4/8 : ADD main.go /app/
- ---> 5cc050aae1fc
-Step 5/8 : WORKDIR /app
- ---> Running in e023becf84c0
-Removing intermediate container e023becf84c0
- ---> 839c854c617e
-Step 6/8 : RUN go build -o helloworld-web .
- ---> Running in 265ae29a1b69
-Removing intermediate container 265ae29a1b69
- ---> 4be7aa09a8b7
-Step 7/8 : CMD ["/app/helloworld-web"]
- ---> Running in 08e814da731d
-Removing intermediate container 08e814da731d
- ---> bc49c25c505a
-Step 8/8 : EXPOSE 3000
- ---> Running in f2501fa978ef
-Removing intermediate container f2501fa978ef
- ---> a7d62a7693aa
-Successfully built a7d62a7693aa
+Sending build context to Docker daemon  10.87MB
+Step 1/7 : FROM 192.168.0.11:5000/nemonik/golang:1.13
+ ---> fbfb15cbd86d
+Step 2/7 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
+ ---> Running in 147f80520f07
+Removing intermediate container 147f80520f07
+ ---> d172c29e3f68
+Step 3/7 : RUN mkdir /app
+ ---> Running in 2574a9108ce0
+Removing intermediate container 2574a9108ce0
+ ---> 0e29e7893b04
+Step 4/7 : ADD helloworld-web /app/
+ ---> 7f5213695240
+Step 5/7 : WORKDIR /app
+ ---> Running in 93ce59462a83
+Removing intermediate container 93ce59462a83
+ ---> 39dd75932273
+Step 6/7 : CMD ["/app/helloworld-web"]
+ ---> Running in f086242cb8d4
+Removing intermediate container f086242cb8d4
+ ---> 4db189c14c64
+Step 7/7 : EXPOSE 3000
+ ---> Running in a3331cd46f8b
+Removing intermediate container a3331cd46f8b
+ ---> 45a38de4c124
+Successfully built 45a38de4c124
 Successfully tagged nemonik/helloworld-web:latest
 docker tag nemonik/helloworld-web 192.168.0.11:5000/nemonik/helloworld-web
 docker push 192.168.0.11:5000/nemonik/helloworld-web
 The push refers to repository [192.168.0.11:5000/nemonik/helloworld-web]
-02ba6f9be7fb: Pushed
-4f7abdcb1d34: Pushed
-b00f25c3e5bf: Pushed
-bb6851ddd240: Layer already exists
-2dd011af2eaa: Layer already exists
-5f3ecc84a705: Layer already exists
-f84f88fc080a: Layer already exists
-9a8bce4a31a0: Layer already exists
-1961865da0f3: Layer already exists
-5e28718a7d23: Layer already exists
-ea1227feeccb: Layer already exists
-9cae1895156d: Layer already exists
-52dba9daa22c: Layer already exists
-78c1b9419976: Layer already exists
-latest: digest: sha256:5990d2b022dd138a6f6169ae335a0203f2194b1926271406534f27f74c2827a9 size: 3266
+b7bdee6b23f1: Pushed
+a071a85198c1: Pushed
+78c5b9ec2bd7: Layer already exists
+cd0b4025ab95: Layer already exists
+5ae106d64679: Layer already exists
+eb13837900f8: Layer already exists
+64ed1f5dabf3: Layer already exists
+164116942aa4: Layer already exists
+2ea751c0f96c: Layer already exists
+7a435d49206f: Layer already exists
+9674e3075904: Layer already exists
+831b66a484dc: Layer already exists
+latest: digest: sha256:cf0792c76b636e2e5bad66ea95dcb82327a3d16c8d67c5ad3356bfe52bab55da size: 2849
 ```
 
 The Docker registry container image shipped by Docker does not provide a GUI, but we can verify by querying the catalog of the private registry through a web browser or Unix command line tool `curl` by entering into the command line
@@ -5910,9 +5915,10 @@ INFO: EXECUTION SUCCESS
 INFO: ------------------------------------------------------------------------
 INFO: Total time: 7.857s
 INFO: Final Memory: 12M/44M
-INFO: ------------------------------------------------------------------------```
+INFO: ------------------------------------------------------------------------
+```
 
-### 8.11.12. Add the build step to the pipeline
+### 8.11.16. Add the build step to the pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6012,7 +6018,7 @@ _/drone/src
 
 Mirroring what you saw in development in your local environment.
 
-### 8.11.13. Add container image publish step to pipeline
+### 8.11.17. Add container image publish step to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6238,51 +6244,30 @@ b4aade77e38c: Pull complete
 1a8bb82e7ec3: Pull complete
 Digest: sha256:7806ab474366f198d34d6190a025a7f3da34bb2bb0d13ebb5d358c519cd4258e
 Status: Downloaded newer image for 192.168.0.11:5000/nemonik/golang:1.13
- ---> d47187ceffb2
-Step 2/12 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
- ---> Running in fa6c03c9d753
-Removing intermediate container fa6c03c9d753
- ---> 0081e9756d1e
-Step 3/12 : RUN mkdir /app
- ---> Running in 842a2a1de298
-Removing intermediate container 842a2a1de298
- ---> 29e931d3c6a5
-Step 4/12 : ADD main.go /app/
- ---> 796665a5c96c
-Step 5/12 : WORKDIR /app
- ---> Running in 37027e1c8020
-Removing intermediate container 37027e1c8020
- ---> fe644e16079b
-Step 6/12 : RUN go build -o helloworld-web .
- ---> Running in 9a212d6106fc
-Removing intermediate container 9a212d6106fc
- ---> 7aea36013551
-Step 7/12 : CMD ["/app/helloworld-web"]
- ---> Running in e85712d44286
-Removing intermediate container e85712d44286
- ---> 10602ee03f6e
-Step 8/12 : EXPOSE 3000
- ---> Running in 2a0c5d488acf
-Removing intermediate container 2a0c5d488acf
- ---> e5076a8e2939
-Step 9/12 : LABEL org.label-schema.build-date=2019-09-18T04:47:02Z
- ---> Running in 2a96954ebc12
-Removing intermediate container 2a96954ebc12
- ---> 9c113b368f03
-Step 10/12 : LABEL org.label-schema.schema-version=1.0
- ---> Running in 9256cc50b344
-Removing intermediate container 9256cc50b344
- ---> 31e5b5bcf0e4
-Step 11/12 : LABEL org.label-schema.vcs-ref=5e45939bca5487bc0eeaaa4fe9ff1e709612c92b
- ---> Running in 7d79d731cf06
-Removing intermediate container 7d79d731cf06
- ---> d3d7959b01a5
-Step 12/12 : LABEL org.label-schema.vcs-url=http://192.168.0.11:10080/root/helloworld-web.git
- ---> Running in c84b89f81b31
-Removing intermediate container c84b89f81b31
- ---> 16c9161b61e5
-Successfully built 16c9161b61e5
-Successfully tagged 5e45939bca5487bc0eeaaa4fe9ff1e709612c92b:latest
+Step 2/7 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
+ ---> Running in 147f80520f07
+Removing intermediate container 147f80520f07
+ ---> d172c29e3f68
+Step 3/7 : RUN mkdir /app
+ ---> Running in 2574a9108ce0
+Removing intermediate container 2574a9108ce0
+ ---> 0e29e7893b04
+Step 4/7 : ADD helloworld-web /app/
+ ---> 7f5213695240
+Step 5/7 : WORKDIR /app
+ ---> Running in 93ce59462a83
+Removing intermediate container 93ce59462a83
+ ---> 39dd75932273
+Step 6/7 : CMD ["/app/helloworld-web"]
+ ---> Running in f086242cb8d4
+Removing intermediate container f086242cb8d4
+ ---> 4db189c14c64
+Step 7/7 : EXPOSE 3000
+ ---> Running in a3331cd46f8b
+Removing intermediate container a3331cd46f8b
+ ---> 45a38de4c124
+Successfully built 45a38de4c124
+Successfully tagged nemonik/helloworld-web:latest
 + /usr/local/bin/docker tag 5e45939bca5487bc0eeaaa4fe9ff1e709612c92b 192.168.0.11:5000/nemonik/helloworld-web:latest
 + /usr/local/bin/docker push 192.168.0.11:5000/nemonik/helloworld-web:latest
 The push refers to repository [192.168.0.11:5000/nemonik/helloworld-web]
@@ -6332,7 +6317,7 @@ Total reclaimed space: 0B
 
 Indicating the `publish` step executed, successfully.
 
-### 8.11.14. Add container deploy step to pipeline
+### 8.11.18. Add container deploy step to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6480,40 +6465,7 @@ In the next step you can simply cut-and-paste the contents of the `insecure_priv
 In your browser you're going to add a secret to your Drone project by following these steps
 
 1. <http://192.168.0.11/root/helloworld-web/settings>
-2. Under `Secrets`, enter `insecure_private_key` into the `Secret Name` form field and then cut-and-paste 
-
-   ```
-   -----BEGIN RSA PRIVATE KEY-----
-   MIIEogIBAAKCAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzI
-   w+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoP
-   kcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2
-   hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NO
-   Td0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcW
-   yLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQIBIwKCAQEA4iqWPJXtzZA68mKd
-   ELs4jJsdyky+ewdZeNds5tjcnHU5zUYE25K+ffJED9qUWICcLZDc81TGWjHyAqD1
-   Bw7XpgUwFgeUJwUlzQurAv+/ySnxiwuaGJfhFM1CaQHzfXphgVml+fZUvnJUTvzf
-   TK2Lg6EdbUE9TarUlBf/xPfuEhMSlIE5keb/Zz3/LUlRg8yDqz5w+QWVJ4utnKnK
-   iqwZN0mwpwU7YSyJhlT4YV1F3n4YjLswM5wJs2oqm0jssQu/BT0tyEXNDYBLEF4A
-   sClaWuSJ2kjq7KhrrYXzagqhnSei9ODYFShJu8UWVec3Ihb5ZXlzO6vdNQ1J9Xsf
-   4m+2ywKBgQD6qFxx/Rv9CNN96l/4rb14HKirC2o/orApiHmHDsURs5rUKDx0f9iP
-   cXN7S1uePXuJRK/5hsubaOCx3Owd2u9gD6Oq0CsMkE4CUSiJcYrMANtx54cGH7Rk
-   EjFZxK8xAv1ldELEyxrFqkbE4BKd8QOt414qjvTGyAK+OLD3M2QdCQKBgQDtx8pN
-   CAxR7yhHbIWT1AH66+XWN8bXq7l3RO/ukeaci98JfkbkxURZhtxV/HHuvUhnPLdX
-   3TwygPBYZFNo4pzVEhzWoTtnEtrFueKxyc3+LjZpuo+mBlQ6ORtfgkr9gBVphXZG
-   YEzkCD3lVdl8L4cw9BVpKrJCs1c5taGjDgdInQKBgHm/fVvv96bJxc9x1tffXAcj
-   3OVdUN0UgXNCSaf/3A/phbeBQe9xS+3mpc4r6qvx+iy69mNBeNZ0xOitIjpjBo2+
-   dBEjSBwLk5q5tJqHmy/jKMJL4n9ROlx93XS+njxgibTvU6Fp9w+NOFD/HvxB3Tcz
-   6+jJF85D5BNAG3DBMKBjAoGBAOAxZvgsKN+JuENXsST7F89Tck2iTcQIT8g5rwWC
-   P9Vt74yboe2kDT531w8+egz7nAmRBKNM751U/95P9t88EDacDI/Z2OwnuFQHCPDF
-   llYOUI+SpLJ6/vURRbHSnnn8a/XG+nzedGH5JGqEJNQsz+xT2axM0/W/CRknmGaJ
-   kda/AoGANWrLCz708y7VYgAtW2Uf1DPOIYMdvo6fxIB5i9ZfISgcJ/bbCUkFrhoH
-   +vq/5CIWxCPp0f85R4qxxQ5ihxJ0YDQT9Jpx4TMss4PSavPaBH3RXow5Ohe+bYoQ
-   NE5OgEXk2wVfZczCZpigBKbKZHNYcelXtTt/nP3rsCuGcM4h53s=
-   -----END RSA PRIVATE KEY-----
-   ```
-
-   into `Secret Value` form field and then click `Add A Secret`.
-
+2. Under `Secrets`, enter `insecure_private_key` into the `Secret Name` form field and then cut-and-paste the contents of `insecure_private_key` file into `Secret Value` form field and then click `Add A Secret`.
 3. Then click `ACTIVITY FEED` at the top of the page to return to project's activity feed.
 
 Now, open `root/helloworld-web`'s `.drone.yml` in your editor and add an additional `deploy:` step below the ones you already have with the `deploy:` being indented the same as the prior `build:` and `publish:` steps.
@@ -6629,7 +6581,7 @@ Hello world!
 
 So, now we have beginnings of a real CI/CD pipeline. There are no strings on me err. you.
 
-### 8.11.15. Add compliance and policy automation (InSpec) test to the pipeline
+### 8.11.19. Add compliance and policy automation (InSpec) test to the pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -6724,7 +6676,7 @@ A really good tutorial focused on InSpec can be found here:
 
 http://www.anniehedgie.com/inspec-basics-1
 
-#### 8.11.15.1. First author an InSpec test
+#### 8.11.19.1. First author an InSpec test
 
 Back in the `development` vagrant at the root of the `helloworld-web` project, we'll initialize an InSpec profile to verify your container's compliance to policy and configuration guidance.  Yep, you're "gonna" be a security engineer. 
 
@@ -6792,7 +6744,7 @@ attributes:
     value: '3000'
 ```
 
-#### 8.11.15.2. Execute your test
+#### 8.11.19.2. Execute your test
 
 First, we'll execute the test against container running locally by first spinning up a `192.168.0.11:5000/nemonik/helloworld-web:latest` container via
 
@@ -6829,7 +6781,7 @@ The output of InSpec test will resemble
   docker rm -f helloworld-web
   ```
 
-#### 8.11.15.3. The results
+#### 8.11.19.3. The results
 
 The result will be a comparsion of the expected state against the current state of the container and will resemble
 
@@ -6852,7 +6804,7 @@ Profile Summary: 1 successful control, 0 control failures, 0 controls skipped
 Test Summary: 5 successful, 0 failures, 0 skipped
 ```
 
-#### 8.11.15.4. Add InSpec to the pipeline
+#### 8.11.19.4. Add InSpec to the pipeline
 
 We really should have an InSpec container to execute this step.  Maybe I'll do this in the next revision of my class, but since InSpec is already installed on the `toolchain` vagrant, we'll use `appleboy/drone-ssh` container to ssh into `toolchain` and execute our InSpec profile from the pipeline.
 
@@ -6921,7 +6873,7 @@ out: Test Summary: 5 successful, 0 failures, 0 skipped
 ==============================================
 ```
 
-#### 8.11.15.5. Viewing the results in Heimdall-lite
+#### 8.11.19.5. Viewing the results in Heimdall-lite
 
 MITRE maintains two projects for viewing of InSpec profiles and evaluations in a convenient interface.
 
@@ -6943,7 +6895,7 @@ inspec exec --chef-license=accept-silent helloworld --reporter json > /vagrant/i
 
 Open Heimdall-lite https://mitre.github.io/heimdall-lite/, select `Load JSON`, the `Browse` to navigate to `inspec_hellworld.json` in the root of the class project and upload to view the results. 
 
-### 8.11.16. Add automated functional test to pipeline
+### 8.11.20. Add automated functional test to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -7022,7 +6974,7 @@ http://www.seleniumhq.org/
 
 You'll need a couple of shells open to your `development` vagrant to complete this section.
 
-#### 8.11.16.1. Run the *helloworld-web* application
+#### 8.11.20.1. Run the *helloworld-web* application
 
 In the first `vagrant ssh development` enter
 
@@ -7034,7 +6986,7 @@ docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web:latest
 
 - If you don't mind running more than a couple shells you can drop the `-d` argument and not daemonize the container, so you can watch its log.
 
-#### 8.11.16.2. Pull and run Selenium Firefox Standalone
+#### 8.11.20.2. Pull and run Selenium Firefox Standalone
 
 In another `vagrant ssh` to `development` enter
 
@@ -7071,7 +7023,7 @@ A good start outputs to the command line
 15:04:56.296 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
 ```
 
-#### 8.11.16.3. Create our test automation
+#### 8.11.20.3. Create our test automation
 
 In another terminal `vagrant ssh` to `development`, so we can author and run our automated test.  
 
@@ -7219,7 +7171,7 @@ docker rm -f helloworld-web
 
 to kill your daemonized `helloword-web` container.
 
-#### 8.11.16.4. Enable `Trusted` for the repository in Drone
+#### 8.11.20.4. Enable `Trusted` for the repository in Drone
 
 This next Drone step will require you to change the configuration of your project in Drone, so that is trusted, thereby allowing the pipeline to access a shared memory via `/dev/shm` path.
 
@@ -7239,7 +7191,7 @@ Enable the Trusted setting for the repository in Drone by opening
 
 4. Then click the Drone icon in the upper left of the page to return home.
 
-#### 8.11.16.5. Add a *selenium* step to the pipeline
+#### 8.11.20.5. Add a *selenium* step to the pipeline
 
 In one of your existing `vagrant ssh` to `development` enter into the commmand line
 
@@ -7375,7 +7327,7 @@ JavaScript error: resource://gre/modules/UrlClassifierListManager.jsm, line 680:
 
 - If your build fails outright with the message `default: linter: untrusted repositories cannot mount host volumes`, you have forgotten the enable `Trusted` for the repository in Drone.  You can go back do that and `RESTART` the build.
 
-### 8.11.17. Add DAST step (*OWASP ZAP*) to pipeline
+### 8.11.21. Add DAST step (*OWASP ZAP*) to pipeline
 
 ```plantuml
 skinparam shadowing false
@@ -7550,7 +7502,7 @@ FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 1	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 31
 
 Its only gripe is to warn that our application doesn't return a *X-Content-Type-Options Header*.
 
-Great, now lets add another step to our pipeline after the `selenium` step, but before `services:`.
+Great, now lets add another step to our pipeline after the `selenium` step, but before `volumes:` block.
 
 ```yaml
 - name: owasp-zaproxy
@@ -7626,7 +7578,7 @@ FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 1	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 31
 
 Our application is relatively simple, so it was doubtful anything would be found, but there again is the warning about an *X-Content-Type-Options Header* being missing that could be resolved by adding addtional handlers to the helloworld-web's main.go.
 
-### 8.11.18. All the source for *helloworld-web*
+### 8.11.22. All the source for *helloworld-web*
 
 The `helloworld-web` project can be viewed completed at
 

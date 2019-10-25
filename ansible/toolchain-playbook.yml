@@ -23,6 +23,7 @@
     - golang-container-image
     - python-container-image
     - golang-sonarqube-scanner-image
+#    - inspec-container-image
     - standalone-firefox-container-image
     - owasp-zap2docker-stable-image
 
