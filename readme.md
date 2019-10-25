@@ -548,7 +548,7 @@ Oct 25, 2014
 The SlideShare can be found here https://www.slideshare.net/abhiujjwal/how-2-deal-wid-diiclt-ppl
 
 **Leadership Secrets of the Rouge Warrior: A Commando's Guide to Success**
-Richard Marcinko  
+Richard Marcinko w/ John Weisman
 ISBN-13: 978-0671545154
 June 1, 1996
 
