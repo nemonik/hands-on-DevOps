@@ -211,6 +211,7 @@ What you should bring:
             - [8.12.1.3. Create a Kubernetes manifest for the application](#81213-create-a-kubernetes-manifest-for-the-application)
             - [8.12.1.4. Deploy your application](#81214-deploy-your-application)
             - [8.12.1.5. Test your application](#81215-test-your-application)
+            - [8.12.1.6. Scale your application](#81216-scale-your-application)
     - [8.13. Using what you've learned](#813-using-what-youve-learned)
     - [8.14. Shoo away your vagrants](#814-shoo-away-your-vagrants)
     - [8.15. That's it](#815-thats-it)
@@ -8020,12 +8021,15 @@ Hello world! helloworld-deployment-cf4667475-pqhk4
 
 That random hex number is the result of our code change.  It is the hostname of the container that responded to your request.
 
-Now open Traefik Dashboard in your web browser
+#### 8.12.1.6. Scale your application
+
+Now, let's scale our application.  Open the Traefik Dashboard
 
 <http://192.168.0.11:8083/dashboard/>
 
-
 Traefik is An open-source reverse proxy and load balancer for HTTP and TCP-based applications.  You'll see `/helloworld` frontend and one `/helloworld` backend.
+
+You have it open to watch it add backend instances.
 
 Lets scale from 1 to 4 replicas, while keeping an eye on the Traefik Dashboard, via
 
@@ -8112,7 +8116,19 @@ Hello world! helloworld-deployment-cf4667475-vvhqn
 Hello world! helloworld-deployment-cf4667475-5d77b
 ```
 
-Notice how the `curl` requests are Round-robin load balanced across the replicas. 
+Notice how the `curl` requests are Round-robin load balanced across the replicas.
+
+You can re-run `kubectl` to scale the number of replicas to 8
+
+```bash
+kubectl scale --namespace=helloworld --replicas=8 deployment.apps/helloworld-deployment
+```
+
+And down to say 3
+
+```bash
+kubectl scale --namespace=helloworld --replicas=3 deployment.apps/helloworld-deployment
+```
 
 ## 8.13. Using what you've learned
 
