@@ -7622,7 +7622,7 @@ Granted our tiny insignificant microservice doesn't really do much, but we can g
 
 #### 8.12.1.2. Modify the helloworld-web application
 
-In the `helloworld-web` project On the `development` vagrant edit the `go/src/github.com/nemonik/helloworld-web/main.go` 
+In the `helloworld-web` project On the `development` vagrant edit the `go/src/github.com/nemonik/helloworld-web/main.go` to contain the following
 
 ```go
 package main
@@ -7671,8 +7671,6 @@ Build the container and push to the registry
 ```bash
 make docker-push
 ```
-
-We'll also have to remove the image from our local Docker caches
 
 #### 8.12.1.3. Create a Kubernetes manifest for the application
 
@@ -7929,9 +7927,9 @@ spec:
           servicePort: http
 ```
 
-An `c` exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.  We are exposing out service via Traefik, who in turn exposes out application at http://192.168.0.11:8082/helloworld.
+An `Ingress` gives `Service`s externally-reachable URLs, load balance traffic...  We are exposing our service via Traefik at http://192.168.0.11:8082/helloworld.
 
-Once our application is deployed to the cluster, Traefik's dashboard will permit a view into this at http://192.168.0.11:8083/dashboard/
+Once our application is deployed to the cluster, Traefik's dashboard will permit a view into how it is handling things at http://192.168.0.11:8083/dashboard/
 
 #### 8.12.1.4. Deploy your application
 
