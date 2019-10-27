@@ -2443,7 +2443,7 @@ cd helloworld
 
 - Ignore the `warning: You appear to have cloned an empty repository.` warning.  This is perfectly normal.  Then move into the clone of your repository via
 
-So that you do not commit certain files to GitLab when you push, create a `.gitignore` file with your editor with the following contents
+So, that you do not version control certain files in git, create a `.gitignore` file with your editor with the following contents
 
 ```
 # OS-specific
@@ -3522,7 +3522,7 @@ cd helloworld-web
 - Again, ignore the "warning: You appear to have cloned an empty repository." warning, cause of course you did.
 - The `git clone` will fail if you did not name your project correctly while in GitLab.
 
-So, that you do not commit certain files to GitLab when you push, create a `.gitignore` file with your editor with this content
+So, that you do not version control certain files in git, create a `.gitignore` file with your editor with this content
 
 ```
 # OS-specific
