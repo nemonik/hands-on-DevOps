@@ -1294,7 +1294,13 @@ This section provisions and configures a `development` vagrant used for developm
   end
 ```
 
-This section provisions and configures the `toolchain` vagrant. This is the beefy vagrant running Kubernetes (K3s), GitLab. Drone CI, a private Docker registry, SonarQube, Selenium, Taiga...
+This section provisions and configures the `toolchain` vagrant. This is the beefy vagrant running Kubernetes (K3s), Traefik, GitLab, Drone CI, a private Docker registry, SonarQube, Selenium, Taiga...
+
+**NOTE**
+
+- The course has had the benefit of being authored and run hardware with i7 processors and 16GB of memory, so if you have more or less you can to tweak the `virtualbox.memory` and `virtualbox.cpus` settings above.
+- By default the `toolchain` vagrant is given 6GB (i.e., `6144`. For me a 1GB is 1024MB, not 1000MB. Is this so hard?  Must we dumb everything down?) of memory and 4 cores. If your host has more memory and cores you can configure this vagrant with more.  
+- I've seen this course run on an i5 Dell Laptop, so one can squeek by on 4GB of memory, but I wouldn't advise it.  I also wouldn't drop the `toolchain` vagrant below 4 cores, either.  
 
 ### 8.5.2. Ansible
 
@@ -1644,11 +1650,16 @@ YAML bills itself as a human-friendly data serialization standard for all progra
 
 ### 8.7.3. Kubernetes
 
-Kubernetes; specicifically, K3s is used to orchestrate the lifecycle of the bulk of long-running tools.
+Kubernetes; specicifically, K3s is used in the default configuration of the course to orchestrate the lifecycles of the bulk of long-running tools.  
 
 *What is Kubernetes?*
 
 Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications. Essentially, it serves as an operating system for a cluster of computing resources and manages the lifecycle and discovery of the applications running upon it. In the case of this course, the computing resources I'm speaking of are your two vagrants: `toolchain` and `development`. When Vagrant executes the ansible-playbook `ansible/toolchain-tools-playbook.yml` on the `toolchain` vagrant it uses the `k3s-server` role to configures the vagrant as a Kubernetes master node. On the development vagrant, the `ansible/development-playbook.yml` playbook uses the `k3s-agent` role to configure the vagrant as a Kubernetes worker node.
+
+**NOTE**
+
+- I denoted the "default configuration" in the opening sentence uses Kubernetes.  Yes, all but Drone is configured to deploy via Kubernetes.  Each long-running tool's deployment method is defined in the project's `aansible_extra_vars.rb` ruby script.  Each tool has a variable ending with `_deploy_via` that can have one of two values: `'kubectl'` or `'docker-compose'`.  If you do not want to maange the life-cycle of one or more long-running tools via Kubernetes simply change its value from `'kubectl'` to `'docker-compose'`.  
+- Further, if you do not want to run Kubernetes either remove or comment out the `k3s-server` and `'k3s-agent` roles from the `anisble/toolchain-playbook.yml` and `ansible/development-playbook.yml`, respectively.
 
 #### 8.7.3.1. K3S, light-weight Kubernetes
 
