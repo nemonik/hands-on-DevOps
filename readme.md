@@ -1652,7 +1652,7 @@ Kubernetes is an open-source system for automating deployment, scaling, and mana
 
 #### 8.7.3.1. K3S, light-weight Kubernetes
 
-This class uses K3S, a light-weight, certified Kubernetes distribution designed for resource-constrained environments, where one doesn't need the added steps and dependencies a full Kubernetes cluster would require.  K3s fits our need perfectly.
+K3S is a light-weight, certified Kubernetes distribution designed for resource-constrained environments, where one doesn't need the added steps and dependencies a full Kubernetes cluster would require.  K3s fits our need perfectly.
 
 It's canonical source can be found at
 
