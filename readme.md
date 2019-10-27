@@ -1650,9 +1650,25 @@ Kubernetes; specicifically, K3s is used to orchestrate the lifecycle of the bulk
 
 Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications. Essentially, it serves as an operating system for a cluster of computing resources and manages the lifecycle and discovery of the applications running upon it. In the case of this course, the computing resources I'm speaking of are your two vagrants: `toolchain` and `development`. When Vagrant executes the ansible-playbook `ansible/toolchain-tools-playbook.yml` on the `toolchain` vagrant it uses the `k3s-server` role to configures the vagrant as a Kubernetes master node. On the development vagrant, the `ansible/development-playbook.yml` playbook uses the `k3s-agent` role to configure the vagrant as a Kubernetes worker node.
 
-#### 8.7.3.1. Kubectl
+#### 8.7.3.1. K3S, light-weight Kubernetes
 
-Kubernetes is managed in the command-line via the `kubectl`.
+This class uses K3S, a light-weight, certified Kubernetes distribution designed for resource-constrained environments, where one doesn't need the added steps and dependencies a full Kubernetes cluster would require.  K3s fits our need perfectly.
+
+It's canonical source can be found at
+
+<https://github.com/rancher/k3s/>
+
+It's landing page can be found here
+
+<https://k3s.io/>
+
+The officiail documentation can be found here
+
+<https://rancher.com/docs/k3s/latest/en/>
+
+#### 8.7.3.2. Kubectl, the Kubernetes command-line tool
+
+Kubernetes is managed in the command-line via `kubectl`.
 
 Once, both `toolchain` and `development` vagrant are provisioned and configured, if you ssh into the `toolchain` vagrant via typing
 
@@ -1733,9 +1749,9 @@ The last few lines of output will resemble
 2019-10-21 15:49:00.070:INFO:oejs.Server:main: Started @2044ms
 ```
 
-#### 8.7.3.2. Kubernetes-Dashboard
+#### 8.7.3.3. Kubernetes-Dashboard
 
-The course automation will also deploy the Kubernetes-Dashboard and for long-running tools orchestrated via Kubernetes you can view much the same data in the Kubernetes-Dashboard.
+The course automation will also deploy the Kubernetes-Dashboard.  For the long-running tools orchestrated via Kubernetes, you can view much the same data in the Kubernetes-Dashboard.
 
 <https://192.168.0.11:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/>
 
@@ -8129,6 +8145,10 @@ And down to say 3
 ```bash
 kubectl scale --namespace=helloworld --replicas=3 deployment.apps/helloworld-deployment
 ```
+
+To auto-scale based onload we'd have to install Metrics Server (Resource Metrics API) and configure a Horizontal Pod Autoscaler (HPA)
+
+<https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/>
 
 ## 8.13. Using what you've learned
 
