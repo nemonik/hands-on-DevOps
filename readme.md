@@ -1771,7 +1771,7 @@ The course automation will also deploy the Kubernetes-Dashboard.  For the long-r
 
 The class makes use of two types of tools: those that are long-running (e.g., GitLab, Drone, SonarQube) and those used to peform short-lived individual tasks (e.g., Makefile, InSpec, OWASP-ZAP.)  
 
-This section will describe the long-running tools leaving subsequent sections to describe the later as you use the short-lived tools.
+This section will describe the long-running tools leaving subsequent sections to describe the latter as you use the short-lived tools.
 
 ### 8.8.1. Taiga, an example of Agile project management software
 
@@ -1794,11 +1794,11 @@ Further, the Lean-Agile Software tools should provide the following capabilities
 - Facilitating the selection and assignment of individual requirements to resources, and the tracking of progress for a release.
 - Permit collaboration with external third parties.
 
-The 800 pound Gorilla in this market segment is JIRA Software. Some of my co-workers hate it. It is part of the Atlassian suite providing provides collaboration software for teams with products including JIRA Software, Confluence, Bitbucket, and Stash.  Back when Atalassiam (Stocker ticker: TEAM) was trading at 50-dollars it was a good investment.
+The 800 pound Gorilla in this market segment is JIRA Software. Some of my co-workers hate it. It is part of the Atlassian suite providing provides collaboration software for teams with products including JIRA Software, Confluence, Bitbucket, and Stash.  Back when Atalassian (Stocker ticker: TEAM) was trading at 50-dollars it was a good investment.
 
 **NOTE**
 
-- Lean-Agile Project Management software's primary purpose is to integrare people and really not much else.
+- Lean-Agile Project Management software's primary purpose is to integrate people and really not much else.
 
 #### 8.8.1.1. Documentation, source, container image
 
