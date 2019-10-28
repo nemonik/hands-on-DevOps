@@ -789,7 +789,7 @@ If you are on Windows perform the following to set environmental variable adjust
 
 If you're on MITRE Institute Lab PC you will want to set all of these variables.
 
-If you're doing this class on your MITRE Lifecycle running Windows (I have yet to verify a Windows MITRE Lifecycle.) you will likely **NOT** want to set `proxy`, `http_proxy`, `https_proxy`, `no_proxy` or any proxy related environmental variables. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables. 
+If you're doing this class on your MITRE Lifecycle running Windows (I have yet to verify a Windows MITRE Lifecycle.) you will likely **NOT** want to set the `proxy`, `http_proxy`, `https_proxy`, `no_proxy` or any proxy related environmental variables. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables. 
 
 **NOTE**
 
@@ -802,7 +802,7 @@ You will need to install VirtualBox, a general-purpose full virtualizer for x86 
 
 ### 8.2.1. Installing VirtualBox
 
-For the class when I teach it, it is assumed VirtualBox is installed, but below are the instructions for installing it on Windows 10.
+For the MITRE Institute class when I teach it, it is assumed VirtualBox is installed, but below are the instructions for installing it on Windows 10.
 
 1. Open your browser to <https://www.virtualbox.org/wiki/Downloads>
 2. Click `Windows hosts` link under `VirtualBox  6.0.14 platform packages`.
@@ -814,7 +814,7 @@ You will also need to turn off Hyper-V
 2. Select the icon with the corresponding name. 
 3. This will open the `Windows Features` page and then unselect the `Hyper-V` checkbox if it is enabled and then click `Okay`.
 
-The same site has the Mac OS X download. The install is less involved.
+The same site has the Mac OS X download. The installation is less involved.
 
 ## 8.3. Git Bash
 
