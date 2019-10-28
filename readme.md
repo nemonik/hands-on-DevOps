@@ -131,8 +131,9 @@ What you should bring:
         - [8.7.1. Docker image and containers](#871-docker-image-and-containers)
         - [8.7.2. Docker-compose](#872-docker-compose)
         - [8.7.3. Kubernetes](#873-kubernetes)
-            - [8.7.3.1. Kubectl](#8731-kubectl)
-            - [8.7.3.2. Kubernetes-Dashboard](#8732-kubernetes-dashboard)
+            - [8.7.3.1. K3S, light-weight Kubernetes](#8731-k3s-light-weight-kubernetes)
+            - [8.7.3.2. Kubectl, the Kubernetes command-line tool](#8732-kubectl-the-kubernetes-command-line-tool)
+            - [8.7.3.3. Kubernetes-Dashboard](#8733-kubernetes-dashboard)
     - [8.8. The long-running tools](#88-the-long-running-tools)
         - [8.8.1. Taiga, an example of Agile project management software](#881-taiga-an-example-of-agile-project-management-software)
             - [8.8.1.1. Documentation, source, container image](#8811-documentation-source-container-image)
@@ -1264,7 +1265,7 @@ This section provisions and configures a `development` vagrant used for developm
   - `development.vm.synced_folder` mounts the class's project folder to `/vagrant` path in the vagrant
   - The `development.vm.provider` section tells the hypervisor how to configure the vagrant (i.e., how much memory, how many processors)
   - `development.vm.provision` handles configuring the vagrant by executing the `ansible/development-playbook.yml` playbook
-  - `-vvvv` conifigures the `ansible-playbook` command to output the highest level of logging.
+  - `-vvvv` configures the `ansible-playbook` command to output the highest level of logging.
 
 ##### 8.5.1.4.10. Configuring the *toolchain* vagrant
 
