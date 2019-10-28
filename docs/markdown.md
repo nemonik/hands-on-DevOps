@@ -66,7 +66,7 @@ I've grown to prefer the axiom:
 
 ### If you're a developer or software engineer
 
-You're at least ***coding*** the application, its build automation, unit tests, and CI/CD (the combined practices of Continuouse Integrarion and Continuous Delivery) automation.
+You're at least ***coding*** the application, its build automation, unit tests, and CI/CD (the combined practices of Continuous Integration and Continuous Delivery) automation.
 
 --
 

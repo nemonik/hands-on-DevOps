@@ -1624,7 +1624,7 @@ Docker is a platform to develop, deploy, and run Linux containers.
 - Since chroot, containers have continued to evolve within the Linux kernel to decouple applications from the operating system and run them in an isolated manner.
 - A container is essentially an isolated process running in userspace.
 - The benefit over Virtual Machines in that multiple containers can run on the same machine (in case of this class, a vagrant) sharing the OS kernel with other containers. Whereas a VM would require a full copy of an operating system to run the application. This makes containers insanely light-weight.
-- Container support has thrived and seen popular adoption across various operating systems outside of the Linux including Windows Containers and Window’s direct ability to run Linux containers from the Hyper-V isolation work done by Microsoft.
+- Container support has thrived and seen popular adoption across various operating systems outside of Linux including Windows Containers and Window’s direct ability to run Linux containers from the Hyper-V isolation work done by Microsoft.
 - The Open Container Initiative (OCI), formed in 2015 maintains open industry standards for containers that focus on Runtime Specification (runtime-spec) and its partner project, the Image Specification (image-spec).
 
 *What are container images?*
@@ -1639,7 +1639,7 @@ You will build a couple of Docker images and spin up containers in this class.
 
 ### 8.7.2. Docker-compose
 
-The class can be reconfigure to spin up the long-running tools (e.g., Tagia, GitLab, Drone, SonarQube) via Docker-compose.  By default Drone is the only tool spun via Docker-compose leaving the rest of the applications to be orchestrated by Kubernetes.  (Kubernetes is explained in the following section.)
+The class can be reconfigured to spin up the long-running tools (e.g., Tagia, GitLab, Drone, SonarQube) via Docker-compose.  By default Drone is the only tool spun via Docker-compose leaving the rest of the applications to be orchestrated by Kubernetes.  (Kubernetes is explained in the following section.)
 
 *What is docker-compose?*
 
