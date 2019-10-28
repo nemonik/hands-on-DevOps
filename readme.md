@@ -1958,7 +1958,7 @@ Once, stood up your instance of GitLab will reachable at
 
 You will be using the GitLab's **root** account to host your repositories vice creating your own, but if you want you can. There is nothing stopping you.
 
-For the purposes of the class the **root** account's password has been set to the ubber secure "**password**".
+For the purposes of the class the **root** account's password has been set to the uber-secure "**password**".
 
 ### 8.8.3. Drone CI, an example of CI/CD orchestrator
 
