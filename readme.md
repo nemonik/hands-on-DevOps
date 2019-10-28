@@ -1956,7 +1956,7 @@ Once, stood up your instance of GitLab will reachable at
 
 <http://192.168.0.11:10080/>
 
-You will be using the GitLab's **root** account to host your repositories vice creating your own, but if you want you can. There is nothing stopping you.
+You will be using the GitLab's **root** account to host your repositories versus creating your own, but if you want you can. There is nothing stopping you.
 
 For the purposes of the class the **root** account's password has been set to the uber-secure "**password**".
 
