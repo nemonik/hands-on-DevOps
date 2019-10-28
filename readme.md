@@ -2510,7 +2510,7 @@ skinparam note {
 -left-> (*)
 ```
 
-On your host open a shell to `development` vagrant, and configure your user name and email:
+On your host open a shell to the `development` vagrant, and configure your user name and email:
 
 ```bash
 git config --global user.name "Administrator"
