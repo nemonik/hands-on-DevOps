@@ -1607,6 +1607,46 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
 - Caution, it is easy to forget DevOps is not about tools and automaton, but is as much about culture, methods and repeated practices, so keep this in mind.  
 - The tools, methods and repeated practices exist to support the culture.
 - Again, I'll drop from time to time stating "into the shell" ot "into the command-line" when instructing you to enter things in the CLI.
+- If you're at MITRE, or on OS X and see the following error 
+
+  ```
+  Bringing machine 'default' up with 'virtualbox' provider...
+  ==> default: Box 'centos/7' could not be found. Attempting to find and install...
+      default: Box Provider: virtualbox
+      default: Box Version: 1905.1
+  The box 'centos/7' could not be found or
+  could not be accessed in the remote catalog. If this is a private
+  box on HashiCorp's Vagrant Cloud, please verify you're logged in via
+  `vagrant login`. Also, please double-check the name. The expanded
+  URL and error message are shown below:
+  
+  URL: ["https://vagrantcloud.com/centos/7"]
+  Error: SSL certificate problem: unable to get local issuer certificate
+  #<IO:0x00000001012a68e8>
+  Bringing machine 'development' up with 'virtualbox' provider...
+  ==> toollchain: Box 'nemonik/devops' could not be found. Attempting to find and install...
+      toolchain: Box Provider: virtualbox
+      toolchain: Box Version: >= 0
+  The box 'nemonik/devops' could not be found or
+  could not be accessed in the remote catalog. If this is a private
+  box on HashiCorp's Vagrant Cloud, please verify you're logged in via
+  `vagrant login`. Also, please double-check the name. The expanded
+  URL and error message are shown below:
+  
+  URL: ["https://vagrantcloud.com/nemonik/devops"]
+  Error: SSL certificate problem: unable to get local issuer certificate
+  ```
+
+  there is a chance your environment has either `SSL_CERT_FILE` and `CURL_CA_BUNDLE` environment variables set to a CA Cert file.  Vagrant will use one of these files instead of its own and will not be able to hande the SSL inspection.  The quick fix is to unset these environment variable via entering 
+  
+  ```
+  env -u SSL_CERT_FILE
+  env -u CURL_CA_BUNDLE
+  ```
+
+  and re-running `vagrant up toolchain`
+
+  Alternatively, you can retrieve each of CA certificate files and add them to files specified by `SSL_CERT_FILE` and/or `CURL_CA_BUNDLE` variables.
 
 The toolchain IaC will spin up a number of tools.  Following sections unpack what theses tools are, but first I'd like to unpack the cloud-native technologies underrunning the long-running tools.
 
