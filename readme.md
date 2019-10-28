@@ -728,7 +728,7 @@ When in the root of the project, the script can be executed in the terminal sess
 . ./set_env.sh
 ```
 
-If you're doing this class on your MITRE Lifecycle running OS X running on the MITRE network you will **not** want to set any proxy related environmental variable. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables.  So, you'd comment out (i.e., prepend the line with pound sign) all but the last two environment variables in the the `set_env.sh` bash script.
+If you're doing this class on your MITRE Lifecycle running OS X running on the MITRE network you will **NOT** want to set any proxy related environmental variable. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables.  So, you'd comment out (i.e., prepend the line with a pound sign) all but the last two environment variables in the the `set_env.sh` bash script.
 
 If you have no HTTP proxy and no SSL inspection to be concerned about, the alternative is to execute `unset.sh` BASH script to unset all these values:
 
@@ -789,7 +789,7 @@ If you are on Windows perform the following to set environmental variable adjust
 
 If you're on MITRE Institute Lab PC you will want to set all of these variables.
 
-If you're doing this class on your MITRE Lifecycle running Windows (I have yet to verify a Windows MITRE Lifecycle.) you will not want to set `proxy`, `http_proxy`, `https_proxy`, `no_proxy` or any proxy related environmental variable. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables. 
+If you're doing this class on your MITRE Lifecycle running Windows (I have yet to verify a Windows MITRE Lifecycle.) you will likely **NOT** want to set `proxy`, `http_proxy`, `https_proxy`, `no_proxy` or any proxy related environmental variables. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables. 
 
 **NOTE**
 
