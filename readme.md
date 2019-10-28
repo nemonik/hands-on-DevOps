@@ -1651,7 +1651,7 @@ YAML bills itself as a human-friendly data serialization standard for all progra
 
 ### 8.7.3. Kubernetes
 
-Kubernetes; specicifically, K3s is used in the default configuration of the course to orchestrate the lifecycles of the bulk of long-running tools.  
+Kubernetes; specifically, K3s is used in the default configuration of the course to orchestrate the lifecycles of the bulk of long-running tools.  
 
 *What is Kubernetes?*
 
@@ -1659,7 +1659,7 @@ Kubernetes is an open-source system for automating deployment, scaling, and mana
 
 **NOTE**
 
-- I denoted the "default configuration" in the opening sentence uses Kubernetes.  Yes, all but Drone is configured to deploy via Kubernetes.  Each long-running tool's deployment method is defined in the project's `aansible_extra_vars.rb` ruby script.  Each tool has a variable ending with `_deploy_via` that can have one of two values: `'kubectl'` or `'docker-compose'`.  If you do not want to maange the life-cycle of one or more long-running tools via Kubernetes simply change its value from `'kubectl'` to `'docker-compose'`.  
+- In the opening sentence of this section I mentioned that the "default configuration" uses Kubernetes. Yes, all but Drone is configured to deploy via Kubernetes.  Each long-running tool's deployment method is defined in the project's `ansible_extra_vars.rb` ruby script.  Each tool has a variable ending with `_deploy_via` that can have one of two values: `'kubectl'` or `'docker-compose'`.  If you do not want to manage the life-cycle of one or more long-running tools via Kubernetes simply change its value from `'kubectl'` to `'docker-compose'`.  
 - Further, if you do not want to run Kubernetes either remove or comment out the `k3s-server` and `'k3s-agent` roles from the `anisble/toolchain-playbook.yml` and `ansible/development-playbook.yml`, respectively.
 
 #### 8.7.3.1. K3S, light-weight Kubernetes
@@ -1674,7 +1674,7 @@ It's landing page can be found here
 
 <https://k3s.io/>
 
-The officiail documentation can be found here
+The official documentation can be found here
 
 <https://rancher.com/docs/k3s/latest/en/>
 
@@ -1682,7 +1682,7 @@ The officiail documentation can be found here
 
 Kubernetes is managed in the command-line via `kubectl`.
 
-Once, both `toolchain` and `development` vagrant are provisioned and configured, if you ssh into the `toolchain` vagrant via typing
+Once, both  the `toolchain` and `development` vagrants are provisioned and configured, if you ssh into the `toolchain` vagrant via typing
 
 ```bash
 vagrant ssh toolchain
