@@ -893,6 +893,10 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL and 
    sudo cp vagrant_files/cacert.pem /opt/vagrant/embedded/.
    ```
 
+**NOTE**
+
+- Vagrant respects `SSL_CERT_FILE` and `CURL_CA_BUNDLE` environment variables used to point to cacert bundles.  If you run into SSL errors, you may have `SSL_CERT_FILE` and/or `CURL_CA_BUNDLE` environment variable files set requiring you to add MITRE CA certificates to the file specified by these environment variables.
+
 #### 8.5.1.3. Installing Vagrant plugins
 
 Vagrant plugins extend the functionality of Vagrant, and you'll need a few of them for this course.
@@ -2111,11 +2115,11 @@ The documentation for this class, this `readme.md` file, is authored in Markdown
 
 For me, I don't need to see the diagrams rendered to follow them. The code alone is sufficient.  
 
-PlantUML supports a number of UML diagrams: Sequence, Usecase, Class diagram, Activity diagram, Component, State, Object, Deployment, and Timing. The DSL also supports a number of other non-UML diagrams: Wireframe graphical interface, Specification and Description Language (SDL), Ditaa diagram... 
+PlantUML supports a number of UML diagrams: Sequence, Use Case, Class diagram, Activity diagram, Component, State, Object, Deployment, and Timing. The DSL also supports a number of other non-UML diagrams: Wireframe graphical interface, Specification and Description Language (SDL), Ditaa diagram... 
 
 This class makes use of just two types: State and Deployment diagrams.  
 
-The PlantUML effort also provides server for rendering diagrams in PNG, SVG or LaTeX format. Plugins for Microsoft Code, Atom, and editors have been authored to assist in auhoring in the PlantUML DSL.
+The PlantUML effort also provides server for rendering diagrams in PNG, SVG or LaTeX formats. Plugins for Microsoft Code, Atom, and other editors have been authored to assist in auhoring in the PlantUML DSL.
 
 #### 8.8.5.1. Documentation, source, container image
 
