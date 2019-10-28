@@ -1767,7 +1767,7 @@ The course automation will also deploy the Kubernetes-Dashboard.  For the long-r
 
 <https://192.168.0.11:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/>
 
-To login, in the root of the project execute in terminal
+To login to the dashaboard, open a terminal and in the root of the project execute 
 
 ```
 ./get_kubeconfig_yml.sh
@@ -1799,11 +1799,11 @@ users:
     username: admin
 ```
 
-The username and password you will need to enter will be on the last two lines.
+The username and password you will need to enter will be on the last two lines.  In this case the username is `admin` and the password is `b4691b364594460a83088fdc3aed4144`.
 
-You'll be asked to enter the user/password several times.
+You'll be asked to enter the user and password several times.
 
-If your username and password are accepted, a modal will then pop up.  Select `token` in the modal and then back in the terminal at the root of the project execute
+If your username and password are accepted, a modal will then pop up.  Select `token` in the modal and then back in the terminal execute
 
 ```
 ➜  hands-on-DevOps git:(master) ✗ ./get_k3s_token.sh
@@ -1816,7 +1816,7 @@ Connection to 127.0.0.1 closed.
 eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJ2YWdyYW50LXRva2VuLW01Zms5Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6InZhZ3JhbnQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI0MTE4OWU0Zi1kNWRiLTQ3YTgtYjkxYi0yMzlhMGU2MWZlYjciLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06dmFncmFudCJ9.vVeT6CD0dc7b7TFhqjOjprGBNbx7qOKSuobUzpbjAgkQa3vZllivZCmbRIyFEnNYqRzamkLhD3Rz9mZvnmAN6wRx2-3SqMwc_KjY0GdP0QSWrd6wpzvW4b6EEOxWa0Of-DgET6IWw50Yjvi0kBeRuJdtBXMHD4kMu--ew_tGeJA28FgUAMbrpW8DqgqUWwNNADP_9mlvrUK8-TWSCxIe-VsqU7ifKLlp7WR61EicAwYrMs0fiw-41Q5KBskdqsJ6LxgsgHcwmNmInKgunu1pZfyxH_gfaiPq4cfwU7gtR6uMUAMNkwzfdPvYqFPv0zN8XzZ_j99kM0omlVS7AWH8iA
 ```
 
-The token starts on the line below `Connection to 127.0.0.1 closed.` with in this case `eyJhbGc...`  Cut-and-paste the contents of the token into the field provided in the modal and you'll be granted access to the dashboard.
+The token starts on the line below `Connection to 127.0.0.1 closed.` and in this case the token starts with `eyJhbGc...`  Cut-and-paste the contents of the token into the field provided in the modal, submit and you'll be granted access to the dashboard.
 
 ## 8.8. The long-running tools
 
