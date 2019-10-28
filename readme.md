@@ -2272,7 +2272,7 @@ You will see a good deal of output.
 
 The prior `toolchain` and `development` vagrants are required to be up and running for the following sections.
 
-In this next part, we will create a simple helloworld GoLang project to demonstrate Continuous Integration. GoLang lends itself well to DevOps and underlines almost every new tool you can think of related to DevOps and cloud (e.g., [golang / go](https://github.com/golang/go), [docker / docker-ce](https://github.com/docker/docker-ce), [kubernetes / kubernetes](https://github.com/kubernetes/kubernetes), [openshift / origin ](https://github.com/openshift/origin),[hashicorp / terraform](https://github.com/hashicorp/terraform), [coreos / etcd](https://github.com/coreos/etcd), [hashicorp / vault](https://github.com/hashicorp/vault), [hashicorp / packer](https://github.com/hashicorp/packer), [hashicorp / consul](https://github.com/hashicorp/consul), [gogits / gogs](https://github.com/gogits/gogs), [drone / drone](https://github.com/drone/drone).)
+In this next part, we will create a simple helloworld GoLang project to demonstrate Continuous Integration. GoLang lends itself well to DevOps and underlines almost every new tool you can think of related to DevOps and cloud (e.g., [golang / go](https://github.com/golang/go), [docker / docker-ce](https://github.com/docker/docker-ce), [kubernetes / kubernetes](https://github.com/kubernetes/kubernetes), [openshift / origin ](https://github.com/openshift/origin), [hashicorp / terraform](https://github.com/hashicorp/terraform), [coreos / etcd](https://github.com/coreos/etcd), [hashicorp / vault](https://github.com/hashicorp/vault), [hashicorp / packer](https://github.com/hashicorp/packer), [hashicorp / consul](https://github.com/hashicorp/consul), [gogits / gogs](https://github.com/gogits/gogs), [drone / drone](https://github.com/drone/drone).)
 
 ### 8.10.1. Create the project's backlog
 
@@ -2331,7 +2331,7 @@ skinparam note {
 -down->“Run\nyour application”
 -left->“Author\nthe unit tests”
 -left->“Write the Makefile”
--left->“Author Drone-based Continuous Integration”
+-left->“Author Drone-based\nContinuous Integration”
 -left-> (*)
 ```
 
@@ -2351,12 +2351,14 @@ Complete the follow to track your progress in completing the Golang *helloworld*
 2. Select `Kanban`.  In a Kanban board work moves from left to right with each column represents a stage within the value stream.
 3. Give your project a name.  For example, `Helloworld` and a description, such as, `My Kanban board for this awesome helloworld app` and then click `CREATE PROJECT`.
 4. You can skip this step and opt to chose to click `><` to fold `READY`, `USER STORY STATUS` and `ARCHIVED` only after completing step 6.  Otherwise, you can edit your Kanban board to just `NEW`, `IN PROGRESS`, and `DONE` by
+
    a. On the bottom left, click the `ADMIN` gear.  
    b. Click `ATTRIBUTES`.  
    c. Scroll down to `USER STORY STATUS`.  
    d. Hover over `Ready`, click the trash icon to delete and click `ACCEPT`.  
    c. Do the same for `Ready for test` and `Archived`.  
-   d. Click the `KANBAN` icon on the far left. It Looks like columns.  And then reload the browser to get the changes to take.  
+   d. Click the `KANBAN` icon on the far left. It Looks like columns.
+
 5. In the `NEW` column select `Add New bulk` icon that looks like a list and when the page updates cut-and-paste the lines below into the text box and click `SAVE`. 
 
     ```
