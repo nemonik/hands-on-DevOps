@@ -1262,7 +1262,7 @@ This section provisions and configures a `development` vagrant used for developm
 
   - `development.vm.box` loads the vagrant with this `centos/7` Vagrant base box.  Vagrant curates a listing of base boxes here https://app.vagrantup.com/boxes/search
   - `development.vm.synced_folder` mounts the class's project folder to `/vagrant` path in the vagrant
-  - The `development.vm.provider` section tells the hypervisor how to configure the vagrant (i.e., how much memory, how many procesors)
+  - The `development.vm.provider` section tells the hypervisor how to configure the vagrant (i.e., how much memory, how many processors)
   - `development.vm.provision` handles configuring the vagrant by executing the `ansible/development-playbook.yml` playbook
   - `-vvvv` conifigures the `ansible-playbook` command to output the highest level of logging.
 
