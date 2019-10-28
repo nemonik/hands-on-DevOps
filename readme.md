@@ -728,6 +728,8 @@ When in the root of the project, the script can be executed in the terminal sess
 . ./set_env.sh
 ```
 
+If you're doing this class on your MITRE Lifecycle running OS X running on the MITRE network you will **not** want to set any proxy related environmental variable. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables.  So, you'd comment out (i.e., prepend the line with pound sign) all but the last two environment variables in the the `set_env.sh` bash script.
+
 If you have no HTTP proxy and no SSL inspection to be concerned about, the alternative is to execute `unset.sh` BASH script to unset all these values:
 
 ```bash
@@ -769,7 +771,7 @@ Execute in terminal session via
 
 **On Windows**
 
-Now if, if you are on Windows you cam perform the following to set the same  environmental variable adjusting for your environment:
+If you are on Windows perform the following to set environmental variable adjusting for your environment:
 
 1. In the Windows taskbar, enter `edit the system environment variables` into `Search Windows` and select the icon with the corresponding name. 
 3. The `Systems Property` window will likely open in the background, so you will likely need to go find it and bring it forward.
@@ -784,6 +786,10 @@ Now if, if you are on Windows you cam perform the following to set the same  env
 | no_proxy                           | 127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11  |
 | CA_CERTIFICATES                    | http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt |
 | VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS | 0                                                                |
+
+If you're on MITRE Institute Lab PC you will want to set all of these variables.
+
+If you're doing this class on your MITRE Lifecycle running Windows (I have yet to verify a Windows MITRE Lifecycle.) you will not want to set `proxy`, `http_proxy`, `https_proxy`, `no_proxy` or any proxy related environmental variable. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables. 
 
 **NOTE**
 
