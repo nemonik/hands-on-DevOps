@@ -690,7 +690,7 @@ If your environment makes use of an HTTP proxy or SSL inspection, you will need 
 
 **On Mac OS X or \*NIX environments**
 
-The following `set_env.sh` BASH script is included in the root of the project and can be used to configure these variable for UNIX environments, but must be adjusted for your specific environment. 
+The following `set_env.sh` BASH script is included in the root of the project and can be used to configure the UNIX environment variables, but must be adjusted for your specific environment. 
 
 ```bash
 #!/usr/bin/env bash
@@ -1601,7 +1601,7 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
   ```bash
   vagrant up toolchain --provision
   ```
-- To halt the `toolchain` vagrant once provisioned and configured perfrom the following in the command-line
+- To halt the `toolchain` vagrant once provisioned and configured perform the following in the command-line
   ```bash
   vagrant halt toolchain
   ```
@@ -1610,6 +1610,8 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
   vagrant up toolchain --no-provision
   ```
   Give the vagrant time to restart all the long-running tools.
+- You will not want to run a VPN session that does not permit bridging such as MITRE's VPN on your computer when running running your vagrants as you will have no network access to your vagrants. 
+_ You also will not want to move from a network to another that requires your to change DNS servers in in `./host` file and/or change your proxy environmental variables.  
 - Caution, it is easy to forget DevOps is not about tools and automaton, but is as much about culture, methods and repeated practices, so keep this in mind.  
 - The tools, methods and repeated practices exist to support the culture.
 - Again, I'll drop from time to time stating "into the shell" ot "into the command-line" when instructing you to enter things in the CLI.

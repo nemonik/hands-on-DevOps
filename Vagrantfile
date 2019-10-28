@@ -167,8 +167,8 @@ Vagrant.configure('2') do |config|
     toolchain.vm.provider :virtualbox do |virtualbox|
       virtualbox.name = 'DevOps Class - toolchain'
       virtualbox.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 10]
-      virtualbox.memory = 6144 #4096
-      virtualbox.cpus = 4
+      virtualbox.memory = 8192 #6144 #4096
+      virtualbox.cpus = 8 #4
       virtualbox.gui = false
     end
 
