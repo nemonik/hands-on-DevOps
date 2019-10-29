@@ -3236,7 +3236,7 @@ steps:
 - Make sure you pre-pend that dot (`.`) at the start of `.drone.yml`.
 - Like the `.gitignore` file, `.drone.yml` is a hidden file and will not show up if you list the directory contents with `ls` alone.  You will need to enter `ls -las`.
 
-The pipeline is authored in YAML like almost all the CI orchestrators out there except for Jenkin's Pipelines, whose you author in Groovy-based DSL.
+The pipeline is authored in YAML like almost all the CI orchestrators out there except for Jenkin's Pipelines, which you author in Groovy-based DSL.
 
 - `steps:` - defines the list of steps followed to build, test and deploy your code.
 - `build` and `run` - defines the names of the step. These are yours to name. Name steps something meaningful as to what the step is orchestrating. Each step is executed serially, in the order defined.
