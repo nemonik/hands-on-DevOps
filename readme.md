@@ -836,6 +836,8 @@ If you are on Windows, you'll need to install `git`.
 
 6. On the Windows task bar, enter `git` into `Search Windows` then select `Git Bash`.  Use `Git Bash` instead of `Command` or `Powershell`.
 
+On OS X, git can be installed via [Homebrew](https://brew.sh/) or you can install the Git client directly <https://git-scm.com/download/mac>.
+
 ## 8.4. Retrieve the course material
 
 If you are reading this on paper and have nothing else, you only have a small portion of the class material. You will need to download the class project containing all the automation to spin up a DevOps toolchain and development virtual machines, etc.
