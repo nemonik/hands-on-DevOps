@@ -842,7 +842,7 @@ On OS X, `git` can be installed via [Homebrew](https://brew.sh/) or you can inst
 
 If you are reading this on paper and have nothing else, you only have a small portion of the class material. You will need to download the class project containing all the automation to spin up a DevOps toolchain and development virtual machines, etc.
 
-In a shell, for the purposes of the class, this means in `Git Bash`, clone the project from [https://github.com/nemonik/hands-on-DevOps.git](https://github.com/nemonik/hands-on-DevOps.git) via git like so:
+In a shell, for the purposes of the MITRE Institute class, this means in `Git Bash`, clone the project from [https://github.com/nemonik/hands-on-DevOps.git](https://github.com/nemonik/hands-on-DevOps.git) via git like so:
 
 ```
 git -c http.sslVerify=false clone https://github.com/nemonik/hands-on-DevOps.git
