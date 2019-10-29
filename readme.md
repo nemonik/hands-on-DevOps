@@ -836,7 +836,7 @@ If you are on Windows, you'll need to install `git`.
 
 6. On the Windows task bar, enter `git` into `Search Windows` then select `Git Bash`.  Use `Git Bash` instead of `Command` or `Powershell`.
 
-On OS X, git can be installed via [Homebrew](https://brew.sh/) or you can install the Git client directly <https://git-scm.com/download/mac>.
+On OS X, `git` can be installed via [Homebrew](https://brew.sh/) or you can install the Git client directly <https://git-scm.com/download/mac>.
 
 ## 8.4. Retrieve the course material
 
