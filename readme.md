@@ -707,19 +707,54 @@ The following `set_env.sh` BASH script is included in the root of the project an
 # ```
 # . ./set_env.sh
 # ```
+#
+# will set proxy setting to the the hard-cded value on line 36.
+# Modify for your environment.
+#
+# ```
+# . ./set_env.sh no_proxy
+# ```
+#
+# will unset all proxy related environmental variables.
 
-# Example values chage for your environment...
+set_proxy=true
 
-export PROXY=http://gatekeeper.mitre.org:80
-export proxy=$PROXY
-export https_proxy=$PROXY
-export http_proxy=$PROXY
-export HTTP_PROXY=$PROXY
-export ALL_PROXY=$PROXY
-export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11"
-export no_proxy=$NO_PROXY
+if [ $# -ne 0 ]; then
+  args=("$@")
+  if [[ $args[1] = "no_proxy" ]]; then
+    echo "setting proxy to false"
+    set_proxy=false
+  fi
+fi
+
+if [[ $set_proxy = true ]]; then
+  export PROXY=http://gatekeeper.mitre.org:80
+  export proxy=$PROXY
+  export HTTP_PROXY=$PROXY
+  export http_proxy=$PROXY
+  export HTTPS_PROXT=$PROXY
+  export https_proxy=$PROXY
+  export ALL_PROXY=$PROXY
+  export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11"
+ export no_proxy=$NO_PROXY
+else
+  unset PROXY
+  unset proxy
+  unset HTTP_PROXY
+  unset http_proxy
+  unset HTTPS_PROXY
+  unset https_proxy
+  unset NO_PROXY
+  unset no_proxy
+  unset ALL_PROXY
+fi
+
 export CA_CERTIFICATES=http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt
 export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
+
+# Force the use of the vagrant cacert.pem file
+unset CURL_CA_BUNDLE
+unset SSL_CERT_FILE
 ```
 
 When in the root of the project, the script can be executed in the terminal session via
@@ -728,7 +763,11 @@ When in the root of the project, the script can be executed in the terminal sess
 . ./set_env.sh
 ```
 
-If you're doing this class on your MITRE Lifecycle running OS X running on the MITRE network you will **NOT** want to set any proxy related environmental variable. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables.  So, you'd comment out (i.e., prepend the line with a pound sign) all but the last two environment variables in the the `set_env.sh` bash script.
+If you're doing this class on your MITRE Lifecycle running OS X running on the MITRE network you will **NOT** want to set any proxy related environmental variable. So, you will want to execute this script in this manner
+
+```bash
+. ./set_env.sh no_proxy
+```
 
 If you have no HTTP proxy and no SSL inspection to be concerned about, the alternative is to execute `unset.sh` BASH script to unset all these values:
 
@@ -903,7 +942,7 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL and 
 
 **NOTE**
 
-- Vagrant respects `SSL_CERT_FILE` and `CURL_CA_BUNDLE` environment variables used to point to cacert bundles.  If you run into SSL errors, you may have `SSL_CERT_FILE` and/or `CURL_CA_BUNDLE` environment variable files set requiring you to add MITRE CA certificates to the file specified by these environment variables.
+- Vagrant respects `SSL_CERT_FILE` and `CURL_CA_BUNDLE` environment variables used to point to cacert bundles.  If you run into SSL errors, you may have `SSL_CERT_FILE` and/or `CURL_CA_BUNDLE` environment variable files set requiring you to add MITRE CA certificates to the file specified by these environment variables.  If you use the `set_env.sh` at the root of the project it will unset these environment variables forcing vagrant to use its cacert.pem file you replace above.
 
 #### 8.5.1.3. Installing Vagrant plugins
 
@@ -3936,7 +3975,7 @@ skinparam note {
 -left-> (*)
 ```
 
-If you authored the first helloworld application, you will have already installed the `gometalinter.v2`, so you can skip to the next step, but incase you didn't here is the command to install
+Install the `gometalinter.v2` in the `development` vagrant
 
 ```bash
 go get -u gopkg.in/alecthomas/gometalinter.v2
@@ -4537,15 +4576,13 @@ INFO: ------------------------------------------------------------------------
 
 Let me unpack what the above commands are doing
 
-The first line `go get github.com/alecthomas/gometalinter` installs the `gometalinter` dependency to concurrently run Go lint tools and normalise their output
-
-`gometalinter.v2 > gometalinter-report.out` executes all the above linters and consolidates their results into a single `gometalinter-report.out` report.  Go is a very quiet language. As you may have noticed.  So, when `gometalinter.v2` runs and everything passes the output of report will contain nothing if there are no problems.  If you want to be assured it called the linters it claims to call, you run `gometalinter.v2` if debug like so `gometalinter.v2 --debug`.
+`gometalinter.v2 > gometalinter-report.out` executes all the above linters and consolidates their results into a single `gometalinter-report.out` report.   As you may have noticed, Go is a very quiet language.  So, when `gometalinter.v2` runs and everything passes the output of report will contain nothing if there are no problems.  If you want to be assured it called the linters it claims to call, you run `gometalinter.v2` if debug like so `gometalinter.v2 --debug`.
 
 `go test -coverprofile=coverage.out` executes your unit tests and generate the `coverage.out` report.
 
 `go test -json > report.json` executes your unit tests and generate a unit tests execution report, `report.json`
 
-`sonar-scanner` through `-D` parameters is configured to submit the reports.  If you skipped the prior section, SonarQube will automatically create the project for you.
+`sonar-scanner` is configured via the `-D` parameters to submit the reports. If you skipped the prior section, SonarQube will automatically create the project for you.
 
 Open in your host's web browser
 
@@ -4666,7 +4703,7 @@ run:
 
 **NOTE**
 
-- The indents are `tab` characters and not `spaces` characters. otherwise you `make` will fail to execute.  
+- The indents are `tab` characters and not `spaces` characters otherwise your `make` will fail to execute.  
 - And cut-and-paste may split the single line beginning with `sonar-scanner` into multiple lines.  You want this to be single line of text.
 
 Test out your `Makefile`
@@ -4901,7 +4938,7 @@ skinparam note {
 -left-> (*)
 ```
 
-Build a Docker image named `nemonik/helloworld-web` for the application and all its dependencies to ensure a repeatable deployment on Docker by opening the file `Dockerfile` in an editor at the root of the project and copy the is content into it
+Build a Docker image named `nemonik/helloworld-web` for the application and all its dependencies to ensure a repeatable deployment on Docker by opening the file `Dockerfile` in an editor at the root of the project and copy the following content into it
 
 ```docker
 FROM 192.168.0.11:5000/nemonik/golang:1.13
@@ -5849,7 +5886,7 @@ skinparam note {
 -left-> (*)
 ```
 
-So, lets create our pipeline starting with a `sonar-scan` step to update SonarQube with code quality scans automatically by opening `.drone.yml` in our text editor and adding the following step right after our `build` step, so that we run the step prior to a deploy. 
+So, lets create our pipeline starting with a `sonar-scan` step to update SonarQube with code quality scans automatically by opening `.drone.yml` in our text editor 
 
 ```yaml
 kind: pipeline
@@ -6594,9 +6631,9 @@ NE5OgEXk2wVfZczCZpigBKbKZHNYcelXtTt/nP3rsCuGcM4h53s=
 -----END RSA PRIVATE KEY-----
 ```
 
-Now, what's this business about `insecure_private_key`?  Well, vagrant provides an insecure key pair ot the vagrant user that is by default replaced a more secure key pair per vagrant.  Both `development` and `toolchain` vagrants were deliberately configure to use the `insecure_private_key` to ease the teaching of this class, but keeping "security" in mind it would of been more secure to permit vagrant by default toi generate a new private key for the `toolchain` vagrant.  
+Now, what's this business about `insecure_private_key`?  Well, by default `vagrant up` command will replace the insecure key pair in the box it uses as a starting point with a new key pair when provisioning each vagrant.  Both `development` and `toolchain` vagrants were deliberately configured to use the `insecure_private_key` to ease the teaching of this class, but keeping "security" in mind it would've been more secure to configure `vagrant up` by default to generate a new private key for the `toolchain` vagrant.  
 
-To configure vagrant to generate a private key per vagrant replacing the `insecure_private_key` simply comment out the following line in the project's `Vagrantfile` as the default value for `config.ssh.insert_key` is `true`. 
+To configure `vagrant up` to generate a private key per vagrant, replacing the `insecure_private_key`, simply comment out the following line in the project's `Vagrantfile` as the default value for `config.ssh.insert_key` is `true`. 
 
 ```ruby
   config.ssh.insert_key = false

@@ -74,6 +74,8 @@
       - vim
       - emacs
       - bind-utils
+      - bash-completion 
+      - bash-completion-extras
   retries: 60
   delay: 5
   register: result

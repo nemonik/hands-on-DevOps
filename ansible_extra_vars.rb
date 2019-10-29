@@ -41,7 +41,7 @@ module AnsibleExtraVars
       taiga_port: '8080',
 
       gitlab_deploy_via: 'kubectl',
-      gitlab_version: '12.3.5',
+      gitlab_version: '12.4.0',
       gitlab_port: '10080',
       gitlab_ssh_port: '10022',
       gitlab_user: 'root',
