@@ -8284,6 +8284,7 @@ If you're done with your vagrants, shoo them away from the root of the project o
 ```bash
 vagrant halt
 vagrant destroy -f
+./box/remove_box.sh
 ```
 
 And they're gone.
