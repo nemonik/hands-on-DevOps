@@ -2596,10 +2596,12 @@ So, that you do not version control certain files in git, create a `.gitignore` 
 # OS-specific
 .DS_Store
 
+# reports
 .scannerwork
 *.out
 *.json
 
+# binary
 helloworld
 ```
 
@@ -3675,12 +3677,15 @@ So, that you do not version control certain files in git, create a `.gitignore` 
 # OS-specific
 .DS_Store
 
+# reports
 .scannerwork
 coverage.out
 golint-report.out
 gometalinter-report.out
 report.json
+inspec_helloworld.json
 
+# binary
 helloworld-web
 ```
 
@@ -6572,7 +6577,7 @@ We're going to add a `deploy` step to our Drone pipeline to secure shell into `t
 
 Now we could put our credentials straight into our pipeline, but keeping "security" in mind we're going to make use of a Drone Secret to store `vagrant` user's private key and then use this secret in executing the `deploy` step.  Even better would be create a service account on the `toolchain` server for the sole purpose of performing deployments. 
 
-First we need to retrieve the private key used by our vagrant user to secure shell (i.e., ssh) into the `toolchain`vagrant.  We can retrieve this by executing the following command in the root of our project on the host computer (i.e., not inside a vagrant)
+First we need to retrieve the private key used by our vagrant user to secure shell (i.e., ssh) into the `toolchain`vagrant.  We can retrieve this by executing the following command in the root of our project on the host computer (i.e., not inside a vagrant) in another shell
 
 ```bash
 vagrant ssh-config toolchain
@@ -6669,6 +6674,7 @@ Now, open `root/helloworld-web`'s `.drone.yml` in your editor and add an additio
 To execute your pipeline, push your changes to GitLab
 
 ```bash
+cd ~/go/src/github.com/nemonik/helloworld-web
 git add .drone.yml
 git commit -m "added deploy step to pipeline"
 git push origin master
@@ -6833,7 +6839,7 @@ skinparam note {
 
 First let me segway into discussing DevSecOps.  
 
-As previously stated, the `Dev` part of the `DevOps` clipped compound stands for "development" (i.e., the application developers), and `Ops` stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  DevSecOps has recently emerged to embed security thought and collaboration into your team's culture when working an applications SDLC and "security-as-code" into your application pipelines.  If you're doing DevOps correctly you're also inherently performing methods and repeated practices of DevSecOps.  In DevOps, Eeery technology operational stakeholder discipline must be included in the team without needing to fork DevOps to include said disccipline.  We don't need "DevNetOps" nor do we need "DevTestOps"...
+As previously stated, the `Dev` part of the `DevOps` clipped compound stands for "development" (i.e., the application developers), and `Ops` stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  DevSecOps has recently emerged to embed security thought and collaboration into your team's culture when working an applications software development life cycle (SDLC) and "security-as-code" into your application pipelines.  If you're doing DevOps correctly, you're also inherently performing methods and repeated practices of DevSecOps.  In DevOps, Every technology operational stakeholder discipline must be included in the team without needing to fork DevOps to include said disccipline.  We don't need "DevNetOps" nor do we need "DevTestOps"...
  
 Authoring InSpec tests permit you to author compliance-as-code, a form of security-as-code, thereby turning compliance, security, and other policy requirements into automated tests.
 
@@ -6901,7 +6907,7 @@ And then go up one directory
 cd ..
 ```
 
-And edit the profile's metadata file, `inspec.yml` replacing it content's with  the following:
+And edit the profile's metadata file, `inspec.yml` replacing its contents with  the following:
 
 ```yaml
 name: helloworld-tests
@@ -6914,13 +6920,6 @@ summary: A minimal InSpec Compliance Profile for helloworld-web
 version: 0.0.1
 supports:
   platform: os
-attributes:
-  - name: 'application_url'
-    type: string
-    value: '192.168.0.11'
-  - name: 'application_port'
-    type: string
-    value: '3000'
 ```
 
 #### 8.11.19.2. Execute your test
@@ -6954,11 +6953,51 @@ The output of InSpec test will resemble
 
 ***Note***
 
-- Upon leaving this section, remember to stop your `helloworld-web` docker container via
+- If when running the test (i.e., `inspec exec helloworld
+`) you see a strack trace, check the contents of your `./helloworld/inspec.yml` file for any stray characters
 
   ```
-  docker rm -f helloworld-web
-  ```
+  [vagrant@development helloworld-web]$ inspec exec helloworld
+  Traceback (most recent call last):
+    23: from /usr/bin/inspec:186:in `<main>'
+    22: from /usr/bin/inspec:186:in `load'
+    21: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-bin-4.16.0/bin/inspec:11:in `<top (required)>'
+    20: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/base_cli.rb:33:in `start'
+    19: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/thor-0.20.3/lib/thor/base.rb:466:in `start'
+    18: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/thor-0.20.3/lib/thor.rb:387:in `dispatch'
+    17: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/thor-0.20.3/lib/thor/invocation.rb:126:in `invoke_command'
+    16: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/thor-0.20.3/lib/thor/command.rb:27:in `run'
+    15: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/cli.rb:291:in `exec'
+    14: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/cli.rb:291:in `each'
+    13: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/cli.rb:291:in `block in exec'
+    12: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/runner.rb:185:in `add_target'
+    11: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/profile.rb:73:in `for_target'
+    10: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/profile.rb:67:in `for_fetcher'
+     9: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/profile.rb:60:in `for_path'
+     8: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/profile.rb:60:in `new'
+     7: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/profile.rb:134:in `initialize'
+     6: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:302:in `block (2 levels) in <class:InputRegistry>'
+     5: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:135:in `bind_profile_inputs'
+     4: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:255:in `bind_inputs_from_metadata'
+     3: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:255:in `each'
+     2: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:255:in `block in bind_inputs_from_metadata'
+     1: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:262:in `handle_raw_input_from_metadata'
+/opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:262:in `join': no implicit conversion of nil into String (TypeError)
+   ```
+
+Upon leaving this section, remember to stop your `helloworld-web` docker container via
+
+```bash
+docker rm -f helloworld-web
+```
+
+**NOTE***
+
+- If upon executing `inspec` it errors out with
+
+  > Could not fetch inspec profile in "inspec.rb"
+
+  Then you are not in the correct folder.  You need to be in the root of the `helloworld-web` directory of your project.
 
 #### 8.11.19.3. The results
 
@@ -6987,7 +7026,7 @@ Test Summary: 5 successful, 0 failures, 0 skipped
 
 We really should have an InSpec container to execute this step.  Maybe I'll do this in the next revision of my class, but since InSpec is already installed on the `toolchain` vagrant, we'll use `appleboy/drone-ssh` container to ssh into `toolchain` and execute our InSpec profile from the pipeline.
 
-In the `helloworld-web` project, edit  `.drone.yml` and add the following step
+In the `helloworld-web` project, edit `.drone.yml` and add the following step
 
 ```yaml
 - name: inspec
@@ -7056,12 +7095,28 @@ out: Test Summary: 5 successful, 0 failures, 0 skipped
 
 MITRE maintains two projects for viewing of InSpec profiles and evaluations in a convenient interface.
 
-We'll use Heimdall-lite, a single page JavaScript implementation of the MITRE Heimdall InSpec results viewer, to view:
+We'll use Heimdall-lite, a single page JavaScript implementation of the MITRE Heimdall InSpec results viewer, to view the results in security engineer friendly manner.
 
-In the `helloworld-web` project's `inspec-tests` directory on the `development` vagrant, use `inspec` to report out to JSON via
-  
+Restart the container
+
+```bash
+docker run -d -p 3000:3000 --name helloworld-web 192.168.0.11:5000/nemonik/helloworld-web:latest
 ```
-inspec exec --chef-license=accept-silent helloworld --reporter json > /vagrant/inspec_hellworld.json
+
+In the `helloworld-web` project on the `development` vagrant, use `inspec` to write a report in JSON to `/vagrant/inspec_helloworld.json`
+  
+```bash
+inspec exec --chef-license=accept-silent helloworld --reporter json > /vagrant/inspec_helloworld.json
+```
+
+Upon leaving this section, remember to stop your `helloworld-web` docker container via
+
+Open Heimdall-lite https://mitre.github.io/heimdall-lite/, select `Load JSON`, the `Browse` to navigate to `inspec_helloworld.json` in the root of the class project and upload to view the results. 
+
+Remember to stop your container leaving this section
+
+```bash
+docker rm -f helloworld-web
 ```
 
 **NOTE**
@@ -7071,8 +7126,6 @@ inspec exec --chef-license=accept-silent helloworld --reporter json > /vagrant/i
   > Could not fetch inspec profile in "inspec.rb"
 
   Then you are not in the correct folder.  You need to be in the root of the `helloworld-web` directory of your project.
-
-Open Heimdall-lite https://mitre.github.io/heimdall-lite/, select `Load JSON`, the `Browse` to navigate to `inspec_hellworld.json` in the root of the class project and upload to view the results. 
 
 ### 8.11.20. Add automated functional test to pipeline
 
