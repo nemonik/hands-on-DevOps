@@ -7630,7 +7630,7 @@ skinparam note {
 -left-> (*)
 ```
 
-Dynamic application security testing (DAST) is used to detect security vulnerabilities in an application while it is running, so as to help you remediate these concerns while in development.  Again, yet another example of `thinking about application and infrastructure security from the start.`
+Dynamic application security testing (DAST) is used to detect security vulnerabilities in an application while it is running, so as to help you remediate these concerns while in development.  Again, yet another example of "thinking about application and infrastructure security from the start."
 
 The OWASP Zed Attack Proxy (ZAP) is one of the world’s most popular free DAST tools actively maintained by hundreds of international volunteers, so add a step to test the application.
 
