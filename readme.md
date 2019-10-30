@@ -207,12 +207,12 @@ What you should bring:
         - [8.11.22. All the source for *helloworld-web*](#81122-all-the-source-for-helloworld-web)
     - [8.12. Microservices](#812-microservices)
         - [8.12.1. What's cloud-native?](#8121-whats-cloud-native)
-            - [8.12.1.1. So, let's experiment with our little "microservice"](#81211-so-lets-experiment-with-our-little-microservice)
-            - [8.12.1.2. Modify the helloworld-web application](#81212-modify-the-helloworld-web-application)
-            - [8.12.1.3. Create a Kubernetes manifest for the application](#81213-create-a-kubernetes-manifest-for-the-application)
-            - [8.12.1.4. Deploy your application](#81214-deploy-your-application)
-            - [8.12.1.5. Test your application](#81215-test-your-application)
-            - [8.12.1.6. Scale your application](#81216-scale-your-application)
+        - [8.12.2. Let's create a microservice](#8122-lets-create-a-microservice)
+            - [8.12.2.1. Modify the helloworld-web application](#81221-modify-the-helloworld-web-application)
+            - [8.12.2.2. Create a Kubernetes manifest for the microservice](#81222-create-a-kubernetes-manifest-for-the-microservice)
+            - [8.12.2.3. Deploy your application](#81223-deploy-your-application)
+            - [8.12.2.4. Test your microservice](#81224-test-your-microservice)
+            - [8.12.2.5. Scale your microservice](#81225-scale-your-microservice)
     - [8.13. Using what you've learned](#813-using-what-youve-learned)
     - [8.14. Shoo away your vagrants](#814-shoo-away-your-vagrants)
     - [8.15. That's it](#815-thats-it)
@@ -7636,7 +7636,7 @@ The OWASP Zed Attack Proxy (ZAP) is one of the world’s most popular free DAST 
 
 First we'll exercise ZAP locally opening `vagrant ssh` to `development`.
 
-At the root of the project, we need to query our Docker registry to detemine what `zap2docker` container is available, we'll do this using `curl`
+At the root of the project, we need to query our Docker registry to determine what `zap2docker` container is available, we'll do this using `curl`
 
 ```bash
 [vagrant@development helloworld-web]$ curl -X GET http://192.168.0.11:5000/v2/_catalog
@@ -7745,7 +7745,7 @@ Great, now lets add another step to our pipeline after the `selenium` step, but 
 
 **NOTE**
 
-- Add this new step right after the last above `volumes:`.
+- Again, add this new step right after the last above `volumes:`.
 
 To execute your pipeline, push your changes to GitLab
 
@@ -7818,11 +7818,11 @@ The `helloworld-web` project can be viewed completed at
 
 ## 8.12. Microservices
 
-So, you may not realize it, but with the `helloworld-web` application you've actually written is a microservice.
+So, you may not realize it, but with the `helloworld-web` application what you've actually written is a microservice.
 
 What's a microservice?
 
-- Inidividually, microservices perform a single function (i.e., a single business capability or feature.)  In our case, our application's single function is to return, "Hello world!\n"
+- Individually, microservices perform a single function (i.e., a single business capability or feature).  In our case, our application's single function is to return, "Hello world!\n"
 - Communicate with other services via well-defined APIs.
 - Can be written using different frameworks and programming languages.
 - Can be deployed independently or as a group.
@@ -7831,14 +7831,14 @@ The benefit
 
 - Traditional monolithic architectures don’t lend themselves to cloud deployments.
   - Nor do they scale.
-  - They’re simple not “cloud-native.” (More on that word later.)
-- In monolithic architecture, if a single feature experiences a demand, the entire architecture must be scaled.
-- In Microservice Architecture each feature runs as a separate service within its own container.
+  - They’re simply not “cloud-native.” (More on that word later.)
+- In monolithic architectures, if a single feature experiences significant demand, the entire architecture must be scaled.
+- In microservice architecture each feature runs as a separate service within its own container.
 - Thereby, permitting each service to be scaled and maintained independently.
-- Providing crash Isolation, so if a single piece of your service is crashing, then the rest of your application continues to work
-- Providing Isolation for Security (Again more security thought.), so a compromise of one service only gains the adversary access to the resources of that single service
-- Providing independent scaling, so each microservice’s compute utilization can be independently scaled up and down 
-- Increasing development velocity, lowering development risks thereby permitting teams to build faster in comparison to monolithic development.
+- Providing crash isolation, so if a single piece of your service is crashing, then the rest of your application continues to work.
+- Providing isolation for security (Again more security thought.), so a compromise of one service only gains the adversary access to the resources of that single service.
+- Providing independent scaling, so each microservice’s compute utilization can be independently scaled up and down.
+- Increasing development velocity and lowering development risks thereby permitting teams to build faster in comparison to monolithic development.
 
 So, with the `helloworld-web` application, you've developed a micrsoservice, packaged it into a container (i.e., containerized it), and by doing so essentially created a cloud-native application.
 
@@ -7846,15 +7846,19 @@ In this era of cloud computing, DevOps and cloud-native application development 
 
 ### 8.12.1. What's cloud-native?
 
-Cloud-native computing deploys applications as microservices, packaging each into its own container, and by doing so have opened yourself up to the capability of being able to dynamically orchestrate the container to optimize resource utilization, elastic scaling, security issolation...  
+Cloud-native computing deploys applications as microservices - packaging each into its own container - and by doing so you have opened yourself up to the capability of being able to dynamically orchestrate the microservice to optimize resource utilization, elastic scaling, security isolation...  
 
-Granted our tiny insignificant microservice doesn't really do much, but we can get a peak at the possibilities as both the `toolchain` and `develoment` vagrants are infact a Kubernetes (K8s) cluster.
+### 8.12.2. Let's create a microservice
 
-#### 8.12.1.1. So, let's experiment with our little "microservice"
+We can use our `helloworld-web` application with a few tweaks to create a microservice.
 
-#### 8.12.1.2. Modify the helloworld-web application
+Granted our tiny, insignificant microservice won't do do much, but we can get a peak at the possibilities as both the `toolchain` and `development` vagrants are in fact a Kubernetes (K8s) cluster.
 
-In the `helloworld-web` project On the `development` vagrant edit the `go/src/github.com/nemonik/helloworld-web/main.go` to contain the following
+So, let's experiment with our little "microservice".
+
+#### 8.12.2.1. Modify the helloworld-web application
+
+In the `helloworld-web` project on the `development` vagrant edit the `go/src/github.com/nemonik/helloworld-web/main.go` to contain the following
 
 ```go
 package main
@@ -7904,7 +7908,7 @@ Build the container and push to the registry
 make docker-push
 ```
 
-#### 8.12.1.3. Create a Kubernetes manifest for the application
+#### 8.12.2.2. Create a Kubernetes manifest for the microservice
 
 At the root of the `hellworld-web` application create a new file, a Kubernetes resource file for our application named `helloworld.yml` and add to it the following content
 
@@ -8163,7 +8167,7 @@ An `Ingress` gives `Service`s externally-reachable URLs, load balance traffic...
 
 Once our application is deployed to the cluster, Traefik's dashboard will permit a view into how it is handling things at http://192.168.0.11:8083/dashboard/
 
-#### 8.12.1.4. Deploy your application
+#### 8.12.2.3. Deploy your application
 
 To deploy our application to the cluster, on the `development` vagrant enter
 
@@ -8227,11 +8231,11 @@ NAME                                    READY   STATUS    RESTARTS   AGE     IP 
 helloworld-deployment-f767b5b57-4tg62   1/1     Running   0          4m52s   10.42.0.58   toolchain   <none>           <none>
 ```
 
-One service is being managage and replicatset is maintaining the speficied 1 pod at any given time.
+One `service` is being managage and `replicatset` is maintaining the specified 1 pod at any given time.
 
-#### 8.12.1.5. Test your application
+#### 8.12.2.4. Test your microservice
 
-Now test your service
+Now test your microservice
 
 ```
 curl http://192.168.0.11:8082/helloworld
@@ -8246,17 +8250,17 @@ Hello world! helloworld-deployment-cf4667475-pqhk4
 
 That random hex number is the result of our code change.  It is the hostname of the container that responded to your request.
 
-#### 8.12.1.6. Scale your application
+#### 8.12.2.5. Scale your microservice
 
 Now, let's scale our application.  Open the Traefik Dashboard
 
 <http://192.168.0.11:8083/dashboard/>
 
-Traefik is An open-source reverse proxy and load balancer for HTTP and TCP-based applications.  You'll see `/helloworld` frontend and one `/helloworld` backend.
+Traefik is an open-source reverse proxy and load balancer for HTTP and TCP-based applications.  You'll see one `/helloworld` frontend and one `/helloworld` backend.
 
-You have it open to watch it add backend instances.
+Leave the browser open to the Traefik Dashboard to watch it add backend instances.
 
-Lets scale from 1 to 4 replicas, while keeping an eye on the Traefik Dashboard, via
+Let's scale from 1 to 4 replicas, while keeping an eye on the Traefik Dashboard, via
 
 ```bash
 kubectl scale --namespace=helloworld --replicas=4 deployment.apps/helloworld-deployment
@@ -8314,7 +8318,7 @@ helloworld-deployment-6879449688-cq55w   1/1     Running   0          32s     10
 helloworld-deployment-6879449688-26xsv   1/1     Running   0          32s     10.42.0.34   toolchain     <none>           <none>
 ```
 
-It usually is immaterial where in the cluster the Pod is running, but the point here is to show you the replicas are spread across the cluster thereby increasing the application's availability. 
+It usually is immaterial where in the cluster a Pod is running, but the point here is to show you that the replicas are spread across the cluster thereby increasing the application's availability. 
 
 So, the cluster is now running 4 replicas.  Let's explore the ramifications of this by running `curl` hitting the Traefik ingress several times in a row via
 
@@ -8341,7 +8345,7 @@ Hello world! helloworld-deployment-cf4667475-vvhqn
 Hello world! helloworld-deployment-cf4667475-5d77b
 ```
 
-Notice how the `curl` requests are Round-robin load balanced across the replicas.
+Notice how the `curl` requests are round-robin load balanced across the replicas.
 
 You can re-run `kubectl` to scale the number of replicas to 8
 
@@ -8355,7 +8359,7 @@ And down to say 3
 kubectl scale --namespace=helloworld --replicas=3 deployment.apps/helloworld-deployment
 ```
 
-To auto-scale based onload we'd have to install Metrics Server (Resource Metrics API) and configure a Horizontal Pod Autoscaler (HPA)
+To auto-scale based on load we'd have to install Metrics Server (Resource Metrics API) and configure a Horizontal Pod Autoscaler (HPA)
 
 <https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/>
 
