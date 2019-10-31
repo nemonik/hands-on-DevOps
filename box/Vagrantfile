@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+$VERBOSE = nil
+
 # Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
@@ -71,6 +73,20 @@ Vagrant.configure("2") do |config|
 
   end
 
+  require 'Resolv'
+
+  nameservers  = ""
+
+
+  puts "INFO: Docker is configured to us the folllowing DNS server(s):".green
+
+  for nameserver in Resolv::DNS::Config.default_config_hash()[:nameserver]
+     nameservers.concat("#{nameserver},")
+     puts "INFO: - #{nameserver}".green
+  end
+
+  nameservers = nameservers.chomp(',')
+
   # To add Enterprise CA Certificates to all vagrants
   #
   # Depends on the install of the vagrant-ca-certificates plugin
@@ -127,7 +143,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_version = '1905.1'
   config.vm.synced_folder '..', '/vagrant', type: 'virtualbox'
 
-  ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
+  ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs, nameservers )
 
   # run as root
   config.vm.provision "shell", inline: <<-SHELL

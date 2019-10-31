@@ -27,13 +27,13 @@ set_proxy=true
 if [ $# -ne 0 ]; then
   args=("$@")
   if [[ $args[1] = "no_proxy" ]]; then
-    echo "setting proxy to false"
     set_proxy=false
   fi
 fi
 
 if [[ $set_proxy = true ]]; then  
   export PROXY=http://gatekeeper.mitre.org:80
+  echo "Setting proxy environment varaibles to $PROXY" 
   export proxy=$PROXY
   export HTTP_PROXY=$PROXY
   export http_proxy=$PROXY
@@ -43,6 +43,7 @@ if [[ $set_proxy = true ]]; then
   export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11"
  export no_proxy=$NO_PROXY
 else
+  echo "Unsetting proxy environment varaibles"
   unset PROXY
   unset proxy
   unset HTTP_PROXY
@@ -55,8 +56,12 @@ else
 fi
 
 export CA_CERTIFICATES=http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt
+echo "Setting CA_CERTIFICATES environment variable to $CA_CERTIFICATES"
+
 export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
+echo "Setting VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS to $VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS"
 
 # Force the use of the vagrant cacert.pem file
+echo "unsetting CURL_CA_BUNDLE and SSL_CERT_FILE environment variables"
 unset CURL_CA_BUNDLE
 unset SSL_CERT_FILE

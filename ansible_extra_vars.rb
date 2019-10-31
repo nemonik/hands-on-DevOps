@@ -74,7 +74,7 @@ module AnsibleExtraVars
       zap2docker_stable_version: '2.8.0',
     }
 
-  def AnsibleExtraVars.as_string( http_proxy, https_proxy, ftp_proxy, no_proxy, certs )
+  def AnsibleExtraVars.as_string( http_proxy, https_proxy, ftp_proxy, no_proxy, certs, nameservers )
 
     ansible_extra_vars = ANSIBLE_EXTRA_VARS
 
@@ -82,6 +82,7 @@ module AnsibleExtraVars
     ansible_extra_vars[:https_proxy] = (!https_proxy ? "" : https_proxy)
     ansible_extra_vars[:ftp_proxy] = (!ftp_proxy ? "" : ftp_proxy)
     ansible_extra_vars[:no_proxy] = (!no_proxy ? "" : no_proxy)
+    ansible_extra_vars[:nameservers] = (!nameservers ? "" : nameservers )
 
     ansible_extra_vars[:CA_CERTIFICATES] = ''
 

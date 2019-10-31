@@ -28,23 +28,3 @@ toolchain
 [toolchains:vars]
 ansible_host=192.168.0.11 
 ansible_python_interpreter=/usr/bin/python2
-
-# Used by Ansible roles to configure Docker DNS server settings
-[dns]
-# My home network DNS
-#ns1 ansible_host=10.0.1.1
-
-# MITRE DNS
-#ns1 ansible_host=10.20.100.53
-#ns2 ansible_host=10.20.200.53
-
-# Google / Starbux DNS
-ns1 ansible_host=8.8.8.8
-ns2 ansible_host=8.8.4.4
-
-# HAMP LAB DNS
-#ns1 ansible_host=192.168.1.1
-
-# OuterNET
-#ns1 ansible_host=192.52.194.138
-#ns2 ansible_host=198.49.146.138

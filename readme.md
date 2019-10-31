@@ -113,7 +113,7 @@ What you should bring:
             - [8.5.1.3. Installing Vagrant plugins](#8513-installing-vagrant-plugins)
             - [8.5.1.4. The Vagrantfile explained](#8514-the-vagrantfile-explained)
                 - [8.5.1.4.1. Modelines](#85141-modelines)
-                - [8.5.1.4.2. Setting extra varaiables for Ansible roles](#85142-setting-extra-varaiables-for-ansible-roles)
+                - [8.5.1.4.2. Setting extra variables for Ansible roles](#85142-setting-extra-variables-for-ansible-roles)
                 - [8.5.1.4.3. Inserting Proxy setting via host environmental variables](#85143-inserting-proxy-setting-via-host-environmental-variables)
                 - [8.5.1.4.4. Inserting enterprise CA certificates](#85144-inserting-enterprise-ca-certificates)
                 - [8.5.1.4.5. Configuring the cache plugin to speed things along](#85145-configuring-the-cache-plugin-to-speed-things-along)
@@ -225,7 +225,7 @@ What you should bring:
 
 DevOps (a clipped compound of the words "development" and "operations") is a software development methodology with an emphasis on a reliable release pipeline, automation, and stronger collaboration across all stakeholders with the goal of delivery of value in close alignment with business objectives into the hands of users (i.e., production) more efficiently and effectively.  
 
-The `Ops` in DevOps sweeps up security, testing, DB admin, infrastructure and operations practitioners -- essentially, any stakeholder not commonly thought of as directly part of the development team in the system development lifecycle.
+The `Ops` in DevOps sweeps up security, testing, DB admin, infrastructure and operations practitioners -- essentially, any stakeholder not commonly thought of as directly part of the development team in the system development life cycle.
 
 Yeah, that's the formal definition.  I've grown to prefer the axiom:
 
@@ -401,10 +401,10 @@ Well...
 > and serve as a preemptive strike against anyone who has noticed 
 > what a callus and delusional ass you have become._
 >
-> The opening monolog to the Blue Man Group’s _I Feel Love_
+> The opening monologue to the Blue Man Group’s _I Feel Love_
 > https://www.youtube.com/watch?v=8vBKI3ya-l0
 
-I kid, but in all serious the sentimanet of this seminal book still holds true.
+I kid, but in all serious the sentiment of this seminal book still holds true.
 
 Let me explain.
 
@@ -467,7 +467,7 @@ Monitoring will also inform development teams of gaps in CI/CD resulting in addi
 
 ### 6.18.7. Eliminating waste
 
-Further, monitoring may result in the re-scoping of requirements, re-prioritizing of a backlog, or the deprecation of un-used features.
+Further, monitoring may result in the re-scoping of requirements, re-prioritizing of a backlog, or the deprecation of unused features.
 
 ## 6.19. What is DevOps culture?
 
@@ -763,7 +763,7 @@ When in the root of the project, the script can be executed in the terminal sess
 . ./set_env.sh
 ```
 
-If you're doing this class on your MITRE Lifecycle running OS X running on the MITRE network you will **NOT** want to set any proxy related environmental variable. So, you will want to execute this script in this manner
+If you're doing this class on your MITRE Life cycle running OS X running on the MITRE network you will **NOT** want to set any proxy related environmental variable. So, you will want to execute this script in this manner
 
 ```bash
 . ./set_env.sh no_proxy
@@ -828,7 +828,7 @@ If you are on Windows perform the following to set environmental variable adjust
 
 If you're on MITRE Institute Lab PC you will want to set all of these variables.
 
-If you're doing this class on your MITRE Lifecycle running Windows (I have yet to verify a Windows MITRE Lifecycle.) you will likely **NOT** want to set the `proxy`, `http_proxy`, `https_proxy`, `no_proxy` or any proxy related environmental variables. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables. 
+If you're doing this class on your MITRE Life cycle running Windows (I have yet to verify a Windows MITRE Life cycle.) you will likely **NOT** want to set the `proxy`, `http_proxy`, `https_proxy`, `no_proxy` or any proxy related environmental variables. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables. 
 
 **NOTE**
 
@@ -906,9 +906,9 @@ This class uses Vagrant and Ansible IaC frameworks and the following sections wi
 
 ### 8.5.1. Vagrant
 
-This class uses Vagrant, a command-line utility for managing the lifecycle of virtual machines as a vagrant in that the VMs are not meant to hang around in the same place for long.
+This class uses Vagrant, a command-line utility for managing the life cycle of virtual machines as a vagrant in that the VMs are not meant to hang around in the same place for long.
 
-Unless you want to pollute your machine with every imaginable programming language, framework and library version you'll find yourself often creating a virtual machine (VM) for each software project. Sometimes more than one. And if you're like me of the past you'll end up with a VirtualBox full of VMs. If you haven't gone about this the right way, you'll end up wondering what VM went with which project and now how did I create it? The anti-pattern around this problem is to write documentation. A better way that aligns with a DevOps repeatable practices is to create automation to provision and configure your development VMs. This is where Vagrant comes in as it is "a command-line utility for managing the lifecycle of virtual machines."
+Unless you want to pollute your machine with every imaginable programming language, framework and library version you'll find yourself often creating a virtual machine (VM) for each software project. Sometimes more than one. And if you're like me of the past you'll end up with a VirtualBox full of VMs. If you haven't gone about this the right way, you'll end up wondering what VM went with which project and now how did I create it? The anti-pattern around this problem is to write documentation. A better way that aligns with a DevOps repeatable practices is to create automation to provision and configure your development VMs. This is where Vagrant comes in as it is "a command-line utility for managing the life cycle of virtual machines."
 
 #### 8.5.1.1. Vagrant documentation and source
 
@@ -1007,14 +1007,14 @@ The following sub-sections enumerate the various sections of the `Vagrantfile` b
 
 When authoring, tells your text editor (e.g. emacs or vim) to choose a specific editing mode for the Vagrantfile. Line one is a [modeline for emacs](http://www.gnu.org/software/emacs/manual/html_node/emacs/Choosing-Modes.html) and line two is a [modeline for vim](http://vim.wikia.com/wiki/Modeline_magic).
 
-##### 8.5.1.4.2. Setting extra varaiables for Ansible roles
+##### 8.5.1.4.2. Setting extra variables for Ansible roles
 
 ```ruby
 # Used to hold all the ANSIBLE_EXTRA_VARS and provide convienance methods
 require File.join(vagrantfilePath, 'ansible_extra_vars.rb')
 ```
 
-Which includes the Anible extra_vars defined in the `ansible_extra_vars.rb` Ruby module:
+Which includes the Ansible extra_vars defined in the `ansible_extra_vars.rb` Ruby module:
 
 ```ruby
 # -*- mode: ruby -*-
@@ -1230,7 +1230,7 @@ This section of code uses the `vagrant-ca-certificates` plugin's to inject the s
   end
 ```
 
-Allows you to leverage the `vagrant-cachier` plugin to cache packages in order to spead Vagrant builds.
+Allows you to leverage the `vagrant-cachier` plugin to cache packages in order to speed Vagrant builds.
 
 ##### 8.5.1.4.6. Configuring the disksize plugin to increase the disk size
 
@@ -1289,7 +1289,7 @@ Packer, but we can do pretty much the same thing here by building of the existin
       virtualbox.gui = false
     end
 
-    ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
+    ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs, nameservers )
 
     ssh_insecure_key = File.read("#{Dir.home}/.vagrant.d/insecure_private_key")
 
@@ -1330,12 +1330,12 @@ This section provisions and configures a `development` vagrant used for developm
     toolchain.vm.provider :virtualbox do |virtualbox|
       virtualbox.name = 'DevOps Class - toolchain'
       virtualbox.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 10]
-      virtualbox.memory = 6144 #4096
-      virtualbox.cpus = 4
+      virtualbox.memory = 8192 #6144 #4096
+      virtualbox.cpus = 8 #4
       virtualbox.gui = false
     end
 
-    ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
+    ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs, nameservers )
 
     toolchain.vm.provision "shell", privileged: false, reset: true, inline: <<-SHELL
       echo Installing the tools...
@@ -1351,8 +1351,8 @@ This section provisions and configures the `toolchain` vagrant. This is the beef
 **NOTE**
 
 - The course has had the benefit of being authored and run hardware with i7 processors and 16GB of memory, so if you have more or less you can to tweak the `virtualbox.memory` and `virtualbox.cpus` settings above.
-- By default the `toolchain` vagrant is given 6GB (i.e., `6144`. For me a 1GB is 1024MB, not 1000MB. Is this so hard?  Must we dumb everything down?) of memory and 4 cores. If your host has more memory and cores you can configure this vagrant with more.  
-- I've seen this course run on an i5 Dell Laptop, so one can squeek by on 4GB of memory, but I wouldn't advise it.  I also wouldn't drop the `toolchain` vagrant below 4 cores, either.  
+- By default the `toolchain` vagrant is given 8GB (i.e., `8192`. For me a 1GB is 1024MB, not 1000MB. Is this so hard?  Must we dumb everything down?) of memory and 4 cores. If your host has more memory and cores you can configure this vagrant with more.  
+- I've seen this course run on an i5 Dell Laptop, so one can squeak by on 4GB of memory, but I wouldn't advise it.  I also wouldn't drop the `toolchain` vagrant below 4 cores, either.  
 
 ### 8.5.2. Ansible
 
@@ -1406,26 +1406,6 @@ toolchain
 [toolchains:vars]
 ansible_host=192.168.0.11
 ansible_python_interpreter=/usr/bin/python2
-
-# Used by Ansible roles to configure Docker DNS server settings
-[dns]
-# My home network DNS
-#ns1 ansible_host=10.0.1.1
-
-# MITRE DNS
-#ns1 ansible_host=10.20.100.53
-#ns2 ansible_host=10.20.200.53
-
-# Google / Starbux DNS
-ns1 ansible_host=8.8.8.8
-ns2 ansible_host=8.8.4.4
-
-# HAMP LAB DNS
-#ns1 ansible_host=192.168.1.1
-
-# OuterNET
-#ns1 ansible_host=192.52.194.138
-#ns2 ansible_host=198.49.146.138
 ```
 
 The inventory collects all the vagrants under a `[nodes]` group, and then defines each vagrant under their respective group either `[developments]` or `[toolchains]`.  
@@ -1592,7 +1572,7 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
     - taiga
 ```
 
-The `Taiga` role dependes on the Ansible roles used to configure the `nemonik/devops` Vagrant box.
+The `Taiga` role depends on the Ansible roles used to configure the `nemonik/devops` Vagrant box.
 
 ## 8.6. Spinning up the _toolchain_ vagrant
 
@@ -1646,7 +1626,7 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
   ```bash
   vagrant halt toolchain
   ```
-- To restart the `toolchain` vagrant once provisioned and configured perfrom the following in the command-line
+- To restart the `toolchain` vagrant once provisioned and configured perform the following in the command-line
   ```bash
   vagrant up toolchain --no-provision
   ```
@@ -1655,7 +1635,7 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
 _ You also will not want to move from a network to another that requires your to change DNS servers in in `./host` file and/or change your proxy environmental variables.  
 - Caution, it is easy to forget DevOps is not about tools and automaton, but is as much about culture, methods and repeated practices, so keep this in mind.  
 - The tools, methods and repeated practices exist to support the culture.
-- Again, I'll drop from time to time stating "into the shell" ot "into the command-line" when instructing you to enter things in the CLI.
+- Again, I'll drop from time to time stating "into the shell" or "into the command-line" when instructing you to enter things in the CLI.
 - If you're at MITRE, or on OS X and see the following error 
 
   ```
@@ -1686,7 +1666,7 @@ _ You also will not want to move from a network to another that requires your to
   Error: SSL certificate problem: unable to get local issuer certificate
   ```
 
-  there is a chance your environment has either `SSL_CERT_FILE` and `CURL_CA_BUNDLE` environment variables set to a CA Cert file.  Vagrant will use one of these files instead of its own and will not be able to hande the SSL inspection.  The quick fix is to unset these environment variable via entering 
+  there is a chance your environment has either `SSL_CERT_FILE` and `CURL_CA_BUNDLE` environment variables set to a CA Cert file.  Vagrant will use one of these files instead of its own and will not be able to handle the SSL inspection.  The quick fix is to unset these environment variable via entering 
   
   ```
   env -u SSL_CERT_FILE
@@ -1715,7 +1695,7 @@ Docker is a platform to develop, deploy, and run Linux containers.
 
 - Containers are a form of lightweight virtualization first existing in 1979’s Version 7 UNIX operating system when the chroot command was developed.
 - Since chroot, containers have continued to evolve within the Linux kernel to decouple applications from the operating system and run them in an isolated manner.
-- A container is essentially an isolated process running in userspace.
+- A container is essentially an isolated process running in user space.
 - The benefit over Virtual Machines in that multiple containers can run on the same machine (in case of this class, a vagrant) sharing the OS kernel with other containers. Whereas a VM would require a full copy of an operating system to run the application. This makes containers insanely light-weight.
 - Container support has thrived and seen popular adoption across various operating systems outside of Linux including Windows Containers and Window’s direct ability to run Linux containers from the Hyper-V isolation work done by Microsoft.
 - The Open Container Initiative (OCI), formed in 2015 maintains open industry standards for containers that focus on Runtime Specification (runtime-spec) and its partner project, the Image Specification (image-spec).
@@ -1744,11 +1724,11 @@ YAML bills itself as a human-friendly data serialization standard for all progra
 
 ### 8.7.3. Kubernetes
 
-Kubernetes; specifically, K3s is used in the default configuration of the course to orchestrate the lifecycles of the bulk of long-running tools.  
+Kubernetes; specifically, K3s is used in the default configuration of the course to orchestrate the life cycles of the bulk of long-running tools.  
 
 *What is Kubernetes?*
 
-Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications. Essentially, it serves as an operating system for a cluster of computing resources and manages the lifecycle and discovery of the applications running upon it. In the case of this course, the computing resources I'm speaking of are your two vagrants: `toolchain` and `development`. When Vagrant executes the ansible-playbook `ansible/toolchain-tools-playbook.yml` on the `toolchain` vagrant it uses the `k3s-server` role to configures the vagrant as a Kubernetes master node. On the development vagrant, the `ansible/development-playbook.yml` playbook uses the `k3s-agent` role to configure the vagrant as a Kubernetes worker node.
+Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications. Essentially, it serves as an operating system for a cluster of computing resources and manages the life cycle and discovery of the applications running upon it. In the case of this course, the computing resources I'm speaking of are your two vagrants: `toolchain` and `development`. When Vagrant executes the ansible-playbook `ansible/toolchain-tools-playbook.yml` on the `toolchain` vagrant it uses the `k3s-server` role to configures the vagrant as a Kubernetes master node. On the development vagrant, the `ansible/development-playbook.yml` playbook uses the `k3s-agent` role to configure the vagrant as a Kubernetes worker node.
 
 **NOTE**
 
@@ -1787,7 +1767,7 @@ and then enter:
 kubectl get nodes
 ```
 
-Kuberetes will tell you the nodes that comprise the cluster.  The output will look similar to 
+Kubernetes will tell you the nodes that comprise the cluster.  The output will look similar to 
 
 ```
 NAME          STATUS   ROLES    AGE     VERSION
@@ -1860,7 +1840,7 @@ The course automation will also deploy the Kubernetes-Dashboard.  For the long-r
 
 <https://192.168.0.11:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/>
 
-To login to the dashaboard, open a terminal and in the root of the project execute 
+To login to the dashboard, open a terminal and in the root of the project execute 
 
 ```
 ./get_kubeconfig_yml.sh
@@ -1913,7 +1893,7 @@ The token starts on the line below `Connection to 127.0.0.1 closed.` and in this
 
 ## 8.8. The long-running tools
 
-The class makes use of two types of tools: those that are long-running (e.g., GitLab, Drone, SonarQube) and those used to peform short-lived individual tasks (e.g., Makefile, InSpec, OWASP-ZAP.)  
+The class makes use of two types of tools: those that are long-running (e.g., GitLab, Drone, SonarQube) and those used to perform short-lived individual tasks (e.g., Makefile, InSpec, OWASP-ZAP.)  
 
 This section will describe the long-running tools leaving subsequent sections to describe the latter as you use the short-lived tools.
 
@@ -1923,7 +1903,7 @@ Taiga is an Open Source project management platform for agile development.
 
 There are many project management platforms for Agile.
 
-Typically, Agile teams work using a visual task management tool such as a project board, task board or Kanban or Scrum visual management board. These boards can be implemented using a whiteboard or open space on a wall or in software. The board is at a minimum segmented into a few columns _To do_, _In process_, and _Done_, but the board can be tailored. I've personally seen boards for very large projects consume every bit of wallspace of a very large cavernous room, but as Lean-Agile has matured, teams have grown larger and more disparate, tools have emerged to provide a clear view into a project's management to all levels of concern (e.g., developers, managers, product owner, and the customer) answering:
+Typically, Agile teams work using a visual task management tool such as a project board, task board or Kanban or Scrum visual management board. These boards can be implemented using a whiteboard or open space on a wall or in software. The board is at a minimum segmented into a few columns _To do_, _In process_, and _Done_, but the board can be tailored. I've personally seen boards for very large projects consume every bit of wall space of a very large cavernous room, but as Lean-Agile has matured, teams have grown larger and more disparate, tools have emerged to provide a clear view into a project's management to all levels of concern (e.g., developers, managers, product owner, and the customer) answering:
 
 - Are deadlines being achieved?
 - Are team members overloaded?
@@ -1938,7 +1918,7 @@ Further, the Lean-Agile Software tools should provide the following capabilities
 - Facilitating the selection and assignment of individual requirements to resources, and the tracking of progress for a release.
 - Permit collaboration with external third parties.
 
-The 800 pound Gorilla in this market segment is JIRA Software. Some of my co-workers hate it. It is part of the Atlassian suite providing provides collaboration software for teams with products including JIRA Software, Confluence, Bitbucket, and Stash.  Back when Atalassian (Stocker ticker: TEAM) was trading at 50-dollars it was a good investment.
+The 800 pound Gorilla in this market segment is JIRA Software. Some of my co-workers hate it. It is part of the Atlassian suite providing provides collaboration software for teams with products including JIRA Software, Confluence, Bitbucket, and Stash.  Back when Atlassian (Stocker ticker: TEAM) was trading at 50-dollars it was a good investment.
 
 **NOTE**
 
@@ -2304,15 +2284,15 @@ You will see a good deal of output.
 
 **NOTE**
 
-- Again, it is very possible a network anomaly may result in Ansible failing, if you can determine the role automation failed in you can comment out the proceeding roles proceeding the role the failure occured in and re-run the automation in the root of the project:
+- Again, it is very possible a network anomaly may result in Ansible failing, if you can determine the role automation failed in you can comment out the proceeding roles proceeding the role the failure occurred in and re-run the automation in the root of the project:
   ```bash
   vagrant up development --provision
   ```
-- To halt the `development` vagrant once provisioned and configured perfrom the following in the command-line:
+- To halt the `development` vagrant once provisioned and configured perform the following in the command-line:
   ```bash
   vagrant halt development
   ```
-- To restart the `development` vagrant once provisioned and configured perfrom the following in the command-line:
+- To restart the `development` vagrant once provisioned and configured perform the following in the command-line:
   ```bash
   vagrant up development --no-provision
   ```
@@ -2384,7 +2364,7 @@ skinparam note {
 -left-> (*)
 ```
 
-A backlog is essentially your (or your team's) to-do list, a prioritized list of work derived from the roadmap (e.g., the outline for future product functionality and when new features will be released) and its requirements.
+A backlog is essentially your (or your team's) to-do list, a prioritized list of work derived from the road map (e.g., the outline for future product functionality and when new features will be released) and its requirements.
 
 Open Taiga in your web browser
 
@@ -2671,7 +2651,7 @@ skinparam note {
 -left-> (*)
 ```
 
-In the project follder (i.e., `/home/vagrant/go/src/github.com/nemonik/helloworld`), create `main.go` in `emacs`, `nano`, `vi` or `vim` with this content:
+In the project folder (i.e., `/home/vagrant/go/src/github.com/nemonik/helloworld`), create `main.go` in `emacs`, `nano`, `vi` or `vim` with this content:
 
 ```go
 package main
@@ -4335,7 +4315,7 @@ coverage: 55.6% of statements
 ok  	github.com/nemonik/helloworld-web	0.004s
 ```
 
-Notice we only scored 55.6% coverage, but we appear to of had unit tests for all our methods?  This where dicernment comes in.  Do you battle for a 100% or call this a win.  Up to you or really your team.
+Notice we only scored 55.6% coverage, but we appear to of had unit tests for all our methods?  This where discernment comes in.  Do you battle for a 100% or call this a win.  Up to you or really your team.
 
 ### 8.11.9. Perform static analysis (i.e., sonar-scanner) on the command line
 ```plantuml
@@ -4436,7 +4416,7 @@ Provide the `key` of
 The SonarGo plugin was an optional install now it comes installed by default, but lets update it if need be.
 
 1. Open you browser to <http://192.168.0.11:9000/admin/marketplace>
-2. If you need to login as `admin` with the pasword `admin`.
+2. If you need to login as `admin` with the password `admin`.
 3. Submit `SonarGo` in the search box with `Search by features, tags, or categories...` in it.
 3. In the result, look for the button starting with `Update to`, click it and the plugin will be updated.
 4. The button will be replaced with "Update Pending" and info message will be rendered at the top of the page. Click `Restart Server` in this info message.
@@ -4570,7 +4550,7 @@ INFO: ------------------------------------------------------------------------
 
 - If you see an error concerned about blame files not being found you didn't first commit your code.  Go back commit your code.  You don't need to `push` it.  Just commit it.
 - Also, notice I didn't say `push` your code.  Your code hasn't been pushed to GitLab, but has only been committed to your local copy of your repository.
-- If you see this outputed
+- If you see this outputted
 
   ```
   ERROR: Error during SonarQube Scanner execution
@@ -5005,8 +4985,8 @@ Successfully tagged nemonik/helloworld-web:latest
 
 What just happened?
 
-- The `FROM` line instructs Docker to retreive the `nemonik/golang:1.13` from the private Docker registry running on our `toolchain` vagrant, which it did.  And then use this as the basis of your application's docker image.
-- Then the rest of the commands in the `Dockerfile` are executed laying down layers ontop of the `nemonik/golang:1.13` image thereby building a new docker image entitled `nemonik/helloworld-web` and tagging it `latests`.
+- The `FROM` line instructs Docker to retrieve the `nemonik/golang:1.13` from the private Docker registry running on our `toolchain` vagrant, which it did.  And then use this as the basis of your application's docker image.
+- Then the rest of the commands in the `Dockerfile` are executed laying down layers on top of the `nemonik/golang:1.13` image thereby building a new docker image entitled `nemonik/helloworld-web` and tagging it `latests`.
 - `docker build` then places the image with the name `nemonik/helloworld-web` in the `Development`'s local Docker registry so that containers can be created off this image locally. 
 
 Check the local Docker registry via
@@ -5025,7 +5005,7 @@ nemonik/helloworld-web   latest              580633f46dd7        3 minutes ago  
 
 **NOTE:**
 
-- The registy will also contain the `192.168.0.11:5000/nemonik/golang:1.13` on which `nemonik/helloworld-web:latest` is based, so the next time re-build image you won't have to wait for `192.168.0.11:5000/nemonik/golang:1.12.6` to be retrieved.   
+- The registry will also contain the `192.168.0.11:5000/nemonik/golang:1.13` on which `nemonik/helloworld-web:latest` is based, so the next time re-build image you won't have to wait for `192.168.0.11:5000/nemonik/golang:1.12.6` to be retrieved.   
 
 We can update the project's Makefile adding a `docker-build` target
 
@@ -5042,7 +5022,7 @@ all: sonar docker-build
 
 Remember to us tab characters vice space characters.
 
-And then run in the command lin
+And then run in the command line
 
 ```bash
 make all
@@ -5727,7 +5707,7 @@ Returns in the command line
 {"repositories":["nemonik/golang","nemonik/golang-sonarqube-scanner","nemonik/helloworld-web","nemonik/python","nemonik/standalone-firefox","nemonik/zap2docker-stable"]}
 ```
 
-To list container images the registy holds for the `helloworld-web` container image enter
+To list container images the registry holds for the `helloworld-web` container image enter
 
 ```bash
 curl -X GET http://192.168.0.11:5000/v2/nemonik/helloworld-web/tags/list
@@ -5919,7 +5899,7 @@ steps:
 
 Things to note in the above
 
-- This step uses an image, `nemonik/golang-sonarqube-scanner:4.0.0.1744`, built ontop of the `nemonik/golang:1.13` image to speed builds along. 
+- This step uses an image, `nemonik/golang-sonarqube-scanner:4.0.0.1744`, built on top of the `nemonik/golang:1.13` image to speed builds along. 
 - Cut-and-pasting may split the last command (i.e., the line beginning with `-sonar-scanner`) into multiple lines in your editor that when executed by Drone will result in your build failing. If this happens, correct in your editor and re-push. 
 - The following commands is a bit of filesystem juggling, so that the scan can be executed
 
@@ -6728,7 +6708,7 @@ on your host and monitor the progress of the build.
 
 The pipeline should execute in a few minutes.
 
-Once completed sucessfully, on your host open secure shell to your `toolchain` vagrant via
+Once completed successfully, on your host open secure shell to your `toolchain` vagrant via
 
 ```bash
 vagrant ssh toolchain
@@ -6837,9 +6817,9 @@ skinparam note {
 -left-> (*)
 ```
 
-First let me segway into discussing DevSecOps.  
+First let me switch gears into discussing DevSecOps.  
 
-As previously stated, the `Dev` part of the `DevOps` clipped compound stands for "development" (i.e., the application developers), and `Ops` stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  DevSecOps has recently emerged to embed security thought and collaboration into your team's culture when working an applications software development life cycle (SDLC) and "security-as-code" into your application pipelines.  If you're doing DevOps correctly, you're also inherently performing methods and repeated practices of DevSecOps.  In DevOps, Every technology operational stakeholder discipline must be included in the team without needing to fork DevOps to include said disccipline.  We don't need "DevNetOps" nor do we need "DevTestOps"...
+As previously stated, the `Dev` part of the `DevOps` clipped compound stands for "development" (i.e., the application developers), and `Ops` stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  DevSecOps has recently emerged to embed security thought and collaboration into your team's culture when working an applications software development life cycle (SDLC) and "security-as-code" into your application pipelines.  If you're doing DevOps correctly, you're also inherently performing methods and repeated practices of DevSecOps.  In DevOps, Every technology operational stakeholder discipline must be included in the team without needing to fork DevOps to include said discipline.  We don't need "DevNetOps" nor do we need "DevTestOps"...
  
 Authoring InSpec tests permit you to author compliance-as-code, a form of security-as-code, thereby turning compliance, security, and other policy requirements into automated tests.
 
@@ -6849,7 +6829,7 @@ More on InSpec in general can be found here
 
 https://www.inspec.io/docs/
 
-And these specific sectons are relevant to Docker:
+And these specific sections are relevant to Docker:
 
 https://www.inspec.io/docs/reference/resources/docker_container/
 
@@ -6954,7 +6934,7 @@ The output of InSpec test will resemble
 ***Note***
 
 - If when running the test (i.e., `inspec exec helloworld
-`) you see a strack trace, check the contents of your `./helloworld/inspec.yml` file for any stray characters
+`) you see a stack trace, check the contents of your `./helloworld/inspec.yml` file for any stray characters
 
   ```
   [vagrant@development helloworld-web]$ inspec exec helloworld
@@ -6995,13 +6975,13 @@ docker rm -f helloworld-web
 
 - If upon executing `inspec` it errors out with
 
-  > Could not fetch inspec profile in "inspec.rb"
+  > Could not fetch inspec profile in "InSpec.Rb"
 
   Then you are not in the correct folder.  You need to be in the root of the `helloworld-web` directory of your project.
 
 #### 8.11.19.3. The results
 
-The result will be a comparsion of the expected state against the current state of the container and will resemble
+The result will be a comparison of the expected state against the current state of the container and will resemble
 
 ```
 [vagrant@development helloworld-web]$ inspec exec helloworld
@@ -7121,9 +7101,9 @@ docker rm -f helloworld-web
 
 **NOTE**
 
-- If upon exeucting `inspec` it errors out with
+- If upon executing `inspec` it errors out with
 
-  > Could not fetch inspec profile in "inspec.rb"
+  > Could not fetch InSpec profile in "inspec.rb"
 
   Then you are not in the correct folder.  You need to be in the root of the `helloworld-web` directory of your project.
 
@@ -7228,7 +7208,7 @@ curl -X GET http://192.168.0.11:5000/v2/nemonik/standalone-firefox/tags/list
 docker pull 192.168.0.11:5000/nemonik/standalone-firefox:3.141
 ```
 
-to search for and pull then pull the `nemonik/standalone-firefox:3.141` container image frome our private Docker repository running on our `toolchain` vagrant.
+to search for and pull then pull the `nemonik/standalone-firefox:3.141` container image from our private Docker repository running on our `toolchain` vagrant.
 
 Then enter into the command line
 
@@ -7292,7 +7272,7 @@ But let's create a `requirements.txt` file to hold our dependency with our text 
 selenium==3.141
 ```
 
-This allow the test's dependencies to be enumerated in a file including the specififc version of the dependency, so their installation can be automated.
+This allow the test's dependencies to be enumerated in a file including the specific version of the dependency, so their installation can be automated.
 
 Then test out the requirements.txt file by entering
 
@@ -7425,7 +7405,7 @@ Enable the Trusted setting for the repository in Drone by opening
 
 #### 8.11.20.5. Add a *selenium* step to the pipeline
 
-In one of your existing `vagrant ssh` to `development` enter into the commmand line
+In one of your existing `vagrant ssh` to `development` enter into the command line
 
 ```bash
 cd ~/go/src/github.com/nemonik/helloworld-web
@@ -7518,7 +7498,7 @@ Ran 1 test in 7.358s
 OK
 ```
 
-If you click on the `firefox` service for this build, you will see similiar output as the pre-flight you executed on `development`
+If you click on the `firefox` service for this build, you will see similar output as the pre-flight you executed on `development`
 
 ```
 2019-10-23 23:24:51,863 INFO Included extra file "/etc/supervisor/conf.d/selenium.conf" during parsing
@@ -7808,7 +7788,7 @@ WARN-NEW: X-Content-Type-Options Header Missing [10021] x 4
 FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 1	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 31
 ```
 
-Our application is relatively simple, so it was doubtful anything would be found, but there again is the warning about an *X-Content-Type-Options Header* being missing that could be resolved by adding addtional handlers to the helloworld-web's main.go.
+Our application is relatively simple, so it was doubtful anything would be found, but there again is the warning about an *X-Content-Type-Options Header* being missing that could be resolved by adding additional handlers to the helloworld-web's main.go.
 
 ### 8.11.22. All the source for *helloworld-web*
 
@@ -7840,7 +7820,7 @@ The benefit
 - Providing independent scaling, so each microservice’s compute utilization can be independently scaled up and down.
 - Increasing development velocity and lowering development risks thereby permitting teams to build faster in comparison to monolithic development.
 
-So, with the `helloworld-web` application, you've developed a micrsoservice, packaged it into a container (i.e., containerized it), and by doing so essentially created a cloud-native application.
+So, with the `helloworld-web` application, you've developed a microservice, packaged it into a container (i.e., containerized it), and by doing so essentially created a cloud-native application.
 
 In this era of cloud computing, DevOps and cloud-native application development are heavily intertwined.
 
@@ -8122,7 +8102,7 @@ plantuml-server      svclb-plantuml-server-hpk5b              1/1     Running   
 local-path-storage   local-path-provisioner-ccbdd96dc-cgq6r   1/1     Running   1          42h
 ```
 
-The next resurce defines a `Service` used to expose our `helloworld` application as a network service.
+The next resource defines a `Service` used to expose our `helloworld` application as a network service.
 
 ```yaml
 ---
@@ -8231,7 +8211,7 @@ NAME                                    READY   STATUS    RESTARTS   AGE     IP 
 helloworld-deployment-f767b5b57-4tg62   1/1     Running   0          4m52s   10.42.0.58   toolchain   <none>           <none>
 ```
 
-One `service` is being managage and `replicatset` is maintaining the specified 1 pod at any given time.
+One `service` is being manage and `replicatset` is maintaining the specified 1 pod at any given time.
 
 #### 8.12.2.4. Test your microservice
 
@@ -8248,7 +8228,7 @@ The output will look like
 Hello world! helloworld-deployment-cf4667475-pqhk4
 ```
 
-That random hex number is the result of our code change.  It is the hostname of the container that responded to your request.
+That random hex number is the result of our code change.  It is the host name of the container that responded to your request.
 
 #### 8.12.2.5. Scale your microservice
 
@@ -8256,9 +8236,9 @@ Now, let's scale our application.  Open the Traefik Dashboard
 
 <http://192.168.0.11:8083/dashboard/>
 
-Traefik is an open-source reverse proxy and load balancer for HTTP and TCP-based applications.  You'll see one `/helloworld` frontend and one `/helloworld` backend.
+Traefik is an open-source reverse proxy and load balancer for HTTP and TCP-based applications.  You'll see one `/helloworld` front-end and one `/helloworld` back-end.
 
-Leave the browser open to the Traefik Dashboard to watch it add backend instances.
+Leave the browser open to the Traefik Dashboard to watch it add back-end instances.
 
 Let's scale from 1 to 4 replicas, while keeping an eye on the Traefik Dashboard, via
 
@@ -8273,7 +8253,7 @@ whose output will resemble
 deployment.apps/helloworld-deployment scaled
 ```
 
-And you'll see additional backends come into service in the Traefik Dashboard.
+And you'll see additional back-ends come into service in the Traefik Dashboard.
 
 Re-running 
 

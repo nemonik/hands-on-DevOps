@@ -70,26 +70,18 @@ Vagrant.configure('2') do |config|
     config.proxy.enabled = false
   end
 
-  # Print Docker DNS servers configured in host file
-  puts "INFO: Docker is configured to us the folllowing DNS server(s):".green
-  f = File.open(File.join(vagrantfilePath, 'hosts'),'r')
-  dns_servers = Array.new
-  f.each_line do |line|
-    if line =~ /^ns[1-2] ansible_host/
-       dns_server = line.split('=')[1].chomp
-       dns_servers.push dns_server
-       puts "INFO: - #{dns_server}".green
-    end
-  end
-  f.close
-
   require 'Resolv'
-  
-  begin   
-    Resolv::DNS.new(:nameserver => dns_servers).getaddress("www.nemonik.com")
-  rescue
-    raise "You likely have the wrong DNS configuration in the project's ./hosts file's [dns] group or the dns server(s) could not be momentarily reach.  If you believe the later try your command again.".red
+
+  nameservers  = ""
+
+  puts "INFO: Docker is configured to us the folllowing DNS server(s):".green
+
+  for nameserver in Resolv::DNS::Config.default_config_hash()[:nameserver]
+     nameservers.concat("#{nameserver},")
+     puts "INFO: - #{nameserver}".green
   end
+
+  nameservers = nameservers.chomp(',')
 
   # To add Enterprise CA Certificates to all vagrants
   #
@@ -172,7 +164,7 @@ Vagrant.configure('2') do |config|
       virtualbox.gui = false
     end
 
-    ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
+    ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs, nameservers )
 
     toolchain.vm.provision "shell", privileged: false, reset: true, inline: <<-SHELL
       echo Installing the tools...
@@ -196,7 +188,7 @@ Vagrant.configure('2') do |config|
       virtualbox.gui = false
     end
 
-    ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
+    ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs, nameservers )
 
     ssh_insecure_key = File.read("#{Dir.home}/.vagrant.d/insecure_private_key")
 

@@ -12,6 +12,7 @@ cookies.txt
 *.box
 vagrant_private_key
 ansible/cookies.txt
+*.md.bak
 
 # Packer
 box/packer_cache
