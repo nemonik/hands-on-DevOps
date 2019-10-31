@@ -14,7 +14,7 @@
 
 --
 
-We will be spending most of the course hands-on working with the tools and in the Unix commandline making us of the methods and repeated practices of DevOps, so as to grow an understanding of how DevOps actually works.
+We will be spending most of the course hands-on working with the tools and in the Unix command-line making us of the methods and repeated practices of DevOps, so as to grow an understanding of how DevOps actually works.
 
 --
 
@@ -188,7 +188,7 @@ quality assurance functionaries as stakeholders into the development effort.
 
 ## Why?
 
-In Agile Software Development, there is rarely an integration of these individuals outside the immediate application development team with members of technology operations (e.g., network engineers administrators, testers, cyber security engineers.)
+In Agile Software Development, there is rarely an integration of these individuals outside the immediate application development team with members of technology operations (e.g., network engineers administrators, testers, cybersecurity engineers.)
 
 ---
 
@@ -373,13 +373,13 @@ Well...
 > and serve as a preemptive strike against anyone who has noticed
 > what a callus and delusional ass you have become._
 
-The opening monolog to the Blue Man Group’s _I Feel Love_
+The opening monologue to the Blue Man Group’s _I Feel Love_
 https://www.youtube.com/watch?v=8vBKI3ya-l0
 </small>
 
 --
 
-I kid, but in all serious the sentimanet of this seminal book still holds true.
+I kid, but in all serious the sentiment of this seminal book still holds true.
 
 --
 
@@ -542,7 +542,7 @@ Now that everyone is a coder using the same tools, methods and repeated practice
 ### The pressures of social media
 
 <small>
-> Conflict always attracts an audience. Just as the gladiators filled amphitheatres, Twitter - now routinely referred to by its own users as a 'hellsite' - provides a platform in which those battles can be fought in real time. And they are. Watching a Twitter spat is like watching people attempt to gouge each other's eyes out in written form. The audience is key. Whoever gets more 'likes' wins. 
+> Conflict always attracts an audience. Just as the gladiators filled amphitheaters, Twitter - now routinely referred to by its own users as a 'hellsite' - provides a platform in which those battles can be fought in real time. And they are. Watching a Twitter spat is like watching people attempt to gouge each other's eyes out in written form. The audience is key. Whoever gets more 'likes' wins. 
 </small>
 
 <small>
