@@ -722,13 +722,13 @@ set_proxy=true
 if [ $# -ne 0 ]; then
   args=("$@")
   if [[ $args[1] = "no_proxy" ]]; then
-    echo "setting proxy to false"
     set_proxy=false
   fi
 fi
 
 if [[ $set_proxy = true ]]; then
   export PROXY=http://gatekeeper.mitre.org:80
+  echo "Setting proxy environment varaibles to $PROXY"
   export proxy=$PROXY
   export HTTP_PROXY=$PROXY
   export http_proxy=$PROXY
@@ -738,6 +738,7 @@ if [[ $set_proxy = true ]]; then
   export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11"
  export no_proxy=$NO_PROXY
 else
+  echo "Unsetting proxy environment varaibles"
   unset PROXY
   unset proxy
   unset HTTP_PROXY
@@ -750,9 +751,13 @@ else
 fi
 
 export CA_CERTIFICATES=http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt
+echo "Setting CA_CERTIFICATES environment variable to $CA_CERTIFICATES"
+
 export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
+echo "Setting VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS to $VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS"
 
 # Force the use of the vagrant cacert.pem file
+echo "unsetting CURL_CA_BUNDLE and SSL_CERT_FILE environment variables"
 unset CURL_CA_BUNDLE
 unset SSL_CERT_FILE
 ```
@@ -3006,6 +3011,8 @@ For more on this topic read Martin Fowler's
 
 https://martinfowler.com/bliki/TestPyramid.html
 
+but in short unit testing in comparison to integration and functional testing provides the greatest bang for buck followed by integration and functional testing (i.e., unit testing is the cheapest most valuable from of testing.)  Functional testing, where the system is tested against the functional requirements, is by far the most expensive, most brittle, and arguably less valuable in comparison.
+
 In your editor create `main_test.go` with this content:
 
 ```go
@@ -3027,7 +3034,25 @@ func TestHelloWorld(t *testing.T) {
 }
 ```
 
-Execute the unit test by entering
+The test is 16 lines as per
+
+```bash
+[vagrant@development helloworld]$ cat main_test.go | wc -l
+      16
+```
+
+where we pipe the contents of `main_test.go` through the `wc` command-line utility used to display the number of lines, words, and/or bytes in standard input
+
+The `helloworld` application itself is just 12 lines of code as per
+
+```bash
+[vagrant@development helloworld]$ cat main.go | wc -l
+      12
+```
+
+Yes, line count is an overly simple metric to weigh, but line count should serve to inform you of the obvious -- there's a cost in authoring unit tests.  This cost is perhaps the number one reason why authoring unit tests will be skipped.  Well, that and having the necessary engineering prowess to author them.  The same could be said in regards to automation authored in this course. Please, keep this in mind as you work your way through the course material.
+
+Let's execute the unit test by entering
 
 ```bash
 go test -v -cover
@@ -6819,7 +6844,7 @@ skinparam note {
 
 First let me switch gears into discussing DevSecOps.  
 
-As previously stated, the `Dev` part of the `DevOps` clipped compound stands for "development" (i.e., the application developers), and `Ops` stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  DevSecOps has recently emerged to embed security thought and collaboration into your team's culture when working an applications software development life cycle (SDLC) and "security-as-code" into your application pipelines.  If you're doing DevOps correctly, you're also inherently performing methods and repeated practices of DevSecOps.  In DevOps, Every technology operational stakeholder discipline must be included in the team without needing to fork DevOps to include said discipline.  We don't need "DevNetOps" nor do we need "DevTestOps"...
+The “Dev” part of the “DevOps” clipped compound stands for "development" (i.e., the application developers), and “Ops” stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  DevSecOps has recently emerged to embed security thought and collaboration into your team's culture when working an applications software development life cycle (SDLC) and "security-as-code" into your application pipelines.  If you're doing DevOps correctly, you're also inherently performing methods and repeated practices of DevSecOps.  In DevOps, Every technology operational stakeholder discipline must be included in the team without needing to fork DevOps to include said discipline.  We don't need "DevNetOps" nor do we need "DevTestOps"...
  
 Authoring InSpec tests permit you to author compliance-as-code, a form of security-as-code, thereby turning compliance, security, and other policy requirements into automated tests.
 
@@ -7178,7 +7203,11 @@ skinparam note {
 -left-> (*)
 ```
 
-We're going to write an automated functional test of `helloworld-web` instead of relying on a manual functional test by using Selenium, a portable software-testing framework for web applications.  Essentially, Selenium automates web browsers.
+Although, functional testing, where a system is tested against the functional requirements, is by far the most expensive, most brittle and arguably least valuable in comparison to integration and unit testing, it still has its place in testing an application.
+
+In this section, we're going to write an automated functional test for `helloworld-web` application instead of relying on a manual functional test.  Why?  Because the automated functional test can be repeatedly and reliably executed over and over.  The same can be said not be said for tests written in english to be processed and executed by humans.
+
+We're going to write our functional tests in Selenium, a portable software-testing framework for web applications.  Essentially, Selenium automates web browsers.
 
 More can be found here
 
@@ -8359,6 +8388,12 @@ If you're done with your vagrants, shoo them away from the root of the project o
 vagrant halt
 vagrant destroy -f
 ./box/remove_box.sh
+```
+
+or
+
+```bash
+./kill_em_all.sh
 ```
 
 And they're gone.
