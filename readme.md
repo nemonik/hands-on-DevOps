@@ -1681,6 +1681,13 @@ _ You also will not want to move from a network to another that requires your to
   and re-running `vagrant up toolchain`
 
   Alternatively, you can retrieve each of CA certificate files and add them to files specified by `SSL_CERT_FILE` and/or `CURL_CA_BUNDLE` variables.
+- In the output of `vagrant up` you'll see
+
+  ```
+  DEPRECATION: Python 2.7 will reach the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 won't be maintained after that date. A future version of pip will drop support for Python 2.7. More details about Python 2 support in pip, can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support
+  ```
+
+  You can ignore this.  Python 2's deprecation has been long and coming, and I'll believe it when I see it, but when this comes to pass future versions of this class will move to CentOS 8 and Ptyhon 3.
 
 The toolchain IaC will spin up a number of tools.  Following sections unpack what theses tools are, but first I'd like to unpack the cloud-native technologies underrunning the long-running tools.
 
