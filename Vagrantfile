@@ -77,8 +77,11 @@ Vagrant.configure('2') do |config|
   puts "INFO: Docker is configured to us the folllowing DNS server(s):".green
 
   for nameserver in Resolv::DNS::Config.default_config_hash()[:nameserver]
-     nameservers.concat("#{nameserver},")
-     puts "INFO: - #{nameserver}".green
+    # ignore IP-6 addresses
+    unless nameserver.include? ":"
+      nameservers.concat("#{nameserver},")
+      puts "INFO: - #{nameserver}".green
+    end
   end
 
   nameservers = nameservers.chomp(',')
