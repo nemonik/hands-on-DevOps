@@ -225,7 +225,7 @@ What you should bring:
 
 DevOps (a clipped compound of the words *development* and *operations*) is a software development methodology with an emphasis on a reliable release pipeline, automation, and stronger collaboration across all stakeholders with the goal of delivery of value in close alignment with business objectives into the hands of users (i.e., production) more efficiently and effectively.
 
-The *Dev* component in DevOps is obvious -- It is the development team. but the *Ops* component isn't merely *operations*, but every IT operation stakeholders (i.e., cybersecurity, testing, DB admin, infrastructure and operations practitioners -- essentially, any stakeholder not commonly thought of as directly part of the development team in the system development life cycle).
+*Ops* in DevOps gathers up every IT operation stakeholders (i.e., cybersecurity, testing, DB admin, infrastructure and operations practitioners -- essentially, any stakeholder not commonly thought of as directly part of the development team in the system development life cycle).
 
 Yeah, that's the formal definition.  I've grown to prefer the axiom:
 
