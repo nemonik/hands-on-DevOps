@@ -223,13 +223,13 @@ What you should bring:
 
 ## 6.1. What is DevOps?
 
-DevOps (a clipped compound of the words "development" and "operations") is a software development methodology with an emphasis on a reliable release pipeline, automation, and stronger collaboration across all stakeholders with the goal of delivery of value in close alignment with business objectives into the hands of users (i.e., production) more efficiently and effectively.  
+DevOps (a clipped compound of the words *development* and *operations*) is a software development methodology with an emphasis on a reliable release pipeline, automation, and stronger collaboration across all stakeholders with the goal of delivery of value in close alignment with business objectives into the hands of users (i.e., production) more efficiently and effectively.
 
-The `Ops` in DevOps sweeps up security, testing, DB admin, infrastructure and operations practitioners -- essentially, any stakeholder not commonly thought of as directly part of the development team in the system development life cycle.
+The *Dev* component in DevOps is obvious -- It is the development team. but the *Ops* component isn't merely *operations*, but every IT operation stakeholders (i.e., cybersecurity, testing, DB admin, infrastructure and operations practitioners -- essentially, any stakeholder not commonly thought of as directly part of the development team in the system development life cycle).
 
 Yeah, that's the formal definition.  I've grown to prefer the axiom:
 
-*In this collaboration, you bring what you **code**.
+> In this collaboration, you bring what you **code**.
 
 For example,
 
@@ -1687,7 +1687,7 @@ _ You also will not want to move from a network to another that requires your to
   DEPRECATION: Python 2.7 will reach the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 won't be maintained after that date. A future version of pip will drop support for Python 2.7. More details about Python 2 support in pip, can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support
   ```
 
-  You can ignore this.  Python 2's deprecation has been long and coming, and I'll believe it when I see it, but when this comes to pass future versions of this class will move to CentOS 8 and Ptyhon 3.
+  You can ignore this.  Python 2's deprecation has been long and coming, and I'll believe it when I see it, but when this comes to pass, future versions of this class will move to CentOS 8 and Pyhon 3.
 
 The toolchain IaC will spin up a number of tools.  Following sections unpack what theses tools are, but first I'd like to unpack the cloud-native technologies underrunning the long-running tools.
 
@@ -6851,7 +6851,7 @@ skinparam note {
 
 First let me switch gears into discussing DevSecOps.  
 
-The “Dev” part of the “DevOps” clipped compound stands for "development" (i.e., the application developers), and “Ops” stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  DevSecOps has recently emerged to embed security thought and collaboration into your team's culture when working an applications software development life cycle (SDLC) and "security-as-code" into your application pipelines.  If you're doing DevOps correctly, you're also inherently performing methods and repeated practices of DevSecOps.  In DevOps, Every technology operational stakeholder discipline must be included in the team without needing to fork DevOps to include said discipline.  We don't need "DevNetOps" nor do we need "DevTestOps"...
+The *Dev* part of the *DevOps* clipped compound stands for *development* (i.e., the application developers), and *Ops* stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, cybersecurity engineers.)"  *DevSecOps* has recently emerged to embed security thought and collaboration into your team's culture when working an applications software development life cycle (SDLC) and *security-as-code* into your application pipelines.  If you're doing DevOps correctly, you're also inherently performing methods and repeated practices of DevSecOps.  In DevOps, Every technology operational stakeholder discipline must be included in the team without needing to fork DevOps to include said discipline.  We don't need *DevNetOps* nor do we need *DevTestOps*...
  
 Authoring InSpec tests permit you to author compliance-as-code, a form of security-as-code, thereby turning compliance, security, and other policy requirements into automated tests.
 

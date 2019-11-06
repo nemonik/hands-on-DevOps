@@ -60,7 +60,7 @@ I've grown to prefer the axiom:
 
 --
 
-*You are what you **code**.*
+> You are what you **code**.
 
 --
 
@@ -102,11 +102,7 @@ And they're all collectively doing all this coding left in the delivery pipeline
 
 --
 
-DevOps is not entirely about tools.
-
---
-
-Or as I like to put it, "Its not about the tools."
+Its not about the tools.
 
 --
 
@@ -116,7 +112,7 @@ Or as I like to put it, "Its not about the tools."
 
 --
 
-DevOps will also not entirely stop all bugs nor all vulnerabilities from making it into production, but that's not really the point.
+Also, DevOps will **not** entirely stop all bugs nor all vulnerabilities from making it into production, but that's not really the point.
 
 ---
 
