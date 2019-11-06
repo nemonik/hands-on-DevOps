@@ -723,7 +723,7 @@ To succeed at DevOps you must __combine software development and information tec
 
 --
 
-If your effort doesn't __grok (i.e, understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.  I say this because the culture is the largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
+If your effort doesn't __grok (i.e, understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture__ and developed __a strategy for how to affect a change__ the effort again will likely fail.  I say this because the culture is the largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
 
 ---
 
