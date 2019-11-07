@@ -3166,7 +3166,6 @@ test: lint
 build: test
 	$(GOBUILD) -o $(BINARY_NAME) -v
 run:
-	$(GOBUILD) -o $(BINARY_NAME) -v ./...
 	./$(BINARY_NAME)
 ```
 
@@ -5957,7 +5956,7 @@ Things to note in the above
 To execute your pipeline, push your changes to GitLab
 
 ```bash
-git add .drone.yml
+git add .
 git commit -m "added sonar step to pipeline"
 git push origin master
 ```
@@ -6664,7 +6663,7 @@ In your browser you're going to add a secret to your Drone project by following 
 2. Under `Secrets`, enter `insecure_private_key` into the `Secret Name` form field and then cut-and-paste the contents of `insecure_private_key` file into `Secret Value` form field and then click `Add A Secret`.
 3. Then click `ACTIVITY FEED` at the top of the page to return to project's activity feed.
 
-Now, open `root/helloworld-web`'s `.drone.yml` in your editor and add an additional `deploy:` step below the ones you already have with the `deploy:` being indented the same as the prior `build:` and `publish:` steps.
+Now, open `root/helloworld-web`'s `.drone.yml` in your editor and add the following `deploy:` step below the existing steps in your pipeline
 
 ```yaml
 - name: deploy
@@ -6890,8 +6889,7 @@ yes
 Then complete following
 
 ```bash
-cd helloworld
-cd controls
+cd helloworld/controls
 rm example.rb
 ```
 
@@ -6993,9 +6991,9 @@ The output of InSpec test will resemble
      4: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:255:in `bind_inputs_from_metadata'
      3: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:255:in `each'
      2: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:255:in `block in bind_inputs_from_metadata'
-     1: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:262:in `handle_raw_input_from_metadata'
-/opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:262:in `join': no implicit conversion of nil into String (TypeError)
-   ```
+     1: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec input_registry.rb:262:in `handle_raw_input_from_metadata'
+     /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec input_registry.rb:262:in `join': no implicit conversion of nil into String (TypeError)
+   ``` 
 
 Upon leaving this section, remember to stop your `helloworld-web` docker container via
 
@@ -7288,7 +7286,7 @@ We're going to write our test in Python.  Python is already installed on the `de
 We'll need to install a dependency, we can install by entering into the command line
 
 ```bash
-sudo pip install --user 'selenium==3.141'
+pip install --user 'selenium==3.141'
 ```
 
 The output of looks like
