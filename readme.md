@@ -205,17 +205,18 @@ What you should bring:
             - [8.11.20.5. Add a *selenium* step to the pipeline](#811205-add-a-selenium-step-to-the-pipeline)
         - [8.11.21. Add DAST step (*OWASP ZAP*) to pipeline](#81121-add-dast-step-owasp-zap-to-pipeline)
         - [8.11.22. All the source for *helloworld-web*](#81122-all-the-source-for-helloworld-web)
-    - [8.12. Microservices](#812-microservices)
-        - [8.12.1. What's cloud-native?](#8121-whats-cloud-native)
-        - [8.12.2. Let's create a microservice](#8122-lets-create-a-microservice)
-            - [8.12.2.1. Modify the helloworld-web application](#81221-modify-the-helloworld-web-application)
-            - [8.12.2.2. Create a Kubernetes manifest for the microservice](#81222-create-a-kubernetes-manifest-for-the-microservice)
-            - [8.12.2.3. Deploy your application](#81223-deploy-your-application)
-            - [8.12.2.4. Test your microservice](#81224-test-your-microservice)
-            - [8.12.2.5. Scale your microservice](#81225-scale-your-microservice)
-    - [8.13. Using what you've learned](#813-using-what-youve-learned)
-    - [8.14. Shoo away your vagrants](#814-shoo-away-your-vagrants)
-    - [8.15. That's it](#815-thats-it)
+    - [8.12. Additional best practices to consider around securing containerized applications](#812-additional-best-practices-to-consider-around-securing-containerized-applications)
+    - [8.13. Microservices](#813-microservices)
+        - [8.13.1. What's cloud-native?](#8131-whats-cloud-native)
+        - [8.13.2. Let's create a microservice](#8132-lets-create-a-microservice)
+            - [8.13.2.1. Modify the helloworld-web application](#81321-modify-the-helloworld-web-application)
+            - [8.13.2.2. Create a Kubernetes manifest for the microservice](#81322-create-a-kubernetes-manifest-for-the-microservice)
+            - [8.13.2.3. Deploy your application](#81323-deploy-your-application)
+            - [8.13.2.4. Test your microservice](#81324-test-your-microservice)
+            - [8.13.2.5. Scale your microservice](#81325-scale-your-microservice)
+    - [8.14. Using what you've learned](#814-using-what-youve-learned)
+    - [8.15. Shoo away your vagrants](#815-shoo-away-your-vagrants)
+    - [8.16. That's it](#816-thats-it)
 
 <!-- /TOC -->
 
@@ -7830,7 +7831,23 @@ The `helloworld-web` project can be viewed completed at
 
 <https://github.com/nemonik/helloworld-web>
 
-## 8.12. Microservices
+## 8.12. Additional best practices to consider around securing containerized applications
+
+This class doesn't cover a number of container application development best practices.  A topic out of scope of the original intention of this course; especially, as I'm already cramming in several days of course material into a one-day course when taught in person, but perhaps subsequent course updates I'll cover a few of the following not already covered in the course material as additional topics. The biggest reason why relates with the followin sections. Agile and DevOps both exist to deliver features into the hands of users. We're not doing DevOps to do DevOps. If all anyone talks about is DevOps in the absense of the application life cycle you have a problem.  Also, DevOps is very much intertwined with modern cloud-native development this is the reason for the folloiwing sections. 
+
+Wth that, here's some best practices for containerized application development and operation:
+
+1. Follow https://docs.docker.com/develop/develop-images/dockerfile_best-practices/ and http://www.projectatomic.io/docs/docker-image-author-guidance/ guidance
+2. Re-use existing upstream images from trusted sources.
+3. Avoid multiple processes executing in your own container images.
+4. Clean temporary files, such as, OS package repository caches, when creating your images.
+5. Avoid running the container’s process as root. That said, a number of containers don’t come this way and would require your time to refactor resulting in something you’ve forked and now must carry applying upstream changess unless you can convince upstream to go your way.  Also, some apps rely on the container running at root.  Drone CI for one wants the containers you author and then orchestrate your pipelines with to run as root. Jenkins container slaves are likely the same way, but I need to verify.
+6. Harden your Docker configuration as per an InSpec compliance profile, such as https://github.com/mitre/docker-ce-cis-baseline and https://github.com/dev-sec/cis-docker-benchmark or if you are using another container runtime either find one for the runtime or write your own compliance profile.   
+7. Doing item-6 will require you to make use of a notary (https://github.com/theupdateframework/notary) and private Docker registry (e.g., https://hub.docker.com/_/registry, https://hub.docker.com/r/sonatype/nexus3). I’ve written Ansible IaC to deploy Notary and it was a real pain in the butt to figure it out and took my countless hours cause the documentation is to put it plainly sh!t. They (Meaning whoever owns Docker Enterprise now.) wants you to use Docker Enterprise vice getting Notary to work with Docker CE. 
+8. Put your application development through a CI/CD pipeline like this class of the following that applies: code format enforcement, linting, static analysis, build automation, unit testing, compliance-as-code for the container image, automated functional test, and dynamic analysis.
+9. Consider adding to your CI/CD pipelines the exeuction of vulnerability scanning tools, such as, [Clair](https://coreos.com/clair/docs/latest/), [Docker Bench for Security](https://github.com/docker/docker-bench-security), [OpenSCAP Workbench](https://github.com/OpenSCAP/scap-workbench/releases), et cetera.  There will be overlap between these and other similar tools.  Pick the ones that work the best for you, frequent updates and has the largest vibrant community around.
+
+## 8.13. Microservices
 
 So, you may not realize it, but with the `helloworld-web` application what you've actually written is a microservice.
 
@@ -7858,11 +7875,11 @@ So, with the `helloworld-web` application, you've developed a microservice, pack
 
 In this era of cloud computing, DevOps and cloud-native application development are heavily intertwined.
 
-### 8.12.1. What's cloud-native?
+### 8.13.1. What's cloud-native?
 
 Cloud-native computing deploys applications as microservices - packaging each into its own container - and by doing so you have opened yourself up to the capability of being able to dynamically orchestrate the microservice to optimize resource utilization, elastic scaling, security isolation...  
 
-### 8.12.2. Let's create a microservice
+### 8.13.2. Let's create a microservice
 
 We can use our `helloworld-web` application with a few tweaks to create a microservice.
 
@@ -7870,7 +7887,7 @@ Granted our tiny, insignificant microservice won't do do much, but we can get a 
 
 So, let's experiment with our little "microservice".
 
-#### 8.12.2.1. Modify the helloworld-web application
+#### 8.13.2.1. Modify the helloworld-web application
 
 In the `helloworld-web` project on the `development` vagrant edit the `go/src/github.com/nemonik/helloworld-web/main.go` to contain the following
 
@@ -7922,7 +7939,7 @@ Build the container and push to the registry
 make docker-push
 ```
 
-#### 8.12.2.2. Create a Kubernetes manifest for the microservice
+#### 8.13.2.2. Create a Kubernetes manifest for the microservice
 
 At the root of the `hellworld-web` application create a new file, a Kubernetes resource file for our application named `helloworld.yml` and add to it the following content
 
@@ -8181,7 +8198,7 @@ An `Ingress` gives `Service`s externally-reachable URLs, load balance traffic...
 
 Once our application is deployed to the cluster, Traefik's dashboard will permit a view into how it is handling things at http://192.168.0.11:8083/dashboard/
 
-#### 8.12.2.3. Deploy your application
+#### 8.13.2.3. Deploy your application
 
 To deploy our application to the cluster, on the `development` vagrant enter
 
@@ -8247,7 +8264,7 @@ helloworld-deployment-f767b5b57-4tg62   1/1     Running   0          4m52s   10.
 
 One `service` is being manage and `replicatset` is maintaining the specified 1 pod at any given time.
 
-#### 8.12.2.4. Test your microservice
+#### 8.13.2.4. Test your microservice
 
 Now test your microservice
 
@@ -8264,7 +8281,7 @@ Hello world! helloworld-deployment-cf4667475-pqhk4
 
 That random hex number is the result of our code change.  It is the host name of the container that responded to your request.
 
-#### 8.12.2.5. Scale your microservice
+#### 8.13.2.5. Scale your microservice
 
 Now, let's scale our application.  Open the Traefik Dashboard
 
@@ -8377,7 +8394,7 @@ To auto-scale based on load we'd have to install Metrics Server (Resource Metric
 
 <https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/>
 
-## 8.13. Using what you've learned
+## 8.14. Using what you've learned
 
 Git clone the Python+Flask Magic Eight Ball web app
 
@@ -8385,7 +8402,7 @@ https://github.com/nemonik/magiceightball
 
 and develop a pipeline for.
 
-## 8.14. Shoo away your vagrants
+## 8.15. Shoo away your vagrants
 
 If you're done with your vagrants, shoo them away from the root of the project on the host
 
@@ -8403,6 +8420,6 @@ or
 
 And they're gone.
 
-## 8.15. That's it
+## 8.16. That's it
 
 That's a wrap.
