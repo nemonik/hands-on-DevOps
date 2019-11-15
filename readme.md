@@ -7840,7 +7840,7 @@ Wth that, here's some best practices for containerized application development a
 1. Follow https://docs.docker.com/develop/develop-images/dockerfile_best-practices/ and http://www.projectatomic.io/docs/docker-image-author-guidance/ guidance
 2. Re-use existing upstream images from trusted sources.  
    
-   For an example, see my taiga Dockerfile [ansible/roles/taiga/templates/Dockerfile.j2](master/ansible/roles/taiga/templates/Dockerfile.j2) on line 1 where I base my container image on the `python:3.6` container image. (The link may only when the readme is rendered in GitHub.)
+   For an example, see my taiga Dockerfile [ansible/roles/taiga/templates/Dockerfile.j2](ansible/roles/taiga/templates/Dockerfile.j2) on line 1 where I base my container image on the `python:3.6` container image. (The link may only when the readme is rendered in GitHub.)
 3. Avoid multiple processes executing in your own container images.  
 
    My taiga image breaks with this guidance in running Nginx and django, but Ngninx is managed as service in the container. See line 50 - 54 of [ansible/roles/taiga/files/docker-entrypoint.sh](ansible/roles/taiga/files/docker-entrypoint.sh).
