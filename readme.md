@@ -7837,7 +7837,7 @@ This class doesn't cover a number of container application development best prac
 
 Wth that, here's some best practices for containerized application development and operation:
 
-1. Follow https://docs.docker.com/develop/develop-images/dockerfile_best-practices/ and http://www.projectatomic.io/docs/docker-image-author-guidance/ guidance
+1. Follow https://docs.docker.com/develop/develop-images/dockerfile_best-practices/ and http://www.projectatomic.io/docs/docker-image-author-guidance/ guidance.
 2. Re-use existing upstream images from trusted sources.  
    
    For an example, see my taiga Dockerfile [ansible/roles/taiga/templates/Dockerfile.j2](ansible/roles/taiga/templates/Dockerfile.j2) on line 1 where I base my container image on the `python:3.6` container image. (The link may only when the readme is rendered in GitHub.)
@@ -7853,7 +7853,7 @@ Wth that, here's some best practices for containerized application development a
    
    That said, a number of containers don’t come this way and would require your time to refactor resulting in something you’ve forked and now must carry applying upstream changess unless you can convince upstream to go your way.  Also, some apps rely on the container running at root.  Drone CI for one wants the containers you author and then orchestrate your pipelines with to run as root. Jenkins container slaves are likely the same way, but I need to verify.
 6. Harden your Docker configuration as per an InSpec compliance profile, such as https://github.com/mitre/docker-ce-cis-baseline and https://github.com/dev-sec/cis-docker-benchmark or if you are using another container runtime either find one for the runtime or write your own compliance profile.   
-7. Doing item-6 will require you to make use of a notary (https://github.com/theupdateframework/notary) and private Docker registry (e.g., https://hub.docker.com/_/registry, https://hub.docker.com/r/sonatype/nexus3). I’ve written Ansible IaC to deploy Notary and it was a real pain in the butt to figure it out and took my countless hours cause the documentation is to put it plainly sh!t. They (Meaning whoever owns Docker Enterprise now.) wants you to use Docker Enterprise vice getting Notary to work with Docker CE. 
+7. Doing item-6 will require you to make use of a notary (https://github.com/theupdateframework/notary) and private Docker registry (e.g., https://hub.docker.com/_/registry, https://hub.docker.com/r/sonatype/nexus3). I’ve written Ansible IaC to deploy Notary and it was a real pain in the butt to figure it out and took my countless hours, because the documentation is to put it plainly, "Sh!t." They (Meaning whoever owns Docker Enterprise now.) wants you to use Docker Enterprise vice getting Notary up and running with Docker CE.
 8. Put your application development through a CI/CD pipeline like this class of the following that applies: code format enforcement, linting, static analysis, build automation, unit testing, compliance-as-code for the container image, automated functional test, and dynamic analysis.
 9. Consider adding to your CI/CD pipelines the exeuction of vulnerability scanning tools, such as, [Clair](https://coreos.com/clair/docs/latest/), [Docker Bench for Security](https://github.com/docker/docker-bench-security), [OpenSCAP Workbench](https://github.com/OpenSCAP/scap-workbench/releases), et cetera.  There will be overlap between these and other similar tools.  Pick the ones that work the best for you, ones with frequent updates and having the largest vibrant community around.
 
