@@ -70,7 +70,7 @@ Vagrant.configure('2') do |config|
     config.proxy.enabled = false
   end
 
-  require 'Resolv'
+  require 'resolv'
 
   nameservers  = ""
 
