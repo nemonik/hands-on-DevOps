@@ -13,19 +13,21 @@ module AnsibleExtraVars
   # Define extra_vars for Ansible
   ANSIBLE_EXTRA_VARS = {
 
-      ansible_version: '2.8.6',
+      ansible_version: '2.9.1',
+
+      default_retries: '60',
+      default_delay: '5',
 
       docker_timeout: '300',
       docker_retries: '60',
       docker_delay: '5',
 
-      k3s_version: 'v0.9.1',
+      k3s_version: 'v1.0.0',
       k3s_flannel_iface: 'eth1',
       k3s_cluster_secret: 'kluster_secret',
 
-      local_path_provisioner_version: 'v0.0.11',
       kubernetes_dashboard_version: 'v1.10.1',
-      traefik_version: '1.7.16',
+      traefik_version: '2.1',
 
       kompose_version: '1.18.0',
 
@@ -41,13 +43,13 @@ module AnsibleExtraVars
       taiga_port: '8080',
 
       gitlab_deploy_via: 'kubectl',
-      gitlab_version: '12.4.0',
+      gitlab_version: '12.4.1',
       gitlab_port: '10080',
       gitlab_ssh_port: '10022',
       gitlab_user: 'root',
 
       drone_deploy_via: 'docker-compose',
-      drone_version: '1.6.1',
+      drone_version: '1.6.2',
       drone_port: '80',
 
       drone_cli_version: '1.1.0',
@@ -64,9 +66,9 @@ module AnsibleExtraVars
 
       inspec_version: '4.16.0',
 
-      python_version: '2.7.16',
+      python_version: '2.7.17',
 
-      golang_version: '1.13',
+      golang_version: '1.13.4',
 
       selenium_standalone_chrome_version: '3.141',
       selenium_standalone_firefox_version: '3.141',

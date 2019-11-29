@@ -29,6 +29,24 @@
 
 - name: install and spin up k3s agent, if needed
   block:
+  - name: ensure /var/lib/rancher/k3s/agent/images/ exists
+    become: yes
+    file:
+      path: /var/lib/rancher/k3s/agent/images/
+      state: directory
+
+  - name: install airgap images
+    become: yes
+    unarchive:
+      src: https://github.com/rancher/k3s/releases/download/{{ k3s_version }}/k3s-airgap-images-amd64.tar
+      dest: /var/lib/rancher/k3s/agent/images/
+      remote_src: yes
+      creates: /var/lib/rancher/k3s/agent/images/manifest.json
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+
   - name: emplace install_k3s script
     get_url:
       url: https://get.k3s.io

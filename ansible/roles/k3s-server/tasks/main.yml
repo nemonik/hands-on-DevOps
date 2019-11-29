@@ -15,7 +15,6 @@
     source: pull
     timeout: "{{ docker_timeout }}"
   with_items:
-    - rancher/local-path-provisioner:{{ local_path_provisioner_version }}
     - k8s.gcr.io/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}
     - traefik:{{ traefik_version }}
   retries: "{{ docker_retries }}"
@@ -51,13 +50,32 @@
 
 - name: install and spin up k3s, if needed
   block:
+  - name: ensure /var/lib/rancher/k3s/agent/images/ exists
+    become: yes
+    file:
+      path: /var/lib/rancher/k3s/agent/images/
+      state: directory
+
+  - name: install airgap images
+    become: yes
+    unarchive:
+      src: https://github.com/rancher/k3s/releases/download/{{ k3s_version }}/k3s-airgap-images-amd64.tar
+      dest: /var/lib/rancher/k3s/agent/images/
+      remote_src: yes
+      creates: /var/lib/rancher/k3s/agent/images/manifest.json
+
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+
   - name: emplace install_k3s script
     get_url:
-      url: https://get.k3s.io 
+      url: https://get.k3s.io
       dest: /home/{{ ansible_user_id }}/k3s/install_k3s.sh
       mode: u=rwx,g=r,o=r
-    retries: 60
-    delay: 5
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
     register: result
     until: result is succeeded
 
@@ -92,31 +110,6 @@
   tags:
     - k3s-server
 
-# See docs here https://github.com/rancher/local-path-provisioner
-- name: ensure local-path-provisioner is installed
-  block:
-  - name: is local-path-provisioner running?
-    become: yes
-    shell: kubectl -n local-path-storage get pod | grep Running | wc -l
-    register: result
-
-  - name: spin up local-path-provisioner    
-    become: yes
-    shell: kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
-    when: result.stdout == '0'
-
-  - name: wait for local-path-provisioner to spin up
-    become: yes
-    shell: kubectl -n local-path-storage get pod | grep Running
-    retries: 60
-    delay: 5
-    register: retry_result
-    until: retry_result is succeeded    
-    when: result.stdout == '0'    
-  tags:
-    - k3s-server
-    - local-path-provisioner
-
 - name: ensure traefik is running
   block:
   - name: ensure /home/{{ ansible_user_id }}/traefik exists
@@ -137,25 +130,6 @@
   tags:
     - k3s-server
     - traefik
-
-#- name: ensure kubernetes api proxy is running
-#  become: yes
-#  block:    
-#  - name: install kubectlproxy systemd unit file
-#    copy:
-#     src: files/etc/systemd/system/kubectlproxy.service
-#     dest: /etc/systemd/system/
-#     mode: u=rwx,g=r,o=r
-#
-#  - name: enable and start kubectlproxy.service
-#    systemd: 
-#      name: kubectlproxy
-#      daemon_reload: yes
-#      state: started 
-#      enabled: yes
-#  tags:
-#    - k3s-server
-#    - kubectlproxy        
 
 - name: ensure {{ ansible_user_id }} can access Kubernetes 
   block:

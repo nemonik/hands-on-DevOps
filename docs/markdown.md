@@ -208,7 +208,7 @@ Deploy with repeatable, and reliable processes,
 
 --
 
-Remove the drudgery through automation,
+Remove the drudgery and uncertainty through automation,
 
 --
 
@@ -224,7 +224,7 @@ Provide rapid, automated feedback to the stakeholders
 
 --
 
-Achieved through the repeated practices of Continuous Integration (CI) and Continuous Delivery (CD) often conflated into simply "CI/CD".
+Achieved through the repeated practices of Continuous Integration (CI) and Continuous Delivery (CD) often conflated into simply *CI/CD* or *CICD*.
 
 --
 
@@ -277,8 +277,7 @@ In other words, ingrain testing by including unit and integration tests (e.g., S
 Or untested source code to the CMS mainline or otherwise risk breaking a build.
 
 --
-
-### Developers are expected to pre-flight new code
+Stakeholders are expected to pre-flight new code
 
 Prior to committing source code in their own workspace.
 
