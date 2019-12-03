@@ -26,7 +26,8 @@ module AnsibleExtraVars
       k3s_flannel_iface: 'eth1',
       k3s_cluster_secret: 'kluster_secret',
 
-      kubernetes_dashboard_version: 'v1.10.1',
+      kubernetes_dashboard_version: 'v2.0.0-beta6',
+
       traefik_version: '2.1',
 
       kompose_version: '1.18.0',

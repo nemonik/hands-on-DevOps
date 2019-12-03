@@ -15,7 +15,7 @@
     source: pull
     timeout: "{{ docker_timeout }}"
   with_items:
-    - k8s.gcr.io/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}
+    - kubernetesui/dashboard:{{ kubernetes_dashboard_version }}
     - traefik:{{ traefik_version }}
   retries: "{{ docker_retries }}"
   delay: "{{ docker_delay }}"
@@ -197,7 +197,7 @@
 
   - name: wait for kubernetes-dashboard to spin up
     become: yes
-    shell: kubectl -n kube-system get pod | grep kubernetes-dashboard | grep Running
+    shell: kubectl -n kubernetes-dashboard get pod | grep Running
     retries: 60
     delay: 5
     register: retry_result
@@ -222,7 +222,7 @@
     register: admin_password_results
 
   - debug:
-      msg: 'The Kubernetes dashbaord should now be accessible at http://{{ hostvars[ansible_nodename].ansible_host }}:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy and authenticate with token = "{{ token_results.stdout }}".  The user name is "admin" and password is "{{ admin_password_results.stdout }}".'
+      msg: 'The Kubernetes dashbaord should now be accessible at http://{{ hostvars[ansible_nodename].ansible_host }}:6443/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy and authenticate with token = "{{ token_results.stdout }}".  The user name is "admin" and password is "{{ admin_password_results.stdout }}".'
   tags:
     - k3s-server
     - kubernetes-dashbaord
