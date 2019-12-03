@@ -1061,7 +1061,10 @@ module AnsibleExtraVars
   # Define extra_vars for Ansible
   ANSIBLE_EXTRA_VARS = {
 
-      ansible_version: '2.8.6',
+      ansible_version: '2.9.1',
+
+      default_retries: '60',
+      default_delay: '5',
 
       docker_timeout: '300',
       docker_retries: '60',
@@ -1071,8 +1074,9 @@ module AnsibleExtraVars
       k3s_flannel_iface: 'eth1',
       k3s_cluster_secret: 'kluster_secret',
 
-      kubernetes_dashboard_version: 'v1.10.1',
-      traefik_version: '2.1',
+      kubernetes_dashboard_version: 'v2.0.0-beta6',
+
+      traefik_version: '1.7.19',
 
       kompose_version: '1.18.0',
 
@@ -1088,7 +1092,7 @@ module AnsibleExtraVars
       taiga_port: '8080',
 
       gitlab_deploy_via: 'kubectl',
-      gitlab_version: '12.3.5',
+      gitlab_version: '12.4.1',
       gitlab_port: '10080',
       gitlab_ssh_port: '10022',
       gitlab_user: 'root',
@@ -1121,14 +1125,15 @@ module AnsibleExtraVars
       zap2docker_stable_version: '2.8.0',
     }
 
-  def AnsibleExtraVars.as_string( http_proxy, https_proxy, ftp_proxy, no_proxy, certs )
+  def AnsibleExtraVars.as_string( http_proxy, https_proxy, ftp_proxy, no_proxy, certs, nameservers )
 
     ansible_extra_vars = ANSIBLE_EXTRA_VARS
 
-    ansible_extra_vars[:http_proxy] = (!http_proxy ? "" : http_proxy)
+    ansible_extra_vars[:http_proxy] = (!http_proxy ? "" : http_proxy) 
     ansible_extra_vars[:https_proxy] = (!https_proxy ? "" : https_proxy)
     ansible_extra_vars[:ftp_proxy] = (!ftp_proxy ? "" : ftp_proxy)
     ansible_extra_vars[:no_proxy] = (!no_proxy ? "" : no_proxy)
+    ansible_extra_vars[:nameservers] = (!nameservers ? "" : nameservers )
 
     ansible_extra_vars[:CA_CERTIFICATES] = ''
 
