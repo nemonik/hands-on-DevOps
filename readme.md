@@ -1873,7 +1873,7 @@ The last few lines of output will resemble
 
 The course automation will also deploy the Kubernetes-Dashboard.  For the long-running tools orchestrated via Kubernetes, you can view much the same data in the Kubernetes-Dashboard.
 
-<https://192.168.0.11:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/>
+<https://192.168.0.11:6443/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/>
 
 To login to the dashboard, open a terminal and in the root of the project execute 
 
