@@ -28,7 +28,7 @@ module AnsibleExtraVars
 
       kubernetes_dashboard_version: 'v2.0.0-beta6',
 
-      traefik_version: '2.1',
+      traefik_version: '1.7.19',
 
       kompose_version: '1.18.0',
 
