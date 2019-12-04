@@ -35,7 +35,7 @@ module AnsibleExtraVars
       docker_compose_version: '1.24.1',
       docker_compose_pip_version: '1.25.0rc2',
 
-      registry_deploy_via: 'kubectl',
+      registry_deploy_via: 'docker-compose',
       registry_version: '2.7.1',
       registry_port: '5000',
 
