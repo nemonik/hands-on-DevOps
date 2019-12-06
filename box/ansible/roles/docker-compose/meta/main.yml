@@ -1,15 +1,14 @@
 galaxy_info:
-  author: Michael Joseph Walsh <mjwalsh@nemonik.com>
-  description: Installs docker-compose
-  license: BSDv3
-  min_ansible_version: 2.0
+  author: Michael Joseph Walsh <walsh@nemonik.com>
+  description: Ansible role to configure docker-compose
+  license: 3-Clause BSD License
+  min_ansible_version: 2.4
   platforms:
     - name: Centos
       versions:
-         - 7
+      - 7
   galaxy_tags:
-    - docker-compose
-    - docker
-    - containers
-  dependencies:
-    - { role: docker }
+  - docker-compose
+
+dependencies:
+- { role: docker }

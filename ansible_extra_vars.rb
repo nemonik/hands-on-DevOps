@@ -35,7 +35,7 @@ module AnsibleExtraVars
       docker_compose_version: '1.24.1',
       docker_compose_pip_version: '1.25.0rc2',
 
-      registry_deploy_via: 'kubectl',
+      registry_deploy_via: 'docker-compose',
       registry_version: '2.7.1',
       registry_port: '5000',
 
@@ -44,7 +44,7 @@ module AnsibleExtraVars
       taiga_port: '8080',
 
       gitlab_deploy_via: 'kubectl',
-      gitlab_version: '12.4.1',
+      gitlab_version: '12.5.2',
       gitlab_port: '10080',
       gitlab_ssh_port: '10022',
       gitlab_user: 'root',
