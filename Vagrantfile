@@ -354,15 +354,6 @@ Vagrant.configure("2") do |config|
       echo Execute ansible-playbook...
       cd /vagrant
       PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
-
-#      echo ensure drone ci is up...
-#      ssh -t -o StrictHostKeyChecking=no -i /home/vagrant/.ssh/id_rsa -l vagrant master 'source /etc/profile;cd $HOME/drone;docker-compose up -d'
-
-      echo Executing ansible-playbook to deploy drone on master...
-      echo "[masters]\nmaster" > /tmp/hosts
-
-      PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter=\"/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}\"' --vault-password-file=/vagrant/vault_pass --limit='masters' --inventory-file=/tmp/hosts --user='vagrant' /vagrant/ansible/drone-playbook.yml
-
     SHELL
   end
 end

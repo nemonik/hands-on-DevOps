@@ -16,7 +16,6 @@
     - golang
     - golint
     - taiga
-    - gitlab
     - plantuml-server
     - sonarqube
     - golang-container-image

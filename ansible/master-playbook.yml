@@ -14,5 +14,6 @@
     - common
     - k3s-server
     - docker-registry
-#    - drone
+    - gitlab
+    - drone
     - create-cache
