@@ -259,6 +259,8 @@ module ConfigurationVars
         apk add python3 python3-dev py3-pip musl-dev libffi-dev libc-dev py3-cryptography make gcc libressl-dev
         ;;
       "Ubuntu-bionic")
+        apt update
+        apt upgrde -y
         apt install -y python3 python3-dev python3-pip make gcc
         ;;
       "CentOS 7")
