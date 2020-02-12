@@ -1,6 +1,6 @@
 version: "2"
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -10,7 +10,7 @@ version: "2"
 services:
     drone-postgresql:
         image:
-            sameersbn/postgresql:10-2
+            {{ registry_host }}:{{ registry_port }}/sameersbn/postgresql:10-2
         restart: always
         environment:
             - DB_NAME=drone
@@ -25,7 +25,7 @@ services:
     drone-agent:
         build: drone-agent/.
         image:
-           nemonik/agent:{{ drone_version }}
+           {{ registry_host }}:{{ registry_port }}/nemonik/agent:{{ drone_agent_version }}
         restart: always
         environment:
            - DRONE_RPC_SERVER=http://{{ drone_host }}:{{ drone_port }}
@@ -45,13 +45,13 @@ services:
     drone-server:
         build: drone-server/.
         image:
-            nemonik/drone:{{ drone_version }}
+            {{ registry_host }}:{{ registry_port }}/nemonik/drone:{{ drone_version }}
         restart: always
         environment:
             - DRONE_DATABASE_DRIVER=postgres
             - DRONE_DATABASE_DATASOURCE=postgres://drone:password@drone-postgresql:5432/drone?sslmode=disable
             - DRONE_GIT_ALWAYS_AUTH=false
-            - DRONE_GITLAB_SERVER=http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:10080
+            - DRONE_GITLAB_SERVER=http://{{ gitlab_host }}:{{ gitlab_port }}
             - DRONE_GITLAB_CLIENT_ID={{ drone_gitlab_client_id }}
             - DRONE_GITLAB_CLIENT_SECRET={{ drone_gitlab_client_secret }}
             - DRONE_RPC_SECRET=shared_secret

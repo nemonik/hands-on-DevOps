@@ -1,87 +1,116 @@
 ---
 # tasks file for k3s-server
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-# Kubernetes will pull these, but let's pre-cache em
-- name: pull docker images
-  docker_image:
-    name: "{{ item }}"
-    source: pull
-    timeout: "{{ docker_timeout }}"
-  with_items:
-    - kubernetesui/dashboard:{{ kubernetes_dashboard_version }}
-    - traefik:{{ traefik_version }}
-  retries: "{{ docker_retries }}"
-  delay: "{{ docker_delay }}"
-  register: result
-  until: result is succeeded
+- set_fact:
+    images:
+      - { repository: 'rancher/pause', tag: '' }
+      - { repository: 'coredns/coredns', tag: '' }
+      - { repository: 'rancher/local-path-provisioner', tag: '' }
+      - { repository: 'rancher/metrics-server', tag: '' }
+      - { repository: 'metallb/speaker', tag: "{{ metallb_version }}" }
+      - { repository: 'metallb/controller', tag: "{{ metallb_version }}" }
+      - { repository: 'traefik', tag: "{{ traefik_version }}" }
+      - { repository: 'busybox', tag: '' }
+      - { repository: 'sameersbn/postgresql', tag: '10-2' }
+      - { repository: 'kubernetesui/dashboard', tag: "{{ kubernetes_dashboard_version }}" }
+      - { repository: 'kubernetesui/metrics-scraper', tag: 'v1.0.1' }
+
+- name: load {{ images }} from cache
+  include_tasks: retrieve_container_image.yml
+  loop: "{{ images }}"
   tags:
     - k3s-server
 
-- name: ensure /home/{{ ansible_user_id }}/k3s exists
-  file:
-    path: /home/{{ ansible_user_id }}/k3s
-    state: directory
+- name: get K3s service status
+  become: yes
+  shell: |
+    var=$(rc-status -s | grep "k3s\s*\[\s*started.*")
+    [[ "$(echo "$var")" != '' ]] && echo true || echo false
+  register: k3s_service
   tags:
     - k3s-server
 
-- name: Populate service facts
-  service_facts:
+- name: determine k3s_flannel_iface of master
+  block:
+  - name: set interface, if Alpine
+    set_fact:
+      k3s_flannel_iface: 'eth1'
+    when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
+
+  - name: set interface, if CentOS 7
+    set_fact:
+      k3s_flannel_iface: 'eth1'
+    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7' 
+    
+  - name: set interface, if Ubuntu-bionic
+    set_fact:
+      k3s_flannel_iface: 'enp0s8'
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+
+  - name: fail, if not Alpine or Ubuntu-bionic or CentOS 7
+    fail: 
+      msg: "{{ ansible_distribution }} - {{ ansible_distribution_release }} operating system is not currently supported."
+    when: k3s_flannel_iface is not defined
   tags:
     - k3s-server
 
-- debug:
-    msg: K3s installed!
-  when: 
-    "'k3s' in services"
-  tags:
-    - k3s-server
-
-- name: am i in the docker group?
-  shell: groups
-  tags:
-    - k3s-server
+- name: get ip for {{ k3s_flannel_iface }}
+  shell: ip a show {{ k3s_flannel_iface }} | grep "inet " | awk '{print $2}' | cut -d / -f1
+  register: ipaddr
 
 - name: install and spin up k3s, if needed
   block:
-  - name: ensure /var/lib/rancher/k3s/agent/images/ exists
-    become: yes
+  - name: create /vagrantcache/boxes if it doesn't exist
     file:
-      path: /var/lib/rancher/k3s/agent/images/
+      path: /vagrant/cache
       state: directory
 
-  - name: install airgap images
-    become: yes
-    unarchive:
-      src: https://github.com/rancher/k3s/releases/download/{{ k3s_version }}/k3s-airgap-images-amd64.tar
-      dest: /var/lib/rancher/k3s/agent/images/
-      remote_src: yes
-      creates: /var/lib/rancher/k3s/agent/images/manifest.json
+  - name: ensure /home/{{ ansible_user_id }}/k3s exists
+    file:
+      path: /home/{{ ansible_user_id }}/k3s
+      state: directory
 
+  - name: is install_k3s.sh cached?
+    stat:
+      path: /vagrant/cache/install_k3s.sh
+    register: k3s_distributable
+
+  - name: cache install_k3.sh retrieved from https://get.k3s.io
+    shell: |
+      if [[ "windows" == "{{ host_os }}" ]]; then
+         sudo su
+      fi
+      rm -f /vagrant/cache/install_k3s.sh
+      wget -O /vagrant/cache/install_k3s.sh https://get.k3s.io
+    args:
+      executable: /bin/bash
     retries: "{{ default_retries }}"
     delay: "{{ default_delay }}"
     register: result
     until: result is succeeded
+    when: k3s_distributable.stat.exists == False
 
-  - name: emplace install_k3s script
-    get_url:
-      url: https://get.k3s.io
-      dest: /home/{{ ansible_user_id }}/k3s/install_k3s.sh
+  - name: emplace install_k3s.sh into /home/{{ ansible_user_id }}
+    copy:
+      src: /vagrant/cache/install_k3s.sh
+      dest: /home/{{ ansible_user_id }}/k3s
       mode: u=rwx,g=r,o=r
-    retries: "{{ default_retries }}"
-    delay: "{{ default_delay }}"
-    register: result
-    until: result is succeeded
 
   - name: install K3s 
     become: yes
-    shell: INSTALL_K3S_VERSION={{ k3s_version }} INSTALL_K3S_EXEC="--flannel-iface={{ k3s_flannel_iface }} --cluster-secret={{ k3s_cluster_secret }} --docker --no-deploy traefik" /home/{{ ansible_user_id }}/k3s/install_k3s.sh
+#    shell: INSTALL_K3S_VERSION={{ k3s_version }} INSTALL_K3S_EXEC="--flannel-iface={{ k3s_flannel_iface }} --cluster-secret={{ vault_k3s_cluster_secret }} --docker --no-deploy=traefik --no-deploy=servicelb --no-deploy metrics-server" /home/{{ ansible_user_id }}/k3s/install_k3s.sh
+    shell: INSTALL_K3S_VERSION={{ k3s_version }} INSTALL_K3S_EXEC="--flannel-iface={{ k3s_flannel_iface }} --cluster-secret={{ vault_k3s_cluster_secret }} --docker --no-deploy=traefik --no-deploy=servicelb" /home/{{ ansible_user_id }}/k3s/install_k3s.sh
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
    
   - name: alias `kubectl` to `k3s kubectl`
     become: yes
@@ -90,7 +119,7 @@
       content: |
         alias kubectl="k3s kubectl"
   when:  
-    "'k3s' not in services"
+    k3s_service.stdout=="false"
   tags:
     - k3s-server
 
@@ -103,12 +132,86 @@
   tags:
     - k3s-server
 
-- name: get uid for /vagrant/Vagranfile
+- name: get uid for /vagrant/Vagrantfile
   become: yes
   shell: echo $(stat -c '%U' /vagrant/Vagrantfile)
   register: owner
   tags:
     - k3s-server
+
+- name: ensure {{ ansible_user_id }} can access Kubernetes
+  block:
+  - name: wait for /etc/rancher/k3s/k3s.yaml to exist
+    wait_for:
+      path: /etc/rancher/k3s/k3s.yaml
+      state: present
+      delay: 0
+    ignore_errors: yes
+
+  - name: ensure the {{ ansible_user_id }} user has an kubeconfig.yml file to access kubernetes
+    become: yes
+    copy:
+      src: /etc/rancher/k3s/k3s.yaml
+      dest: /home/{{ ansible_user_id }}/kubeconfig.yml
+      remote_src: yes
+      owner: "{{ ansible_user_id }}"
+      group: "{{ ansible_user_id }}"
+      mode: u=rw,g=r
+
+  - name: ensure https://127.0.0.1:6443 is replaced with https://{{ ipaddr.stdout }}:6443 in /home/{{ ansible_user_id }}/kubeconfig.yml
+    replace:
+      path: /home/{{ ansible_user_id }}/kubeconfig.yml
+      regexp: '^    server: https://127.0.0.1:6443'
+      replace: '    server: https://{{ ipaddr.stdout }}:6443'
+
+  - name: ensure /home/{{ ansible_user_id }}/.bash_profile exists
+    copy:
+      content: ""
+      dest: /home/{{ ansible_user_id }}/.bash_profile
+      force: no
+
+  - name: ensure KUBECONFIG is removed from {{ ansible_user_id }}'s bash_profile
+    lineinfile:
+      dest: /home/{{ ansible_user_id }}/.bash_profile
+      regexp: '^export KUBECONFIG'
+      state: absent
+
+  - name: ensure KUBECONFIG is in {{ ansible_user_id }}'s bash_profile
+    lineinfile:
+      dest:  /home/{{ ansible_user_id }}/.bash_profile
+      line: 'export KUBECONFIG="/home/{{ ansible_user_id }}/kubeconfig.yml"'
+      insertafter: EOF
+  tags:
+    - k3s-server
+
+- name: ensure metallb is running
+  block:
+  - name: ensure /home/{{ ansible_user_id }}/metallb exists
+    file:
+      path: /home/{{ ansible_user_id }}/metallb
+      state: directory
+
+  - name: ensure metallb.yml is in place at /home/{{ ansible_user_id }}/metallb
+    template:
+      src: templates/metallb.yml.j2
+      dest: /home/{{ ansible_user_id }}/metallb/metallb.yml
+      force: yes
+      mode: u=rw,g=r
+
+  - name: ensure metallb-configmap.yml is in place at /home/{{ ansible_user_id }}/metallb
+    copy:
+      src: files/metallb-configmap.yml
+      dest: /home/{{ ansible_user_id }}/metallb/metallb-configmap.yml
+      force: yes
+      mode: u=rw,g=r
+
+  - name: ensure metallb is running
+    shell: |
+      kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f /home/{{ ansible_user_id }}/metallb//metallb.yml
+      kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f /home/{{ ansible_user_id }}/metallb/metallb-configmap.yml
+  tags:
+    - k3s-server
+    - metallb
 
 - name: ensure traefik is running
   block:
@@ -125,43 +228,10 @@
       mode: u=rw,g=r
 
   - name: ensure traefik is running
-    become: yes
-    shell: kubectl apply -f /home/{{ ansible_user_id }}/traefik/traefik.yml
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f /home/{{ ansible_user_id }}/traefik/traefik.yml
   tags:
     - k3s-server
     - traefik
-
-- name: ensure {{ ansible_user_id }} can access Kubernetes 
-  block:
-  - name: ensure the {{ ansible_user_id }} user has an kubeconfig.yml file to access kubernetes
-    become: yes    
-    copy:
-      src: /etc/rancher/k3s/k3s.yaml
-      dest: /home/{{ ansible_user_id }}/kubeconfig.yml
-      remote_src: yes      
-      owner: "{{ ansible_user_id }}"
-      group: "{{ ansible_user_id }}"
-      mode: u=rw,g=r
-
-  - name: ensure https://127.0.0.1:6443 is replaced with https://{{ hostvars[ansible_nodename].ansible_host }}:6443 in /home/{{ ansible_user_id }}/kubeconfig.yml
-    replace:
-      path: /home/{{ ansible_user_id }}/kubeconfig.yml
-      regexp: '^    server: https://127.0.0.1:6443'
-      replace: '    server: https://{{ hostvars[ansible_nodename].ansible_host }}:6443'
- 
-  - name: ensure KUBECONFIG is removed from {{ ansible_user_id }}'s bash_profile
-    lineinfile:
-      dest: /home/{{ ansible_user_id }}/.bash_profile
-      regexp: '^export KUBECONFIG'
-      state: absent
-
-  - name: ensure KUBECONFIG is in {{ ansible_user_id }}'s bash_profile
-    lineinfile:
-      dest:  /home/{{ ansible_user_id }}/.bash_profile
-      line: 'export KUBECONFIG="/home/{{ ansible_user_id }}/kubeconfig.yml"'
-      insertafter: EOF
-  tags:
-    - k3s-server
 
 - name: ensure Kubernetes Dashboard is installed and running
   block:
@@ -182,12 +252,10 @@
       dest: /home/{{ ansible_user_id }}/kubernetes-dashboard/
 
   - name: is kubernetes-dashboard running?
-    become: yes
-    shell: kubectl -n kube-system get pod | grep kubernetes-dashboard | grep Running | wc -l
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml -n kube-system get pod | grep kubernetes-dashboard | grep Running | wc -l
     register: result
 
   - name: spin up kubernetes-dashboard
-    become: yes
     shell: | 
       kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f kubernetes-dashboard.yml
       kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f vagrant-user.yml
@@ -196,8 +264,7 @@
     when: result.stdout == '0'
 
   - name: wait for kubernetes-dashboard to spin up
-    become: yes
-    shell: kubectl -n kubernetes-dashboard get pod | grep Running
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml -n kubernetes-dashboard get pod | grep Running
     retries: 60
     delay: 5
     register: retry_result
@@ -222,7 +289,13 @@
     register: admin_password_results
 
   - debug:
-      msg: 'The Kubernetes dashbaord should now be accessible at http://{{ hostvars[ansible_nodename].ansible_host }}:6443/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy and authenticate with token = "{{ token_results.stdout }}".  The user name is "admin" and password is "{{ admin_password_results.stdout }}".'
+      msg: The Kubernetes dashbaord should now be accessible at http://{{ ipaddr.stdout }}:6443/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy and authenticate with token = "{{ token_results.stdout }}".  The user name is "admin" and password is "{{ admin_password_results.stdout }}".
   tags:
     - k3s-server
     - kubernetes-dashbaord
+
+- name: save {{ images }} to cache
+  include_tasks: cache_container_image.yml
+  loop: "{{ images }}"
+  tags:
+    - k3s-server

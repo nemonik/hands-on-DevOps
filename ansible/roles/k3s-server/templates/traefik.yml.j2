@@ -48,25 +48,6 @@ subjects:
 
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: traefik
-  name: traefik
-  namespace: kube-system
-spec:
-  externalTrafficPolicy: Cluster
-  ports:
-  - name: http
-    port: 8082
-    targetPort: http
-  selector:
-    app: traefik
-  type: LoadBalancer
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -111,14 +92,19 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: traefik-web-ui
+  labels:
+    app: traefik
+  name: traefik
   namespace: kube-system
 spec:
   ports:
-    - name: admin
-      targetPort: admin
-      port: 8083
+  - name: http
+    port: {{ traefik_http_port }}
+    targetPort: http
+  - name: admin
+    targetPort: admin
+    port: {{ traefik_admin_port }}
   selector:
     app: traefik
   type: LoadBalancer
-  externalTrafficPolicy: Cluster
+  loadBalancerIP: {{ traefik_host }}

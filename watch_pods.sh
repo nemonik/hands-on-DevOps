@@ -9,4 +9,7 @@
 
 # Returns the K3s server node-token
 
-vagrant ssh toolchain -- -t 'sudo watch -n 2 kubectl --all-namespaces=true get pods' 
+# `vagrant ssh` presently seems buggy
+
+ssh-keygen -R 192.168.0.10
+ssh -t -o StrictHostKeyChecking=no -i ~/.vagrant.d/insecure_private_key -l vagrant 192.168.0.10 'sudo watch -n 5 /usr/local/bin/kubectl --all-namespaces=true get pods -o wide'

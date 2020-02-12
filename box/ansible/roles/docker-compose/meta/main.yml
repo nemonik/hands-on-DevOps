@@ -10,5 +10,4 @@ galaxy_info:
   galaxy_tags:
   - docker-compose
 
-dependencies:
-- { role: docker }
+dependencies: []

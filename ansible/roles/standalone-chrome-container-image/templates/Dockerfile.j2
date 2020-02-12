@@ -1,4 +1,4 @@
-FROM selenium/standalone-chrome:{{ selenium_standalone_chrome_version }}
+FROM {{ registry_host }}:{{ registry_port }}/selenium/standalone-chrome:{{ selenium_standalone_chrome_version }}
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
 {% if http_proxy != '' %}

@@ -1,0 +1,25 @@
+KEYMAPOPTS="us us"
+
+HOSTNAMEOPTS="-n localhost"
+
+INTERFACESOPTS="auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+"
+
+TIMEZONEOPTS="-z UTC"
+
+# set http/ftp proxy
+# PROXYOPTS="http://webproxy:8080"
+
+PROXYOPTS="none"
+
+APKREPOSOPTS="http://dl-cdn.alpinelinux.org/alpine/v3.10/main/"
+
+SSHDOPTS="-c openssh"
+
+NTPOPTS="-c chrony"
+
+DISKOPTS="-s 0 -m sys /dev/sda"

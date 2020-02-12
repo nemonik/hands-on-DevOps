@@ -9,4 +9,7 @@
 
 # Returns the K3s server node-token
 
-vagrant ssh toolchain -- -t 'sudo /home/vagrant/kubernetes-dashboard/get_token.sh' | tail -1
+ssh-keygen -R 192.168.0.10 &> /dev/null
+ssh -t -o StrictHostKeyChecking=no -i ~/.vagrant.d/insecure_private_key -l vagrant 192.168.0.10 'source $HOME/.bash_profile && /home/vagrant/kubernetes-dashboard/get_token.sh'
+
+#vagrant ssh master -- -t '/home/vagrant/kubernetes-dashboard/get_token.sh'

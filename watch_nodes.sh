@@ -9,4 +9,6 @@
 
 # Returns the K3s server node-token
 
-vagrant ssh toolchain -- -t 'sudo watch -n 2 kubectl --all-namespaces=true get nodes'
+# `vagrant ssh` presently seems buggy
+ 
+ssh -t -o StrictHostKeyChecking=no -i ~/.vagrant.d/insecure_private_key -l vagrant 192.168.0.10 'sudo watch -n 2 /usr/local/bin/kubectl --all-namespaces=true get nodes'

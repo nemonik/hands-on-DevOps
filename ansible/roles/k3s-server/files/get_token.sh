@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -9,8 +9,8 @@
 
 # Outputs the vagrant user's token needed to access the Kubernetes Dashboard.
 
-SECRET=$(kubectl -n kube-system get secret | grep vagrant | awk '{print $1}')
-TOKEN=$(kubectl -n kube-system get secret $SECRET -o jsonpath='{.data.token}' | base64 --decode)
+SECRET=$(KUBECONFIG=/home/vagrant/kubeconfig.yml /usr/local/bin/k3s kubectl -n kube-system get secret | grep vagrant | awk '{print $1}')
+TOKEN=$(KUBECONFIG=/home/vagrant/kubeconfig.yml /usr/local/bin/k3s kubectl -n kube-system get secret $SECRET -o jsonpath='{.data.token}' | base64 --decode)
 echo $TOKEN
 
 

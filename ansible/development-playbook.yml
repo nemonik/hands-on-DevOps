@@ -1,7 +1,7 @@
 ---
 # Development Ansible playbook
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -11,6 +11,17 @@
 - hosts: [developments]
   remote_user: vagrant
   roles:
+    - common
+    - kubectl
     - golang
     - golint
-    - k3s-agent
+    - taiga
+    - gitlab
+    - plantuml-server
+    - sonarqube
+    - golang-container-image
+    - golang-sonarqube-scanner-image
+    - python-container-image
+    - owasp-zap2docker-stable-image
+    - standalone-firefox-container-image
+    - create-cache

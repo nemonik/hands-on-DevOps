@@ -1,9 +1,11 @@
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
+
+---
 
 apiVersion: v1
 kind: Namespace
@@ -46,7 +48,7 @@ spec:
     spec:
       containers:
       - name: postgresql
-        image: sameersbn/postgresql:10-2
+        image: {{ registry_host }}:{{ registry_port }}/sameersbn/postgresql:10-2
         imagePullPolicy: IfNotPresent
         env:
         - name: DB_NAME
@@ -152,7 +154,7 @@ spec:
     spec:
       containers:
       - name: taiga
-        image: nemonik/taiga:{{ taiga_version }}
+        image: {{ registry_host }}:{{ registry_port }}/nemonik/taiga:{{ taiga_version }}
         imagePullPolicy: IfNotPresent
         env:
         - name: DEBUG
@@ -203,16 +205,18 @@ spec:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 180
-          timeoutSeconds: 5
+          initialDelaySeconds: 300
+          periodSeconds: 10
+          timeoutSeconds: 15
           failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 5
-          timeoutSeconds: 1
-          failureThreshold: 1
+          initialDelaySeconds: 300
+          periodSeconds: 10
+          timeoutSeconds: 15
+          failureThreshold: 3
       volumes:
       - name: static
         persistentVolumeClaim:
@@ -236,4 +240,4 @@ spec:
   selector:
     app: taiga
   type: LoadBalancer
-  externalTrafficPolicy: Cluster
+  loadBalancerIP: {{ taiga_host }}

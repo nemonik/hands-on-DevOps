@@ -1,0 +1,93 @@
+---
+# tasks file for kubectl
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: is kubectl installed?
+  stat: 
+    path: /usr/local/bin/kubectl
+  register: kubectl
+  tags:
+    - kubectl
+
+- name: install kubectl
+  block:
+  - name: create /vagrant/cache/{{ group_names[0] }} if it doesn't exist
+    file:
+      path: /vagrant/cache/{{ group_names[0] }}
+      state: directory
+
+  - name: is kubectl cached?
+    stat:
+      path: /vagrant/cache/{{ group_names[0] }}/kubectl
+    register: kubectl_distributable
+
+  - name: cache https://storage.googleapis.com/kubernetes-release/release/{{ kubectl_version }}/bin/linux/amd64/kubectl
+    get_url:
+      url: https://storage.googleapis.com/kubernetes-release/release/{{ kubectl_version }}/bin/linux/amd64/kubectl
+      dest: /vagrant/cache/{{ group_names[0] }} 
+      checksum: "{{ kubectl_checksum }}"
+      remote_src: yes
+    when: kubectl_distributable.stat.exists == false
+
+  - name: install kubectl to /usr/local/bin
+    become: yes
+    copy:
+      src: /vagrant/cache/{{ group_names[0] }}/kubectl
+      dest: /usr/local/bin
+      mode: 0755
+  when: kubectl.stat.exists == false
+  tags:
+    - kubectl
+
+- name: ensure {{ ansible_user_id }} can access Kubernetes
+  block:
+  - name: ensure the {{ ansible_user_id }} user has an kubeconfig.yml file to access kubernetes
+    shell: scp -qp -oStrictHostKeyChecking=no -i /home/{{ ansible_user_id }}/.ssh/id_rsa {{ ansible_user_id }}@master:/home/{{ ansible_user_id }}/kubeconfig.yml /home/{{ ansible_user_id }}/kubeconfig.yml
+
+  - name: chown and fix permissions on /home/{{ ansible_user_id }}/kubeconfig.yml
+    file:
+      path: /home/{{ ansible_user_id }}/kubeconfig.yml
+      owner: "{{ ansible_user_id }}"
+      group: "{{ ansible_user_id }}"
+      mode: u+rw,g+r,o-rwx
+
+  - name: ensure /home/{{ ansible_user_id }}/.bash_profile exists
+    copy:
+      content: ""
+      dest: /home/{{ ansible_user_id }}/.bash_profile
+      force: no
+
+  - name: ensure KUBECONFIG is removed from {{ ansible_user_id }}'s bash_profile
+    lineinfile:
+      dest: /home/{{ ansible_user_id }}/.bash_profile
+      regexp: '^export KUBECONFIG'
+      state: absent
+
+  - name: ensure KUBECONFIG is in {{ ansible_user_id }}'s bash_profile
+    lineinfile:
+      dest:  /home/{{ ansible_user_id }}/.bash_profile
+      line: 'export KUBECONFIG="/home/{{ ansible_user_id }}/kubeconfig.yml"'
+      insertafter: EOF
+
+  - name: ensure "export PATH=/usr/local/bin:$PATH" is absent from /etc/profile
+    become: yes
+    lineinfile:
+      dest: /etc/profile
+      regexp: "^export PATH=/usr/local/bin:$PATH"
+      state: absent
+
+  - name: ensure "export PATH=/usr/local/bin:$PATH" is in /etc/profile
+    become: yes
+    lineinfile:
+      dest: /etc/profile
+      line: export PATH=/usr/local/bin:$PATH
+      insertafter: EOF
+
+  tags:
+    - kubectl

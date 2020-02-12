@@ -1,0 +1,28 @@
+---
+# tasks file for common
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: configure /etc/hosts
+  become: yes
+  copy:
+    content: |
+      127.0.0.1 localhost localhost.localdomain {{ inventory_hostname_short }}
+      ::1       localhost localhost.localdomain
+
+      {{ network_prefix }}.9 development
+      {% for node in range(nodes|int) %}
+      {% if node|int == 0 %}
+      {{ network_prefix }}.{{ 10 + node|int }} master
+      {% else %}
+      {{ network_prefix }}.{{ 10 + node|int }} node{{ node }}
+      {% endif %}
+      {% endfor %}
+    dest: /etc/hosts
+  tags:
+    - common

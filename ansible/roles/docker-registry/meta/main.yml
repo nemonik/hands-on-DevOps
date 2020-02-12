@@ -1,6 +1,6 @@
 galaxy_info:
   author: Michael Joseph Walsh <mjwalsh@nemonik.com>
-  description: Installs private docker registry
+  description: Installs private container registry
   license: BSDv3
   min_ansible_version: 2.0
   platforms:

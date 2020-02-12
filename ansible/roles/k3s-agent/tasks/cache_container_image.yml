@@ -1,0 +1,40 @@
+---
+# tasks file for cache_container_images
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: create /vagrant/cache/images, if it doesn't exist
+  file:
+    path: /vagrant/cache/images
+    state: directory
+
+- name: cache {{ item }} container image, if it exists in docker storage
+  shell: |
+    image="{{ item }}"
+    IFS=':' read -r -a parts <<< "${image}"
+
+    tag="${parts[1]}"
+
+    filter="{{ "{{" }}.Repository{{ "}}" }}"
+
+    if [ ! -z "$tag" ]; then
+      filter="${filter}:{{ "{{" }}.Tag{{ "}}" }}"
+    fi
+
+    IFS=':' read -r -a parts <<< "$(docker image ls ${image} --format "${filter}")"
+
+    if [ ! -z "${parts}" ]; then
+      archive_name=${image/\//_}
+      archive_name=${archive_name/:/_}
+
+      if [ -f "/vagrant/cache/${archive_name}.tar.gz" ]; then
+        docker save ${image} | gzip -c > /vagrant/cache/images/${archive_name}.tar.gz
+      fi
+    fi
+  args:
+    executable: /bin/bash

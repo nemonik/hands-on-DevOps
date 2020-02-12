@@ -7,7 +7,7 @@ RUN apk add -U --no-cache ca-certificates wget
 RUN cd /usr/local/share/ca-certificates/ && {% for ca in CA_CERTIFICATES %} wget {{ ca }} &&{% endfor %} update-ca-certificates
 {% endif %}
 
-FROM drone/agent:{{ drone_version }}
+FROM drone/agent:{{ drone_agent_version }}
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
 {% if CA_CERTIFICATES%}

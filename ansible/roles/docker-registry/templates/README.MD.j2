@@ -1,4 +1,4 @@
-# The configuration and steps to build our Docker Registry, and start it in a container.
+# The configuration and steps to build our container registry, and start it in a container.
 
 Create our Registry.
 
@@ -10,14 +10,14 @@ docker-compose up -d
 Configure systemd by adding the line:
 
 ```
- "insecure-registries" : ["192.168.0.11:5000"]
+ "insecure-registries" : ["192.168.0.201:5000"]
 ```
 
 to `/etc/docker/daemon.json`, so that it looks like this:
 
 ```
 {
-  "insecure-registries" : ["192.168.0.11:5000"]
+  "insecure-registries" : ["192.168.0.201:5000"]
 }
 ```
 
@@ -34,14 +34,14 @@ Push a image in
 
 ```
 docker pull ubuntu
-docker tag ubuntu 192.168.0.11:5000/ubuntu
-docker push 192.168.0.11:5000/ubuntu
+docker tag ubuntu 192.168.0.201:5000/ubuntu
+docker push 192.168.0.201:5000/ubuntu
 ```
 
 Query the catalog of the private registry:
 
 ```
-curl -X GET http://192.168.0.11:5000/v2/_catalog
+curl -X GET http://192.168.0.201:5000/v2/_catalog
 ```
 
 Returns:
@@ -53,7 +53,7 @@ Returns:
 Query for the container you pushed
 
 ```
-curl -X GET http://192.168.0.11:5000/v2/ubuntu/tags/list
+curl -X GET http://192.168.0.201:5000/v2/ubuntu/tags/list
 ```
 
 Returns:
@@ -65,5 +65,5 @@ Returns:
 Spin up a container for the image you pushed
 
 ```
-docker run -it 192.168.0.11:5000/ubuntu /bin/bash
+docker run -it 192.168.0.201:5000/ubuntu /bin/bash
 ```

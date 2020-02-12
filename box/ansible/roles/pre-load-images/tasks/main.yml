@@ -1,0 +1,30 @@
+---
+# tasks file for pre-load-images
+
+- set_fact:
+    images:
+      - { repository: "sameersbn/redis", tag: "4.0.9-1" }
+      - { repository: "sameersbn/postgresql", tag: "10-2" }
+
+- name: cache images
+  block:
+  - name: load {{ images }} from cache
+    include_tasks: retrieve_container_image.yml
+    loop: "{{ images }}"
+
+  - name: pull {{ images }} container images
+    docker_image:
+      name: "{{ item.repository }}:{{ item.tag }}"
+      source: pull
+      timeout: "{{ docker_timeout }}"
+    retries: "{{ docker_retries }}"
+    delay: "{{ docker_delay }}"
+    register: result
+    until: result is succeeded
+    loop: "{{ images }}"
+
+  - name: save {{ images }} to cache
+    include_tasks: cache_container_image.yml
+    loop: "{{ images }}"
+  tags:
+    - gitlab

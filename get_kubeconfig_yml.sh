@@ -9,5 +9,6 @@
 
 # Returns the K3s server node-token
 
-vagrant ssh toolchain -- -t 'cat /home/vagrant/kubeconfig.yml' | tail -19
+ssh-keygen -R 192.168.0.10
+ssh -t -o StrictHostKeyChecking=no -i ~/.vagrant.d/insecure_private_key -l vagrant 192.168.0.10 'cat /home/vagrant/kubeconfig.yml' | tail -19
 

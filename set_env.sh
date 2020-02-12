@@ -40,7 +40,7 @@ if [[ $set_proxy = true ]]; then
   export HTTPS_PROXT=$PROXY
   export https_proxy=$PROXY
   export ALL_PROXY=$PROXY
-  export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,192.168.0.10,192.168.0.11"
+  export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,192.168.0.9,192.168.0.10,192.168.0.11,192.168.0.200,192.168.0.201,192.168.0.202,192.168.0.203,192.168.0.204,192.168.0.205"
  export no_proxy=$NO_PROXY
 else
   echo "Unsetting proxy environment varaibles"

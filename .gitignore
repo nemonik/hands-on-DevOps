@@ -1,26 +1,31 @@
 # OS-specific
 .DS_Store
 
+helloworld
+helloworld-web
+
+*.bak
+*.back
+
 # Ansible
 *.retry
 cookies.txt
 # vault_pass
+hosts
+ansible/roles/httpd
 
 # Vagrant
 .vagrant/
 *.vdi
 *.box
 vagrant_private_key
-ansible/cookies.txt
-*.md.bak
 
-# Packer
-box/packer_cache
+# Cache
+cache
+
+# box/packer-alpine310
+box/packer-alpine310/cache
+box/packer-alpine310/isos
 
 # InSpec
 inspec_hellworld.json
-
-# Kubernetes / K3s
-*.K3S_TOKEN.yml
-*.kubeconfig.yml
-*.vagrant-token.yml

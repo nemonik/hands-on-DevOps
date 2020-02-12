@@ -1,6 +1,6 @@
 galaxy_info:
   author: Michael Joseph Walsh <walsh@nemonik.com>
-  description: Ansible role for configuration shared between both toolchain and development vagrants
+  description: Ansible role for configuration shared between both masters and worker nodes
   license: 3-Clause BSD License
   min_ansible_version: 2.4
   platforms:

@@ -9,12 +9,12 @@
 ## This course will
 
 - Discuss DevOps,
-- Have you spin up a DevOps toolchain and development environment, and then
+- Have you spin up a DevOps Factory (i.e., a toolchain) and development environment, and then
 - Author two applications and their accompanying pipelines, the first a continuous integration (CI) and the second a continuous delivery (CD) pipeline.
 
 --
 
-We will be spending most of the course hands-on working with the tools and in the Unix command-line making us of the methods and repeated practices of DevOps, so as to grow an understanding of how DevOps actually works.
+We will be spending most of the course hands-on working in the Unix command-line making us of the methods and repeated practices of DevOps, so as to grow an understanding of how DevOps actually works.
 
 --
 
@@ -56,45 +56,19 @@ Yeah, that's the formal definition.
 
 --
 
-I've grown to prefer the axiom:
+In the opening sentences of _Security Engineering: : A Guide to Building Dependable Distributed Systems — Third Edition_, author Ross Anderson defines what a **security engineer** is
 
 --
 
-> You are what you **code**.
+> Security engineering is about **building systems to remain dependable in the face of malice, error, or mischance**. As a discipline, it focuses on the tools, processes, and methods needed to design, implement, and test complete systems, and to adapt existing systems as their environment evolve. 
 
 --
 
-### If you're a developer or software engineer
-
-You're at least ***coding*** the application, its build automation, unit tests, and CI/CD (the combined practices of Continuous Integration and Continuous Delivery) automation.
+The words _security engineering_ could be replaced in the opening sentence with each one of the various stakeholders (e.g., development, quality assurance , technology operations).
 
 --
 
-### If a tester
-
-You're ***coding*** typically the functional test automation.
-
---
-
-### If a security engineer
-
-You're ***coding*** the compliance and policy test automation.
-
---
-
-### If ops
-
-You're ***coding*** the deployment and infrastructure configuration management automation.
-
---
-
-### And since all these disciplines are ***coding***
-
-They're essentially using the same methods and repeated practices to ensure they're producing good code.
-
---
-
-And they're all collectively doing all this coding left in the delivery pipeline, collaborating and from this springs forth culture.
+The point I'm after is everyone is in it to collectively deliver dependable software.
 
 ---
 
@@ -111,6 +85,38 @@ Its not about the tools.
 <small>There are countless vendors out there, who want to sell you their crummy tool.</small>
 
 --
+
+## Fixate on tools and your effort will fail
+
+--
+
+To succeed at DevOps you must 
+
+--
+
+__combine software development and information technology operations in the systems development life cycle__ with __a focus on shorting its life cycle while delivering features, fixes, and updates frequently in close alignment with business objectives__. 
+
+--
+
+If the effort cannot combine both Dev and Ops with this focus the effort will most certainly fail.
+
+--
+
+If your effort doesn't 
+
+--
+
+__grok (i.e, understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ 
+
+--
+
+the effort again will likely fail.  
+
+--
+
+I say this because the culture is the largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
+
+---
 
 Also, DevOps will **not** entirely stop all bugs nor all vulnerabilities from making it into production, but that's not really the point.
 
@@ -714,17 +720,12 @@ Keep in mind, one must first `crawl`, `walk` and then ultimately `run` as you em
 
 ---
 
-## Let me leave you with the following
-
---
-
-To succeed at DevOps you must __combine software development and information technology operations in the systems development life cycle__ with __a focus on shorting its life cycle while delivering features, fixes, and updates frequently in close alignment with business objectives__. If the effort cannot combine both Dev and Ops with this focus the effort will most certainly fail.
-
---
-
-If your effort doesn't __grok (i.e, understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture__ and developed __a strategy for how to affect a change__ the effort again will likely fail.  I say this because the culture is the largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
+This ends my deck
 
 ---
 
-This ends my deck
-___
+Michael Joseph Walsh
+github.com/nemonik/hands-on-DevOps
+mjwalsh@mitre.org / devops@nemonik.com
+
+---

@@ -1,7 +1,7 @@
 ---
 # tasks file for drone-cli
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -9,30 +9,65 @@
 # this file. If not, please email <mjwalsh@nemonik.com>
 
 - name: is drone cli installed?
-  stat: path=/usr/local/bin/drone
-  register: drone_cli
-
-# Ignore `[WARNING]: Consider using get_url or uri module rather than running 
-# wget` when running as the URL is a redirect, so Ansible chokes using its 
-# default modules to retrieve.
-- name: download and install drone-cli
-  become: yes
-  block:
-    - command: "wget https://github.com/drone/drone-cli/releases/download/v{{ drone_cli_version }}/drone_linux_amd64.tar.gz"
-      args:
-        chdir: /tmp
-        warn: false
-      retries: 60
-      delay: 5
-      register: result
-      until: result is succeeded
-    - unarchive:
-        src: /tmp/drone_linux_amd64.tar.gz
-        dest: /usr/local/bin
-        remote_src: yes
-    - file:
-        path: /tmp/drone_linux_amd64.tar.gz
-        state: absent 
-  when: drone_cli.stat.exists == False
+  stat: 
+    path=/usr/local/bin/drone
+  register: drone_cli_installed
   tags:
-    - drone-cli 
+    - drone-cli
+
+- name: install drone cli
+  block:
+  - name: create /vagrant/cache/boxes if it doesn't exist
+    shell: |
+      if [[ "windows" == "{{ host_os }}" ]]; then
+        sudo su
+      fi
+      mkdir -p /vagrant/cache/boxes
+    args:
+      executable: /bin/bash 
+   
+  - name: is drone archive cached
+    stat:
+      path: /vagrant/cache/boxes/drone_linux_amd64.tar.gz
+    register: archive_cached
+
+  # Ignore `[WARNING]: Consider using get_url or uri module rather than running
+  # wget` when running as the URL is a redirect, so Ansible chokes using its
+  # default modules to retrieve.
+  - name: cache https://github.com/drone/drone-cli/releases/download/{{ drone_cli_version }}/drone_linux_amd64.tar.gz to /vagrant/cache/boxews
+    shell: |
+      if [[ "windows" == "{{ host_os }}" ]]; then
+         sudo su
+      fi
+      rm -f /vagrant/cache/boxes/drone_linux_amd64.tar.gz
+      wget -q https://github.com/drone/drone-cli/releases/download/{{ drone_cli_version }}/drone_linux_amd64.tar.gz --directory-prefix /vagrant/cache/boxes
+    args:
+      executable: /bin/bash
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+    when: archive_cached.stat.exists == False
+
+  - name: install drone cli binary release
+    become: yes
+    unarchive:
+      src: /vagrant/cache/boxes/drone_linux_amd64.tar.gz
+      dest: /usr/local/bin
+
+  - name: ensure "export PATH=/usr/local/bin:$PATH" is absent from /etc/profile
+    become: yes
+    lineinfile:
+      dest: /etc/profile
+      regexp: "^export PATH=/usr/local/bin:$PATH"
+      state: absent
+
+  - name: ensure "export PATH=/usr/local/bin:$PATH" is in /etc/profile
+    become: yes
+    lineinfile:
+      dest: /etc/profile
+      line: export PATH=/usr/local/bin:$PATH
+      insertafter: EOF
+  when: drone_cli_installed.stat.exists == False
+  tags:
+    - drone-cli

@@ -1,4 +1,4 @@
-FROM owasp/zap2docker-stable:{{ zap2docker_stable_version }}
+FROM {{ registry_host }}:{{ registry_port }}/owasp/zap2docker-stable:{{ zap2docker_stable_version }}
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
 {% if http_proxy %}

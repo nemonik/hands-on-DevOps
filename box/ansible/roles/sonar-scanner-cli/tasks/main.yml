@@ -1,76 +1,138 @@
 ---
 # tasks file for sonar-scanner-cli
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: ensure sonar-scanner installed
+- name: is sonar-scanner installed?
+  stat:
+    path: "/usr/local/sonar-scanner"
+  register: sonar_scanner
+  tags:
+    - sonar-scanner 
+   
+- name: install sonar-scanner cli, if not Alpine 3.10
   block:
-    - name: is sonar-scanner installed?
-      stat:
-        path: "/usr/local/sonar-scanner-cli-{{ sonar_scanner_cli_version }}-linux"
-      register: sonar_scanner_installed
-    
-    - name: ensure unzip is installed to uncompress
+  - name: create /vagrant/cache/boxes if it doesn't exist
+    shell: |
+      if [[ "windows" == "{{ host_os }}" ]]; then
+        sudo su
+      fi
+      mkdir -p /vagrant/cache/boxes
+    args:
+      executable: /bin/bash
+
+  - set_fact:
+      sonar_scanner_archive: "sonar-scanner-cli-{{ sonar_scanner_cli_version }}-linux.zip"
+    when: ( ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7' ) or (  ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic' )
+
+  - set_fact:
+      sonar_scanner_archive: "sonar-scanner-cli-{{ sonar_scanner_cli_version }}.zip"
+    when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
+
+  - name: is sonar-scanner archive cached?
+    stat:
+      path: "/vagrant/cache/boxes/{{ sonar_scanner_archive }}"
+    register: archive_cached
+
+  - name: cache https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/{{ sonar_scanner_archive }} to /vagrant/cache/boxes
+    shell: |
+      if [[ "windows" == "{{ host_os }}" ]]; then
+        sudo su
+      fi
+      wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/{{ sonar_scanner_archive }} --directory-prefix=/vagrant/cache/boxes/
+    args:
+      executable: /bin/bash
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+    when: archive_cached.stat.exists == False
+
+  - name: ensure unzip is installed to uncompress sonar-scanner distributable
+    block:
+    - name: ensure unzip is installed to uncompress, when CentOS 7
       become: yes
       yum:
         name: unzip
-      when: sonar_scanner_installed.stat.exists == False    
-
-    - name: download and install sonar-scanner binary release
-      become: yes
-      unarchive:
-        src: "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-{{ sonar_scanner_cli_version }}-linux.zip"
-        dest: /usr/local/
-        remote_src: yes
-#        mode: 755
-      retries: 60
-      delay: 5
+      retries: "{{ default_retries }}"
+      delay: "{{ default_delay }}"
       register: result
       until: result is succeeded
-      when: sonar_scanner_installed.stat.exists == False 
+      when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+    - name: ensure unzip is installed to uncompress, when Ubuntu-bionic
+      become: yes
+      apt:
+        name: unzip
+      retries: "{{ default_retries }}"
+      delay: "{{ default_delay }}"
+      register: result
+      until: result is succeeded
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+
+    - name: ensure unzip is installed to uncompress, when Alpine 3.10
+      become: yes
+      apk:
+        name: unzip
+      retries: "{{ default_retries }}"
+      delay: "{{ default_delay }}"
+      register: result
+      until: result is succeeded
+      when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
+
+  - name: install sonar-scanner binary release
+    become: yes
+    unarchive:
+      src: /vagrant/cache/boxes/{{ sonar_scanner_archive }}
+      dest: /usr/local/
+      remote_src: yes
+
+  - name: mv /usr/local/sonar-scanner-{{ sonar_scanner_cli_version }}* to /usr/local/sonar-scanner
+    become: yes
+    shell: |
+       mv /usr/local/sonar-scanner-{{ sonar_scanner_cli_version }}* /usr/local/sonar-scanner
+    args:
+      executable: /bin/bash    
+
+  - name: install jre, if Alpine 3.10
+    become: yes
+    apk:
+      name: openjdk8-jre
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+    when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version 
+
+  when: sonar_scanner.stat.exists == False
   tags:
     - sonar-scanner
 
-- name: ensure /etc/profile.d/path.sh exists
-  become: yes   
-  file:
-    path: /etc/profile.d/devops_class.sh
-    state: touch
-    mode: 0644
-  tags:
-    - sonar-scanner
-
-- name: "ensure /etc/profile.d/devops_class.sh PATH includes /usr/local/sonar-scanner-{{ sonar_scanner_cli_version }}-linux/bin"
+- name: "ensure /etc/profile PATH includes /usr/local/sonar-scanner/bin"
   become: yes
   block:
-    - lineinfile:
-        dest: /etc/profile.d/devops_class.sh
-        regexp: "^export PATH=$PATH:/usr/local/sonar-scanner-{{ sonar_scanner_cli_version }}-linux/bin"
-        state: absent
+  - lineinfile:
+      dest: /etc/profile
+      regexp: "^export PATH=/usr/local/sonar-scanner/bin:$PATH"
+      state: absent
 
-    - lineinfile:
-        dest: /etc/profile.d/devops_class.sh
-        line: "export PATH=$PATH:/usr/local/sonar-scanner-{{ sonar_scanner_cli_version }}-linux/bin"
-        insertafter: EOF
+  - lineinfile:
+      dest: /etc/profile
+      line: "export PATH=/usr/local/sonar-scanner/bin:$PATH"
+      insertafter: EOF
   tags:
     - sonar-scanner
-
-- name: debug sonarqube_host
-  debug:
-    msg: "{{ sonarqube_host }}"
-  tags:
-    - sonar-scanner
-
+ 
 - name: "ensure the global settings point to {{ sonarqube_host }} hosted SonarQube server"
   become: yes
   lineinfile:
-    path: /usr/local/sonar-scanner-{{ sonar_scanner_cli_version }}-linux/conf/sonar-scanner.properties
+    path: /usr/local/sonar-scanner/conf/sonar-scanner.properties
     regexp: "^#sonar.host.url=http://localhost:9000"
-    line: "sonar.host.url=http://{{ sonarqube_host }}:{{ sonarqube_port }}"
+    line: "sonar.host.url=http://{{ sonarqube_host }}:{{ sonarqube_port }}" 
   tags:
     - sonar-scanner

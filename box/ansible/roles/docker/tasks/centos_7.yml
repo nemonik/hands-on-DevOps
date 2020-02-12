@@ -1,0 +1,34 @@
+---
+# tasks file for docker centos_7
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+
+- name: ensure the latest version of Docker CE is installed, if CentOS 7
+  block:
+  - name: uninstall old versions of docker
+    become: yes
+    yum:
+      name: ['docker', 'docker-client', 'docker-client-latest', 'docker-common', 'docker-latest', 'docker-latest-logrotate', 'docker-logrotate', 'docker-selinux', 'docker-engine-selinux', 'docker-engine']
+      state: absent
+
+  - name: ensure Docker CE repository is added
+    become: yes
+    command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+  - name: ensure the latest version of Docker CE is installed
+    become: yes
+    yum:
+      name: docker-ce
+      state: latest
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+  tags:
+    - docker

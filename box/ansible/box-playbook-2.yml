@@ -1,0 +1,20 @@
+---
+# Development Ansible playbook
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- hosts: boxes
+  connection: local
+  remote_user: vagrant
+  roles:
+    - pre-load-images
+    - docker-compose 
+    - inspec
+    - drone-cli
+    - sonar-scanner-cli
+    - create-cache

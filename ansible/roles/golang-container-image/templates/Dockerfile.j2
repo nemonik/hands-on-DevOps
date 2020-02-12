@@ -1,4 +1,4 @@
-FROM golang:{{ golang_version }}
+FROM {{ registry_host }}:{{ registry_port }}/golang:{{ golang_version }}
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
 {% if http_proxy  %}
