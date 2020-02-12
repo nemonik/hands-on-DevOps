@@ -861,7 +861,7 @@ If you are on Windows perform the following to set environmental variable adjust
 | http_proxy                         | http://gatekeeper.mitre.org:80                                                                                                                                  |
 | https_proxy                        | http://gatekeeper.mitre.org:80                                                                                                                                  |
 | no_proxy                           | 127.0.0.1,localhost,.mitre.org,.local,192.168.0.9,192.168.0.10,192.168.0.11,192.168.0.200,192.168.0.201,192.168.0.202,192.168.0.203,192.168.0.204,192.168.0.205 |
-| CA_CERTIFICATES                    | http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt    |
+| CA_CERTIFICATES                    | http://pki.mitre.org/MITRE%20BA%20Root.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-3%281%29.crt                                                              |
 | VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS | 0                                                                                                                                                               |
 
 If you're on MITRE Institute Lab PC you will want to set all of these variables.

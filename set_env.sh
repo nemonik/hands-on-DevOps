@@ -55,7 +55,7 @@ else
   unset ALL_PROXY
 fi
 
-export CA_CERTIFICATES=http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt
+export CA_CERTIFICATES=http://pki.mitre.org/MITRE%20BA%20Root.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-3%281%29.crt
 echo "Setting CA_CERTIFICATES environment variable to $CA_CERTIFICATES"
 
 export VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS=0
