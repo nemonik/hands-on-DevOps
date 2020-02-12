@@ -225,13 +225,13 @@
   tags:
     - drone
 
-#- name: spin up Drone CI via docker-compose
-#  docker_service:
-#    build: no
-#    debug: yes
-#    project_src: /home/{{ ansible_user_id }}/drone
-#  tags:
-#    - drone
+- name: spin up Drone CI via docker-compose
+  docker_service:
+    build: no
+    debug: yes
+    project_src: /home/{{ ansible_user_id }}/drone
+  tags:
+    - drone
 
 - name: save {{ images }} to cache
   include_tasks: cache_container_image.yml
