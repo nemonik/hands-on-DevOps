@@ -933,11 +933,12 @@ Output will resemble (i.e., will not be precisely the same):
 
 ```
 Cloning into 'hands-on-DevOps'...
-remote: Counting objects: 1184, done.
-remote: Compressing objects: 100% (203/203), done.
-remote: Total 1184 (delta 207), reused 411 (delta 178)
-Receiving objects: 100% (1184/1184), 235.51 MiB | 21.53 MiB/s, done.
-Resolving deltas: 100% (480/480), done.
+remote: Enumerating objects: 52, done.
+remote: Counting objects: 100% (52/52), done.
+remote: Compressing objects: 100% (39/39), done.
+remote: Total 5236 (delta 21), reused 28 (delta 11), pack-reused 5184
+Receiving objects: 100% (5236/5236), 75.60 MiB | 13.40 MiB/s, done.
+Resolving deltas: 100% (1578/1578), done.
 ```
 
 ## 8.5. Infrastructure as code (IaC)
@@ -5260,7 +5261,7 @@ gometalinter.v2 > gometalinter-report.out
 golint > golint-report.out
 go test -v ./... -coverprofile=coverage.out
 go test -v ./... -json > report.json
-sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
+sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 ```
 
 After some time, the output will look like
@@ -5277,7 +5278,7 @@ PASS
 coverage: 55.6% of statements
 ok  	github.com/nemonik/helloworld-web	0.004s	coverage: 55.6% of statements
 development:~/go/src/github.com/nemonik/helloworld-web$ go test -v ./... -json > report.json
-development:~/go/src/github.com/nemonik/helloworld-web$ sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
+development:~/go/src/github.com/nemonik/helloworld-web$ sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
 INFO: SonarQube Scanner 4.0.0.1744
@@ -5497,7 +5498,7 @@ sonar: test
 	-$(GOLINT) > golint-report.out
 	-$(GOTEST) -v ./... -coverprofile=coverage.out
 	-$(GOTEST) -v ./... -json > report.json
-	-sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
+	-sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 build:
 	$(GOBUILD) -o $(BINARY_NAME) -v
 run:
@@ -5572,7 +5573,7 @@ PASS
 coverage: 55.6% of statements
 ok  	github.com/nemonik/helloworld-web	0.004s	coverage: 55.6% of statements
 go test -v ./... -json > report.json
-sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
+sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
 INFO: SonarQube Scanner 4.0.0.1744
@@ -5930,7 +5931,7 @@ PASS
 coverage: 55.6% of statements
 ok  	github.com/nemonik/helloworld-web	0.004s	coverage: 55.6% of statements
 go test -v ./... -json > report.json
-sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
+sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
 INFO: SonarQube Scanner 4.0.0.1744
@@ -6464,7 +6465,7 @@ PASS
 coverage: 55.6% of statements
 ok  	github.com/nemonik/helloworld-web	0.005s	coverage: 55.6% of statements
 go test -v ./... -json > report.json
-sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
+sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
 INFO: SonarQube Scanner 4.0.0.1744
@@ -6932,7 +6933,7 @@ steps:
   - golint > golint-report.out || true
   - go test -v ./... -coverprofile=coverage.out || true
   - go test -v ./... -json > report.json || true
-  - sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
+  - sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
 ```
 
 Things to note in the above
@@ -6961,7 +6962,7 @@ Things to note in the above
     - golint > golint-report.out || true
     - go test -v ./... -coverprofile=coverage.out || true
     - go test -v ./... -json > report.json || true
-    - sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
+    - sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
   ```
 
 To execute your pipeline, push your changes to GitLab
@@ -7027,7 +7028,7 @@ PASS
 coverage: 55.6% of statements
 ok  	github.com/nemonik/helloworld-web	0.008s	coverage: 55.6% of statements
 + go test -v ./... -json > report.json || true
-+ sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=. -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
++ sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
 INFO: Scanner configuration file: /usr/local/sonar-scanner-4.0.0.1744-linux/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
 INFO: SonarQube Scanner 4.0.0.1744
