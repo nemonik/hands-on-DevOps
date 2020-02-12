@@ -25,7 +25,7 @@ module ConfigurationVars
 #    base_box_version: '1905.1',
 
     base_box: 'ubuntu/bionic64',
-    base_box_version: '20200210.0.0',
+    base_box_version: '20200206.0.0',
 
 #    base_box: 'nemonik/alpine310',
 #    base_box_version: '0',
