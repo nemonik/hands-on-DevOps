@@ -260,7 +260,7 @@ module ConfigurationVars
         ;;
       "Ubuntu-bionic")
         apt update
-        apt upgrde -y
+        apt upgrade -y
         apt install -y python3 python3-dev python3-pip make gcc
         ;;
       "CentOS 7")

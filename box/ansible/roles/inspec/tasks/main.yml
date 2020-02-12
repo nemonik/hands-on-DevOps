@@ -90,17 +90,17 @@
     register: result
     until: result is succeeded
 
-  - name: ensure /etc/profile PATH includes ~/.gem/bin, if Ubuntu-bionic
+  - name: ensure /etc/profile PATH includes $HOME/.gem/ruby/2.5.0/bin/, if Ubuntu-bionic
     become: yes
     block:
     - lineinfile:
         dest: /etc/profile
-        regexp: "^export PATH=~/.gem/bin:$PATH"
+        regexp: "^export PATH=$HOME/.gem/ruby/2.5.0/bin/:$PATH"
         state: absent
 
     - lineinfile:
         dest: /etc/profile
-        line: "export PATH=~/.gem/bin:$PATH"
+        line: "export PATH=$HOME/.gem/ruby/2.5.0/bin/:$PATH"
         insertafter: EOF
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
   tags:
@@ -119,17 +119,17 @@
     register: result
     until: result is succeeded
 
-  - name: ensure /etc/profile PATH includes ~/.gem/ruby/2.5.0/bin/, if Alpine 3.10
+  - name: ensure /etc/profile PATH includes $HOME/.gem/ruby/2.5.0/bin/, if Alpine 3.10
     become: yes
     block:
     - lineinfile:
         dest: /etc/profile
-        regexp: "^export PATH=~/.gem/ruby/2.5.0/bin:$PATH"
+        regexp: "^export PATH=$HOME/.gem/ruby/2.5.0/bin:$PATH"
         state: absent
 
     - lineinfile:
         dest: /etc/profile
-        line: "export PATH=~/.gem/ruby/2.5.0/bin:$PATH"
+        line: "export PATH=$HOME/.gem/ruby/2.5.0/bin:$PATH"
         insertafter: EOF
   when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
   tags:

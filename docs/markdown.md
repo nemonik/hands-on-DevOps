@@ -726,6 +726,6 @@ This ends my deck
 
 Michael Joseph Walsh
 github.com/nemonik/hands-on-DevOps
-mjwalsh@mitre.org / devops@nemonik.com
+mjwalsh@mitre.org / walsh@nemonik.com
 
 ---
