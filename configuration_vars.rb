@@ -24,11 +24,11 @@ module ConfigurationVars
 #    base_box: 'centos/7',
 #    base_box_version: '1905.1',
 
-#    base_box: 'ubuntu/bionic64',
-#    base_box_version: '20200129.1.0',
+    base_box: 'ubuntu/bionic64',
+    base_box_version: '20200210.0.0',
 
-    base_box: 'nemonik/alpine310',
-    base_box_version: '0',
+#    base_box: 'nemonik/alpine310',
+#    base_box_version: '0',
 
     ansible_version: '2.9.4',
 

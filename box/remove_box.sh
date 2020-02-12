@@ -31,8 +31,6 @@ time {
   # remove prior nemonik/devops box file
   rm -f ./nemonik_devops_${os}.box
 
-  echo $(vagrant box list | grep nemonik/devops_${os} | wc -l)
-
   if [[ $(vagrant box list | grep nemonik/devops_${os} | wc -l) -eq 1 ]]; then  
     vagrant destroy --force default || true 
     vagrant box remove -f nemonik/devops_${os} || true
