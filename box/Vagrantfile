@@ -38,7 +38,7 @@ os = box.split('/')[1]
 box = "nemonik/devops_#{os}"
 
 uninstall_plugins = %w( vagrant-cachier vagrant-alpine )
-required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize )
+required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize vagrant-reload )
 
 if (not os.downcase.include? 'alpine')
   required_plugins = required_plugins << "vagrant-vbguest"

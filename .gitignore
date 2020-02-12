@@ -25,6 +25,7 @@ cache
 
 # box/packer-alpine310
 box/packer-alpine310/cache
+box/packer-alpine310/packer_cache/
 box/packer-alpine310/isos
 
 # InSpec

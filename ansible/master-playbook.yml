@@ -14,5 +14,5 @@
     - common
     - k3s-server
     - docker-registry
-    - drone
+#    - drone
     - create-cache
