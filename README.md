@@ -2167,9 +2167,6 @@ The development vagrant  used for development is proisioned and configured with 
       echo Execute ansible-playbook...
       cd /vagrant
       PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
-
-      echo ensure drone ci is up...
-      ssh -t -o StrictHostKeyChecking=no -i /home/vagrant/.ssh/id_rsa -l vagrant master 'source /etc/profile;cd $HOME/drone;docker-compose up -d'
     SHELL
   end
 ```
@@ -2181,7 +2178,6 @@ Let me breakdown what is occuring above:
 - `vagrant.vm.provision 'root_cached_content'` installs cached content for the root user
 - `vagrant.vm.provision 'user_cached_content'` installs cached content for the vagrant user
 - `vagrant.vm.provision 'ansible'` installs the default private key for the vagrant user and then executes two ansible playbooks.
-- `ssh...` starts Drone CI via executing docker-compose on `master`.
 
 `vagrant.vm.provision 'root_cached_content'` and `vagrant.vm.provision 'user_cached_content'` both make use of cache that it created at the root of the project to increase the speed of configuring the vagrants.
 
@@ -2225,17 +2221,18 @@ The `master` vagrant leverages `ansible/master-playbook.yml` and it contains:
     - common
     - k3s-server
     - docker-registry
+    - gitlab
     - drone
     - create-cache
 ```
 
 ##### 8.5.3.1.2. The `worker` vagrant's playbook
 
-The `master` vagrant leverages `ansible/master-playbook.yml` and it contains:
+The `worker` vagrant leverages `ansible/worker-playbook.yml` and it contains:
 
 ```yaml
 ---
-# Toolchain Ansible playbook
+# Worker Ansible playbook
 
 # Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
@@ -2244,12 +2241,11 @@ The `master` vagrant leverages `ansible/master-playbook.yml` and it contains:
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- hosts: masters
+- hosts: [workers]
   remote_user: vagrant
   roles:
     - common
-    - k3s-server
-    - docker-registry
+    - k3s-agent
     - create-cache
 ```
 
@@ -2276,7 +2272,6 @@ The `development` vagrant leverages `ansible/development-playbook.yml` and it co
     - golang
     - golint
     - taiga
-    - gitlab
     - plantuml-server
     - sonarqube
     - golang-container-image
