@@ -56,15 +56,15 @@ Yeah, that's the formal definition.
 
 --
 
-In the opening sentences of _Security Engineering: A Guide to Building Dependable Distributed Systems — Third Edition_, author Ross Anderson defines what a **security engineer** is
+In the opening sentences of _Security Engineering: A Guide to Building Dependable Distributed Systems — Third Edition_, author Ross Anderson defines what a __security engineer__ is
 
 --
 
-> Security engineering is about **building systems to remain dependable in the face of malice, error, or mischance**. As a discipline, it focuses on the tools, processes, and methods needed to design, implement, and test complete systems, and to adapt existing systems as their environment evolve. 
+> Security engineering is about __building systems to remain dependable in the face of malice, error, or mischance__. As a discipline, it focuses on the tools, processes, and methods needed to design, implement, and test complete systems, and to adapt existing systems as their environment evolve. 
 
 --
 
-The words _security engineering_ could be replaced in the opening sentence with each one of the various stakeholders (e.g., development, quality assurance , technology operations).
+The words __security engineering__ could be replaced in the opening sentence with each one of the various stakeholders (e.g., development, quality assurance , technology operations).
 
 --
 
