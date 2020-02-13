@@ -1175,7 +1175,7 @@ The contents of the `alpine310.json`:
 
 Packer's `builders`' `boot_command`'s execution is very time sensitive, so you may need to add additional `<wait10>`s if the build was to fail for you.
 
-#### 8.5.1.4. Packer exection
+#### 8.5.1.4. Packer execution
 
 Along the way a modal will pop up asking you "Do you want the application “packer” to accept incoming network connections?". Give your approval otherwise Packer won't be able to do its job. The command-line output of Packer when creating the nemonik_alpine310.box will resemble:
 
