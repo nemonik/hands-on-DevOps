@@ -6972,7 +6972,7 @@ git push origin master
 
 Open on your host
 
-<http://192.168.0.11/root/helloworld-web>
+<http://192.168.0.10/root/helloworld-web>
 
 And monitor the progress of the build. The pipeline should execute in a few minutes.  
 
@@ -7203,7 +7203,7 @@ git commit -m "added build step to pipeline"
 git push origin master
 ```
 
-In a Web browser open Drone at <http://192.168.0.11/root/helloworld-web> and click on the build being executed to monitor progress.
+In a Web browser open Drone at <http://192.168.0.10/root/helloworld-web> and click on the build being executed to monitor progress.
 
 Output for `build` will resemble
 
