@@ -121,7 +121,7 @@ What you should bring:
             - [8.5.1.1. Packer document and source](#8511-packer-document-and-source)
             - [8.5.1.2. Installing Packer](#8512-installing-packer)
             - [8.5.1.3. Packer project explained](#8513-packer-project-explained)
-            - [8.5.1.4. Packer exection](#8514-packer-exection)
+            - [8.5.1.4. Packer execution](#8514-packer-execution)
         - [8.5.2. Vagrant](#852-vagrant)
             - [8.5.2.1. Vagrant documentation and source](#8521-vagrant-documentation-and-source)
             - [8.5.2.2. Installing Vagrant](#8522-installing-vagrant)
@@ -167,7 +167,7 @@ What you should bring:
         - [8.7.5. PlantUML Server, an example of light-weight documentation](#875-plantuml-server-an-example-of-light-weight-documentation)
             - [8.7.5.1. Documentation, source, container image](#8751-documentation-source-container-image)
             - [8.7.5.2. URL](#8752-url)
-            - [8.7.5.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab](#8753-optionally-add-the-hands-on-devops-repository-to-the-toolchains-gitlab)
+            - [8.7.5.3. Optionally, add the *hands-on-DevOps* repository to GitLab](#8753-optionally-add-the-hands-on-devops-repository-to-gitlab)
     - [8.8. Golang _helloworld_ project](#88-golang-_helloworld_-project)
         - [8.8.1. Create the project's backlog](#881-create-the-projects-backlog)
         - [8.8.2. Create the project in GitLab](#882-create-the-project-in-gitlab)
@@ -1658,6 +1658,8 @@ module ConfigurationVars
         apk add python3 python3-dev py3-pip musl-dev libffi-dev libc-dev py3-cryptography make gcc libressl-dev
         ;;
       "Ubuntu-bionic")
+        apt update
+        apt upgrade -y
         apt install -y python3 python3-dev python3-pip make gcc
         ;;
       "CentOS 7")
@@ -1796,7 +1798,7 @@ os = box.split('/')[1]
 box = "nemonik/devops_#{os}"
 
 uninstall_plugins = %w( vagrant-cachier vagrant-alpine )
-required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize )
+required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize vagrant-reload )
 
 if (not os.downcase.include? 'alpine')
   required_plugins = required_plugins << "vagrant-vbguest"
@@ -3035,7 +3037,7 @@ Once, stood up your instance of PlantUML server will reachable at
 
 <http://192.168.0.203>
 
-#### 8.7.5.3. Optionally, add the *hands-on-DevOps* repository to the `toolchain`'s GitLab
+#### 8.7.5.3. Optionally, add the *hands-on-DevOps* repository to GitLab
 
 I'd encourage you to perform the following as GitLab will make use of the PlantUML server the class automation spins up to render the embedded UML diagrams in the class `readme.md`. The diagrams are especially helpful to visual learners.
 
@@ -3072,11 +3074,11 @@ On your host in the DevOps class project:
 - Your `Username` is `root` and your `Password` is `password`. 
 - The git command-line client will not display your password as you enter it. 
 
-You now have a clone of the project hosted in the GitLab running on the `toolchain` vagrant.  This way you can open the readme.md and follow along with rendered PlanUML diagrams.
+You now have a clone of the project hosted in the GitLab running on the Kubernetes cluster.  This way you can open the readme.md and follow along with rendered PlanUML diagrams.
 
 ## 8.8. Golang _helloworld_ project
 
-The prior `toolchain` and `development` vagrants are required to be up and running for the following sections.
+The Kubernetes cluster and `development` vagrants are required to be up and running for the following sections.
 
 In this next part, we will create a simple helloworld GoLang project to demonstrate Continuous Integration. GoLang lends itself well to DevOps and underlines almost every new tool you can think of related to DevOps and cloud (e.g., [golang / go](https://github.com/golang/go), [docker / docker-ce](https://github.com/docker/docker-ce), [kubernetes / kubernetes](https://github.com/kubernetes/kubernetes), [openshift / origin ](https://github.com/openshift/origin), [hashicorp / terraform](https://github.com/hashicorp/terraform), [coreos / etcd](https://github.com/coreos/etcd), [hashicorp / vault](https://github.com/hashicorp/vault), [hashicorp / packer](https://github.com/hashicorp/packer), [hashicorp / consul](https://github.com/hashicorp/consul), [gogits / gogs](https://github.com/gogits/gogs), [drone / drone](https://github.com/drone/drone).)
 
@@ -5795,7 +5797,7 @@ Successfully tagged nemonik/helloworld-web:latest
 
 What just happened?
 
-- The `FROM` line instructs Docker to retrieve the `nemonik/golang:1.13.7` from the private Docker registry running on our `toolchain` vagrant, which it did.  And then use this as the basis of your application's docker image.
+- The `FROM` line instructs Docker to retrieve the `nemonik/golang:1.13.7` from the private Docker registry running on our Kubernetes cluster, which it did.  And then use this as the basis of your application's docker image.
 - Then the rest of the commands in the `Dockerfile` are executed laying down layers on top of the `nemonik/golang:1.13.7` image thereby building a new docker image entitled `nemonik/helloworld-web` and tagging it `latests`.
 - `docker build` then places the image with the name `nemonik/helloworld-web` in the `Development`'s local Docker registry so that containers can be created off this image locally. 
 
@@ -8948,7 +8950,7 @@ Cloud-native computing deploys applications as microservices - packaging each in
 
 We can use our `helloworld-web` application with a few tweaks to create a microservice.
 
-Granted our tiny, insignificant microservice won't do do much, but we can get a peak at the possibilities as both the `toolchain` and `development` vagrants are in fact a Kubernetes (K8s) cluster.
+Granted our tiny, insignificant microservice won't do do much, but we can get a peak at the possibilities.
 
 So, let's experiment with our little "microservice".
 
@@ -9403,7 +9405,7 @@ And running
 kubectl --namespace=helloworld get pods -o wide
 ```
 
-May show you, at least in this case, that Pods are spread across the cluster and not just running on `toolchain` like so
+May show you, at least in this case, that Pods are spread across the cluster like so
 
 ```
 [vagrant@development helloworld-web]$ kubectl --namespace=helloworld get pods -o wide
