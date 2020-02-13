@@ -80,9 +80,9 @@ Its not about the tools.
 
 --
 
-![My Pillow Guy](./images/my_pillow_guy.png)
-
 <small>There are countless vendors out there, who want to sell you their crummy tool.</small>
+
+![My Pillow Guy](./images/my_pillow_guy.png)
 
 --
 
