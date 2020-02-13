@@ -56,7 +56,7 @@ Yeah, that's the formal definition.
 
 --
 
-In the opening sentences of _Security Engineering: : A Guide to Building Dependable Distributed Systems — Third Edition_, author Ross Anderson defines what a **security engineer** is
+In the opening sentences of _Security Engineering: A Guide to Building Dependable Distributed Systems — Third Edition_, author Ross Anderson defines what a **security engineer** is
 
 --
 
