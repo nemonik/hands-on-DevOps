@@ -10,12 +10,12 @@
 
 - name: is sonar-scanner installed?
   stat:
-    path: "/usr/local/sonar-scanner"
+    path: /usr/local/sonar-scanner
   register: sonar_scanner
   tags:
     - sonar-scanner 
    
-- name: install sonar-scanner cli, if not Alpine 3.10
+- name: install sonar-scanner cli
   block:
   - name: create /vagrant/cache/boxes if it doesn't exist
     shell: |

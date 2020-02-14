@@ -9,9 +9,9 @@
 # this file. If not, please email <mjwalsh@nemonik.com>
 
 
-- name: install docker, if Alpine
+- name: install docker, if Alpine 3.10
   block:
-  - name: install latest docker package
+  - name: install latest docker package, if Alpine 3.10
     become: yes
     apk:
       name: docker
@@ -21,13 +21,13 @@
     register: result
     until: result is succeeded
 
-  - name: configure cgroups in /etc/fstab
+  - name: configure cgroups in /etc/fstab, if Alpine 3.10
     become: yes
     lineinfile:
       path: /etc/fstab
       line: cgroup /sys/fs/cgroup cgroup defaults 0 0
 
-  - name: ensure /etc/cgconfig.conf exists
+  - name: ensure /etc/cgconfig.conf exists, if Alpine 3.10
     become: yes
     copy:
       dest: /etc/cgconfig.conf
@@ -44,7 +44,7 @@
         }
     register: etccgconfigconf
 
-  - name: configure default_kernel_opts in /etc/update-extlinux.conf
+  - name: configure default_kernel_opts in /etc/update-extlinux.conf, if Alpine 3.10
     become: yes
     lineinfile:
       path: /etc/update-extlinux.conf
@@ -52,10 +52,9 @@
       line: default_kernel_opts="quiet rootfstype=ext4 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory"
     register: etcupdateextlinux
 
-  - name: execute `update-extlinux`
+  - name: execute `update-extlinux`, if Alpine 3.10
     become: yes
     command: update-extlinux
     when: etcupdateextlinux.changed
   tags:
     - docker
-

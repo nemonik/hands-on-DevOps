@@ -166,6 +166,7 @@ Vagrant.configure("2") do |config|
   if Vagrant::Util::Platform.windows?
     config.vm.synced_folder '..', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
   else 
+    # this method will require the user to enter their username/password periodically....
     config.vm.synced_folder "..",  '/vagrant', type: 'nfs'
   end
 

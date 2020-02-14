@@ -123,7 +123,7 @@
     retries: "{{ default_retries }}"
     delay: "{{ default_delay }}"
 
-  - name: get personal_access_token to GitLab and change its application settings
+  - name: get personal_access_token to GitLab
     shell: |
       body_header=$(curl -s -c cookies.txt -i "http://{{ gitlab_host }}:{{ gitlab_port }}/users/sign_in" -s)
       csrf_token=$(echo $body_header | perl -ne 'print "$1\n" if /new_user.*?authenticity_token"[[:blank:]]value="(.+?)"/' | sed -n 1p)
@@ -132,15 +132,21 @@
       csrf_token=$(echo $body_header | perl -ne 'print "$1\n" if /authenticity_token"[[:blank:]]value="(.+?)"/' | sed -n 1p)
       body_header=$(curl -s -L -b cookies.txt "http://{{ gitlab_host }}:{{ gitlab_port }}/profile/personal_access_tokens" --data-urlencode "authenticity_token=${csrf_token}" --data 'personal_access_token[name]=golab-generated&personal_access_token[expires_at]=&personal_access_token[scopes][]=api')
       rm cookies.txt
-      gitlab_personal_access_token=$(echo $body_header | perl -ne 'print "$1\n" if /created-personal-access-token"[[:blank:]]value="(.+?)"/' | sed -n 1p)
-      curl -X PUT -H "PRIVATE-TOKEN:${gitlab_personal_access_token}" http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/application/settings?allow_local_requests_from_hooks_and_services=true&auto_devops_enabled=false&plantuml_enabled=true&plantuml_url=http://{{ plantuml_host }}:{{ plantuml_port }}&signup_enabled=false&send_user_confirmation_email=false
+      echo $body_header | perl -ne 'print "$1\n" if /created-personal-access-token"[[:blank:]]value="(.+?)"/' | sed -n 1p
     args:
       chdir: /home/{{ ansible_user_id }}
       executable: /bin/bash
-    register: result
+    register: gitlab_personal_access_token_result
 
-  - debug:
-      var: result
+  - name: set the gitlab_personal_access_token
+    set_fact: gitlab_personal_access_token={{ gitlab_personal_access_token_result.stdout }}
+
+  - name: set GitLab applicaton settings
+    uri:
+      url: http://{{ gitlab_host }}:{{ gitlab_port }}/api/v4/application/settings?allow_local_requests_from_hooks_and_services=true&auto_devops_enabled=false&plantuml_enabled=true&plantuml_url=http://{{ plantuml_host }}:{{ plantuml_port }}&signup_enabled=false&send_user_confirmation_email=false
+      method: PUT
+      headers:
+        PRIVATE-TOKEN: "{{ gitlab_personal_access_token }}"
   tags:
     - gitlab
 

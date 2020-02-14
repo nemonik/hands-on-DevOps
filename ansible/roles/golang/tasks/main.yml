@@ -56,7 +56,7 @@
 
 - name: download and install golang from source release for Alpine 3.10, if needed 
   block:
-  - name: create /vagrant/cache/{{ group_names[0] }} if it doesn't exist
+  - name: create /vagrant/cache/{{ group_names[0] }} if it doesn't exist, if Alpine 3.10
     shell: |
       if [[ "windows" == "{{ host_os }}" ]]; then
         sudo su
@@ -70,7 +70,7 @@
       path: /vagrant/cache/{{ group_names[0] }}/go{{ golang_version }}.tar.gz
     register: go_distributable
 
-  - name: cache https://github.com/golang/go/archive/go{{ golang_version }}.tar.gz
+  - name: cache https://github.com/golang/go/archive/go{{ golang_version }}.tar.gz, if Alpine 3.10
     shell: |
       if [[ "windows" == "{{ host_os }}" ]]; then
          sudo su
@@ -85,7 +85,7 @@
     until: result is succeeded
     when: go_distributable.stat.exists == False
 
-  - name: ensure build related packages are installed
+  - name: ensure build related packages are installed, if Alpine 3.10
     become: yes
     apk:
       name: ['bash', 'gcc', 'musl-dev', 'openssl', 'go']
@@ -94,7 +94,7 @@
     register: result
     until: result is succeeded
 
-  - name: building go from source, this will take some time...
+  - name: building go from source, this will take some time..., if Alpine 3.10 
     become: yes
     shell: |
       tar -C /usr/local -xvf /vagrant/cache/{{ group_names[0] }}/go{{ golang_version }}.tar.gz

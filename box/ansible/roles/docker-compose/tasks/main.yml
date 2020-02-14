@@ -8,7 +8,7 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: ensure docker-compose dependency packages are installed, if Alpine
+- name: ensure docker-compose dependency packages are installed, if Alpine 3.10
   become: yes
   apk:
     name: ['py-pip', 'python-dev', 'libffi-dev', 'openssl-dev', 'gcc', 'libc-dev', 'make']
@@ -35,17 +35,17 @@
   tags:
     - docker-compose
 
-- name: ensure /etc/profile PATH includes ~/.local/bin to be able to execute docker-compose
+- name: ensure /etc/profile PATH includes $HOME/.local/bin to be able to execute docker-compose
   become: yes
   block:
     - lineinfile:
         dest: /etc/profile
-        regexp: "^export PATH=~/.local/bin:$PATH"
+        regexp: "^export PATH=$HOME/.local/bin:$PATH"
         state: absent
 
     - lineinfile:
         dest: /etc/profile
-        line: "export PATH=~/.local/bin:$PATH"
+        line: "export PATH=$HOME/.local/bin:$PATH"
         insertafter: EOF
   tags:
     - docker-compose

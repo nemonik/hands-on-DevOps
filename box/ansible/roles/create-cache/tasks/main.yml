@@ -10,7 +10,7 @@
 
 # This roles exists to speed development and spinning up the class...
 
-- name: create /vagrantcache/boxes/{{ base_box }} if it doesn't exist
+- name: create /vagrantcache/boxes/{{ base_box }}, if it doesn't exist
   shell: |
     if [[ "windows" == "{{ host_os }}" ]]; then
       sudo su

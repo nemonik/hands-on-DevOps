@@ -22,7 +22,7 @@
     register: result
     until: result is succeeded
 
-  - name: install packages to allow apt to use a repository over HTTPS
+  - name: install packages to allow apt to use a repository over HTTPS, if Ubuntu-bionic
     become: yes
     apt:
       name: [ "apt-transport-https", "ca-certificates", "curl", "gnupg-agent", "software-properties-common"] 
@@ -33,7 +33,7 @@
     register: result
     until: result is succeeded
 
-  - name: add Docker’s official GPG key
+  - name: add Docker’s official GPG key, if Ubuntu-bionic
     become: yes
     apt_key:
       keyserver: https://download.docker.com/linux/ubuntu/gpg
@@ -44,13 +44,13 @@
     register: result
     until: result is succeeded
 
-  - name: add docker repository
+  - name: add docker repository, if Ubuntu-bionic
     become: yes
     apt_repository:
       repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
       state: present
 
-  - name: install latest version of Docker Engine - Community and containerd
+  - name: install latest version of Docker Engine - Community and containerd, if Ubuntu-bionic
     become: yes
     apt:
       name: [ "docker-ce", "docker-ce-cli", "containerd.io" ]

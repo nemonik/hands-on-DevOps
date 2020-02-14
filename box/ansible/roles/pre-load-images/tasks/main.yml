@@ -6,7 +6,7 @@
       - { repository: "sameersbn/redis", tag: "4.0.9-1" }
       - { repository: "sameersbn/postgresql", tag: "10-2" }
 
-- name: cache images
+- name: cache images {{ images }}
   block:
   - name: load {{ images }} from cache
     include_tasks: retrieve_container_image.yml
@@ -27,4 +27,4 @@
     include_tasks: cache_container_image.yml
     loop: "{{ images }}"
   tags:
-    - gitlab
+    - pre-load-images

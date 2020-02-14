@@ -114,7 +114,7 @@
 
 - name: determine k3s_flannel_iface of master
   block:
-  - name: set interface, if Alpine
+  - name: set interface, if Alpine 3.10
     set_fact:
       k3s_flannel_iface: 'eth1'
     when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
@@ -129,7 +129,7 @@
       k3s_flannel_iface: 'enp0s8'
     when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
 
-  - name: fail, if not Alpine or Ubuntu-bionic
+  - name: fail, if not Alpine or Ubuntu-bionic or CentOS 7
     fail:
       msg: "{{ ansible_distribution }} - {{ ansible_distribution_release }} is not supported."
     when: k3s_flannel_iface is not defined

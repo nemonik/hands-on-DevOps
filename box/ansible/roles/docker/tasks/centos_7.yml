@@ -11,17 +11,17 @@
 
 - name: ensure the latest version of Docker CE is installed, if CentOS 7
   block:
-  - name: uninstall old versions of docker
+  - name: uninstall old versions of docker, if CentOS 7
     become: yes
     yum:
       name: ['docker', 'docker-client', 'docker-client-latest', 'docker-common', 'docker-latest', 'docker-latest-logrotate', 'docker-logrotate', 'docker-selinux', 'docker-engine-selinux', 'docker-engine']
       state: absent
 
-  - name: ensure Docker CE repository is added
+  - name: ensure Docker CE repository is added, if CentOS 7
     become: yes
     command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
-  - name: ensure the latest version of Docker CE is installed
+  - name: ensure the latest version of Docker CE is installed, if CentOS 7
     become: yes
     yum:
       name: docker-ce

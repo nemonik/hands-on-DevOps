@@ -19,6 +19,7 @@ ansible/roles/httpd
 *.vdi
 *.box
 vagrant_private_key
+*.log
 
 # Cache
 cache

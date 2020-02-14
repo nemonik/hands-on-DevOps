@@ -78,17 +78,17 @@
   tags:
     - common
 
-- name: "ensure /etc/profile PATH includes ~/.local/bin"
+- name: "ensure /etc/profile PATH includes $HOME/.local/bin"
   become: yes
   block:
     - lineinfile:
         dest: /etc/profile
-        regexp: "^export PATH=~/.local/bin:$PATH"
+        regexp: "^export PATH=$HOME/.local/bin:$PATH"
         state: absent
 
     - lineinfile:
         dest: /etc/profile
-        line: "export PATH=~/.local/bin:$PATH"
+        line: "export PATH=$HOME/.local/bin:$PATH"
         insertafter: EOF
   tags:
     - comon
