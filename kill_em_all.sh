@@ -15,4 +15,5 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 vagrant destroy -f
-./box/remove_box.sh
+cd box
+./remove_box.sh
