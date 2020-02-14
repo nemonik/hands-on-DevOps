@@ -22,7 +22,7 @@
 - name: ensure development related packages are installed, if Alpine 3.10
   become: yes
   apk: 
-    name: ['util-linux', 'perl', 'sudo', 'tar', 'unzip', 'gzip', 'wget', 'lynx', 'nano', 'vim', 'emacs', 'bash-completion', 'git']
+    name: ['util-linux', 'perl', 'sudo', 'tar', 'unzip', 'gzip', 'wget', 'lynx', 'nano', 'vim', 'emacs', 'bash-completion', 'git', 'python-pip']
   retries: "{{ default_retries }}" 
   delay: "{{ default_delay }}"
   register: result

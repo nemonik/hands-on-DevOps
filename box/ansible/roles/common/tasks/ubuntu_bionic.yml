@@ -22,7 +22,7 @@
 - name: ensure development related packages are installed, if Ubuntu-bionic
   become: yes
   apt:
-    name: ['util-linux', 'perl', 'sudo', 'tar', 'unzip', 'gzip', 'wget', 'lynx', 'nano', 'vim', 'emacs', 'bash-completion', 'git']
+    name: ['util-linux', 'perl', 'sudo', 'tar', 'unzip', 'gzip', 'wget', 'lynx', 'nano', 'vim', 'emacs', 'bash-completion', 'git', 'python', 'python-pip']
   retries: "{{ default_retries }}"
   delay: "{{ default_delay }}"
   register: result
