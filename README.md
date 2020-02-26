@@ -1422,7 +1422,7 @@ module ConfigurationVars
 #    base_box_version: '1905.1',
 
 #    base_box: 'ubuntu/bionic64',
-#    base_box_version: '20200129.1.0',
+#    base_box_version: '20200225.0.0',
 
     base_box: 'nemonik/alpine310',
     base_box_version: '0',
@@ -1997,6 +1997,18 @@ The code in the Vagrantfile to accomplish this is the following lines:
   end
 ```
 
+**NOTE**
+
+- If you're host laptop or PC is using a version of Linux that Vagrant is unable configure `nfs` on, then you may have to comment out portions of this section in both `Vagrantfile` and `box/Vagrantfile`, so that the default `type` will be used like so
+
+  ```ruby
+  #  if Vagrant::Util::Platform.windows?
+  config.vm.synced_folder '.', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
+  #  else
+  #    config.vm.synced_folder ".",  '/vagrant', type: "nfs"
+  #  end
+  ``` 
+
 ##### 8.5.2.3.8. Build a Vagrant Box
 
 The master, worker nodes (if created) and development vagrant will need a base box. 
@@ -2426,6 +2438,15 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
 **NOTE**
 
 - If while bringing up vagrants based on `ubuntu/bionic64` you may get an immediate error about not being able to reach https://cloud-images.ubuntu.com/ signaling Ubuntu has updated the currently configured base image and in doing so has revoked (i.e., deprecated) the currently configured one. To resolve edit `configuration_vars.rb` and set `base_box_version` to the currently released version denoted [here](https://app.vagrantup.com/ubuntu/boxes/bionic64) and try running `vagrant up` again. Also, do not cut-and-paste the `v` as part of the version.
+- If you're host laptop or PC is using a version of Linux that Vagrant is unable configure `nfs` on, then you may have to comment portions of the section configuring the sync_folder in both `Vagrantfile` and `box/Vagrantfile`, so that the default `type` will be used like so
+
+  ```ruby
+  #  if Vagrant::Util::Platform.windows?
+  config.vm.synced_folder '.', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
+  #  else
+  #    config.vm.synced_folder ".",  '/vagrant', type: "nfs"
+  #  end
+  ```
 - It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you can comment out the roles that proceeded and re-run the automation by entering into the command-line at the root of the project
   ```bash
   vagrant provision
