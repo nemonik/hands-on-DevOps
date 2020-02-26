@@ -255,9 +255,7 @@ The point I'm after is everyone is in it to collectively deliver dependable soft
 
 ## 6.2. What DevOps is not
 
-DevOps is not entirely about tools.
-
-Or as I like to put it, "It's not about the tools."
+DevOps is not about the tools.
 
 DevOps will also not entirely stop all bugs or vulnerabilities from making it into production, but that's not the point.
 
@@ -269,7 +267,7 @@ DevOps will also not entirely stop all bugs or vulnerabilities from making it in
 
 The tools and an organization's tailored processes around them come __after__ performing these two efforts:
 
-1. To succeed at DevOps you must __combine software development and information technology operations in the systems development life cycle__ with __a focus on shorting its life cycle while delivering features, fixes, and updates frequently in close alignment with business objectives__. If the effort cannot combine both Dev and Ops with this focus the effort will most certainly fail.
+1. To succeed at DevOps you must __combine software development and information technology operations in the systems development life cycle__ with __a focus on collaboration across the life cycle to deliver features, fixes, and updates frequently in close alignment with business objectives__. If the effort cannot combine both Dev and Ops in collaboration with this focus the effort will most certainly fail.
  
 2. If your effort doesn't __grok (i.e, understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.  I say this because the culture is the largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
 

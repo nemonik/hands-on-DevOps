@@ -94,12 +94,11 @@ To succeed at DevOps you must
 
 --
 
-__combine software development and information technology operations in the systems development life cycle__ with __a focus on shorting its life cycle while delivering features, fixes, and updates frequently in close alignment with business objectives__. 
+To succeed at DevOps you must __combine software development and information technology operations in the systems development life cycle__ with __a focus on collaboration across the life cycle to deliver features, fixes, and updates frequently in close alignment with business objectives__.
 
 --
 
-If the effort cannot combine both Dev and Ops with this focus the effort will most certainly fail.
-
+If the effort cannot combine both Dev and Ops in collaboration with this focus the effort will most certainly fail.
 --
 
 If your effort doesn't 
@@ -724,8 +723,8 @@ This ends my deck
 
 ---
 
-Michael Joseph Walsh
-github.com/nemonik/hands-on-DevOps
+Michael Joseph Walsh 
+github.com/nemonik/hands-on-DevOps 
 mjwalsh@mitre.org / walsh@nemonik.com
 
 ---
