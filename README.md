@@ -2425,7 +2425,7 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
 
 **NOTE**
 
-- The default base box the `master`, `development` and if configured `worker` nodes will be based on is `ubuntu/bionic64` base.  If while bringing up vagrants based on `ubuntu/bionic64` box you may get an immediate error about not being able to reach https://cloud-images.ubuntu.com/ it is very likely Ubuntu has update their base image revoking (i.e., deprecating) the currently configured one. To resolve edit `configuration_vars.rb` and set `base_box_version` to the currently released version denoted [here](https://app.vagrantup.com/ubuntu/boxes/bionic64). Do not cut-and-paste the `v` as part of the version.
+- If while bringing up vagrants based on `ubuntu/bionic64` you may get an immediate error about not being able to reach https://cloud-images.ubuntu.com/ signaling Ubuntu has updated the currently configured base image and in doing so has revoked (i.e., deprecated) the currently configured one. To resolve edit `configuration_vars.rb` and set `base_box_version` to the currently released version denoted [here](https://app.vagrantup.com/ubuntu/boxes/bionic64) and try running `vagrant up` again. Also, do not cut-and-paste the `v` as part of the version.
 - It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you can comment out the roles that proceeded and re-run the automation by entering into the command-line at the root of the project
   ```bash
   vagrant provision
