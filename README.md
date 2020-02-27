@@ -947,9 +947,7 @@ This class uses Vagrant and Ansible IaC frameworks and the following sections wi
 
 ### 8.5.1. Hashicorp Packer
 
-This class uses Terraform, a command-line utility that can be used for many [use cases](https://www.terraform.io/intro/use-cases.html), but I primarily use to build EC2 and VirtualBox machine images.  In the case of VirtualBox to create Vagrant box.  In this class, if you select to use the `nemonik/alpine310` base box in the `ConfigurationVars` module defined in `configuration_vars.rb` file at the root of the project, then Terraform will be invoked to create the `nemonik/alpine310` box, and then this image will be used to create the `nemonik/devops_alpine310` box on which all the vagrants will be based.  If you select `ubuntu/bionic64` or `centos/7` these boxes will be retrieved from Hashicorp and then used to buld their respective boxes: `nemonik/devops_bionic64` and `nemonik/devops_7` on top of which the class' vagrants are built.
-
-Terrafrom 
+This class uses Packer, a command-line utility that can be used for many [use cases](https://www.terraform.io/intro/use-cases.html), but I primarily use to build EC2 and VirtualBox machine images.  In the case of VirtualBox to create Vagrant box.  In this class, if you select to use the `nemonik/alpine310` base box in the `ConfigurationVars` module defined in `configuration_vars.rb` file at the root of the project, then Terraform will be invoked to create the `nemonik/alpine310` box, and then this image will be used to create the `nemonik/devops_alpine310` box on which all the vagrants will be based.  If you select `ubuntu/bionic64` or `centos/7` these boxes will be retrieved from Hashicorp and then used to buld their respective boxes: `nemonik/devops_bionic64` and `nemonik/devops_7` on top of which the class' vagrants are built.
 
 #### 8.5.1.1. Packer document and source
 
