@@ -2706,7 +2706,9 @@ The 800 pound Gorilla in this market segment is JIRA Software. Some of my co-wor
 
 #### 8.7.1.1. Documentation, source, container image
 
-Taiga's documentation can be found at
+Taiga's documentation can be found at 
+
+<https://taigaio.github.io/taiga-doc/dist/>
 
 It's canonical source can be found at
 
