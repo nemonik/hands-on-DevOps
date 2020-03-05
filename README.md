@@ -259,8 +259,6 @@ The point I'm after is everyone is in it to collectively deliver dependable soft
 
 DevOps is not about the tools.
 
-DevOps will also not entirely stop all bugs or vulnerabilities from making it into production, but that's not the point.
-
 ![My Pillow Guy](./images/my_pillow_guy.png)
 
 <sub>There are countless vendors out there, who want to sell you their crummy tool.</sub>
@@ -509,7 +507,9 @@ Could be as simple as operations instructing users through training to not do so
 
 ### 6.20.6. Gaps in CICD
 
-Are surfaces through monitoring resulting in for example additional testing for the issue that triggered the necessity for the improvement.
+Are surfaces through monitoring resulting in for example additional testing for an issue discovered in prodcuction.
+
+Yep. News flash. DevOps will not entirely stop all bugs or vulnerabilities from making it into production, but this was never the point.
 
 ### 6.20.7. Eliminating waste
 
