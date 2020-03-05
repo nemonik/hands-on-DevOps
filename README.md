@@ -257,13 +257,11 @@ The point I'm after is everyone is in it to collectively deliver dependable soft
 
 ## 6.2. What DevOps is not
 
-DevOps is not about the tools.
+About the tools.
 
 ![My Pillow Guy](./images/my_pillow_guy.png)
 
 <sub>There are countless vendors out there, who want to sell you their crummy tool.</sub>
-
-The tools and an organization's tailored processes around them come __after__ performing the following.
 
 ## 6.3.1. To succeed at DevOps you must
 
