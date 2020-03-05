@@ -269,9 +269,9 @@ __Combine software development and information technology operations in the syst
 
 If the effort cannot combine both Dev and Ops in collaboration with this focus the effort will most certainly fail.
  
-## 6.3.2. If your effort doesn't __grok__
+## 6.3.2. If your effort doesn't
 
-(i.e, Understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.  
+__grok (i.e, Understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.  
 
 I say this because the culture is the largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
 
