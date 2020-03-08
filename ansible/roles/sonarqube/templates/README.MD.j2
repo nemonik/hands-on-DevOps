@@ -5,22 +5,15 @@ SonarQube, an open source platform for continuous inspection of code quality. Pe
 To spin up:
 
 ```
-docker-compose build
-docker-compose up
+kubectl apply -f sonarqube.yml
 ```
 
 Then access via
 
-[http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:9000](http://{{ hostvars[ansible_nodename].ansible_eth1.ipv4.address }}:9000)
+[http://{{ sonarqube_host }}:{{ sonarqube_port }}](http://{{ sonarqube_host }}:{{ sonarqube_port }})
 
-To stop:
-
-```
-docker-compose stop
-```
-
-To remove:
+To destory:
 
 ```
-docker-compose rm
+kubectl destroy -f sonarqube.yml
 ```

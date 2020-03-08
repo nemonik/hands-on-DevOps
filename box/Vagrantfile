@@ -1,14 +1,20 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$VERBOSE = nil
-
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
+
+$VERBOSE = nil
+
+# This class uses VirtualBox and therefor expects Windows HyperV to be disabled.
+if Vagrant::Util::Platform.windows? and Vagrant::Util::Platform.windows_hyperv_enabled?
+  puts "Windows HyperV is expected to be disabled."
+  exit(false)
+end
 
 # Vagrant will start at your current path and then move upward looking
 # for a Vagrant file.  The following will provide the path for the found
@@ -21,13 +27,48 @@ else
    vagrantfilePath = File.dirname(__FILE__)
 end
 
-require File.join(vagrantfilePath, '..', 'ansible_extra_vars.rb')
+# Used to hold all the configuration variable and convienance methods for accessing
+require File.join(vagrantfilePath, '..', 'configuration_vars.rb')
+
+# Colorize string printed to StandardOut
 require File.join(vagrantfilePath, '..', 'string.rb')
 
-# This class uses VirtualBox and therefor expect Windows HyperV to be disabled.
-if Vagrant::Util::Platform.windows? and Vagrant::Util::Platform.windows_hyperv_enabled?
-  puts "Windows HyperV is expected to be disabled."
-  exit(false)
+box = ConfigurationVars::VARS[:base_box]
+os = box.split('/')[1]
+box = "nemonik/devops_#{os}"
+
+uninstall_plugins = %w( vagrant-cachier vagrant-alpine )
+required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize vagrant-reload )
+
+if (not os.downcase.include? 'alpine')
+  required_plugins = required_plugins << "vagrant-vbguest"
+else
+  # as alpine is currently not supported by vagrant-vbguest
+  uninstall_plugins = uninstall_plugins << "vagrant-vbguest"
+end
+
+# Uninstall the following plugins
+plugin_uninstalled = false
+uninstall_plugins.each do |plugin|
+  if Vagrant.has_plugin?(plugin)
+    system "vagrant plugin uninstall #{plugin}"
+    plugin_uninstalled = true
+  end
+end
+
+# Require the following plugins
+plugin_installed = false
+required_plugins.each do |plugin|
+  unless Vagrant.has_plugin?(plugin)
+    system "vagrant plugin install #{plugin}"
+    plugin_installed = true
+  end
+end
+
+# if plugins were installed, restart
+if plugin_installed || plugin_uninstalled
+  puts "restarting"
+  exec "vagrant #{ARGV.join' '}"
 end
 
 Vagrant.configure("2") do |config|
@@ -49,54 +90,38 @@ Vagrant.configure("2") do |config|
   #     export no_proxy=
   #     ```
   if (ENV['http_proxy'] || ENV['https_proxy'])
-    if Vagrant.has_plugin?('vagrant-proxyconf')
-      config.proxy.http = ENV['http_proxy']
-      config.proxy.https = ENV['https_proxy']
-      config.proxy.ftp = ENV['ftp_proxy']
-      config.proxy.no_proxy = ENV['no_proxy']
-      config.proxy.enabled = { docker: false }
+    config.proxy.http = ENV['http_proxy']
+    config.proxy.https = ENV['https_proxy']
+    config.proxy.ftp = ENV['ftp_proxy']
+    config.proxy.no_proxy = ENV['no_proxy']
+    config.proxy.enabled = { docker: false }
+
+    if ( ARGV.include? 'up' ) || ( ARGV.include? 'provision' )
       puts "INFO: HTTP Proxy variables set.".green
       puts "INFO: http_proxy = #{ config.proxy.http }".green
       puts "INFO: https_proxy = #{ config.proxy.https }".green
       puts "INFO: ftp_proxy = #{ config.proxy.ftp }".green
       puts "INFO: no_proxy = #{ config.proxy.no_proxy }".green
-    else
-      raise "Missing vagrant-proxyconf plugin.  Install via: vagrant plugin install vagrant-proxyconf"
     end
   else
-    puts "INFO: No http_proxy or https_proxy environment variables are set.".green
+    if ( ARGV.include? 'up' ) || ( ARGV.include? 'provision' )
+      puts "INFO: No http_proxy or https_proxy environment variables are set.".green
+    end
+
     config.proxy.http = nil
     config.proxy.https = nil
     config.proxy.ftp = nil
     config.proxy.no_proxy = nil
     config.proxy.enabled = false
-
   end
-
-  require 'Resolv'
-
-  nameservers  = ""
-
-
-  puts "INFO: Docker is configured to us the folllowing DNS server(s):".green
-
-  for nameserver in Resolv::DNS::Config.default_config_hash()[:nameserver]
-    # ignore IP-6 addresses
-    unless nameserver.include? ":"
-      nameservers.concat("#{nameserver},")
-      puts "INFO: - #{nameserver}".green
-    end
-  end
-
-  nameservers = nameservers.chomp(',')
 
   # To add Enterprise CA Certificates to all vagrants
   #
-  # Depends on the install of the vagrant-ca-certificates plugin
+  # Depends on the install of the vagrant-certificates plugin
   #
   # To use:
   #
-  # 1.  Install `vagrant plugin install vagrant-ca-certificates`.
+  # 1.  Install `vagrant plugin install vagrant-certificates`.
   # 2.  Set environement variable for `CA_CERTIFICATES` containing a comma separated list of certificate URLs.
   #
   #     For example:
@@ -105,72 +130,147 @@ Vagrant.configure("2") do |config|
   #     export CA_CERTIFICATES=http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt,http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20NPE%20CA-3%281%29.crt
   #     ```
   #
-  #     The Root certificate *must* be denotes as the root certificat like so:
+  #     The Root certificate *must* be denoted as the root certificat like so:
   #
   #     http://employeeshare.mitre.org/m/mjwalsh/transfer/MITRE%20BA%20ROOT.crt
   #
 
   if ENV['CA_CERTIFICATES']
     # Because @williambailey's vagrant-ca-certificates has an issue  https://github.com/williambailey/vagrant-ca-certificates/issues/34 I am using @Toilal fork, vagrant-certificates
-    if Vagrant.has_plugin?('vagrant-certificates')
+    if ( ARGV.include? 'up' ) || ( ARGV.include? 'provision' )
       puts "INFO: CA Certificates set to #{ ENV['CA_CERTIFICATES'] }".green
-
-      config.certificates.enabled = true
-      config.certificates.certs = ENV['CA_CERTIFICATES'].split(',')
-    else
-      raise "Missing vagrant-certificates plugin.  Install via: vagrant plugin install vagrant-certificates"
     end
-  else
-    puts "INFO: No CA_CERTIFICATES environment variable set.".green
 
+    config.certificates.enabled = true
+    config.certificates.certs = ENV['CA_CERTIFICATES'].split(',')
+  else
+    if ( ARGV.include? 'up' ) || ( ARGV.include? 'provision' )
+      puts "INFO: No CA_CERTIFICATES environment variable set.".green
+    end
     config.certificates.certs = nil
     config.certificates.enabled = false
   end
 
-  if Vagrant.has_plugin?('vagrant-cachier')
-    # Configure cached packages to be shared between instances of the same base box.
-    # More info on http://fgrehm.viewdocs.io/vagrant-cachier/usage
-    config.cache.scope = :box
-  else
-    raise "Missing vagrant-cachier plugin.  Install via: vagrant plugin install vagrant-cachier"
-  end
-
-  if Vagrant::Util::Platform.windows? and !Vagrant.has_plugin?('vagrant-vbguest')
-    raise "Missing vagrant-vbguest plugin.  Install via: vagrant plugin install vagrant-vbguest"
-  end
+  ansible_extra_vars_string = ConfigurationVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs )
 
   # keep insecure private key, because we're creating a vagrant box
   config.ssh.insert_key = false
 
-  config.vm.box = "centos/7"
-  config.vm.box_version = '1905.1'
-  config.vm.synced_folder '..', '/vagrant', type: 'virtualbox'
+  config.vm.box = ConfigurationVars::VARS[:base_box]
+  config.vm.box_version = ConfigurationVars::VARS[:base_box_version]
 
-  ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs, nameservers )
+  if (not os.downcase.include? 'alpine') 
+    config.disksize.size = "60GB"
+  end
+
+  if Vagrant::Util::Platform.windows?
+    config.vm.synced_folder '..', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
+  else 
+    # this method will require the user to enter their username/password periodically....
+    config.vm.synced_folder "..",  '/vagrant', type: 'nfs'
+  end
+
+  config.vm.network "private_network", ip: "#{ConfigurationVars::VARS[:network_prefix]}.9"
+
+  config.vm.provider "virtualbox" do |virtualbox|
+    virtualbox.customize ['modifyvm', :id, '--audio', 'none']
+    virtualbox.customize ['modifyvm', :id, '--nic1', 'nat']
+    virtualbox.customize ['modifyvm', :id, '--cableconnected1', 'on']
+    virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  end
+
+  determine_os = ConfigurationVars::DETERMINE_OS_TEMPLATE
+
+  os_packages_from_cache = ConfigurationVars::OS_PACKAGES_FROM_CACHE_TEMPLATE
+  os_packages_from_cache = os_packages_from_cache.gsub! /TYPE/, 'boxes'
+
+  install_ansible_dependencies = ConfigurationVars::INSTALL_ANSIBLE_DEPENDENCIES_TEMPLATE
+
+  site_package_from_cache = ConfigurationVars::SITE_PACKAGES_FROM_CACHE_TEMPLATE
+  site_package_from_cache = site_package_from_cache.gsub! /TYPE/, 'boxes'
 
   # run as root
-  config.vm.provision "shell", inline: <<-SHELL
-    yum install -y epel-release 
-    yum install -y python-pip
-    pip install --upgrade pip
+  config.vm.provision "root_provisioning", type: :shell, inline: <<~SHELL
+    #!/usr/bin/env bash
+
+    #{determine_os}
+
+    #{os_packages_from_cache}
+
+    #{install_ansible_dependencies}
+
+    #{site_package_from_cache}
   SHELL
+
+  user_cached_content = ConfigurationVars::USER_CACHED_CONTENT_TEMPLATE
+  user_cached_content = user_cached_content.gsub! /TYPE/, 'boxes'
 
   # run as vagrant user
-  config.vm.provision "shell", privileged: false, inline: <<-SHELL
-    pip install --user ansible==#{AnsibleExtraVars::ANSIBLE_EXTRA_VARS[:ansible_version]} paramiko
+  config.vm.provision "user_provisioning_1", type: :shell, privileged: false, inline: <<~SHELL
+    #!/usr/bin/env bash
+
+    #{determine_os}
+
+    #{user_cached_content}
+
+    # install Ansible locally vice using Vagrant ansible_local provisioner   
+    #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user --upgrade pip setuptools 
+    #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user paramiko ansible==#{ConfigurationVars::VARS[:ansible_version]}
 
     # run playbook
+
+    echo "Running playbook 1..."
+
     cd /vagrant
-    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook box/ansible/box-playbook.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} -vvvv --connection=local --inventory hosts
+    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook box/ansible/box-playbook-1.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' -vvvv --connection=local --inventory hosts
   SHELL
 
-  # run as root
-  config.vm.provision "shell", inline: <<-SHELL
-    # clean up
-    yum clean all --verbose
+  config.vm.provision :reload
+
+  config.vm.provision "user_provisioning_2", type: :shell, privileged: false, inline: <<~SHELL
+    #!/usr/bin/env bash
+
+    # run playbook
+ 
+    echo "Running playbook 2..."
+
+    cd /vagrant
+    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook box/ansible/box-playbook-2.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' -vvvv --connection=local --inventory hosts
+  SHELL
+
+
+  # run as root to clean up
+  config.vm.provision "clean_up", type: :shell,inline: <<~SHELL
+    #!/usr/bin/env bash
+
+    box="#{ConfigurationVars::VARS[:base_box]}"
+
+    case $box in
+
+      nemonik/alpine310 | generic/alpine310)
+        rm -Rf /var/cache/apk/*
+        ;;
+
+      ubuntu/bionic64)
+        echo "do nothing..."
+        ;;
+
+      centos/7)
+        yum clean all
+        ;;
+
+      *)
+        echo -n "unkown base box"
+        exit -1
+        ;;
+    esac
+
+    rm -Rf /tmp/*
     dd if=/dev/zero of=/EMPTY bs=1M
     rm -f /EMPTY
     cat /dev/null > ~/.bash_history
     history -c
+    sync
   SHELL
 end

@@ -1,12 +1,13 @@
 galaxy_info:
-  author: Michael Joseph Walsh <mjwalsh@nemonik.com>
-  description: Installs docker
-  license: BSDv3
-  min_ansible_version: 2.0
+  author: Michael Joseph Walsh <walsh@nemonik.com>
+  description: Ansible role to configure Docker
+  license: 3-Clause BSD License
+  min_ansible_version: 2.4
   platforms:
-    - name: Centos
-      versions:
-         - 7
+  - name: Centos
+    versions:
+    - 7
   galaxy_tags:
-    - docker
-    - containers
+  - docker
+
+dependencies: []

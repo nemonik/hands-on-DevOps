@@ -1,0 +1,126 @@
+---
+# tasks file for create-cache
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+
+- name: create /vagrant/cache/{{ group_names[0] }} if it doesn't exist
+#  file:
+#    path: /vagrant/cache/{{ group_names[0] }}
+#    state: directory
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    mkdir -p /vagrant/cache/{{ group_names[0] }}
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache
+
+- name: cache /var/cache/apk contents
+  become: yes
+#  archive:
+#    path: /var/cache/apk
+#    dest: /vagrant/cache/{{ group_names[0] }}/apk.tar.gz
+#    format: gz
+#    force_archive: true
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /var/cache/
+    tar zcvf $tempfile apk
+    cp -f $tempfile /vagrant/cache/{{ group_names[0] }}/apk.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache
+
+- name: cache /usr/lib/python3.7/site-packages
+  become: yes
+#  archive:
+#    path: /usr/lib/python3.7/site-packages
+#    dest: /vagrant/cache/{{ group_names[0] }}/site-packages.tar.gz
+#    format: gz
+#    force_archive: true
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /usr/lib/python3.7/
+    tar zcvf $tempfile site-packages
+    cp -f $tempfile /vagrant/cache/{{ group_names[0] }}/site-packages.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache
+
+- name: cache /home/{{ ansible_user_id }}/.cache
+#  archive:
+#    path: /home/{{ ansible_user_id }}/.cache
+#    dest: /vagrant/cache/{{ group_names[0] }}/cache.tar.gz
+#    format: gz
+#    force_archive: true
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /home/{{ ansible_user_id }}/
+    tar zcvf $tempfile .cache
+    cp -f $tempfile /vagrant/cache/{{ group_names[0] }}/cache.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache
+
+- name: cache /home/{{ ansible_user_id }}/.local
+#  archive:
+#    path: /home/{{ ansible_user_id }}/.local
+#    dest: /vagrant/cache/{{ group_names[0] }}/local.tar.gz
+#    format: gz
+#    force_archive: true
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /home/{{ ansible_user_id }}/
+    tar zcvf $tempfile .local
+    cp -f $tempfile /vagrant/cache/{{ group_names[0] }}/local.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache
+
+- name: cache /home/{{ ansible_user_id }}/.gem
+#  archive:
+#    path: /home/{{ ansible_user_id }}/.gem
+#    dest: /vagrant/cache/{{ group_names[0] }}/gem.tar.gz
+#    format: gz
+#    force_archive: true
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /home/{{ ansible_user_id }}/
+    tar zcvf $tempfile .gem
+    cp -f $tempfile /vagrant/cache/{{ group_names[0] }}/gem.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache

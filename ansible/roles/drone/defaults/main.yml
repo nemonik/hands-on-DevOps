@@ -1,6 +1,6 @@
 ---
 # defaults file for drone
-drone_host: "{{ hostvars['toolchain']['ansible_host'] }}"
-drone_port: "8000"
-gitlab_host: "{{ hostvars['toolchain']['ansible_host'] }}"
-gitlab_port: "10080"
+drone_host: "{{ drone_host }}"
+drone_port: "{{ drone_port }}"
+gitlab_host: "{{ gitlab_host }}"
+gitlab_port: "{{ gitlab_port }}"

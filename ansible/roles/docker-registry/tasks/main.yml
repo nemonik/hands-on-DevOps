@@ -1,24 +1,16 @@
 ---
 # tasks file for docker-registry
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: pull registry docker image
-  docker_image:
-    name: registry:{{ registry_version }}
-    source: pull
-    timeout: "{{ docker_timeout }}"
-  retries: "{{ docker_retries }}"
-  delay: "{{ docker_delay }}"
-  register: result
-  until: result is succeeded  
-  tags:
-    - docker-registry
+- set_fact:
+    images:
+      - { repository: "registry", tag: "{{ registry_version }}" }
  
 - name: copy to docker-registry files to /home/{{ ansible_user_id }}/docker-registry
   copy:
@@ -29,12 +21,12 @@
 
 - name: template files into /home/{{ ansible_user_id }}/docker-registry
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: templates/{{ item }}.j2
+    dest: /home/{{ ansible_user_id }}/docker-registry/{{ item }}
   with_items:
-    - { src: "templates/README.MD.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/README.MD" }
-    - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/Dockerfile" }
-    - { src: "templates/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/docker-registry/dockerfile_build.sh" }
+    - "README.MD"
+    - "Dockerfile"
+    - "dockerfile_build.sh"
   tags:
     - docker-registry 
 
@@ -45,75 +37,67 @@
   tags:
     - docker-registry 
 
-- name: build nemonik/registry:{{ registry_version }} docker image 
-  docker_image:
-    name: nemonik/registry:{{ registry_version }}
-    source: build
-    build:
-      path: /home/{{ ansible_user_id }}/docker-registry
-      args:
-        http_proxy: "{{ http_proxy|default('') }}"
-        HTTP_PROXY: "{{ http_proxy|default('') }}"
-        https_proxy: "{{ https_proxy|default('') }}"
-        HTTPS_PROXY: "{{ https_proxy|default('') }}"
-        NO_PROXY: "{{ no_proxy|default('') }}"
-        no_proxy: "{{ no_proxy|default('') }}" 
-  retries: 60
-  delay: 5
-  register: result
-  until: result is succeeded
+- name: build private container registry
+  block:
+  - name: load {{ images }} from cache
+    include_tasks: retrieve_container_image.yml
+    loop: "{{ images }}"
+
+  - name: pull {{ images }} container images
+    docker_image:
+      name: "{{ item.repository }}:{{ item.tag }}"
+      source: pull
+      timeout: "{{ docker_timeout }}"
+    retries: "{{ docker_retries }}"
+    delay: "{{ docker_delay }}"
+    register: result
+    until: result is succeeded
+    loop: "{{ images }}"
+
+  - name: build nemonik/registry:{{ registry_version }} docker image 
+    docker_image:
+      name: nemonik/registry:{{ registry_version }}
+      source: build
+      build:
+        path: /home/{{ ansible_user_id }}/docker-registry
+        pull: yes
+        args:
+          http_proxy: "{{ http_proxy|default('') }}"
+          HTTP_PROXY: "{{ http_proxy|default('') }}"
+          https_proxy: "{{ https_proxy|default('') }}"
+          HTTPS_PROXY: "{{ https_proxy|default('') }}"
+          NO_PROXY: "{{ no_proxy|default('') }}"
+          no_proxy: "{{ no_proxy|default('') }}" 
+    retries: "{{ default_retries }}" 
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
   tags:
     - docker-registry 
 
-- name: fail if registry_deploy_via is not set to either 'docker-compose' or 'kubectl'
-  fail:
-    msg: registry_deploy_via must be set to either 'kubectl' or 'docker-compose'.
-  when: registry_deploy_via is undefined or ( registry_deploy_via != "docker-compose" and registry_deploy_via != "kubectl" )
-  tags:
-    - docker-registry
-
-- name: spin up Docker Registry via docker-compose
+- name: spin up container registry via Kubernetes
   block:
-  - name: "template docker-compose.yml into /home/{{ ansible_user_id }}/docker-registry"
-    template:
-      src: templates/docker-compose.yml.j2
-      dest: "/home/{{ ansible_user_id }}/docker-registry/docker-compose.yml"
-  
-  - name: spin up via docker-compose
-    docker_compose:
-      build: no
-      debug: yes
-      project_src: "/home/{{ ansible_user_id }}/docker-registry"
-  when: registry_deploy_via == "docker-compose"
-  tags:
-    - docker-registry
-
-- name: spin up Docker Registry via Kubernetes
-  block:
-  - name: template registry.yml into /home/{{ ansible_user_id }}/docker-registry
+  - name: template kubernetes resource files into /home/{{ ansible_user_id }}/docker-registry
     template:
       src: templates/registry.yml.j2
       dest: /home/{{ ansible_user_id }}/docker-registry/registry.yml
-
-  - name: is registry running?
-    shell: kubectl -n registry get pod | grep Running | wc -l
-    register: result
 
   - name: spin up via kubectl
     shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f registry.yml
     args:
       chdir: /home/{{ ansible_user_id }}/docker-registry
-    when: result.stdout == '0'
 
   - name: wait for registry to spin up
-    become: yes
-    shell: kubectl -n registry get pod | grep Running
-    retries: 60
-    delay: 5
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml -n registry get pod | grep Running
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
     register: retry_result
     until: retry_result is succeeded
-    when: result.stdout == '0'
+  tags:
+    - docker-registry
 
-  when: registry_deploy_via == "kubectl"
+- name: save {{ images }} to cache
+  include_tasks: cache_container_image.yml
+  loop: "{{ images }}"
   tags:
     - docker-registry

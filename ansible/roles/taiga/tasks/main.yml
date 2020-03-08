@@ -1,26 +1,19 @@
 ---
 # tasks file for taiga
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: pull python:3.6 docker image
-  docker_image:
-    name: python:3.6
-    source: pull
-    timeout: "{{ docker_timeout }}"
-  retries: "{{ docker_retries }}"
-  delay: "{{ docker_delay }}"
-  register: result
-  until: result is succeeded
-  tags:
-    - taiga
+- set_fact:
+    images:
+      - { repository: "python", tag: "3.6" }
+      - { repository: "sameersbn/postgresql", tag: "10-2" }
 
-- name: copy to taiga files to /home/{{ ansible_user_id }}/taiga
+- name: copy taiga files to /home/{{ ansible_user_id }}/taiga
   copy:
     src: files/
     dest: /home/{{ ansible_user_id }}/taiga
@@ -29,13 +22,13 @@
 
 - name: template files into /home/{{ ansible_user_id }}/taiga
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: templates/{{ item }}.j2
+    dest: /home/{{ ansible_user_id }}/taiga/{{ item }}
     force: yes 
   with_items:
-    - { src: "templates/README.MD.j2", dest: "/home/{{ ansible_user_id }}/taiga/README.MD" }
-    - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/taiga/Dockerfile" }
-    - { src: "templates/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/taiga/dockerfile_build.sh" }
+    - "README.MD"
+    - "Dockerfile"
+    - "dockerfile_build.sh"
   tags:
     - taiga
 
@@ -46,81 +39,84 @@
   tags:
     - taiga
 
-- name: build nemonik/taiga:{{ taiga_version }} docker image
-  docker_image:
-    path: /home/{{ ansible_user_id }}/taiga
-    name: nemonik/taiga:{{ taiga_version }}
-    build:
-      args:
-        http_proxy: "{{ http_proxy|default('') }}"
-        HTTP_PROXY: "{{ http_proxy|default('') }}"
-        https_proxy: "{{ https_proxy|default('') }}"
-        HTTPS_PROXY: "{{ https_proxy|default('') }}"
-        NO_PROXY: "{{ no_proxy|default('') }}"
-        no_proxy: "{{ no_proxy|default('') }}" 
-  retries: "{{ docker_retries }}"
-  delay: "{{ docker_delay }}"
-  register: result
-  until: result is succeeded
+- name: emplace images into private container registry
+  block:
+  - name: load {{ images }} from cache
+    include_tasks: retrieve_container_image.yml
+    loop: "{{ images }}"
+
+  - name: pull {{ images }} container images
+    docker_image:
+      name: "{{ item.repository }}:{{ item.tag }}"
+      source: pull
+      timeout: "{{ docker_timeout }}"
+    retries: "{{ docker_retries }}"
+    delay: "{{ docker_delay }}"
+    register: result
+    until: result is succeeded
+    loop: "{{ images }}"
+
+  - name: tag and push {{ images }} into private registry
+    shell: |
+      docker tag {{ item.repository }}:{{ item.tag }} {{ registry_host }}:{{ registry_port }}/{{ item.repository }}:{{ item.tag }}
+      docker push {{ registry_host }}:{{ registry_port }}/{{ item.repository }}:{{ item.tag }}
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+    loop: "{{ images }}"
+
+# TODO: need to modify so that it doesn't have to build if retrieved from cache...
+  - name: build nemonik/taiga:{{ taiga_version }} docker image
+    docker_image:
+      name: nemonik/taiga
+      repository: "{{ registry_host }}:{{ registry_port }}/nemonik/taiga"
+      tag: "{{ taiga_version }}"
+      source: build
+      build:
+        pull: yes
+        path: /home/{{ ansible_user_id }}/taiga
+        args:
+          http_proxy: "{{ http_proxy|default('') }}"
+          HTTP_PROXY: "{{ http_proxy|default('') }}"
+          https_proxy: "{{ https_proxy|default('') }}"
+          HTTPS_PROXY: "{{ https_proxy|default('') }}"
+          NO_PROXY: "{{ no_proxy|default('') }}"
+          no_proxy: "{{ no_proxy|default('') }}"
+      push: yes 
+    retries: "{{ docker_retries }}"
+    delay: "{{ docker_delay }}"
+    register: result
+    until: result is succeeded
+
+  - name: Append nemonik/taiga:latest to images fact
+    set_fact:
+      images: "{{ images + [{ 'repository': 'nemonik/taiga', 'tag': '{{ taiga_version }}' }]  }}"
   tags:
    - taiga
 
-- name: fail if taiga_deploy_via is not set to either 'docker-compose' or 'kubectl'
-  fail:
-    msg: taiga_deploy_via must be set to either 'kubectl' or 'docker-compose'.
-  when: taiga_deploy_via is undefined or ( taiga_deploy_via != "docker-compose" and taiga_deploy_via != "kubectl" )
-  tags:
-    - taiga
-
-- name: spin up taiga via docker-compose
-  block:
-  - name: template docker-compose.yml into /home/{{ ansible_user_id }}/taiga
-    template:
-      src: templates/docker-compose.yml.j2
-      dest: /home/{{ ansible_user_id }}/taiga/docker-compose.yml
-      force: yes
-
-  - name: ensure user 'default' with a 1001 uid and a primary group of 'ROOT' exists
-    become: yes
-    user:
-      name: default
-      uid: 1001
-      group: root
-
-  - name: ensure ./volumes exist
-    become: yes
-    file:
-      path: "{{ item.path }}"
-      state: directory
-      owner: "{{ item.owner }}"
-      group: "{{ item.group }}"
-    with_items:
-      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/" , owner: root, group: root }
-      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/static/admin", owner: default, group: root }
-      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/", owner: root, group: root }
-      - { path: "/home/{{ ansible_user_id }}/taiga/volumes/media/user", owner: default, group: root }
-
-  - name: spin up via docker-compose
-    docker_compose:
-      build: no
-      debug: yes
-      project_src: /home/{{ ansible_user_id }}/taiga
-  when: gitlab_deploy_via == "docker-compose"
-  tags:
-    - taiga
-
 - name: spin up Taiga via Kubernetes
   block:
-  - name: template taiga.yml into /home/{{ ansible_user_id }}/taiga
+  - name: template kubernetes resource files into /home/{{ ansible_user_id }}/taiga
     template:
       src: templates/taiga.yml.j2
       dest: /home/{{ ansible_user_id }}/taiga/taiga.yml
       force: yes
 
+  - name: is taiga running?
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml -n taiga get pod | grep Running | wc -l
+    register: running
+
   - name: spin up via kubectl
     shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f taiga.yml
     args:
       chdir: /home/{{ ansible_user_id }}/taiga
-  when: gitlab_deploy_via == "kubectl"
+    when: running.stdout == "0"
+  tags:
+    - taiga
+
+- name: save {{ images }} to cache
+  include_tasks: cache_container_image.yml
+  loop: "{{ images }}"
   tags:
     - taiga

@@ -1,21 +1,136 @@
 ---
 # tasks file for inspec
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: install the inspec rpm from a remote repo
+- name: install Ruby dependency, if Alpine 3.10
   become: yes
-  yum:
-    name: "https://packages.chef.io/files/stable/inspec/{{ inspec_version }}/el/7/inspec-{{ inspec_version }}-1.el7.x86_64.rpm"
-    state: present
-  retries: 60
-  delay: 5
+  apk:
+    name: ['ruby', 'ruby-dev', 'ruby-bundler', 'ruby-io-console', 'libffi-dev', 'build-base', 'libxml2-dev', 'libffi-dev', 'git', 'openssh-client']
+    state: latest
+  retries: "{{ default_retries }}" 
+  delay: "{{ default_delay }}"
   register: result
   until: result is succeeded
+  when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
+  tags:
+    - inspec
+
+# As per https://github.com/inspec/inspec
+- name: install Ruby dependency, if Ubuntu-bionic
+  become: yes
+  apt:
+#    name: ['ruby', 'ruby-dev', 'ruby-bundler', 'libxml2-dev', 'libffi-dev', 'git', 'openssh-client']
+    name: ['ruby', 'ruby-dev', 'gcc', 'g++', 'make']
+    state: latest
+  retries: "{{ default_retries }}"
+  delay: "{{ default_delay }}"
+  register: result
+  until: result is succeeded
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+  tags:
+    - inspec
+
+# As per https://github.com/inspec/inspec, but we also need to install a more recent Ruby as the CentOS package repo's Ruby is too old
+- name: install Ruby via RVM and inspec, if CentOS 7
+  block:  
+  - name: is inspec installed?
+    shell: which inspec | wc -l
+    register: inspec_installed
+
+  - name: install inspec, if not found
+    block:
+    - name: Install OS package dependencies for RVM
+      become: yes
+      yum:
+        name: ['curl', 'gpg', 'gcc', 'gcc-c++', 'make', 'patch', 'autoconf', 'automake', 'bison', 'libffi-devel', 'libtool', 'patch', 'readline-devel', 'sqlite-devel', 'zlib-devel', 'openssl-devel', 'gnupg']
+        state: latest
+      retries: "{{ default_retries }}"
+      delay: "{{ default_delay }}"
+      register: result
+      until: result is succeeded
+
+    - name: Install RVM, Ruby and inspec
+      shell: |
+        . /home/{{ ansible_user }}/.bash_profile
+        curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
+        curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import -
+        curl -sSL https://get.rvm.io | bash -s stable --ruby
+        cat <<EOT > ~/.gemrc
+        install: --no-document
+        update: --no-document
+        EOT
+        source /home/vagrant/.rvm/scripts/rvm
+        IFS=' ' read -a parts <<< $(rvm config-get | grep ruby_version)
+        export PATH="~/.gem/ruby/${parts[1]}/bin:$PATH"
+        gem install inspec inspec-bin
+      args:
+        executable: /bin/bash
+        warn: no
+    when: inspec_installed.stdout == '0'
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+  tags:
+    - inspec
+
+- name: install inspec, if Ubuntu-bionic 
+  block:
+  - name: install inspec, if Ubuntu-bionic
+    shell: |
+      gem install --user-install --no-rdoc --no-ri inspec inspec-bin
+    args:
+      executable: /bin/bash
+      warn: no
+    retries: "{{ default_retries }}" 
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+
+  - name: ensure /etc/profile PATH includes $HOME/.gem/ruby/2.5.0/bin, if Ubuntu-bionic
+    become: yes
+    block:
+    - lineinfile:
+        dest: /etc/profile
+        regexp: "^export PATH=$HOME/.gem/ruby/2.5.0/bin:$PATH"
+        state: absent
+
+    - lineinfile:
+        dest: /etc/profile
+        line: "export PATH=$HOME/.gem/ruby/2.5.0/bin:$PATH"
+        insertafter: EOF
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+  tags:
+    - inspec
+
+- name: install inspec, if Alpine 3.10
+  block:
+  - name: install inspec, if Alpine 3.10
+    shell: |
+      gem install --user-install --no-rdoc --no-ri inspec inspec-bin webrick
+    args:
+      executable: /bin/bash
+      warn: no
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+
+  - name: ensure /etc/profile PATH includes $HOME/.gem/ruby/2.5.0/bin, if Alpine 3.10
+    become: yes
+    block:
+    - lineinfile:
+        dest: /etc/profile
+        regexp: "^export PATH=$HOME/.gem/ruby/2.5.0/bin:$PATH"
+        state: absent
+
+    - lineinfile:
+        dest: /etc/profile
+        line: "export PATH=$HOME/.gem/ruby/2.5.0/bin:$PATH"
+        insertafter: EOF
+  when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
   tags:
     - inspec

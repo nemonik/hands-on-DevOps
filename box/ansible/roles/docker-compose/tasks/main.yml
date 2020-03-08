@@ -1,34 +1,51 @@
 ---
 # tasks file for docker-compose
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: "Ansible | List all known variables and facts"
-  debug:
-    var: hostvars[inventory_hostname]
-
-- name: install docker-compose
+- name: ensure docker-compose dependency packages are installed, if Alpine 3.10
   become: yes
-  shell: |
-    curl -L https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
-  args:
-    warn: no
-  retries: 60
-  delay: 5
+  apk:
+    name: ['py-pip', 'python-dev', 'libffi-dev', 'openssl-dev', 'gcc', 'libc-dev', 'make']
+  retries: "{{ default_retries }}"
+  delay: "{{ default_delay }}"
   register: result
   until: result is succeeded
+  when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
   tags:
     - docker-compose
 
+#
+# Using shell cuz of
+#
+# "WARNING: pip is being invoked by an old script wrapper. 
+# This will fail in a future version of pip. Please see https://github.com/pypa/pip/issues/5599
+# for advice on fixing the underlying issue. To avoid this problem you can invoke Python with 
+#'-m pip' instead of running pip directly.
+#
 - name: pip install docker-compose pip
+  shell: "{{ ansible_python_version }} -m pip install --user docker-compose=={{ docker_compose_pip_version }}"
+  args:
+    warn: no
+  tags:
+    - docker-compose
+
+- name: ensure /etc/profile PATH includes $HOME/.local/bin to be able to execute docker-compose
   become: yes
-  pip:
-    name: docker-compose=={{ docker_compose_pip_version }}
+  block:
+    - lineinfile:
+        dest: /etc/profile
+        regexp: "^export PATH=$HOME/.local/bin:$PATH"
+        state: absent
+
+    - lineinfile:
+        dest: /etc/profile
+        line: "export PATH=$HOME/.local/bin:$PATH"
+        insertafter: EOF
   tags:
     - docker-compose

@@ -1,18 +1,19 @@
 galaxy_info:
   author: Michael Joseph Walsh <mjwalsh@nemonik.com>
-  description: Installs golint
-  license: BSDv3
+  description: Ansible role to install golint
+  license: 3-Clause BSD License
   min_ansible_version: 2.0
   platforms:
-    - name: Centos
-      versions:
-         - 7
+  - name: Centos
+    versions:
+    - 7
   galaxy_tags:
-    - golang
-    - go
-    - linter
-    - linting
-    - golint
-    - development
-  dependencies:
-    - { role: golang }
+  - golang
+  - go
+  - linter
+  - linting
+  - golint
+  - development
+
+dependencies:
+- { role: golang }

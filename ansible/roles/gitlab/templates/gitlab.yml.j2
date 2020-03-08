@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: sameersbn/redis:4.0.9-1
+        image: {{ registry_host }}:{{ registry_port }}/sameersbn/redis:4.0.9-1
         imagePullPolicy: IfNotPresent
         ports:
         - name: redis
@@ -126,7 +126,7 @@ spec:
     spec:
       containers:
       - name: postgresql
-        image: sameersbn/postgresql:10-2
+        image: {{ registry_host }}:{{ registry_port }}/sameersbn/postgresql:10-2
         imagePullPolicy: IfNotPresent
         env:
         - name: DB_NAME
@@ -218,7 +218,7 @@ spec:
     spec:
       containers:
       - name: gitlab
-        image: nemonik/gitlab:{{ gitlab_version }}
+        image: {{ registry_host }}:{{ registry_port }}/nemonik/gitlab:{{ gitlab_version }}
         imagePullPolicy: IfNotPresent
         env:
         - name: GITLAB_HOST
@@ -256,7 +256,7 @@ spec:
         - name: REDIS_PORT
           value: "6379"
         - name: GITLAB_ROOT_PASSWORD
-          value: {{ gitlab_root_password }}
+          value: {{ vault_gitlab_root_password }}
 {% if http_proxy %}
         - name: http_proxy
           value: {{ http_proxy }}
@@ -287,20 +287,23 @@ spec:
           httpGet:
             path: /favicon.ico
             port: 80
-          initialDelaySeconds: 180
-          timeoutSeconds: 5
+          initialDelaySeconds: 300
+          periodSeconds: 10
+          timeoutSeconds: 15
           failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /favicon.ico
             port: 80
-          initialDelaySeconds: 5
-          timeoutSeconds: 1
-          failureThreshold: 12
+          initialDelaySeconds: 300
+          periodSeconds: 10
+          timeoutSeconds: 15
+          failureThreshold: 3
       volumes:
       - name: data
         persistentVolumeClaim:
           claimName: gitlab-local-path-pvc
+
 ---
 
 apiVersion: v1
@@ -319,4 +322,4 @@ spec:
   selector:
     app: gitlab
   type: LoadBalancer
-  externalTrafficPolicy: Cluster
+  loadBalancerIP: {{ gitlab_host }}

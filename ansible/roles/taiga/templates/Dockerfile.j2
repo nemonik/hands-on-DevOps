@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM {{ registry_host }}:{{ registry_port }}/python:3.6
 MAINTAINER Michael Joseph Walsh <github.com@nemonik.com>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -13,7 +13,7 @@ RUN useradd -g 0 taiga
 RUN  cd /tmp && \
         echo "APT::Acquire::Retries \"60\";" > /etc/apt/apt.conf.d/80-retries && \
         apt-get update && \
-        apt-get install -y --no-install-recommends  build-essential binutils-doc autoconf flex bison libjpeg-dev libfreetype6-dev zlib1g-dev libzmq3-dev libgdbm-dev libncurses5-dev automake libtool libffi-dev libssl-dev curl git tmux gettext && \
+        apt-get install -y --no-install-recommends build-essential binutils-doc autoconf flex bison libjpeg-dev libfreetype6-dev zlib1g-dev libzmq3-dev libgdbm-dev libncurses5-dev automake libtool libffi-dev libssl-dev curl git tmux gettext && \
         apt-get install -y --no-install-recommends nginx curl wget gettext nano postgresql-client locales && \
         curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
         apt-get install -y --no-install-recommends nodejs && \
@@ -55,17 +55,6 @@ RUN mkdir taiga-front-dist &&  \
         cd taiga-front-dist && \
         git checkout stable && \
         npm install
-
-#RUN mkdir taiga-back && \
-#        curl -sL https://codeload.github.com/taigaio/taiga-back/tar.gz/4.0.4 | tar xvz -C taiga-back --strip-components=1 && \
-#        cd taiga-back && \
-#        sed -i 's/git+git/git+https/g' requirements.txt && \
-#        pip install --no-cache-dir -r requirements.txt
-
-#RUN mkdir taiga-front-dist &&  \
-#        curl -sL https://codeload.github.com/taigaio/taiga-front-dist/tar.gz/4.0.4-stable | tar xvz -C taiga-front-dist --strip-components=1 && \
-#        cd taiga-front-dist && \
-#        npm install
 
 RUN mkdir -p /etc/nginx/conf.d
 

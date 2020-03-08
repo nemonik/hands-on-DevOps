@@ -1,0 +1,60 @@
+---
+# tasks file for docker alpine_310
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+
+- name: install docker, if Alpine 3.10
+  block:
+  - name: install latest docker package, if Alpine 3.10
+    become: yes
+    apk:
+      name: docker
+      state: latest
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+
+  - name: configure cgroups in /etc/fstab, if Alpine 3.10
+    become: yes
+    lineinfile:
+      path: /etc/fstab
+      line: cgroup /sys/fs/cgroup cgroup defaults 0 0
+
+  - name: ensure /etc/cgconfig.conf exists, if Alpine 3.10
+    become: yes
+    copy:
+      dest: /etc/cgconfig.conf
+      content: |
+        mount {
+        cpuacct = /cgroup/cpuacct;
+        memory = /cgroup/memory;
+        devices = /cgroup/devices;
+        freezer = /cgroup/freezer;
+        net_cls = /cgroup/net_cls;
+        blkio = /cgroup/blkio;
+        cpuset = /cgroup/cpuset;
+        cpu = /cgroup/cpu;
+        }
+    register: etccgconfigconf
+
+  - name: configure default_kernel_opts in /etc/update-extlinux.conf, if Alpine 3.10
+    become: yes
+    lineinfile:
+      path: /etc/update-extlinux.conf
+      regexp: '^default_kernel_opts='
+      line: default_kernel_opts="quiet rootfstype=ext4 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory"
+    register: etcupdateextlinux
+
+  - name: execute `update-extlinux`, if Alpine 3.10
+    become: yes
+    command: update-extlinux
+    when: etcupdateextlinux.changed
+  tags:
+    - docker

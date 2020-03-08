@@ -1,14 +1,20 @@
-# -*- mode: ruby -*-
+#-*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$VERBOSE = nil
-
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
+
+$VERBOSE = nil
+
+# This class uses VirtualBox and therefor expects Windows HyperV to be disabled.
+if Vagrant::Util::Platform.windows? and Vagrant::Util::Platform.windows_hyperv_enabled?
+  puts "Windows HyperV is expected to be disabled."
+  exit(false)
+end
 
 # Vagrant will start at your current path and then move upward looking
 # for a Vagrant file.  The following will provide the path for the found
@@ -21,13 +27,100 @@ else
    vagrantfilePath = File.dirname(__FILE__)
 end
 
-# Used to hold all the ANSIBLE_EXTRA_VARS and provide convienance methods
-require File.join(vagrantfilePath, 'ansible_extra_vars.rb')
+# Used to hold all the configuration variable and convienance methods for accessing
+require File.join(vagrantfilePath, 'configuration_vars.rb')
 
 # Colorize string printed to StandardOut
 require File.join(vagrantfilePath, '/string.rb')
 
-Vagrant.configure('2') do |config|
+box = ConfigurationVars::VARS[:base_box]
+os = box.split('/')[1]
+box = "nemonik/devops_#{os}"
+
+uninstall_plugins = %w( vagrant-cachier vagrant-alpine )
+required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize vagrant-reload )
+
+if (not os.downcase.include? 'alpine')
+  required_plugins = required_plugins << "vagrant-vbguest"
+else
+  # as alpine is currently not supported by vagrant-vbguest
+  uninstall_plugins = uninstall_plugins << "vagrant-vbguest"
+end
+
+# Uninstall the following plugins
+plugin_uninstalled = false
+uninstall_plugins.each do |plugin|
+  if Vagrant.has_plugin?(plugin)
+    system "vagrant plugin uninstall #{plugin}"
+    plugin_uninstalled = true
+  end
+end
+
+# Require the following plugins
+plugin_installed = false
+required_plugins.each do |plugin|
+  unless Vagrant.has_plugin?(plugin)
+    system "vagrant plugin install #{plugin}"
+    plugin_installed = true
+  end
+end
+
+# if plugins were installed, restart
+if plugin_installed || plugin_uninstalled
+  puts "restarting"
+  exec "vagrant #{ARGV.join' '}"
+end
+
+# Write hosts file for Ansible
+
+require 'erb'
+
+@worker_nodes = [*1..ConfigurationVars::VARS[:nodes]-1]
+
+template = <<-TEXT
+#
+# Do not change this file by hand as it is dynamically generated via the Vagrantfile.
+#
+development ansible_connection=local
+master ansible_connection=local
+<% for @node in @worker_nodes %>node<%= @node %> ansible_connection=local
+<% end %>
+[boxes]
+box
+
+[masters]
+master
+
+[workers]
+<% for @node in @worker_nodes %>node<%= @node %>
+<% end %>
+[developments]
+development
+TEXT
+
+open(File.join(vagrantfilePath, 'hosts'), 'w') do |f|
+ f.puts ERB.new(template).result
+end
+
+# Retrieve the contents of the insecure-private_key
+ssh_insecure_key = File.read("#{Dir.home}/.vagrant.d/insecure_private_key")
+
+# Provision vagrants
+ENV['LC_ALL']='en_US.UTF-8'
+ENV['LC_CTYPE']='en_US.UTF-8'
+Vagrant.configure("2") do |config|
+
+  if ( ARGV.include? 'up' )
+    if (`vagrant box list | grep #{box}`.empty? )
+      puts "INFO: Creating #{box} box...".green
+      require 'open3'
+      Open3.popen2e('bash', '-c', 'cd box && ./build_box.sh') do |stdin, stdout, stderr|
+        puts stdout.each { |line| puts line }
+      end
+    else
+      puts "INFO: Using existing #{box} box...".green
+    end
+  end
 
   # Set proxy settings for all vagrants
   #
@@ -47,44 +140,30 @@ Vagrant.configure('2') do |config|
   #     export no_proxy=
   #     ```
   if (ENV['http_proxy'] || ENV['https_proxy'])
-    if Vagrant.has_plugin?('vagrant-proxyconf')
-      config.proxy.http = ENV['http_proxy']
-      config.proxy.https = ENV['https_proxy']
-      config.proxy.ftp = ENV['ftp_proxy']
-      config.proxy.no_proxy = ENV['no_proxy']
-      config.proxy.enabled = { docker: false }
+    config.proxy.http = ENV['http_proxy']
+    config.proxy.https = ENV['https_proxy']
+    config.proxy.ftp = ENV['ftp_proxy']
+    config.proxy.no_proxy = ENV['no_proxy']
+    config.proxy.enabled = { docker: false }
+
+    if ( ARGV.include? 'up' ) || ( ARGV.include? 'provision' )
       puts "INFO: HTTP Proxy variables set.".green
       puts "INFO: http_proxy = #{ config.proxy.http }".green
       puts "INFO: https_proxy = #{ config.proxy.https }".green
       puts "INFO: ftp_proxy = #{ config.proxy.ftp }".green
       puts "INFO: no_proxy = #{ config.proxy.no_proxy }".green
-    else
-      raise "Missing vagrant-proxyconf plugin.  Install via: vagrant plugin install vagrant-proxyconf"
     end
   else
-    puts "INFO: No http_proxy or https_proxy environment variables are set.".green
+    if ( ARGV.include? 'up' ) || ( ARGV.include? 'provision' )
+      puts "INFO: No http_proxy or https_proxy environment variables are set.".green
+    end
+
     config.proxy.http = nil
     config.proxy.https = nil
     config.proxy.ftp = nil
     config.proxy.no_proxy = nil
     config.proxy.enabled = false
   end
-
-  require 'resolv'
-
-  nameservers  = ""
-
-  puts "INFO: Docker is configured to us the folllowing DNS server(s):".green
-
-  for nameserver in Resolv::DNS::Config.default_config_hash()[:nameserver]
-    # ignore IP-6 addresses
-    unless nameserver.include? ":"
-      nameservers.concat("#{nameserver},")
-      puts "INFO: - #{nameserver}".green
-    end
-  end
-
-  nameservers = nameservers.chomp(',')
 
   # To add Enterprise CA Certificates to all vagrants
   #
@@ -108,104 +187,173 @@ Vagrant.configure('2') do |config|
 
   if ENV['CA_CERTIFICATES']
     # Because @williambailey's vagrant-ca-certificates has an issue  https://github.com/williambailey/vagrant-ca-certificates/issues/34 I am using @Toilal fork, vagrant-certificates
-    if Vagrant.has_plugin?('vagrant-certificates')
+    if ( ARGV.include? 'up' ) || ( ARGV.include? 'provision' )
       puts "INFO: CA Certificates set to #{ ENV['CA_CERTIFICATES'] }".green
-
-      config.certificates.enabled = true
-      config.certificates.certs = ENV['CA_CERTIFICATES'].split(',')
-    else
-      raise "Missing vagrant-certificates plugin.  Install via: vagrant plugin install vagrant-certificates"
     end
+
+    config.certificates.enabled = true
+    config.certificates.certs = ENV['CA_CERTIFICATES'].split(',')
   else
-    puts "INFO: No CA_CERTIFICATES environment variable set.".green
+    if ( ARGV.include? 'up' ) || ( ARGV.include? 'provision' )
+      puts "INFO: No CA_CERTIFICATES environment variable set.".green
+    end
     config.certificates.certs = nil
     config.certificates.enabled = false
   end
 
-  if Vagrant.has_plugin?('vagrant-cachier')
-    # Configure cached packages to be shared between instances of the same base box.
-    # More info on http://fgrehm.viewdocs.io/vagrant-cachier/usage
-    config.cache.scope = :box
-  else
-    raise "Missing vagrant-cachier plugin.  Install via: vagrant plugin install vagrant-cachier"
-  end
-
-  if !Vagrant.has_plugin?('vagrant-disksize')
-    raise "Missing vagrant-disksize plugin.  Install via: vagrant plugin install vagrant-disksize"
-  end
-
-  if Vagrant::Util::Platform.windows? and !Vagrant.has_plugin?('vagrant-vbguest')
-    raise "Missing vagrant-vbguest plugin.  Install via: vagrant plugin install vagrant-vbguest"
-  end
-
-  if ( ARGV.include? 'up' ) 
-    if (`vagrant box list | grep nemonik/devops`.empty? )
-      puts "INFO: Creating nemonik/devops box...".green
-      require 'open3'
-      Open3.popen2e('bash', '-c', 'cd box && ./build_box.sh') do |stdin, stdout, stderr|
-        puts stdout.each { |line| puts line }
-      end
-    else
-      puts "INFO: Using existing nemonik/devops box...".green
-    end
-  end
+  vars_string = ConfigurationVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs)
 
   # use the default insecure key
   config.ssh.insert_key = false
+  config.ssh.private_key_path = "#{Dir.home}/.vagrant.d/insecure_private_key"
 
-  ## Provision the toolchain vagrant
-  config.vm.define 'toolchain' do |toolchain|
-    toolchain.vm.box = 'nemonik/devops'
-    toolchain.vm.network :private_network, ip: '192.168.0.11'
-    toolchain.vm.hostname = 'toolchain'
-    toolchain.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=664"]
-    toolchain.vm.provider :virtualbox do |virtualbox|
-      virtualbox.name = 'DevOps Class - toolchain'
-      virtualbox.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 10]
-      virtualbox.memory = 8192 #6144 #4096
-      virtualbox.cpus = 8 #4
-      virtualbox.gui = false
-    end
+  # debug ssh
+#  config.ssh.extra_args = "-vvv"
 
-    ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs, nameservers )
+  config.vm.box = box
+  config.vm.box_version = 0
 
-    toolchain.vm.provision "shell", privileged: false, reset: true, inline: <<-SHELL
-      echo Installing the tools...
-      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -e 'ansible_python_interpreter=/usr/bin/python' --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-playbook.yml"
-      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -e 'ansible_python_interpreter=/usr/bin/python' --limit="toolchains" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/toolchain-playbook.yml
-    SHELL
-
+  if Vagrant::Util::Platform.windows?
+    config.vm.synced_folder '.', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
+  else
+    config.vm.synced_folder ".",  '/vagrant', type: "nfs"
   end
 
-  ## Provision development vagrant
-  config.vm.define "development" do |development|
-    development.vm.box = 'nemonik/devops'
-    development.vm.network :private_network, ip: '192.168.0.10'
-    development.vm.hostname = 'development'
-    development.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=664"]
-    development.vm.provider :virtualbox do |virtualbox|
-      virtualbox.name = 'DevOps Class - development'
-      virtualbox.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 10]
-      virtualbox.memory = 2048
-      virtualbox.cpus = 2
-      virtualbox.gui = false
+  config.timezone.value = :host
+
+  # shell scripting to copy the private key into the vagrant
+  install_secure_key = <<-SHELL
+    echo Copy insecure key to /home/vagrant/.ssh/id_rsa...
+    rm -Rf /home/vagrant/.ssh/id_rsa
+    echo "#{ssh_insecure_key}" > /home/vagrant/.ssh/id_rsa
+    chown vagrant /home/vagrant/.ssh/id_rsa
+    chmod 400 /home/vagrant/.ssh/id_rsa
+  SHELL
+
+  # shell scripting to install root user cached content
+  root_cached_template = ConfigurationVars::DETERMINE_OS_TEMPLATE + ConfigurationVars::OS_PACKAGES_FROM_CACHE_TEMPLATE + ConfigurationVars::SITE_PACKAGES_FROM_CACHE_TEMPLATE
+
+  # shell scripting to install user cached content
+  user_cached_template = ConfigurationVars::USER_CACHED_CONTENT_TEMPLATE
+
+  (0..ConfigurationVars::VARS[:nodes]-1).each do |node|
+
+    if (node == 0) then
+      hostname = 'master'
+      masters_root_cached = root_cached_template.gsub! /TYPE/, 'masters'
+      masters_user_cached = user_cached_template.gsub! /TYPE/, 'masters'
+    else
+      hostname = "node#{node}"
+      workers_root_cached = root_cached_template.gsub! /TYPE/, 'workers'
+      workers_user_cached = user_cached_template.gsub! /TYPE/, 'workers'
     end
 
-    ansible_extra_vars_string = AnsibleExtraVars::as_string( config.proxy.http, config.proxy.https, config.proxy.ftp, config.proxy.no_proxy, config.certificates.certs, nameservers )
+    config.vm.define hostname do |vagrant|
+      vagrant.vm.network 'private_network', ip: "#{ ConfigurationVars::VARS[:network_prefix] }.#{10 + node}"
+      vagrant.vm.hostname = hostname
 
-    ssh_insecure_key = File.read("#{Dir.home}/.vagrant.d/insecure_private_key")
+      vagrant.vm.provider :virtualbox do |virtualbox|
+        virtualbox.name = "Hands-on DevOps class - #{os} - #{hostname}"
+        virtualbox.gui = false
 
-    development.vm.provision "shell", privileged: false, reset: true, inline: <<-SHELL
-      echo Copy insecure key to /home/vagrant/.ssh/id_rsa...
-      rm -Rf /home/vagrant/.ssh/id_rsa
-      echo "#{ssh_insecure_key}" > /home/vagrant/.ssh/id_rsa
-      chown vagrant /home/vagrant/.ssh/id_rsa
-      chmod 400 /home/vagrant/.ssh/id_rsa
+        # disable audio
+        virtualbox.customize ['modifyvm', :id, '--audio', 'none']
 
-      echo Configuring...
-      echo "cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook --limit="developments" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/development-playbook.yml"
-      cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook --limit="developments" --inventory-file=hosts --extra-vars=#{ansible_extra_vars_string} -vvvv --vault-password-file=/vagrant/vault_pass ansible/development-playbook.yml
+        virtualbox.customize ['modifyvm', :id, '--nic1', 'nat']
+        virtualbox.customize ['modifyvm', :id, '--cableconnected1', 'on']
+        virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-interval", 10000 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-min-adjust", 100 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-on-restore", 1 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-start", 1 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
+
+        if (node == 0) then
+          virtualbox.memory = 8192 #8192 #6144 #4096
+          virtualbox.cpus = 8 #8 #4
+        else
+          virtualbox.memory = 2048
+          virtualbox.cpus = 2
+        end
+      end
+
+      # Configure via shell and Ansible
+
+      if (node == 0) then # the master node
+
+        # install root user cached content
+        vagrant.vm.provision 'root_cached_content', type: :shell, privileged: true, inline: "#{masters_root_cached}"
+
+        # install user cached content
+        vagrant.vm.provision 'user_cached_content', type: :shell, privileged: false, inline: "#{masters_user_cached}"
+
+        vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
+          echo Configuring #{hostname} via Ansible...
+          cd /vagrant
+          PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="masters" --inventory-file=hosts ansible/master-playbook.yml
+        SHELL
+      else # worker nodes
+        # install root user cached content
+        vagrant.vm.provision 'root_cached_content', type: :shell, privileged: true, inline: "#{workers_root_cached}"
+
+        # install user cached content
+        vagrant.vm.provision 'user_cached_content', type: :shell, privileged: false, inline: "#{workers_user_cached}"
+
+        vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
+          echo Configuring k3s worker node...
+
+          #{install_secure_key}
+
+          cd /vagrant
+          PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="workers" --inventory-file=hosts ansible/worker-playbook.yml
+        SHELL
+      end
+    end
+  end
+
+  config.vm.define 'development' do |vagrant|
+    vagrant.vm.network 'private_network', ip: "#{ ConfigurationVars::VARS[:network_prefix] }.9"
+    vagrant.vm.hostname = 'development'
+
+    vagrant.vm.provider :virtualbox do |virtualbox|
+      virtualbox.name = "Hands-on DevOps class - #{os} - #{vagrant.vm.hostname}"
+      virtualbox.gui = false
+
+      virtualbox.customize ['modifyvm', :id, '--audio', 'none']
+      virtualbox.customize ['modifyvm', :id, '--nic1', 'nat']
+      virtualbox.customize ['modifyvm', :id, '--cableconnected1', 'on']
+      virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+
+      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-interval", 10000 ]
+      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-min-adjust", 100 ]
+      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-on-restore", 1 ]
+      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-start", 1 ]
+      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
+
+      virtualbox.memory = 2048
+      virtualbox.cpus = 2
+    end
+
+    developments_root_cached = root_cached_template.gsub! /TYPE/, 'developments'
+    developments_user_cached = user_cached_template.gsub! /TYPE/, 'developments'
+
+    # install root user cached content
+    vagrant.vm.provision 'root_cached_content', type: :shell, privileged: true, inline: "#{developments_root_cached}"
+
+    # install user cached content
+    vagrant.vm.provision 'user_cached_content', type: :shell,  privileged: false, inline: "#{developments_user_cached}"
+
+    vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
+      echo Configuring development node...
+
+      #{install_secure_key}
+ 
+      echo Execute ansible-playbook...
+      cd /vagrant
+      PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
     SHELL
-
   end
 end

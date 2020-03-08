@@ -1,0 +1,58 @@
+---
+# tasks file for retrieve_container_image
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: create /vagrant/cache/images, if it doesn't exist
+  file:
+    path: /vagrant/cache/images
+    state: directory
+
+- name: load {{ item }} container image from cache
+  shell: |
+    image="{{ item.repository }}"
+
+    if [ ! -z "{{ item.tag }}" ]; then
+      image="${image}:{{ item.tag }}"
+    fi
+
+    filter="{{ "{{" }}.Repository{{ "}}:{{" }}.Tag{{ "}}" }}"
+
+    image_in_docker_storage="$(docker image ls ${image} --format "${filter}")"
+
+    if [ -z "${image_in_docker_storage}" ]; then
+
+      IFS=':' read -r -a parts <<< "${image}"
+
+      repository="${parts[0]}"
+      tag="${parts[1]}"
+
+      archive_name=${repository/\//%2F}
+
+      if [ ! -z "${tag}" ]; then
+        archive_name="${archive_name}%3A${tag}"
+      else 
+        archive_name="${archive_name}*"
+      fi
+
+      archive_in_cache="$(ls /vagrant/cache/images/${archive_name}.tar)"
+
+      if [ "${archive_in_cache}" != "" ]; then
+        image_in_cache="$(basename ${archive_in_cache} .tar)"
+        image_in_cache=${image_in_cache/\%2F/\/}
+        image_in_cache=${image_in_cache/\%3A/:}
+
+        docker load --input /vagrant/cache/images/${archive_name}.tar
+      else
+        echo "${image} is not cached."
+      fi
+    else
+      echo "${image_in_docker_storage} exists in Docker storage already."
+    fi 
+  args:
+    executable: /bin/bash

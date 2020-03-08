@@ -1,30 +1,16 @@
-controller  ansible_connection=local ansible_python_interpreter=/usr/bin/python2
-development ansible_connection=local ansible_python_interpreter=/usr/bin/python2
-toolchain   ansible_connection=local ansible_python_interpreter=/usr/bin/python2
+#
+# Do not change this file by hand as it is dynamically generated via the Vagrantfile.
+#
+development ansible_connection=local
+master ansible_connection=local
 
 [boxes]
 box
 
-[boxes:vars]
-sonarqube_host=192.168.0.11
+[masters]
+master
 
-[nodes]
-development ansible_host=192.168.0.10
-toolchain ansible_host=192.168.0.11
-
-[nodes:vars]
-ansible_python_interpreter=/usr/bin/python2
+[workers]
 
 [developments]
 development
-
-[developments:vars]
-ansible_host=192.168.0.10 
-ansible_python_interpreter=/usr/bin/python2
-
-[toolchains]
-toolchain 
-
-[toolchains:vars]
-ansible_host=192.168.0.11 
-ansible_python_interpreter=/usr/bin/python2

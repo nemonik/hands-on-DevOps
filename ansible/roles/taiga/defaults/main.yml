@@ -1,4 +1,4 @@
 ---
 # defaults file for taiga
-taiga_host: "{{ hostvars['toolchain']['ansible_host'] }}"
-taiga_port: "8080"
+taiga_host: "{{ taiga_host }}"
+taiga_port: "{{ taiga_port }}"

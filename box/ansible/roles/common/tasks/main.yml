@@ -1,105 +1,97 @@
 ---
 # tasks file for common
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: upgrade all packages
-  become: yes
-  yum:
-    name: "*"
-    exclude: docker-ce
-    state: latest
-  retries: 60
-  delay: 5
-  register: result
-  until: result is succeeded
+- name: fail if OS is not Ubuntu-bionic, Alpine 3.10 or CentOS 7
+  fail:
+    msg: "{{ ansible_distribution }} - {{ ansible_distribution_release }} is not Ubuntu-bionic or Alpine"
+  when: ( ansible_distribution != 'Alpine' and not '3.10' in ansible_distribution_version) and ( ansible_distribution != 'Ubuntu' and ansible_distribution_release != 'bionic' ) and (ansible_distribution != 'CentOS' and ansible_distribution_major_version != '7')
+  tags: common
+
+- name: include centos_7.yml, when CentOS 7
+  include: centos_7.yml
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+  tags: common
+
+- name: include ubunutu_bionic.yml, when Ubuntu-bionic
+  include: ubuntu_bionic.yml
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+  tags: common
+
+- name: include alpine_310.yml, when Alpine 3.10
+  include: alpine_310.yml
+  when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
+  tags: common
+
+# https://docs.sonarqube.org/latest/requirements/requirements/
+- name: configure vm memory, file_max, file descriptors and threads
+  block:
+  - name: ensure vm.max_map_count=262144 is configured in /etc/sysctl.conf 
+    become: yes
+    lineinfile:
+      dest: /etc/sysctl.conf
+      state: present
+      regexp: "^vm.max_map_count="
+      line: "vm.max_map_count=262144"
+
+  - name: ensure fs.file-max=65536 is configured in /etc/sysctl.conf
+    become: yes
+    lineinfile:
+      dest: /etc/sysctl.conf
+      state: present
+      regexp: "^fs.file-max="
+      line: "fs.file-max=65536"
+
+  - name: Ensure /etc/security exists 
+    become: yes
+    file:
+      path: /etc/security
+      state: directory
+
+  - name: Ensure /etc/security/limits.conf exists
+    become: yes
+    file:
+      path: /etc/security/limits.conf
+      state: touch
+
+  - name: ensure root can open at least 65536 file descriptors by configuring in /etc/security/limits.conf
+    become: yes
+    lineinfile:
+      dest: /etc/security/limits.conf
+      state: present
+      regexp: "^root   -   nofile   65536"
+      line: "root   -   nofile   65536"
+
+  - name: ensure root can open root can open at least 4096 threads by configuring in /etc/security/limits.conf
+    become: yes
+    lineinfile:
+      dest: /etc/security/limits.conf
+      state: present
+      regexp: "^root   -   nproc    4096"
+      line: "root   -   nproc    4096"
   tags:
     - common
 
-- name: install epel-release
-  become: yes
-  yum: 
-    name: epel-release
-    state: latest 
-  retries: 60
-  delay: 5
-  register: result
-  until: result is succeeded
-  tags:
-    - common
-
-- name: ensure an up-to-date git is installed
+- name: "ensure /etc/profile PATH includes $HOME/.local/bin"
   become: yes
   block:
-  - name: remove present version
-    yum:
-      name: git
-      state: absent
+    - lineinfile:
+        dest: /etc/profile
+        regexp: "^export PATH=$HOME/.local/bin:$PATH"
+        state: absent
 
-  - name: ensure iuscommunity.org repo is installed.
-    yum:
-      name: https://centos7.iuscommunity.org/ius-release.rpm
-      disable_gpg_check: yes
-      state: present
-    retries: 60
-    delay: 5
-    register: result
-    until: result is succeeded
-
-  - name: ensure git2u is installed
-    yum:
-      name: git2u
-      state: latest
-    retries: 60
-    delay: 5
-    register: result
-    until: result is succeeded
+    - lineinfile:
+        dest: /etc/profile
+        line: "export PATH=$HOME/.local/bin:$PATH"
+        insertafter: EOF
   tags:
-    - common
-
-- name: ensure development related packages are installed
-  become: yes
-  yum: 
-    name: 
-      - sudo
-      - unzip
-      - wget
-      - lynx
-      - nano
-      - vim
-      - emacs
-      - bind-utils
-      - bash-completion 
-      - bash-completion-extras
-  retries: 60
-  delay: 5
-  register: result
-  until: result is succeeded
-  tags:
-    - common
-
-#- name: ensure kompose is installed
-#  block:
-#  - name: is kompose installed?
-#    stat: 
-#      path: /usr/local/bin/kompose
-#    register: kompose
-#
-#  - name: ensure kompose is installed, if not
-#    become: yes
-#    get_url:
-#      url: "https://github.com/kubernetes/kompose/releases/download/v{{ kompose_version }}/kompose-linux-amd64"
-#      dest: /usr/local/bin/kompose
-#      mode: 755
-#    when: kompose.stat.exists == false
-#  tags:
-#    - common
-#     - kompose
+    - comon
 
 - name: ensure we have a 'wheel' group
   group:
@@ -120,27 +112,12 @@
   tags:
     - common
 
-- name: ensure {{ ansible_user_id  }} is added to wheel group
+- name: ensure {{ ansible_user_id }} is added to wheel group
   become: yes
   user: 
-    name: "{{ ansible_user_id  }}"
+    name: "{{ ansible_user_id }}"
     groups: wheel 
     append: yes 
     state: present 
   tags:
     - common
-
-- name: ensure /usr/local/bin is included in everyone's PATH env
-  become: yes
-  copy:
-    dest: /etc/profile.d/usr_local_bin.sh
-    content: |
-      pathmunge /usr/local/bin
-    mode: '0644' 
-   
-- name: ensure sudo can run /usr/local/bin files
-  become: yes  
-  lineinfile:
-   path: /etc/sudoers
-   regexp: '^Defaults    secure_path ='
-   line: Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin

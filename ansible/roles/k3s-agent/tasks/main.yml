@@ -1,47 +1,95 @@
 ---
 # tasks file for k3s-agent
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: ensure /home/{{ ansible_user_id }}/k3s exists
-  file:
-    path: /home/{{ ansible_user_id }}/k3s
-    state: directory
-  tags:
-    - k3s-agent
-
-- name: populate service facts
-  service_facts:
+- name: get k3s-agent service status
+  become: yes
+  shell: |
+    var=$(rc-status -s | grep "k3s-agent\s*\[\s*started.*");
+    [[ "$(echo "$var")" != '' ]] && echo true || echo false
+  register: k3s_service
   tags:
     - k3s-agent
 
 - debug:
-    msg: K3s installed!
-  when: 
-    "'k3s' in services"
+    var: k3s_service
+  tags:
+    - k3s-agent
+
+- name: determine k3s_flannel_iface of master
+  block:
+  - name: set interface, if Alpine
+    set_fact:
+      k3s_flannel_iface: 'eth1'
+    when: ( ansible_distribution != 'Alpine' and not '3.10' in ansible_distribution_version) or ( ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7' )
+
+  - name: set interface, if Ubuntu-bionic
+    set_fact:
+      k3s_flannel_iface: 'enp0s8'
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+
+  - name: fail, if not Alpine or Ubuntu-bionic
+    fail:
+      msg: "{{ ansible_distribution }} - {{ ansible_distribution_release }} is not supported."
+    when: k3s_flannel_iface is not defined
   tags:
     - k3s-agent
 
 - name: install and spin up k3s agent, if needed
   block:
-  - name: emplace install_k3s script
+  - set_fact:
+      images:
+        - { repository: "metallb/speaker", tag: "" }
+        - { repository: "rancher/pause", tag: "" }
+
+  - name: retrieve container images from cache
+    include_tasks: retrieve_container_image.yml
+    loop: "{{ images }}"
+
+  - name: ensure /home/{{ ansible_user_id }}/k3s exists
+    file:
+      path: /home/{{ ansible_user_id }}/k3s
+      state: directory
+
+  - name: is install_k3s.sh cached?
+    stat:
+      path: "/vagrant/cache/install_k3s.sh"
+    register: k3s_distributable
+
+  - name: cache install_k3.sh retrieved from https://get.k3s.io
     get_url:
       url: https://get.k3s.io
-      dest: /home/{{ ansible_user_id }}/k3s/install_k3s.sh
-      mode: u=rwx,g=r,o=r
-    retries: 60
-    delay: 5
+      dest: /vagrant/cache/install_k3s.sh
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
     register: result
     until: result is succeeded
+    when: k3s_distributable.stat.exists == False
+
+  - name: emplace install_k3s.sh into /home/{{ ansible_user_id }}
+    copy:
+      src: /vagrant/cache/install_k3s.sh
+      dest: /home/{{ ansible_user_id }}/k3s
+      mode: u=rwx,g=r,o=r
+
+  - name: get ip for {{ k3s_flannel_iface }}
+    shell: ip a show eth1 | grep "inet " | awk '{print $2}' | cut -d / -f1
+    register: ipaddr
 
   - name: install K3s as an agent
     become: yes
-    shell: INSTALL_K3S_VERSION={{ k3s_version }} K3S_URL=https://{{ hostvars['toolchain']['ansible_host'] }}:6443 K3S_CLUSTER_SECRET={{ k3s_cluster_secret }} INSTALL_K3S_EXEC="--flannel-iface={{ k3s_flannel_iface }}  --docker" /home/{{ ansible_user_id }}/k3s/install_k3s.sh agent
+#    shell: INSTALL_K3S_VERSION={{ k3s_version }} K3S_URL=https://192.168.0.10:6443 K3S_CLUSTER_SECRET={{ vault_k3s_cluster_secret }} INSTALL_K3S_EXEC="--flannel-iface={{ k3s_flannel_iface }} --docker --node-ip={{ ipaddr.stdout }}" /home/{{ ansible_user_id }}/k3s/install_k3s.sh agent
+    shell: INSTALL_K3S_VERSION={{ k3s_version }} K3S_URL=https://192.168.0.10:6443 K3S_CLUSTER_SECRET={{ vault_k3s_cluster_secret }} INSTALL_K3S_EXEC="--flannel-iface={{ k3s_flannel_iface }} --docker" /home/{{ ansible_user_id }}/k3s/install_k3s.sh agent
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
    
   - name: alias `kubectl` to `k3s kubectl`
     become: yes
@@ -50,7 +98,7 @@
       content: |
         alias kubectl="k3s kubectl"
   when:  
-    "'k3s' not in services"
+    k3s_service.stdout=="false"    
   tags:
     - k3s-agent
 
@@ -65,7 +113,7 @@
 - name: ensure {{ ansible_user_id }} can access Kubernetes
   block:
   - name: ensure the {{ ansible_user_id }} user has an kubeconfig.yml file to access kubernetes
-    shell: scp -qp -oStrictHostKeyChecking=no -i /home/{{ ansible_user_id }}/.ssh/id_rsa {{ ansible_user_id }}@{{ hostvars['toolchain']['ansible_host'] }}:/home/{{ ansible_user_id }}/kubeconfig.yml /home/{{ ansible_user_id }}/kubeconfig.yml
+    shell: scp -qp -oStrictHostKeyChecking=no -i /home/{{ ansible_user_id }}/.ssh/id_rsa {{ ansible_user_id }}@master:/home/{{ ansible_user_id }}/kubeconfig.yml /home/{{ ansible_user_id }}/kubeconfig.yml
 
   - name: chown and fix permissions on /home/{{ ansible_user_id }}/kubeconfig.yml 
     file:
@@ -73,6 +121,12 @@
       owner: "{{ ansible_user_id }}"
       group: "{{ ansible_user_id }}"
       mode: u+rw,g+r,o-rwx
+
+  - name: ensure /home/{{ ansible_user_id }}/.bash_profile exists
+    copy:
+      content: ""
+      dest: /home/{{ ansible_user_id }}/.bash_profile
+      force: no
 
   - name: ensure KUBECONFIG is removed from {{ ansible_user_id }}'s bash_profile
     lineinfile:

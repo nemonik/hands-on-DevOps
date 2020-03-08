@@ -1,27 +1,18 @@
 ---
 # tasks file for /vagrant/ansible/roles/standalone-chrome-container-image
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: pull selenium/standalone-chrome:{{ selenium_standalone_chrome_version }} docker image
-  docker_image:
-    name: selenium/standalone-chrome:{{ selenium_standalone_chrome_version }}
-    source: pull
-    timeout: "{{ docker_timeout }}"
-  retries: "{{ docker_retries }}"
-  delay: "{{ docker_delay }}"
-  register: result
-  until: result is succeeded
-  tags:
-    - standalone-chrome-container-image
+- set_fact:
+    images:
+      - { repository: "selenium/standalone-chrome", tag: "{{ selenium_standalone_chrome_version }}" }
 
 - name: create /home/{{ ansible_user_id }}/standalone-chrome-container-image
-  become: yes
   file:
     path: /home/{{ ansible_user_id }}/standalone-chrome-container-image
     state: directory
@@ -31,49 +22,80 @@
     - standalone-chrome-container-image
 
 - name: template files into /home/{{ ansible_user_id }}/standalone-chrome-container-image
-  become: yes
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: templates/{{ item }}.j2
+    dest: /home/{{ ansible_user_id }}/standalone-chrome-container-image/{{ item }}
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"   
   with_items:
-    - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/standalone-chrome-container-image/Dockerfile" }
-    - { src: "templates/dockerfile_build.j2", dest: "/home/{{ ansible_user_id }}/standalone-chrome-container-image/dockerfile_build.sh" }
-    - { src: "templates/push_into_private_repo.j2", dest: "/home/{{ ansible_user_id }}/standalone-chrome-container-image/push_into_private_repo.sh" }
+    - "Dockerfile"
+    - "dockerfile_build.sh"
+    - "push_into_private_repo.sh"
   tags:
     - standalone-chrome-container-image
 
 - name: make /home/{{ ansible_user_id }}/standalone-chrome-container-image/dockerfile_build.sh executable
-  become: yes
   file: 
-    path: "{{ item.path }}"
+    path: /home/{{ ansible_user_id }}/standalone-chrome-container-image/{{ item }}
     mode: "u=rwx,g=r,o=r"
   with_items:
-    - { path: "/home/{{ ansible_user_id }}/standalone-chrome-container-image/push_into_private_repo.sh" },
-    - { path: "/home/{{ ansible_user_id }}/standalone-chrome-container-image/dockerfile_build.sh" }
+    - "push_into_private_repo.sh"
+    - "dockerfile_build.sh"
   tags:
     - standalone-chrome-container-image
 
-- name: build nemonik/standalone-chrome:{{ selenium_standalone_chrome_version }} image and push into private registry
-  become: yes
-  docker_image:
-    path: /home/{{ ansible_user_id }}/standalone-chrome-container-image
-    name: nemonik/standalone-chrome
-    repository: {{ hostvars['toolchain']['ansible_host'] }}:5000/nemonik/standalone-chrome
-    push: yes
-    tag: "{{ selenium_standalone_chrome_version }}"
-    build:
-      args:
-        http_proxy: "{{ http_proxy|default('') }}"
-        HTTP_PROXY: "{{ http_proxy|default('') }}"
-        https_proxy: "{{ https_proxy|default('') }}"
-        HTTPS_PROXY: "{{ https_proxy|default('') }}"
-        NO_PROXY: "{{ no_proxy|default('') }}"
-        no_proxy: "{{ no_proxy|default('') }}" 
-  retries: "{{ docker_retries }}"
-  delay: "{{ docker_delay }}"
-  register: result
-  until: result is succeeded
+- name: emplace images into private container registry
+  block:
+  - name: load {{ images }} from cache
+    include_tasks: retrieve_container_image.yml
+    loop: "{{ images }}"
+
+  - name: pull {{ images }} container images
+    docker_image:
+      name: "{{ item.repository }}:{{ item.tag }}"
+      source: pull
+      timeout: "{{ docker_timeout }}"
+    retries: "{{ docker_retries }}"
+    delay: "{{ docker_delay }}"
+    register: result
+    until: result is succeeded
+    loop: "{{ images }}"
+
+  - name: tag and push {{ images }} into private registry
+    shell: |
+      docker tag {{ item.repository }}:{{ item.tag }} {{ registry_host }}:{{ registry_port }}/{{ item.repository }}:{{ item.tag }}
+      docker push {{ registry_host }}:{{ registry_port }}/{{ item.repository }}:{{ item.tag }}
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+    loop: "{{ images }}"
+
+  - name: build nemonik/standalone-chrome:{{ selenium_standalone_chrome_version }} image and push into private registry
+    docker_image:
+      name: nemonik/standalone-chrome
+      tag: "{{ selenium_standalone_chrome_version }}"
+      repository: {{ registry_host }}:{{ registry_port }}/nemonik/standalone-chrome
+      build:
+        path: /home/{{ ansible_user_id }}/standalone-chrome-container-image
+        pull: yes
+        args:
+          http_proxy: "{{ http_proxy|default('') }}"
+          HTTP_PROXY: "{{ http_proxy|default('') }}"
+          https_proxy: "{{ https_proxy|default('') }}"
+          HTTPS_PROXY: "{{ https_proxy|default('') }}"
+          NO_PROXY: "{{ no_proxy|default('') }}"
+          no_proxy: "{{ no_proxy|default('') }}" 
+      push: yes
+    retries: "{{ docker_retries }}"
+    delay: "{{ docker_delay }}"
+    register: result
+    until: result is succeeded
+  tags:
+    - standalone-chrome-container-image
+
+- name: save {{ images }} to cache
+  include_tasks: cache_container_image.yml
+  loop: "{{ images }}"
   tags:
     - standalone-chrome-container-image

@@ -1,37 +1,18 @@
 ---
 # tasks file for sonarqube
 
-# Copyright (C) 2019 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: pull docker images
-  docker_image:
-    name: "{{ item }}"
-    source: pull
-    timeout: "{{ docker_timeout }}"
-  with_items:
-    - sameersbn/postgresql:10-2
-    - alpine:3.10.2
-    - sonarqube:{{ sonarqube_version }}
-  retries: "{{ docker_retries }}"
-  delay: "{{ docker_delay }}"
-  register: result
-  until: result is succeeded
-  tags:
-    - sonarqube
-
-- name: ensure virtual memory is icreased to support SonarQube's embedded ElasticSearch
-  become: yes
-  sysctl:
-    name: vm.max_map_count
-    value: "262144"
-    state: present
-  tags:
-    - sonarqube
+- set_fact:
+    images:
+      - { repository: "sonarqube", tag: "{{ sonarqube_version }}" }
+      - { repository: "alpine", tag: "3.10.2" }
+      - { repository: "sameersbn/postgresql", tag: "10-2" }
 
 - name: create /home/{{ ansible_user_id }}/sonarqube
   file:
@@ -42,14 +23,14 @@
 
 - name: template files into /home/{{ ansible_user_id }}/sonarqube
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: templates/{{ item }}.j2
+    dest: /home/{{ ansible_user_id }}/sonarqube/{{ item }}
     mode: "u=rwx,g=r,o=r"  
     force: yes
   with_items:
-    - { src: "templates/README.MD.j2", dest: "/home/{{ ansible_user_id }}/sonarqube/README.MD" }
-    - { src: "templates/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/sonarqube/Dockerfile" }
-    - { src: "templates/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/sonarqube/dockerfile_build.sh" }
+    - "README.MD"
+    - "Dockerfile"
+    - "dockerfile_build.sh"
   tags:
     - sonarqube
 
@@ -60,87 +41,80 @@
   tags:
     - sonarqube
 
-- name: create /home/{{ ansible_user_id }}/sonarqube/volumes/sonarqube-extensions/plugins/ if it doesn't exist
-  become: yes
-  file:
-    path: /home/{{ ansible_user_id }}/sonarqube/volumes/sonarqube-extensions/plugins/
-    state: directory
-  tags:
-    - sonarqube
- 
-- name: build nemonik/sonarqube:{{ sonarqube_version }} docker image
-  docker_image:
-    path: /home/{{ ansible_user_id }}/sonarqube
-    name: nemonik/sonarqube:{{ sonarqube_version }}
-    build:
-      args:
-        http_proxy: "{{ http_proxy }}"
-        HTTP_PROXY: "{{ http_proxy }}"
-        https_proxy: "{{ https_proxy }}"
-        HTTPS_PROXY: "{{ https_proxy }}"
-        NO_PROXY: "{{ no_proxy }}"
-        no_proxy: "{{ no_proxy }}" 
-  retries: "{{ docker_retries }}"
-  delay: "{{ docker_delay }}"
-  register: result
-  until: result is succeeded
-  tags:
-    - sonarqube
-
-- name: create data volumes
-  become: yes
-  file:
-    path: /home/{{ ansible_user_id }}/sonarqube/volumes/{{ item }}
-    state: directory
-    owner: "999"
-    group: "999"
-  with_items:
-    - sonarqube-logs
-    - sonarqube-conf
-    - sonarqube-data
-    - sonarqube-extensions
-    - sonarqube-bundled-plugins
-  tags:
-    - sonarqube  
-
-- name: fail if sonarqube_deploy_via is not set to either 'docker-compose' or 'kubectl'
-  fail:
-    msg: sonarqube_deploy_via must be set to either 'kubectl' or 'docker-compose'.
-  when: sonarqube_deploy_via is undefined or ( sonarqube_deploy_via != "docker-compose" and sonarqube_deploy_via != "kubectl" )
-  tags:
-    - sonarqube
-
-- name: spin up SonarQube via docker-compose
+- name: emplace images into private container registry
   block:
-  - name: template docker-compose.yml into /home/{{ ansible_user_id }}/sonarqube
-    template:
-      src: templates/docker-compose.yml.j2
-      dest: /home/{{ ansible_user_id }}/sonarqube/docker-compose.yml
-      mode: "u=rwx,g=r,o=r"
-      force: yes
+  - name: load {{ images }} from cache
+    include_tasks: retrieve_container_image.yml
+    loop: "{{ images }}"
 
-  - name: spin up via docker-compose
-    docker_compose:
-      build: no
-      debug: yes
-      project_src: /home/{{ ansible_user_id }}/sonarqube/
-  when: sonarqube_deploy_via == "docker-compose"
+  - name: pull {{ images }} container images
+    docker_image:
+      name: "{{ item.repository }}:{{ item.tag }}"
+      source: pull
+      timeout: "{{ docker_timeout }}"
+    retries: "{{ docker_retries }}"
+    delay: "{{ docker_delay }}"
+    register: result
+    until: result is succeeded
+    loop: "{{ images }}"
+
+  - name: tag and push {{ images }} into private registry
+    shell: |
+      docker tag {{ item.repository }}:{{ item.tag }} {{ registry_host }}:{{ registry_port }}/{{ item.repository }}:{{ item.tag }}
+      docker push {{ registry_host }}:{{ registry_port }}/{{ item.repository }}:{{ item.tag }}
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
+    loop: "{{ images }}"
+
+  - name: build nemonik/sonarqube:{{ sonarqube_version }} and push into private container registry
+    docker_image:
+      name: nemonik/sonarqube
+      tag: "{{ sonarqube_version }}"
+      repository: "{{ registry_host }}:{{ registry_port }}/nemonik/sonarqube"
+      source: build
+      build:
+        path: /home/{{ ansible_user_id }}/sonarqube
+        pull: yes
+        args:
+          http_proxy: "{{ http_proxy }}"
+          HTTP_PROXY: "{{ http_proxy }}"
+          https_proxy: "{{ https_proxy }}"
+          HTTPS_PROXY: "{{ https_proxy }}"
+          NO_PROXY: "{{ no_proxy }}"
+          no_proxy: "{{ no_proxy }}" 
+      push: yes
+    retries: "{{ docker_retries }}"
+    delay: "{{ docker_delay }}"
+    register: result
+    until: result is succeeded
   tags:
     - sonarqube
 
 - name: spin up SonarQube via Kubernetes
   block:
-  - name: template files into /home/{{ ansible_user_id }}/sonarqube
+  - name: template kubernetes resource files into /home/{{ ansible_user_id }}/sonarqube
     template:
       src: templates/sonarqube.yml.j2
       dest: /home/{{ ansible_user_id }}/sonarqube/sonarqube.yml
       mode: "u=rwx,g=r,o=r"
       force: yes 
 
+  - name: is sonarqube running?
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml -n sonarqube get pod | grep Running | wc -l
+    register: running
+
   - name: spin up via kubectl
     shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f sonarqube.yml
     args:
       chdir: /home/{{ ansible_user_id }}/sonarqube
-  when: sonarqube_deploy_via == "kubectl"
+    when: running.stdout == "0"
+  tags:
+    - sonarqube
+
+- name: save {{ images }} to cache
+  include_tasks: cache_container_image.yml
+  loop: "{{ images }}"
   tags:
     - sonarqube

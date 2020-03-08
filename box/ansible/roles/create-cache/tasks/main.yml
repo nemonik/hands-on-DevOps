@@ -1,0 +1,146 @@
+---
+# tasks file for create-cache
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+# This roles exists to speed development and spinning up the class...
+
+- name: create /vagrantcache/boxes/{{ base_box }}, if it doesn't exist
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    mkdir -p /vagrant/cache/boxes/{{ base_box }}
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache
+
+- name: cache /var/cache/apk contents, if Alpine 3.10
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /var/cache/
+    tar zcvf $tempfile apk
+    cp -f $tempfile  /vagrant/cache/boxes/{{ base_box }}/apk.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
+  tags:
+    - create-cache
+
+- name: cache /var/cache/apt contents, if Ubuntu-bionic
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /var/cache/
+    tar zcvf $tempfile apt
+    cp -f $tempfile  /vagrant/cache/boxes/{{ base_box }}/apt.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+  tags:
+    - create-cache
+
+- name: cache /var/cache/yum contents, if CentOS 7
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /var/cache
+    tar zcvf $tempfile cache
+    cp -f $tempfile  /vagrant/cache/boxes/{{ base_box }}/yum.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+  tags:
+    - create-cache
+
+- name: cache /usr/lib/python3.7/site-packages
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /usr/lib/{{ ansible_python_version }}*
+    tar zcvf $tempfile site-packages
+    cp -f $tempfile /vagrant/cache/boxes/{{ base_box }}/site-packages.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache
+
+- name: cache {{ ansible_user_id }}' .rvm, .gnupg and shell configs, when CentOS 7
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /home/{{ ansible_user_id }}/
+    tar zcvf $tempfile .rvm .gnupg .bash_profile .bashrc .profile .mkshrc .zshrc .zlogin
+    cp -f $tempfile /vagrant/cache/boxes/{{ base_box }}/rvm.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+  tags:
+    - create-cache
+
+- name: cache /home/{{ ansible_user_id }}/.cache
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /home/{{ ansible_user_id }}/
+    tar zcvf $tempfile .cache
+    cp -f $tempfile /vagrant/cache/boxes/{{ base_box }}/cache.tar.gz
+    rm -f $tempfile    
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache
+
+- name: cache /home/{{ ansible_user_id }}/.local
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /home/{{ ansible_user_id }}/
+    tar zcvf $tempfile .local
+    cp -f $tempfile /vagrant/cache/boxes/{{ base_box }}/local.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache
+
+- name: cache /home/{{ ansible_user_id }}/.gem
+  shell: |
+    if [[ "windows" == "{{ host_os }}" ]]; then
+      sudo su
+    fi
+    tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
+    cd /home/{{ ansible_user_id }}/
+    tar zcvf $tempfile .gem
+    cp -f $tempfile /vagrant/cache/boxes/{{ base_box }}/gem.tar.gz
+    rm -f $tempfile
+  args:
+    executable: /bin/bash
+  tags:
+    - create-cache

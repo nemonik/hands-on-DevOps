@@ -1,4 +1,4 @@
-FROM sameersbn/gitlab:{{ gitlab_version }}
+FROM {{ registry_host }}:{{ registry_port }}/sameersbn/gitlab:{{ gitlab_version }}
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
 {% if CA_CERTIFICATES %}
