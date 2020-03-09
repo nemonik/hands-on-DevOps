@@ -473,7 +473,7 @@ Let me explain.
 
 - Faster, coordinated, repeatable, and therefore more reliable deployments.
 - Discover bugs sooner. Shifting their discovery left in the process.
-- To accelerates the feedback loop between Dev and Ops (Again, **Ops** is everyone not typically considered part of the development team.)
+- To accelerates the feedback loop between Dev and Ops (Again, Ops is everyone not typically considered part of the development team.)
 - Reduce tribal knowledge, where one group or person holds the keys to how things get done. Yep, this is about making us all replaceable.
 - Reduce shadow IT (i.e., hardware or software within an enterprise that is not supported by IT. Just waiting for its day to explode.)
 
