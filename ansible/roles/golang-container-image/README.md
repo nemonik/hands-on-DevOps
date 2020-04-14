@@ -1,5 +1,5 @@
-Role Name
-=========
+golang-container-image
+======================
 
 Configures golang container image.
 

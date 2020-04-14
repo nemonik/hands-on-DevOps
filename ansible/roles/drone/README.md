@@ -1,5 +1,5 @@
-Role Name
-=========
+drone
+=====
 
 Configures Drone CI.
 

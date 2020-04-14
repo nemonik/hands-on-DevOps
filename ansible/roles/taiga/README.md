@@ -1,5 +1,5 @@
-Role Name
-=========
+taiga
+=====
 
 Configures Taiga.
 

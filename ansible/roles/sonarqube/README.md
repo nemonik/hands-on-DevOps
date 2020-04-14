@@ -1,7 +1,7 @@
-Role Name
+sonarqube
 =========
 
-Configures SonarQube
+Configures SonarQube.
 
 License
 -------

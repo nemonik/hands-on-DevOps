@@ -1,5 +1,5 @@
-Role Name
-=========
+gitlab
+======
 
 Configures GitLab.
 

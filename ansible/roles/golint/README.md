@@ -1,7 +1,7 @@
-Role Name
-=========
+golint
+======
 
-Configures golint
+Configures golint.
 
 License
 -------

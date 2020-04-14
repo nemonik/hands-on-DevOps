@@ -1,5 +1,5 @@
-Role Name
-=========
+plantuml-server
+===============
 
 Configures PlantUML-Server.
 

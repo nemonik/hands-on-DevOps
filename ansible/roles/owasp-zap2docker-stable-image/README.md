@@ -1,7 +1,7 @@
-Role Name
-=========
+owasp-zap2docker-stable-image
+=============================
 
-Configures OWASP-ZAP-stable container image
+Configures OWASP-ZAP-stable container image.
 
 License
 -------

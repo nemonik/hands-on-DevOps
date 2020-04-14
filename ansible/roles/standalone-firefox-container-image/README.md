@@ -1,5 +1,5 @@
-Role Name
-=========
+standalone-firefox-container-image
+==================================
 
 Configures standalone-firefox container image.
 

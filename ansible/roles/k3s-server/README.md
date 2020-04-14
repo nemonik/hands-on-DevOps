@@ -1,5 +1,5 @@
-Role Name
-=========
+k3s-server
+==========
 
 Configures K3s server node.
 

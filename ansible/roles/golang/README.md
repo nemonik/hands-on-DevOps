@@ -1,7 +1,7 @@
-Role Name
-=========
+golang
+======
 
-Configures golang
+Configures golang.
 
 License
 -------

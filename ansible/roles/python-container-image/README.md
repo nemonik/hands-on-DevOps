@@ -1,5 +1,5 @@
-Role Name
-=========
+python-container-image
+======================
 
 Configures Python container image.
 

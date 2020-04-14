@@ -1,4 +1,4 @@
-Role Name
+k3s-agent
 =========
 
 Configures k3s-agent node.

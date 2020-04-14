@@ -1,5 +1,5 @@
-Role Name
-=========
+standalone-chrome-container-image
+=================================
 
 Configures standalone-chrome container image.
 

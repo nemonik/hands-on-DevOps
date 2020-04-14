@@ -1,5 +1,5 @@
-Role Name
-=========
+docker-registry
+===============
 
 Configures container registry
 
