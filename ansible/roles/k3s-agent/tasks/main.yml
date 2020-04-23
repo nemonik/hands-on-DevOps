@@ -8,6 +8,17 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
+- name: Ensure packages are installed for k3s-selinux policy
+  become: yes
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - container-selinux
+    - selinux-policy-base
+    - https://rpm.rancher.io/k3s-selinux-0.1.1-rc1.el7.noarch.rpm
+  when: ( ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7' )
+
 - name: get k3s-agent service status
   become: yes
   shell: |

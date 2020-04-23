@@ -28,6 +28,16 @@
   tags:
     - k3s-server
 
+- name: Ensure packages are installed for k3s-selinux policy
+  become: yes
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - container-selinux
+    - selinux-policy-base
+    - https://rpm.rancher.io/k3s-selinux-0.1.1-rc1.el7.noarch.rpm
+
 - name: get K3s service status
   become: yes
   shell: |
