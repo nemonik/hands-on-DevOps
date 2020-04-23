@@ -17,6 +17,7 @@ module ConfigurationVars
     network_prefix: "192.168.0",
 
     # The number of nodes to provision the Kubernetes cluster. One will be a master.
+#    nodes: 2,
     nodes: 1,
 
     # The Vagrant box to base our DevOps box on.  Pick just one.
@@ -39,7 +40,7 @@ module ConfigurationVars
     docker_retries: '60',
     docker_delay: '10',
 
-    k3s_version: 'v1.17.0+k3s.1',
+    k3s_version: 'v1.17.4+k3s1',
     k3s_cluster_secret: 'kluster_secret',
 
     kubectl_version: 'v1.17.0',
