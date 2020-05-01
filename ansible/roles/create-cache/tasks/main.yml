@@ -8,11 +8,7 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-
 - name: create /vagrant/cache/{{ group_names[0] }} if it doesn't exist
-#  file:
-#    path: /vagrant/cache/{{ group_names[0] }}
-#    state: directory
   shell: |
     if [[ "windows" == "{{ host_os }}" ]]; then
       sudo su
@@ -25,11 +21,6 @@
 
 - name: cache /var/cache/apk contents
   become: yes
-#  archive:
-#    path: /var/cache/apk
-#    dest: /vagrant/cache/{{ group_names[0] }}/apk.tar.gz
-#    format: gz
-#    force_archive: true
   shell: |
     if [[ "windows" == "{{ host_os }}" ]]; then
       sudo su
@@ -46,11 +37,6 @@
 
 - name: cache /usr/lib/python3.7/site-packages
   become: yes
-#  archive:
-#    path: /usr/lib/python3.7/site-packages
-#    dest: /vagrant/cache/{{ group_names[0] }}/site-packages.tar.gz
-#    format: gz
-#    force_archive: true
   shell: |
     if [[ "windows" == "{{ host_os }}" ]]; then
       sudo su
@@ -62,15 +48,11 @@
     rm -f $tempfile
   args:
     executable: /bin/bash
+  when: ( ansible_distribution != 'CentOS' and ansible_distribution_major_version != '7' )
   tags:
     - create-cache
 
 - name: cache /home/{{ ansible_user_id }}/.cache
-#  archive:
-#    path: /home/{{ ansible_user_id }}/.cache
-#    dest: /vagrant/cache/{{ group_names[0] }}/cache.tar.gz
-#    format: gz
-#    force_archive: true
   shell: |
     if [[ "windows" == "{{ host_os }}" ]]; then
       su
@@ -86,11 +68,6 @@
     - create-cache
 
 - name: cache /home/{{ ansible_user_id }}/.local
-#  archive:
-#    path: /home/{{ ansible_user_id }}/.local
-#    dest: /vagrant/cache/{{ group_names[0] }}/local.tar.gz
-#    format: gz
-#    force_archive: true
   shell: |
     if [[ "windows" == "{{ host_os }}" ]]; then
       sudo su
@@ -106,11 +83,6 @@
     - create-cache
 
 - name: cache /home/{{ ansible_user_id }}/.gem
-#  archive:
-#    path: /home/{{ ansible_user_id }}/.gem
-#    dest: /vagrant/cache/{{ group_names[0] }}/gem.tar.gz
-#    format: gz
-#    force_archive: true
   shell: |
     if [[ "windows" == "{{ host_os }}" ]]; then
       sudo su

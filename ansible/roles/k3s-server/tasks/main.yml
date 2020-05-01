@@ -28,7 +28,69 @@
   tags:
     - k3s-server
 
-- name: Ensure packages are installed for k3s-selinux policy
+- name: ensure iptables is enabled in a manner preferable to k3s
+  block:
+  - name: populate service facts
+    service_facts:
+
+  - name: disable firewalld and enable iptables  
+    block:
+    - name: ensure firewalld is not running
+      become: yes
+      service:
+        name: firewalld
+        enabled: no 
+        state: stopped
+
+    - name: ensure firewalld is masked
+      become: yes
+      shell:  systemctl mask firewalld
+
+    - name: ensure iptables-services is installed
+      become: yes
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - iptables-services
+        - policycoreutils-python
+
+    - name: ensure iptables is running
+      become: yes
+      service:
+        name: iptables
+        enabled: yes
+        state: started
+
+    - name: ensure persistent changes to the boot loader
+      become: yes
+      shell: |
+        grubby --args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
+
+    - name: clear iptables rules left over from firewalld
+      become: yes
+      shell: |
+        iptables -t nat -F
+        iptables -t mangle -F
+        iptables -F
+        iptables -X
+        service iptables save
+
+    - name: restart docker to add DOCKER chain to iptables
+      become: yes
+      service:
+        name: docker
+        state: restarted
+    when:
+      - ansible_facts.services['k3s.service'] is not defined
+ 
+  when:
+    - ansible_distribution == 'CentOS' 
+    - ansible_distribution_major_version == '7'
+  tags:
+    - k3s-server
+
+- name: ensure packages are installed for k3s-selinux policy
   become: yes
   yum:
     name: "{{ packages }}"
@@ -37,6 +99,11 @@
     - container-selinux
     - selinux-policy-base
     - https://rpm.rancher.io/k3s-selinux-0.1.1-rc1.el7.noarch.rpm
+  when:
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_major_version == '7'
+  tags:
+    - k3s-server
 
 - name: get K3s service status
   become: yes
@@ -115,8 +182,8 @@
 
   - name: install K3s 
     become: yes
-#    shell: INSTALL_K3S_VERSION={{ k3s_version }} INSTALL_K3S_EXEC="--flannel-iface={{ k3s_flannel_iface }} --cluster-secret={{ vault_k3s_cluster_secret }} --docker --no-deploy=traefik --no-deploy=servicelb --no-deploy metrics-server" /home/{{ ansible_user_id }}/k3s/install_k3s.sh
-    shell: INSTALL_K3S_VERSION={{ k3s_version }} INSTALL_K3S_EXEC="--flannel-iface={{ k3s_flannel_iface }} --cluster-secret={{ vault_k3s_cluster_secret }} --docker --no-deploy=traefik --no-deploy=servicelb" /home/{{ ansible_user_id }}/k3s/install_k3s.sh
+#    shell: INSTALL_K3S_VERSION={{ k3s_version }} INSTALL_K3S_EXEC="--flannel-backend=host-gw --flannel-iface={{ k3s_flannel_iface }} --cluster-secret={{ vault_k3s_cluster_secret }} --docker --no-deploy=traefik --no-deploy=servicelb --no-deploy metrics-server" /home/{{ ansible_user_id }}/k3s/install_k3s.sh
+    shell: INSTALL_K3S_VERSION={{ k3s_version }} INSTALL_K3S_EXEC="--flannel-backend=host-gw --flannel-iface={{ k3s_flannel_iface }} --cluster-secret={{ vault_k3s_cluster_secret }} --docker --no-deploy=traefik --no-deploy=servicelb" /home/{{ ansible_user_id }}/k3s/install_k3s.sh
     retries: "{{ default_retries }}"
     delay: "{{ default_delay }}"
     register: result
