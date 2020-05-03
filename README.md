@@ -255,7 +255,7 @@ The words _security engineering_ could be replaced in the opening sentence with 
 
 The point I'm after is everyone is in it to collectively deliver dependable software.
 
-Also, there is no need to overload the DevOps term -- To _Dev wildcard (i.e., *) OpsOps_ to include your pet interest(s), such as, _security_, _test_, _whatever_... to form _DevSecOps_, _DevTestOps_, _DevWhateverOps_...  DevOps has you covered.
+Also, there is no need to overload the _DevOps_ term -- To _Dev wildcard (i.e., *) OpsOps_ to include your pet interest(s), such as, _security_, _test_, _whatever_... to form _DevSecOps_, _DevTestOps_, _DevWhateverOps_...  _DevOps_ has you covered.
 
 ## 6.2. What DevOps is not
 
