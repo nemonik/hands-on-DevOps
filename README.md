@@ -65,7 +65,7 @@ What you should bring:
     - [6.1. What is DevOps?](#61-what-is-devops)
     - [6.2. What DevOps is not](#62-what-devops-is-not)
     - [6.3.1. To succeed at DevOps you must](#631-to-succeed-at-devops-you-must)
-    - [6.3.2. If your effort doesn't __grok__](#632-if-your-effort-doesnt-__grok__)
+    - [6.3.2. If your effort doesn't](#632-if-your-effort-doesnt)
     - [6.4. Conway's Law states](#64-conways-law-states)
     - [6.5. DevOps is really about](#65-devops-is-really-about)
     - [6.6. What is DevOps culture?](#66-what-is-devops-culture)
@@ -251,9 +251,11 @@ In the opening sentences of _Security Engineering: : A Guide to Building Dependa
 
 > Security engineering is about building systems to remain dependable in the face of malice, error, or mischance. As a discipline, it focuses on the tools, processes, and methods needed to design, implement, and test complete systems, and to adapt existing systems as their environment evolve. 
 
-The words _security engineering_ could be replaced in the opening sentence with each one of the various stakeholders (e.g., development, quality assurance , technology operations).
+The words _security engineering_ could be replaced in the opening sentence with each one of the various stakeholders (e.g., development, quality assurance, technology operations).
 
 The point I'm after is everyone is in it to collectively deliver dependable software.
+
+Also, there is no need to overload DevOps term -- To Dev wildcard (e.g., *) Ops to inlude your pet interest, such as, security, test whatever... to form DevSecOps, DevTestOps, DevWhateverOps...  DevOps has you covered.
 
 ## 6.2. What DevOps is not
 
@@ -287,6 +289,8 @@ Followed with
 
 This was written over 50 years ago.
 
+If your communication structur is broke, so shall your systems be.
+
 ## 6.5. DevOps is really about
 
 Providing the culture, methods and repeated practices to permit stakeholders to collaborate.
@@ -294,8 +298,7 @@ Providing the culture, methods and repeated practices to permit stakeholders to 
 ## 6.6. What is DevOps culture?
 
 > **culture** noun  \ *ˈkəl-chər* \
-> the set of shared attitudes, values, goals, and practices that characterizes an institution or
-> organization
+> the set of shared attitudes, values, goals, and practices that characterizes an institution or organization
 
 I love when a word means precisely what you need it to mean.
 
@@ -329,10 +332,10 @@ DevOps builds on this.
 
 While DevOps extends Agile methods and practices by adding communication and collaboration between
 
-  - development,
-  - security,
-  - quality assurance, and
-  - technology operations
+- development,
+- security,
+- quality assurance, and
+- technology operations
 
 functionaries as stakeholders into the broader effort to ensure software systems are delivered in a reliable, low-risk manner.
 
@@ -2458,7 +2461,7 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
   #    config.vm.synced_folder ".",  '/vagrant', type: "nfs"
   #  end
   ```
-- It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you can comment out the roles that proceeded and re-run the automation by entering into the command-line at the root of the project
+- It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you can speed things along by commenting out the roles that proceeded and re-run the automation by entering into the command-line at the root of the project
   ```bash
   vagrant provision
   ```
@@ -2471,10 +2474,27 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
   vagrant up --no-provision
   ```
   Give the vagrants time to restart all the long-running tools.
-- You will not want to run a VPN session that does not permit bridging such as MITRE's VPN on your computer when running running your vagrants as you will have no network access to your vagrants.  
+- You will not want to run a VPN session that does not permit bridging such as MITRE's VPN on your computer when running your vagrants as you will have no network access to your vagrants.  
 - Caution, it is easy to forget DevOps is not about tools and automaton, but is as much about culture, methods and repeated practices, so keep this in mind.  
 - The tools, methods and repeated practices exist to support the culture.
 - Again, I'll drop from time to time stating "into the shell" or "into the command-line" when instructing you to enter things in the CLI.
+- If you're on Linux, such as, Arch you will need to enable the nfs-server.service. See [NFS#Start the server](https://wiki.archlinux.org/index.php/NFS#Starting_the_server), but essentially enter `sudo systemctl start nfs-server` into the command-line.
+- If on Arch and you get an error about unuspported protocol, like so
+  ```bash
+  ==> default: Mounting NFS shared folders...
+  The following SSH command responded with a non-zero exit status.
+  Vagrant assumes that this means the command failed!
+  
+  mount -o vers=3,udp 192.168.0.1:/home/mjwalsh/Development/workspace/hands-on-DevOps /vagrant
+  
+  Stdout from the command:
+  
+  Stderr from the command:
+  
+  mount.nfs: requested NFS version or transport protocol is not supported
+  ```
+  you will need to enable NFS over UDP. See [NFS/Troubleshooting#UDP mounts not working](https://wiki.archlinux.org/index.php/NFS/Troubleshooting#UDP_mounts_not_working).
+
 
 The toolchain IaC will spin up a number of tools.  Following sections unpack what theses tools are, but first I'd like to unpack the cloud-native technologies underrunning the long-running tools.
 
