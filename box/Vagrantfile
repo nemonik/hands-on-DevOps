@@ -163,9 +163,11 @@ Vagrant.configure("2") do |config|
     config.disksize.size = "60GB"
   end
 
-  if Vagrant::Util::Platform.windows?
+  # nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)
+  if Vagrant::Util::Platform.windows? or Vagrant::Util::Platform.darwin?
     config.vm.synced_folder '..', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
   else 
+    puts "not detecting MAC"
     # this method will require the user to enter their username/password periodically....
     config.vm.synced_folder "..",  '/vagrant', type: 'nfs'
   end

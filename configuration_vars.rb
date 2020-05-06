@@ -22,11 +22,14 @@ module ConfigurationVars
 
     # The Vagrant box to base our DevOps box on.  Pick just one.
 
-#    base_box: 'centos/7',
-#    base_box_version: '1905.1',
+    base_box: 'centos/7',
+    base_box_version: '1905.1',
 
-    base_box: 'ubuntu/bionic64',
-    base_box_version: '20200304.0.0',
+#    base_box: 'geerlingguy/centos7',
+#    base_box_version: '1.2.22',
+
+#    base_box: 'ubuntu/bionic64',
+#    base_box_version: '20200304.0.0',
 
 #    base_box: 'nemonik/alpine310',
 #    base_box_version: '0',
@@ -48,7 +51,7 @@ module ConfigurationVars
 
     kubernetes_dashboard_version: 'v2.0.0-beta8',
 
-    traefik_version: '1.7.20',
+    traefik_version: '1.7.24',
     traefik_http_port: '80',
     traefik_admin_port: '8080',
     traefik_host: '192.168.0.200',
