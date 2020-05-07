@@ -27,6 +27,12 @@ time {
     exit 64
   fi
 
+  # nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)
+  if [[ $OSTYPE == darwin* ]] && [[ "$os" == *"alpine"* ]]; then
+    echo -e "\x1B[31mERROR: Alpine requires nfs to share a project synced_folder, but nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234), so until resolved alpine base boxes cannot be built nor used.\x1B[0m"
+    exit 1
+  fi
+
   # base boxes starting with "nemonik" are custom built with packer
   if [[ $(echo "${base}" | grep "nemonik" | wc -l) -eq 1 ]]; then
     # is the box already built and added to vagrant locally?

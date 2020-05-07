@@ -37,6 +37,12 @@ box = ConfigurationVars::VARS[:base_box]
 os = box.split('/')[1]
 box = "nemonik/devops_#{os}"
 
+# nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)
+if os.downcase.include? "alpine" and Vagrant::Util::Platform.darwin?
+  puts "ERROR: Alpine requires nfs to share a project synced_folder, but nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)".red
+  exit!
+end
+
 uninstall_plugins = %w( vagrant-cachier vagrant-alpine )
 required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize vagrant-reload )
 
