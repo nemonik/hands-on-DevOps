@@ -17,18 +17,18 @@ After this course, you will
 3. Have had hands-on experience with Infrastructure as Code( Vagrant and Ansible ) to provision and configure an entire DevOps Factory (i.e. a toolchain and development environment) on VirtualBox including Docker Registry, Taiga, GitLab, Drone CI, and SonarQube;
 4. Have had hands-on experience authoring code to include authoring and running automated tests in a CICD pipeline all under Configuration Management to ensure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected;
 5. Have had hands-on experience with 
-    1. using Infrastructure as Code (IaC) in Vagrant and Ansible; 
-    2. creating and using Kanban board in Taiga; 
-    3. code configuration in git and GitLab; 
-    4. authoring code in Go; 
-    5. using style checkers and linters; 
-    6. authoring a Makefile; 
-    7. various commands in Docker (e.g., building a container image, pushing a container into a registry, creating and running a container); 
-    8. authoring a pipeline for Drone CI; 
-    9. using Sonar Scanner CLI to perform static analysis; 
-    10. authoring security test in InSpec; (k) author an automated functional test in Selenium; 
-    11. authoring a dynamic security test in OWASP Zap; and 
-    12. using container platform to author and scale services;
+    i. using Infrastructure as Code (IaC) in Vagrant and Ansible; 
+    ii. creating and using Kanban board in Taiga; 
+    iii. code configuration in git and GitLab; 
+    iv. authoring code in Go; 
+    v. using style checkers and linters; 
+    vi. authoring a Makefile; 
+    vii. various commands in Docker (e.g., building a container image, pushing a container into a registry, creating and running a container); 
+    viii. authoring a pipeline for Drone CI; 
+    ix. using Sonar Scanner CLI to perform static analysis; 
+    x. authoring security test in InSpec; (k) author an automated functional test in Selenium; 
+    xi. authoring a dynamic security test in OWASP Zap; and 
+    xii. using container platform to author and scale services;
 6. Have had hands-on experience authoring code to include authoring and running automated tests in a CICD pipeline all under Configuration Management to ensure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected.
 
 We will be spending most of the course hands-on working with the tools and in the Unix command line making methods and repeated practices of DevOps happen, so as to grow an understanding of how DevOps actually works. Although, not necessary I would encourage you to pick up a free PDF of [The Linux Command Line by William Shotts](http://linuxcommand.org/tlcl.php) if you are no familiar wit the Linux command line.
