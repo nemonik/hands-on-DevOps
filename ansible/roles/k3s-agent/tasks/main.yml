@@ -24,12 +24,17 @@
 
     - name: ensure firewalld is masked
       become: yes
-      shell:  systemctl mask firewalld
+      shell: systemctl mask firewalld
 
     - name: ensure iptables-services is installed
       become: yes
       yum:
         name: "{{ packages }}"
+        disablerepo: "epel"
+      retries: "{{ default_retries }}"
+      delay: "{{ default_delay }}"
+      register: result
+      until: result is succeeded
       vars:
         packages:
         - iptables-services
@@ -42,10 +47,10 @@
         enabled: yes
         state: started
 
-    - name: ensure persistent changes to the boot loader
-      become: yes
-      shell: |
-        grubby --args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
+#    - name: ensure persistent changes to the boot loader
+#      become: yes
+#      shell: |
+#        grubby --args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
 
     - name: clear iptables rules left over from firewalld
       become: yes
@@ -74,6 +79,11 @@
   become: yes
   yum:
     name: "{{ packages }}"
+    disablerepo: "epel"
+  retries: "{{ default_retries }}"
+  delay: "{{ default_delay }}"
+  register: result
+  until: result is succeeded
   vars:
     packages:
     - container-selinux

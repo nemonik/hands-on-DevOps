@@ -16,25 +16,36 @@ module ConfigurationVars
     # The network block the cluster and apps will be in
     network_prefix: "192.168.0",
 
+#    # Add OpenEBS drives ('yes'/'no')
+#    openebs_drives: 'yes',
+    openebs_drives: 'no',
+
+    # Sets the OpenEBS drive size in GB
+    openebs_drive_size_in_gb: 20,
+
+    # Provision and configure development vagrant ('yes'/'no')
+#    create_development: 'no',
+    create_development: 'yes',
+
     # The number of nodes to provision the Kubernetes cluster. One will be a master.
-#    nodes: 2,
+#    nodes: 3,
     nodes: 1,
 
     # The Vagrant box to base our DevOps box on.  Pick just one.
 
-    base_box: 'centos/7',
-    base_box_version: '1905.1',
+#    base_box: 'centos/7',
+#    base_box_version: '1905.1',
 
 #    base_box: 'geerlingguy/centos7',
 #    base_box_version: '1.2.22',
 
-#    base_box: 'ubuntu/bionic64',
-#    base_box_version: '20200304.0.0',
+    base_box: 'ubuntu/bionic64',
+    base_box_version: '20200304.0.0',
 
 #    base_box: 'nemonik/alpine310',
 #    base_box_version: '0',
 
-    ansible_version: '2.9.4',
+    ansible_version: '2.9.9',
 
     default_retries: '60',
     default_delay: '10',
@@ -43,12 +54,13 @@ module ConfigurationVars
     docker_retries: '60',
     docker_delay: '10',
 
-    k3s_version: 'v1.17.4+k3s1',
+    k3s_version: 'v1.17.5+k3s1',
     k3s_cluster_secret: 'kluster_secret',
 
     kubectl_version: 'v1.17.0',
     kubectl_checksum: 'sha256:6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c',
 
+    kubernetes_dashboard: 'yes',
     kubernetes_dashboard_version: 'v2.0.0-beta8',
 
     traefik_version: '1.7.24',

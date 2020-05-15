@@ -8,7 +8,8 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- set_fact:
+- name: initialize images fact
+  set_fact:
     images:
       - { repository: 'rancher/pause', tag: '' }
       - { repository: 'coredns/coredns', tag: '' }
@@ -19,8 +20,28 @@
       - { repository: 'traefik', tag: "{{ traefik_version }}" }
       - { repository: 'busybox', tag: '' }
       - { repository: 'sameersbn/postgresql', tag: '10-2' }
+
+- name: initialize kubernetes_dashboard_images fact
+  set_fact:
+    kubernetes_dashboard_images:
       - { repository: 'kubernetesui/dashboard', tag: "{{ kubernetes_dashboard_version }}" }
       - { repository: 'kubernetesui/metrics-scraper', tag: 'v1.0.1' }
+
+- name: add kubernetes dashboard images to images fact, when kubernetes_dashboard = 'yes'
+  block:
+  - name: initialize kubernetes_dashboard_images fact
+    set_fact:
+      kubernetes_dashboard_images:
+        - { repository: 'kubernetesui/dashboard', tag: "{{ kubernetes_dashboard_version }}" }
+        - { repository: 'kubernetesui/metrics-scraper', tag: 'v1.0.1' }
+
+  - name: add kubernetes_dashboard_images images to images fact
+    set_fact: 
+      images: "{{ images + kubernetes_dashboard_images }}"
+  when:
+    - kubernetes_dashboard == 'yes'
+  tags:
+    - k3s-server
 
 - name: load {{ images }} from cache
   include_tasks: retrieve_container_image.yml
@@ -44,16 +65,21 @@
 
     - name: ensure firewalld is masked
       become: yes
-      shell:  systemctl mask firewalld
+      shell: systemctl mask firewalld
 
     - name: ensure iptables-services is installed
       become: yes
       yum:
         name: "{{ packages }}"
+        disablerepo: "epel"
+      retries: "{{ default_retries }}"
+      delay: "{{ default_delay }}"
+      register: result
+      until: result is succeeded
       vars:
         packages:
-        - iptables-services
-        - policycoreutils-python
+          - iptables-services
+          - policycoreutils-python
 
     - name: ensure iptables is running
       become: yes
@@ -62,10 +88,10 @@
         enabled: yes
         state: started
 
-    - name: ensure persistent changes to the boot loader
-      become: yes
-      shell: |
-        grubby --args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
+#    - name: ensure persistent changes to the boot loader
+#      become: yes
+#      shell: |
+#        grubby --args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
 
     - name: clear iptables rules left over from firewalld
       become: yes
@@ -94,11 +120,17 @@
   become: yes
   yum:
     name: "{{ packages }}"
+    disablerepo: "epel"
+  retries: "{{ default_retries }}"
+  delay: "{{ default_delay }}"
+  register: result
+  until: result is succeeded
   vars:
     packages:
-    - container-selinux
-    - selinux-policy-base
-    - https://rpm.rancher.io/k3s-selinux-0.1.1-rc1.el7.noarch.rpm
+      - container-selinux
+      - selinux-policy-base
+      - https://rpm.rancher.io/k3s-selinux-0.1.1-rc1.el7.noarch.rpm
+
   when:
     - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version == '7'
@@ -310,7 +342,7 @@
     - k3s-server
     - traefik
 
-- name: ensure Kubernetes Dashboard is installed and running
+- name: ensure Kubernetes Dashboard is installed and running, when kubernetes_dashboard = 'yes'
   block:
   - name: ensure /home/{{ ansible_user_id }}/kubernetes-dashboard path exists
     file:
@@ -366,7 +398,9 @@
     register: admin_password_results
 
   - debug:
-      msg: The Kubernetes dashbaord should now be accessible at http://{{ ipaddr.stdout }}:6443/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy and authenticate with token = "{{ token_results.stdout }}".  The user name is "admin" and password is "{{ admin_password_results.stdout }}".
+      msg: The Kubernetes dashboard should now be accessible at http://{{ ipaddr.stdout }}:6443/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy and authenticate with token = "{{ token_results.stdout }}".  The user name is "admin" and password is "{{ admin_password_results.stdout }}".
+  when:
+    - kubernetes_dashboard == 'yes'
   tags:
     - k3s-server
     - kubernetes-dashbaord

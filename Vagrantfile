@@ -278,6 +278,22 @@ Vagrant.configure("2") do |config|
           virtualbox.memory = 2048
           virtualbox.cpus = 2
         end
+
+        if (ConfigurationVars::VARS[:openebs_drives].downcase == 'yes') then # create OpenEBS drives on each node
+
+          openebs_disk = "./#{hostname}_openebs_disk.vdi"
+
+          # Add a second drive for OpenEBS
+          unless File.exist?(openebs_disk)
+            virtualbox.customize ['createmedium', '--filename', openebs_disk, '--size', ConfigurationVars::VARS[:openebs_drive_size_in_gb] * 1024]
+          end
+
+          # the value of storage_system_bus depends on your platform
+          storage_system_bus = "IDE" 
+
+          # provisions the drive
+          virtualbox.customize ['storageattach', :id, '--storagectl', storage_system_bus, '--port', 1, '--device', 0, '--type', 'hdd', '--medium', openebs_disk]
+        end
       end
 
       # Configure via shell and Ansible
@@ -314,47 +330,49 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define 'development' do |vagrant|
-    vagrant.vm.network 'private_network', ip: "#{ ConfigurationVars::VARS[:network_prefix] }.9"
-    vagrant.vm.hostname = 'development'
+  if (ConfigurationVars::VARS[:create_development].downcase == 'yes') then # create development vagrant
+    config.vm.define 'development' do |vagrant|
+      vagrant.vm.network 'private_network', ip: "#{ ConfigurationVars::VARS[:network_prefix] }.9"
+      vagrant.vm.hostname = 'development'
 
-    vagrant.vm.provider :virtualbox do |virtualbox|
-      virtualbox.name = "Hands-on DevOps class - #{os} - #{vagrant.vm.hostname}"
-      virtualbox.gui = false
+      vagrant.vm.provider :virtualbox do |virtualbox|
+        virtualbox.name = "Hands-on DevOps class - #{os} - #{vagrant.vm.hostname}"
+        virtualbox.gui = false
 
-      virtualbox.customize ['modifyvm', :id, '--audio', 'none']
-      virtualbox.customize ['modifyvm', :id, '--nic1', 'nat']
-      virtualbox.customize ['modifyvm', :id, '--cableconnected1', 'on']
-      virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        virtualbox.customize ['modifyvm', :id, '--audio', 'none']
+        virtualbox.customize ['modifyvm', :id, '--nic1', 'nat']
+        virtualbox.customize ['modifyvm', :id, '--cableconnected1', 'on']
+        virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
 
-      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-interval", 10000 ]
-      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-min-adjust", 100 ]
-      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-on-restore", 1 ]
-      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-start", 1 ]
-      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-interval", 10000 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-min-adjust", 100 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-on-restore", 1 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-start", 1 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
 
-      virtualbox.memory = 2048
-      virtualbox.cpus = 2
-    end
+        virtualbox.memory = 2048
+        virtualbox.cpus = 2
+      end
 
-    developments_root_cached = root_cached_template.gsub! /TYPE/, 'developments'
-    developments_user_cached = user_cached_template.gsub! /TYPE/, 'developments'
+      developments_root_cached = root_cached_template.gsub! /TYPE/, 'developments'
+      developments_user_cached = user_cached_template.gsub! /TYPE/, 'developments'
 
-    # install root user cached content
-    vagrant.vm.provision 'root_cached_content', type: :shell, privileged: true, inline: "#{developments_root_cached}"
+      # install root user cached content
+      vagrant.vm.provision 'root_cached_content', type: :shell, privileged: true, inline: "#{developments_root_cached}"
 
-    # install user cached content
-    vagrant.vm.provision 'user_cached_content', type: :shell,  privileged: false, inline: "#{developments_user_cached}"
+      # install user cached content
+      vagrant.vm.provision 'user_cached_content', type: :shell,  privileged: false, inline: "#{developments_user_cached}"
 
-    vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
-      echo Configuring development node...
+      vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
+        echo Configuring development node...
 
-      #{install_secure_key}
+        #{install_secure_key}
  
-      echo Execute ansible-playbook...
-      cd /vagrant
-      PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
-    SHELL
+        echo Execute ansible-playbook...
+        cd /vagrant
+        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
+      SHELL
+    end
   end
 end
