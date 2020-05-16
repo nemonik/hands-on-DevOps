@@ -1,0 +1,28 @@
+---
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: ensure iscsi related packages are installed, if CentOS 7
+  become: yes
+  yum:
+    name: iscsi-initiator-utils
+  retries: "{{ default_retries }}"
+  delay: "{{ default_delay }}"
+  register: result
+  until: result is succeeded
+  tags:
+    - iscsi
+
+- name: ensure iscsid service is enabled and started, if CentOS 7
+  become: yes
+  service:
+    name: iscsid
+    enabled: yes
+    state: started
+  tags:
+    - iscsi

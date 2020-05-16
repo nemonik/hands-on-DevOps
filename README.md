@@ -2043,7 +2043,7 @@ The following section of code will call the `build_box.sh` shell script found in
   end
 ```
 
-Vagrant needs a image to start from in much the same reason one builds an Amazon EC2 off an Amazon Machine Image (AMI) or VMWare Image.  Vagrant calls its images _Vagrant boxes_. One can create a Vagrant box via the vagrant command line interface (CLI) or alternatively one can use Hashicorp's Packer cli. The class use existing `centos/7` and `ubuntu/bionic` Vagrant boxes to create a box ontop of which the class vagrants (VMs) are built, but if you selected `nemonik/alpine310` as your `:base_box` in the `ConfigurationVars` and have istalled the `packer` cli packer will be used to create `nemonik/alpine310` base box and then take this box and use it create a box via Vagrant ontop of which the vagrants will be created.  
+Vagrant needs a image to start from in much the same reason one builds an Amazon EC2 off an Amazon Machine Image (AMI) or VMWare Image.  Vagrant calls its images _Vagrant boxes_. One can create a Vagrant box via the vagrant command line interface (CLI) or alternatively one can use Hashicorp's Packer cli. The class use existing `centos/7` and `ubuntu/bionic` Vagrant boxes to create a box ontop of which the class vagrants (VMs) are built, but if you selected `nemonik/alpine310` as your `:base_box` in the `ConfigurationVars` and have istalled the `packer` cli packer will be used to create `nemonik/alpine310` base box and then take this box and use it to create a box via Vagrant ontop of which the vagrants will be created.  
 
 ##### 8.5.2.3.9. Configuring the Kubernetes cluster vagrant(s)
 
