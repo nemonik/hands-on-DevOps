@@ -33,9 +33,7 @@
 - name: install epel-release, if CentOS 7
   become: yes
   yum:
-    name: epel-release
-    state: latest
-    state: latest
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
   retries: "{{ default_retries }}"
   delay: "{{ default_delay }}"
   register: result
@@ -46,11 +44,23 @@
 - name: ensure development related packages are installed, if CentOS 7
   become: yes
   yum:
-    name: ['sudo', 'unzip', 'wget', 'lynx', 'nano', 'vim', 'emacs', 'bind-utils', 'bash-completion', 'bash-completion-extras']
+    name: "{{ packages }}"
   retries: "{{ default_retries }}"
   delay: "{{ default_delay }}"
   register: result
   until: result is succeeded
+  vars:
+    packages:
+      - sudo
+      - unzip
+      - wget
+      - lynx
+      - nano
+      - vim
+      - emacs
+      - bind-utils
+      - bash-completion
+      - bash-completion-extras
   tags:
     - common
 
@@ -62,19 +72,18 @@
       name: git
       state: absent
 
-  - name: ensure iuscommunity.org repo is installed.
+  - name: ensure IUS repository repo is installed.
     yum:
-      name: https://centos7.iuscommunity.org/ius-release.rpm
+      name: https://repo.ius.io/ius-release-el7.rpm
       disable_gpg_check: yes
-      state: present
     retries: "{{ default_retries }}"
     delay: "{{ default_delay }}"
     register: result
     until: result is succeeded
 
-  - name: ensure git2u is installed
+  - name: ensure git-core is installed
     yum:
-      name: git2u
+      name: git-core
       state: latest
     retries: "{{ default_retries }}"
     delay: "{{ default_delay }}"

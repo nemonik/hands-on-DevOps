@@ -16,17 +16,21 @@
 
 - name: include centos_7.yml, when CentOS 7
   include: centos_7.yml
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+  when: 
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_major_version == '7'
   tags: common
 
 - name: include ubunutu_bionic.yml, when Ubuntu-bionic
   include: ubuntu_bionic.yml
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+  when: 
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_release == 'bionic'
   tags: common
 
 - name: include alpine_310.yml, when Alpine 3.10
   include: alpine_310.yml
-  when: ansible_distribution == 'Alpine' and '3.10' in ansible_distribution_version
+  when:  ( ansible_distribution == 'Alpine' ) and ( '3.10' in ansible_distribution_version )
   tags: common
 
 # https://docs.sonarqube.org/latest/requirements/requirements/
