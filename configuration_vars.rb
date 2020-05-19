@@ -75,11 +75,14 @@ module ConfigurationVars
     docker_compose_version: '1.24.1',
     docker_compose_pip_version: '1.25.0rc2',
 
+    helm_cli_version: '3.2.1',
+    helm_cli_checksum: '018f9908cb950701a5d59e757653a790c66d8eda288625dbb185354ca6f41f6b',
+
     registry_version: '2.7.1',
     registry_host: '192.168.0.201',
     registry_port: '5000',
 
-    gitlab_version: '12.7.0',
+    gitlab_version: '12.10.6',
     gitlab_host: '192.168.0.202',
     gitlab_port: '80',
     gitlab_ssh_port: '10022',

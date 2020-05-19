@@ -1,0 +1,11 @@
+---
+# tasks file for helm-cli
+
+- name: Ensure Helm {{ helm_cli_version }} CLI is installed
+  become: yes
+  get_url:
+    url: https://get.helm.sh/helm-v{{ helm_cli_version }}-linux-amd64.tar.gz
+    dest: /usr/local/bin
+    checksum: sha256:{{ helm_cli_checksum }}
+    mode: '0755'
+

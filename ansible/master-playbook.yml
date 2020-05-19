@@ -16,4 +16,5 @@
     - docker-registry
     - gitlab
     - drone
+    - helm-cli
     - create-cache

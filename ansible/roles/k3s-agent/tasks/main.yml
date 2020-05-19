@@ -47,11 +47,6 @@
         enabled: yes
         state: started
 
-#    - name: ensure persistent changes to the boot loader
-#      become: yes
-#      shell: |
-#        grubby --args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
-
     - name: clear iptables rules left over from firewalld
       become: yes
       shell: |

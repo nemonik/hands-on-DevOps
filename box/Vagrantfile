@@ -266,6 +266,9 @@ Vagrant.configure("2") do |config|
 
       centos/7)
         yum clean all
+        yum clean metadata 
+        yum clean dbcache
+        yum makecache
         ;;
 
       *)

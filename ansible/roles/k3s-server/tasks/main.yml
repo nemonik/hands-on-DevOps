@@ -18,7 +18,6 @@
       - { repository: 'metallb/speaker', tag: "{{ metallb_version }}" }
       - { repository: 'metallb/controller', tag: "{{ metallb_version }}" }
       - { repository: 'traefik', tag: "{{ traefik_version }}" }
-      - { repository: 'busybox', tag: '' }
       - { repository: 'sameersbn/postgresql', tag: '10-2' }
 
 - name: initialize kubernetes_dashboard_images fact
@@ -87,11 +86,6 @@
         name: iptables
         enabled: yes
         state: started
-
-#    - name: ensure persistent changes to the boot loader
-#      become: yes
-#      shell: |
-#        grubby --args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
 
     - name: clear iptables rules left over from firewalld
       become: yes

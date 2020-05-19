@@ -13,4 +13,5 @@
   remote_user: vagrant
   roles:
     - common
+    - iscsi
     - docker
