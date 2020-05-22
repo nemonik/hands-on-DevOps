@@ -821,7 +821,7 @@ If you're doing this class on your MITRE Life cycle running OS X while on the MI
 . ./set_env.sh no_proxy
 ```
 
-If you have no HTTP proxy and no SSL inspection to be concerned about, the alternative is to execute `unset.sh` BASH script to unset all these values:
+If you have no HTTP proxy and no SSL inspection to be concerned about (such as running the class off of MITRE's corporate network), the alternative is to execute `unset.sh` BASH script to unset all these values:
 
 ```bash
 #!/usr/bin/env bash
