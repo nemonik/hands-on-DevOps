@@ -21,7 +21,7 @@ module ConfigurationVars
     openebs_drives: 'no',
 
     # Sets the OpenEBS drive size in GB
-    openebs_drive_size_in_gb: 20,
+    openebs_drive_size_in_gb: 100,
 
     # Provision and configure development vagrant ('yes'/'no')
 #    create_development: 'no',
@@ -33,14 +33,14 @@ module ConfigurationVars
 
     # The Vagrant box to base our DevOps box on.  Pick just one.
 
-#    base_box: 'centos/7',
-#    base_box_version: '1905.1',
+    base_box: 'centos/7',
+    base_box_version: '1905.1',
 
 #    base_box: 'geerlingguy/centos7',
 #    base_box_version: '1.2.22',
 
-    base_box: 'ubuntu/bionic64',
-    base_box_version: '20200304.0.0',
+#    base_box: 'ubuntu/bionic64',
+#    base_box_version: '20200304.0.0',
 
 #    base_box: 'nemonik/alpine310',
 #    base_box_version: '0',
