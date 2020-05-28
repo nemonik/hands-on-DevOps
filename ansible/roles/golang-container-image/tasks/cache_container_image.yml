@@ -17,11 +17,7 @@
   shell: |
     tempfile=$(mktemp /tmp/nemonik.XXXXXXXXXX)
 
-    function cleanup {
-      rm -f "$tempfile"
-    }
- 
-    trap cleanup EXIT
+    trap "{ rm -f $tempfile; }" EXIT
 
     image="{{ item.repository }}"
 
@@ -54,7 +50,7 @@
       if [ ! -f "/vagrant/cache/images/${archive_name}.tar" ]; then
         docker save ${image_in_docker_storage} > $tempfile
         if [[ "windows" == "{{ host_os }}" ]]; then
-          sudo su
+          sudo su;
         fi
         cp -f $tempfile /vagrant/cache/images/${archive_name}.tar
       else 
