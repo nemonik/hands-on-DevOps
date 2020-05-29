@@ -1,0 +1,15 @@
+FROM alpine:3.10.2 as alpine
+
+{% if CA_CERTIFICATES %}
+# Update CA Certs
+RUN apk add -U --no-cache ca-certificates wget
+
+RUN cd /usr/local/share/ca-certificates/ && {% for ca in CA_CERTIFICATES %} wget {{ ca }} &&{% endfor %} update-ca-certificates
+{% endif %}
+
+FROM drone/drone-runner-docker:{{ drone_runner_docker_version }}
+MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
+
+{% if CA_CERTIFICATES%}
+COPY --from=alpine /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+{% endif %}
