@@ -99,7 +99,7 @@
       body_format: form-urlencoded
       body:
       - [ name, "Drone CI" ]
-      - [ redirect_uri, "http://{{ drone_host }}:{{ drone_port }}/login" ]
+      - [ redirect_uri, "http://{{ drone_host }}/login" ]
       - [ scopes, "" ]
       return_content: yes
       status_code: 201

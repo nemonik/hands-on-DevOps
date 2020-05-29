@@ -15,6 +15,10 @@
 
 - name: save {{ item }} container image to cache 
   shell: |
+    tempfile=$(mktemp /tmp/nemonik.XXXXXXXXXX)
+
+    trap "{ rm -f $tempfile; }" EXIT
+
     image="{{ item.repository }}"
 
     if [ ! -z "{{ item.tag }}" ]; then
@@ -44,13 +48,11 @@
       archive_name=${archive_name/:/%3A}
 
       if [ ! -f "/vagrant/cache/images/${archive_name}.tar" ]; then
-        tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
         docker save ${image_in_docker_storage} > $tempfile
         if [[ "windows" == "{{ host_os }}" ]]; then
-          sudo su
+          sudo su;
         fi
         cp -f $tempfile /vagrant/cache/images/${archive_name}.tar
-        rm -f $tempfile
       else 
         echo "${image_in_docker_storage} is already cached."
       fi

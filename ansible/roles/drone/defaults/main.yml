@@ -1,6 +1,5 @@
 ---
 # defaults file for drone
 drone_host: "{{ drone_host }}"
-drone_port: "{{ drone_port }}"
 gitlab_host: "{{ gitlab_host }}"
 gitlab_port: "{{ gitlab_port }}"

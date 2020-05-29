@@ -28,7 +28,8 @@ services:
            {{ registry_host }}:{{ registry_port }}/nemonik/drone-runner-docker:{{ drone_runner_docker_version }}
         restart: always
         environment:
-           - DRONE_RPC_SERVER=http://{{ drone_host }}:{{ drone_port }}
+           - DRONE_RPC_PROTOCOL=http
+           - DRONE_RPC_HOST={{ drone_host }}
            - DRONE_RPC_SECRET=shared_secret
            - DRONE_RUNNER_CAPACITY=1
            - DRONE_DEBUG_PRETTY=true
@@ -67,7 +68,7 @@ services:
             soft: "262144"
             hard: "262144"
         ports:
-            - {{ drone_port }}:80
+            - 80:80
         volumes:
             - ./volumes/drone-server/var/lib/drone:/var/lib/drone:Z
         depends_on:
