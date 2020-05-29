@@ -88,8 +88,8 @@ module ConfigurationVars
     gitlab_ssh_port: '10022',
     gitlab_user: 'root',
 
-    drone_version: '1.6.5',
-    drone_agent_version: '1.6.2',
+    drone_version: '1.7.0',
+    drone_runner_docker_version: '1.3.0',
     drone_host: '192.168.0.10',
     drone_port: '80',
 

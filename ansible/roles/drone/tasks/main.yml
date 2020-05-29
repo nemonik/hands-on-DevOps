@@ -13,7 +13,8 @@
     images:
       - { repository: 'sameersbn/postgresql', tag: '10-2' }
       - { repository: 'alpine', tag: '3.10.2' }
-      - { repository: 'drone/agent', tag: '{{ drone_agent_version }}' }
+#      - { repository: 'drone/agent', tag: '{{ drone_agent_version }}' }
+      - { repository: 'drone/drone-runner-docker', tag: '{{ drone_runner_docker_version }}' }
       - { repository: 'drone/drone', tag: '{{ drone_version }}' }
       - { repository: 'drone/git', tag: 'latest' }
       - { repository: 'plugins/docker', tag: 'latest' }
@@ -25,7 +26,7 @@
     state: directory
   with_items:
     - { path: "/home/{{ ansible_user_id }}/drone/drone-server" }
-    - { path: "/home/{{ ansible_user_id }}/drone/drone-agent" }
+    - { path: "/home/{{ ansible_user_id }}/drone/drone-runner-docker" }
   tags:
     - drone 
 
@@ -154,8 +155,8 @@
     - { src: "templates/docker-compose.yml.j2", dest: "/home/{{ ansible_user_id }}/drone/docker-compose.yml" }
     - { src: "templates/drone-server/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-server/Dockerfile" }
     - { src: "templates/drone-server/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-server/dockerfile_build.sh" }
-    - { src: "templates/drone-agent/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-agent/Dockerfile" }
-    - { src: "templates/drone-agent/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-agent/dockerfile_build.sh" }
+    - { src: "templates/drone-runner-docker/Dockerfile.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-runner-docker/Dockerfile" }
+    - { src: "templates/drone-runner-docker/dockerfile_build.sh.j2", dest: "/home/{{ ansible_user_id }}/drone/drone-runner-docker/dockerfile_build.sh" }
   tags:
     - drone 
 
@@ -167,7 +168,7 @@
     group: "{{ ansible_user_id }}"
   with_items:
     - { path: "/home/{{ ansible_user_id }}/drone/drone-server/dockerfile_build.sh" }
-    - { path: "/home/{{ ansible_user_id }}/drone/drone-agent/dockerfile_build.sh" }
+    - { path: "/home/{{ ansible_user_id }}/drone/drone-runner-docker/dockerfile_build.sh" }
   tags:
     - drone 
 
@@ -198,7 +199,7 @@
     until: result is succeeded
     loop: "{{ images }}"
 
-  - name: build nemonik/agent:{{ drone_version }} and nemonik/drone:{{ drone_version }} docker images
+  - name: build nemonik/drone-runner-docker:{{ drone_runner_docker_version }} and nemonik/drone:{{ drone_version }} docker images
     docker_image:
       name: "{{ item.name }}"
       tag: "{{ item.version }}"
@@ -216,7 +217,7 @@
           no_proxy: "{{ no_proxy|default('') }}"
       push: yes
     with_items:
-      - { path: "/home/{{ ansible_user_id }}/drone/drone-agent", name: 'nemonik/agent', version: "{{ drone_agent_version }}" }
+      - { path: "/home/{{ ansible_user_id }}/drone/drone-runner-docker", name: 'nemonik/drone-runner-docker', version: "{{ drone_runner_docker_version }}" }
       - { path: "/home/{{ ansible_user_id }}/drone/drone-server", name: 'nemonik/drone', version: "{{ drone_version }}" }
     retries: "{{ docker_retries }}"
     delay: "{{ docker_delay }}"

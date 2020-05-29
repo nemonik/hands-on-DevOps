@@ -22,17 +22,17 @@ services:
         volumes:
             - ./volumes/drone-postgresql/var/lib/postgresql:/var/lib/postgresql:Z
 
-    drone-agent:
-        build: drone-agent/.
+    drone-runner-docker:
+        build: drone-runner-docker/.
         image:
-           {{ registry_host }}:{{ registry_port }}/nemonik/agent:{{ drone_agent_version }}
+           {{ registry_host }}:{{ registry_port }}/nemonik/drone-runner-docker:{{ drone_runner_docker_version }}
         restart: always
         environment:
            - DRONE_RPC_SERVER=http://{{ drone_host }}:{{ drone_port }}
            - DRONE_RPC_SECRET=shared_secret
            - DRONE_RUNNER_CAPACITY=1
            - DRONE_DEBUG_PRETTY=true
-           - DRONE_LOGS_DEBUG=true  
+           - DRONE_LOGS_DEBUG=true
         ulimits:
            nofile:
               soft: "262144"
