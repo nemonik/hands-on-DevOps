@@ -34,7 +34,8 @@ module ConfigurationVars
     # The Vagrant box to base our DevOps box on.  Pick just one.
 
     base_box: 'centos/7',
-    base_box_version: '1905.1',
+#    base_box_version: '1905.1',
+    base_box_version: '2004.01', 
 
 #    base_box: 'geerlingguy/centos7',
 #    base_box_version: '1.2.22',
@@ -91,7 +92,6 @@ module ConfigurationVars
     drone_version: '1.7.0',
     drone_runner_docker_version: '1.3.0',
     drone_host: '192.168.0.10',
-    drone_port: '80',
 
     drone_cli_version: 'v1.1.0',
 
