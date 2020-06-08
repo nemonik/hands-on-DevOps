@@ -104,6 +104,7 @@
   shell: "{{ ansible_python_version }} -m pip uninstall docker-py"
   args:
     warn: no
+  ignore_errors: yes
   tags:
     - docker
 
@@ -134,6 +135,5 @@
   shell: "{{ ansible_python_version }} -m pip install --user docker"
   args:
     warn: no
-  ignore_errors: yes 
   tags:
     - docker
