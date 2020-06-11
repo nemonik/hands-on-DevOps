@@ -38,6 +38,8 @@ services:
            nofile:
               soft: "262144"
               hard: "262144" 
+        ports:
+            - "3000"
         volumes:
            - /var/run/docker.sock:/var/run/docker.sock
         depends_on:

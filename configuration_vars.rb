@@ -1,4 +1,4 @@
-# -*- mode: ruby -*-
+#-*- mode: ruby -*-
 # vi: set ft=ruby :
 
 # Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
@@ -26,6 +26,7 @@ module ConfigurationVars
     # Provision and configure development vagrant ('yes'/'no')
 #    create_development: 'no',
     create_development: 'yes',
+    development_is_worker_node: 'yes',
 
     # The number of nodes to provision the Kubernetes cluster. One will be a master.
 #    nodes: 3,
@@ -34,7 +35,6 @@ module ConfigurationVars
     # The Vagrant box to base our DevOps box on.  Pick just one.
 
     base_box: 'centos/7',
-#    base_box_version: '1905.1',
     base_box_version: '2004.01', 
 
 #    base_box: 'geerlingguy/centos7',
@@ -64,11 +64,13 @@ module ConfigurationVars
     kubernetes_dashboard: 'yes',
     kubernetes_dashboard_version: 'v2.0.0-beta8',
 
+    traefik: 'yes',
     traefik_version: '1.7.24',
     traefik_http_port: '80',
     traefik_admin_port: '8080',
     traefik_host: '192.168.0.200',
 
+    metallb: 'yes',
     metallb_version: 'v0.8.3',
 
     kompose_version: '1.18.0',
@@ -79,30 +81,36 @@ module ConfigurationVars
     helm_cli_version: '3.2.1',
     helm_cli_checksum: '018f9908cb950701a5d59e757653a790c66d8eda288625dbb185354ca6f41f6b',
 
+    registry: 'yes',
     registry_version: '2.7.1',
     registry_host: '192.168.0.201',
     registry_port: '5000',
 
+    gitlab: 'yes',
     gitlab_version: '12.10.6',
     gitlab_host: '192.168.0.202',
     gitlab_port: '80',
     gitlab_ssh_port: '10022',
     gitlab_user: 'root',
 
+    drone: 'yes',
     drone_version: '1.7.0',
     drone_runner_docker_version: '1.3.0',
     drone_host: '192.168.0.10',
 
     drone_cli_version: 'v1.1.0',
 
+    plantuml_server: 'yes',
     plantuml_server_version: 'latest',
     plantuml_host: '192.168.0.203',
     plantuml_port: '80',
 
+    taiga: 'yes',
     taiga_version: 'latest',
     taiga_host: '192.168.0.204',
     taiga_port: '80',
 
+    sonarqube: 'yes',
     sonarqube_version: '7.9.1-community',
     sonarqube_host: '192.168.0.205',
     sonarqube_port: '9000',
@@ -112,14 +120,22 @@ module ConfigurationVars
 
     inspec_version: '4.18.39',
 
+    python_container_image: 'yes', 
     python_version: '2.7.17',
 
+    golang_container_image: 'yes',
+    golang_sonarqube_scanner_image: 'yes',
     golang_version: '1.13.7',  
 
     selenium_standalone_chrome_version: '3.141',
+
+    standalone_firefox_container_image: 'yes',
     selenium_standalone_firefox_version: '3.141',
 
+    owasp_zap2docker_stable_image: 'yes',
     zap2docker_stable_version: '2.8.0',
+
+    create_cache: 'yes',
 
     host_os: (
       host_os = RbConfig::CONFIG['host_os']

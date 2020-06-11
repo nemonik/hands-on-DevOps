@@ -8,12 +8,11 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-
-- set_fact:
+- name: initialize images fact
+  set_fact:
     images:
       - { repository: 'sameersbn/postgresql', tag: '10-2' }
       - { repository: 'alpine', tag: '3.10.2' }
-#      - { repository: 'drone/agent', tag: '{{ drone_agent_version }}' }
       - { repository: 'drone/drone-runner-docker', tag: '{{ drone_runner_docker_version }}' }
       - { repository: 'drone/drone', tag: '{{ drone_version }}' }
       - { repository: 'drone/git', tag: 'latest' }
@@ -105,11 +104,12 @@
       status_code: 201
       headers:
         PRIVATE-TOKEN: "{{ gitlab_personal_access_token }}"
-    register: drone
+    register: drone_integration
 
-  - set_fact:
-      drone_gitlab_client_id: "{{ drone.json.application_id }}"
-      drone_gitlab_client_secret: "{{ drone.json.secret }}"
+  - name: initialize drone_gitlab_client_id and drone_gitlab_client_secret from {{ drone_integration.json }}
+    set_fact:
+      drone_gitlab_client_id: "{{ drone_integration.json.application_id }}"
+      drone_gitlab_client_secret: "{{ drone_integration.json.secret }}"
   tags:
     - drone
 
@@ -239,4 +239,3 @@
   loop: "{{ images }}"
   tags:
     - drone
-

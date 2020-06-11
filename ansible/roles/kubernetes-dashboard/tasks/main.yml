@@ -1,0 +1,89 @@
+---
+# tasks file for kubernetes-dashboard
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: initialize images fact
+  set_fact:
+    images:
+      - { repository: 'kubernetesui/dashboard', tag: "{{ kubernetes_dashboard_version }}" }
+      - { repository: 'kubernetesui/metrics-scraper', tag: 'v1.0.1' }
+  tags:
+    - kubernetes-dashboard
+
+- name: load {{ images }} from cache
+  include_tasks: retrieve_container_image.yml
+  loop: "{{ images }}"
+  tags:
+    - kubernetes-dashboard
+
+- name: ensure Kubernetes Dashboard is installed and running, when kubernetes_dashboard = 'yes'
+  block:
+  - name: ensure /home/{{ ansible_user_id }}/kubernetes-dashboard path exists
+    file:
+      path: /home/{{ ansible_user_id }}/kubernetes-dashboard
+      state: directory
+
+  - name: template in Kubernetes Dashboard manifest into /home/{{ ansible_user_id }}/kubernetes-dashboard/
+    template:
+      src: templates/kubernetes-dashboard.yml.j2
+      dest: /home/{{ ansible_user_id }}/kubernetes-dashboard/kubernetes-dashboard.yml
+      force: yes
+  
+  - name: emplace Kubernetes Dashboard admin manifest
+    copy:
+      src: files/vagrant-user.yml
+      dest: /home/{{ ansible_user_id }}/kubernetes-dashboard/
+
+  - name: is kubernetes-dashboard running?
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml -n kube-system get pod | grep kubernetes-dashboard | grep Running | wc -l
+    register: result
+
+  - name: spin up kubernetes-dashboard
+    shell: | 
+      kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f kubernetes-dashboard.yml
+      kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f vagrant-user.yml
+    args:
+      chdir: /home/{{ ansible_user_id }}/kubernetes-dashboard      
+    when: result.stdout == '0'
+
+  - name: wait for kubernetes-dashboard to spin up
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml -n kubernetes-dashboard get pod | grep Running
+    retries: 60
+    delay: 5
+    register: retry_result
+    until: retry_result is succeeded
+    when: result.stdout == '0'
+
+  - name: emplace get_token.sh bash script
+    copy:
+      src: files/get_token.sh
+      dest: /home/{{ ansible_user_id }}/kubernetes-dashboard/
+      mode: u=rwx,g=r,o=r
+   
+  - name: grab kubernetes vagrant user's token to authenticate into Kubernetes Dashboard
+    shell: |
+      SECRET=$(kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml --namespace=kube-system get secret | grep vagrant | awk '{print $1}')
+      TOKEN=$(kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml --namespace=kube-system get secret $SECRET -o jsonpath='{.data.token}' | base64 --decode)
+      echo $TOKEN
+    register: token_results
+
+  - name: grab kubernetes admin password 
+    shell: cat kubeconfig.yml | grep "password" | cut -d ":" -f 2
+    register: admin_password_results
+
+  - debug:
+      msg: The Kubernetes dashboard should now be accessible at http://{{ ipaddr.stdout }}:6443/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy and authenticate with token = "{{ token_results.stdout }}".  The user name is "admin" and password is "{{ admin_password_results.stdout }}".
+  tags:
+    - kubernetes-dashbaord
+
+- name: save {{ images }} to cache
+  include_tasks: cache_container_image.yml
+  loop: "{{ images }}"
+  tags:
+    - kubernetes-dashboard

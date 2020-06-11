@@ -1,0 +1,63 @@
+---
+# tasks file for cache_container_images
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: create /vagrant/cache/images, if it doesn't exist
+  file:
+    path: /vagrant/cache/images
+    state: directory
+
+- name: save {{ item }} container image to cache 
+  shell: |
+    tempfile=$(mktemp /tmp/nemonik.XXXXXXXXXX)
+
+    trap "{ rm -f $tempfile; }" EXIT
+
+    image="{{ item.repository }}"
+
+    if [ ! -z "{{ item.tag }}" ]; then
+      image="${image}:{{ item.tag }}"
+    fi
+
+    filter="{{ "{{" }}.Repository{{ "}}:{{" }}.Tag{{ "}}" }}"
+
+    retries={{ default_retries }}
+    found=false
+    image_in_docker_storage=""
+    until [  $retries == 0 ]; do
+      let retries-=1
+
+      image_in_docker_storage="$(docker image ls ${image} --format "${filter}")"
+
+      if [ ! -z "${image_in_docker_storage}" ]; then
+        found=true
+        break
+      else
+        sleep {{ default_delay }}
+      fi
+    done
+
+    if [[ "${found}" == true ]]; then
+      archive_name=${image_in_docker_storage/\//%2F}
+      archive_name=${archive_name/:/%3A}
+
+      if [ ! -f "/vagrant/cache/images/${archive_name}.tar" ]; then
+        docker save ${image_in_docker_storage} > $tempfile
+        if [[ "windows" == "{{ host_os }}" ]]; then
+          sudo su;
+        fi
+        cp -f $tempfile /vagrant/cache/images/${archive_name}.tar
+      else 
+        echo "${image_in_docker_storage} is already cached."
+      fi
+    else
+      echo "${image} not found in Docker storage."
+    fi
+  args:
+    executable: /bin/bash

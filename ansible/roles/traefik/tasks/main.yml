@@ -1,0 +1,47 @@
+---
+# tasks file for traefik
+
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <mjwalsh@nemonik.com>
+
+- name: initialize images fact
+  set_fact:
+    images:
+      - { repository: 'traefik', tag: "{{ traefik_version }}" }
+  tags:
+    - traefik
+
+- name: load {{ images }} from cache
+  include_tasks: retrieve_container_image.yml
+  loop: "{{ images }}"
+  tags:
+    - traefik
+
+- name: ensure traefik is running
+  block:
+  - name: ensure /home/{{ ansible_user_id }}/traefik exists
+    file:
+      path: /home/{{ ansible_user_id }}/traefik
+      state: directory
+
+  - name: ensure traefik.yml is in place at /home/{{ ansible_user_id }}/traefik
+    template:
+      src: templates/traefik.yml.j2
+      dest: /home/{{ ansible_user_id }}/traefik/traefik.yml
+      force: yes
+      mode: u=rw,g=r
+
+  - name: ensure traefik is running
+    shell: kubectl --kubeconfig=/home/{{ ansible_user_id }}/kubeconfig.yml apply -f /home/{{ ansible_user_id }}/traefik/traefik.yml
+  tags:
+    - traefik
+
+- name: save {{ images }} to cache
+  include_tasks: cache_container_image.yml
+  loop: "{{ images }}"
+  tags:
+    - traefik

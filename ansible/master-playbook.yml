@@ -13,8 +13,18 @@
   roles:
     - common
     - k3s-server
-    - docker-registry
-    - gitlab
-    - drone
+    - { role: metallb,
+        when: metallb == 'yes' }
+    - { role: traefik,
+        when: traefik == 'yes' }
+    - { role: kubernetes-dashboard,
+        when: kubernetes_dashboard == 'yes' }
+    - { role: docker-registry,
+        when: registry == 'yes' }
+    - { role: gitlab,
+        when: gitlab == 'yes' }
+    - { role: drone,
+        when: drone == 'yes' }
     - helm-cli
-    - create-cache
+    - { role: create-cache,
+        when: create_cache == 'yes' }

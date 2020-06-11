@@ -44,16 +44,14 @@ RUN mkdir -p /taiga/media && \
 WORKDIR /taiga
 
 RUN mkdir taiga-back && \
-        git -c http.sslVerify=false clone https://github.com/taigaio/taiga-back.git taiga-back && \
+        git -c http.sslVerify=false clone --depth 1 --branch stable https://github.com/taigaio/taiga-back.git taiga-back && \
         cd taiga-back && \
-        git checkout stable && \
         sed -i 's/git+git/git+https/g' requirements.txt && \
         pip install --no-cache-dir -r requirements.txt
 
 RUN mkdir taiga-front-dist &&  \
-        git -c http.sslVerify=false clone https://github.com/taigaio/taiga-front-dist.git taiga-front-dist && \
+        git -c http.sslVerify=false clone --depth 1 --branch stable https://github.com/taigaio/taiga-front-dist.git taiga-front-dist && \
         cd taiga-front-dist && \
-        git checkout stable && \
         npm install
 
 RUN mkdir -p /etc/nginx/conf.d

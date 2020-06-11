@@ -214,8 +214,12 @@ Vagrant.configure("2") do |config|
   config.vm.box_version = 0
 
   # nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)
-  if Vagrant::Util::Platform.windows? || Vagrant::Util::Platform.darwin?
+  if Vagrant::Util::Platform.windows? 
     config.vm.synced_folder '.', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
+  elsif Vagrant::Util::Platform.platform.include? 'darwin'
+    projectPath=File.join('/System/Volumes/Data/Users/', ENV['USER'], vagrantfilePath.split(ENV['USER']).last)
+
+    config.vm.synced_folder projectPath, '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
   else
     config.vm.synced_folder ".",  '/vagrant', type: "nfs"
   end

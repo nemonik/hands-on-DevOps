@@ -12,16 +12,28 @@
   remote_user: vagrant
   roles:
     - common
+    - { role: k3s-agent,
+        when: nodes == 1 and
+              development_is_worker_node == 'yes' }
     - kubectl
     - helm-cli
     - golang
     - golint
-    - taiga
-    - plantuml-server
-    - sonarqube
-    - golang-container-image
-    - golang-sonarqube-scanner-image
-    - python-container-image
-    - owasp-zap2docker-stable-image
-    - standalone-firefox-container-image
-    - create-cache
+    - { role: taiga,
+        when: taiga == 'yes' }
+    - { role: plantuml-server,
+        when: plantuml_server == 'yes' }
+    - { role: sonarqube,
+        when: sonarqube == 'yes' }
+    - { role: golang-container-image,
+        when: golang_container_image == 'yes' }
+    - { role: golang-sonarqube-scanner-image,
+        when: golang_sonarqube_scanner_image == 'yes' }
+    - { role: python-container-image,
+        when: python_container_image == 'yes' }
+    - { role: owasp-zap2docker-stable-image,
+        when: owasp_zap2docker_stable_image == 'yes' }
+    - { role: standalone-firefox-container-image,
+        when: standalone_firefox_container_image == 'yes' }
+    - { role: create-cache,
+        when: create_cache == 'yes' }
