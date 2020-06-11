@@ -33,6 +33,10 @@
       dest: /vagrant/cache/{{ group_names[0] }} 
       checksum: "{{ kubectl_checksum }}"
       remote_src: yes
+    retries: "{{ default_retries }}"
+    delay: "{{ default_delay }}"
+    register: result
+    until: result is succeeded
     when: kubectl_distributable.stat.exists == false
 
   - name: install kubectl to /usr/local/bin
