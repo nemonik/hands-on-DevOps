@@ -1,4 +1,4 @@
-# OS-specific
+# os-specific
 .DS_Store
 
 helloworld
@@ -7,21 +7,23 @@ helloworld-web
 *.bak
 *.back
 
-# Ansible
+# ansible
 *.retry
 cookies.txt
 # vault_pass
 hosts
-ansible/roles/httpd
 
-# Vagrant
+# ansible-galaxy installed roles
+ansible/roles/k3s-server
+
+# vagrant
 .vagrant/
 *.vdi
 *.box
 vagrant_private_key
 *.log
 
-# Cache
+# cache
 cache
 
 # box/packer-alpine310
@@ -29,5 +31,5 @@ box/packer-alpine310/cache
 box/packer-alpine310/packer_cache/
 box/packer-alpine310/isos
 
-# InSpec
+# inspec
 inspec_hellworld.json
