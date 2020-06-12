@@ -27,9 +27,9 @@ vagrant_private_key
 cache
 
 # box/packer-alpine310
-box/packer-alpine310/cache
+box/packer-alpine310/cache/
 box/packer-alpine310/packer_cache/
-box/packer-alpine310/isos
+box/packer-alpine310/isos/
 
 # inspec
 inspec_hellworld.json
