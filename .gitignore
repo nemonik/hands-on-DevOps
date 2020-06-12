@@ -17,6 +17,7 @@ hosts
 ansible/roles/k3s-server/
 ansible/roles/metallb/
 ansible/roles/traefik/
+ansible/roles/docker-registry/
 
 # vagrant
 .vagrant/
