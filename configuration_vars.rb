@@ -24,8 +24,8 @@ module ConfigurationVars
     openebs_drive_size_in_gb: 100,
 
     # Provision and configure development vagrant ('yes'/'no')
-#    create_development: 'no',
-    create_development: 'yes',
+    create_development: 'no',
+#    create_development: 'yes',
     development_is_worker_node: 'yes',
 
     # The number of nodes to provision the Kubernetes cluster. One will be a master.

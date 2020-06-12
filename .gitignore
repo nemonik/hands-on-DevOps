@@ -14,7 +14,7 @@ cookies.txt
 hosts
 
 # ansible-galaxy installed roles
-ansible/roles/k3s-server
+ansible/roles/k3s-server/
 
 # vagrant
 .vagrant/

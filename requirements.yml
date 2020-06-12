@@ -1,0 +1,7 @@
+# This is used to manage Ansible role dependences
+# http://docs.ansible.com/galaxy.html#installing-multiple-roles-from-a-file
+# Install with: `ansible-galaxy install -r requirements.yml`
+
+- name: k3s-server
+  src: https://github.com/nemonik/k3s-server-role.git
+  version: e7fda00675d2a5debba363e07189dc0db5493cb8

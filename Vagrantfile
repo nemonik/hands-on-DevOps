@@ -313,6 +313,7 @@ Vagrant.configure("2") do |config|
         vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
           echo Configuring #{hostname} via Ansible...
           cd /vagrant
+          /home/vagrant/.local/bin/ansible-galaxy install --roles-path ansible/roles --role-file requirements.yml 
           PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="masters" --inventory-file=hosts ansible/master-playbook.yml
         SHELL
       else # worker nodes
