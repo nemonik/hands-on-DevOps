@@ -62,7 +62,7 @@ module ConfigurationVars
     kubectl_checksum: 'sha256:6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c',
 
     kubernetes_dashboard: 'yes',
-    kubernetes_dashboard_version: 'v2.0.0-beta8',
+    kubernetes_dashboard_version: 'v2.0.0',
 
     traefik: 'yes',
     traefik_version: '1.7.24',
@@ -87,7 +87,7 @@ module ConfigurationVars
     registry_port: '5000',
 
     gitlab: 'yes',
-    gitlab_version: '12.10.6',
+    gitlab_version: '13.0.5',
     gitlab_host: '192.168.0.202',
     gitlab_port: '80',
     gitlab_ssh_port: '10022',

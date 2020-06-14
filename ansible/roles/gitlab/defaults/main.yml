@@ -1,6 +1,0 @@
----
-# defaults file for gitlab
-gitlab_version: 12.1.6
-gitlab_port: '10080'
-gitlab_ssh_port: '10022'
-plantuml_port: '8081'

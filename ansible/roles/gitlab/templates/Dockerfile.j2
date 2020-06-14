@@ -1,6 +1,0 @@
-FROM {{ registry_host }}:{{ registry_port }}/sameersbn/gitlab:{{ gitlab_version }}
-MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
-
-{% if CA_CERTIFICATES %}
-RUN cd /usr/local/share/ca-certificates/ && {% for ca in CA_CERTIFICATES %} wget {{ ca }} &&{% endfor %} update-ca-certificates
-{% endif %}

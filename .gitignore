@@ -18,6 +18,8 @@ ansible/roles/k3s-server/
 ansible/roles/metallb/
 ansible/roles/traefik/
 ansible/roles/docker-registry/
+ansible/roles/kubernetes-dashboard/
+ansible/roles/gitlab/
 
 # vagrant
 .vagrant/

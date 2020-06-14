@@ -17,3 +17,11 @@
 - name: docker-registry
   src: https://github.com/nemonik/docker-registry-role.git
   version: master
+
+- name: kubernetes-dashboard
+  src: https://github.com/nemonik/kubernetes-dashboard-role.git
+  version: master
+
+- name: gitlab
+  src: https://github.com/nemonik/gitlab-role.git
+  version: master
