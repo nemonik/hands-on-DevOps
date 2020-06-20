@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: postgresql
-        image: {{ registry_host }}:{{ registry_port }}/sameersbn/postgresql:10-2
+        image: sameersbn/postgresql:10-2
         imagePullPolicy: IfNotPresent
         env:
         - name: DB_NAME
@@ -109,8 +109,30 @@ spec:
         image: "{{ registry_host }}:{{ registry_port }}/nemonik/sonarqube:{{ sonarqube_version }}"
         imagePullPolicy: IfNotPresent
         env:
+        - name: SONARQUBE_JDBC_USERNAME
+          value: sonar
+        - name: SONARQUBE_JDBC_PASSWORD
+          value: sonar
         - name: SONARQUBE_JDBC_URL
           value: jdbc:postgresql://postgresql:5432/sonardb
+#        - name: SONAR_WEB_HOST
+#          value: {{ sonarqube_host }}
+#        - name: SONAR_WEB_PORT
+#          value: "{{ sonarqube_port }}"
+        - name: SONAR_CORE_SERVERBASEURL
+          value: http://{{ sonarqube_host }}:{{ sonarqube_port }}
+{% if gitlab_host %}
+        - name: SONAR_AUTH_GITLAB_ENABLED
+          value: "true"
+        - name: SONAR_AUTH_GITLAB_URL
+          value: http://{{ gitlab_host }}:{{ gitlab_port }}
+        - name: SONAR_AUTH_GITLAB_APPLICATIONID
+          value: {{ sonqrqube_gitlab_client_id }}
+        - name: SONAR_AUTH_GITLAB_SECRET
+          value: {{ sonarqube_gitlab_client_secret }}
+        - name: SONAR_AUTH_GITLAB_GROUPSSYNC
+          value: "{{ sonar_auth_gitlab_groupsSync|default('false') }}"
+{% endif %}
 {% if http_proxy %}
         - name: http_proxy
           value: {{ http_proxy }}

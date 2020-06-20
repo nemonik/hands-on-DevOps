@@ -24,13 +24,13 @@ module ConfigurationVars
     openebs_drive_size_in_gb: 100,
 
     # Provision and configure development vagrant ('yes'/'no')
-    create_development: 'no',
-#    create_development: 'yes',
+#    create_development: 'no',
+    create_development: 'yes',
     development_is_worker_node: 'yes',
 
     # The number of nodes to provision the Kubernetes cluster. One will be a master.
-#    nodes: 3,
-    nodes: 1,
+    nodes: 3,
+#    nodes: 1,
 
     # The Vagrant box to base our DevOps box on.  Pick just one.
 
@@ -45,6 +45,8 @@ module ConfigurationVars
 
 #    base_box: 'nemonik/alpine310',
 #    base_box_version: '0',
+
+    vagrant_root_drive_size: '80GB', 
 
     ansible_version: '2.9.9',
 
@@ -68,7 +70,7 @@ module ConfigurationVars
     traefik_version: '1.7.24',
     traefik_http_port: '80',
     traefik_admin_port: '8080',
-    traefik_host: '192.168.0.200',
+    traefik_host: '192.168.0.206',
 
     metallb: 'yes',
     metallb_version: 'v0.8.3',
@@ -81,13 +83,19 @@ module ConfigurationVars
     helm_cli_version: '3.2.1',
     helm_cli_checksum: '018f9908cb950701a5d59e757653a790c66d8eda288625dbb185354ca6f41f6b',
 
-    registry: 'yes',
     registry_version: '2.7.1',
-    registry_host: '192.168.0.201',
+    registry: 'yes',
+    registry_host: '192.168.0.200',
+#    registry_host: '192.168.0.10',
     registry_port: '5000',
+    passthrough_registry: 'yes',
+#    passthrough_registry_host: '192.168.0.201',
+    passthrough_registry_host: '192.168.0.10',
+    passthrough_registry_port: '5001',
+    registry_deploy_via: 'docker-compose',
 
     gitlab: 'yes',
-    gitlab_version: '13.0.5',
+    gitlab_version: '13.0.6',
     gitlab_host: '192.168.0.202',
     gitlab_port: '80',
     gitlab_ssh_port: '10022',
@@ -111,7 +119,7 @@ module ConfigurationVars
     taiga_port: '80',
 
     sonarqube: 'yes',
-    sonarqube_version: '7.9.1-community',
+    sonarqube_version: '8.3.1-community',
     sonarqube_host: '192.168.0.205',
     sonarqube_port: '9000',
 
@@ -134,6 +142,11 @@ module ConfigurationVars
 
     owasp_zap2docker_stable_image: 'yes',
     zap2docker_stable_version: '2.8.0',
+
+    openwhisk: 'yes',
+    openwhisk_host: '192.168.0.207',
+
+    images_cache_path: '/vagrant/cache/images',
 
     create_cache: 'yes',
 
@@ -308,6 +321,29 @@ module ConfigurationVars
         ;;
     esac
   SHELL
+
+  RESIZE_ROOT_TEMPLATE = <<~SHELL
+    case $os in
+      "Alpine")
+        # install Alpine packages
+        echo "resize root not yet handled."
+        ;;
+      "Ubuntu-bionic")
+      echo "resize root not yet handled."
+        ;;
+      "CentOS 7")
+      echo "Resizing root volume..."
+      yum -y install cloud-utils-growpart
+      growpart /dev/sda 1
+      xfs_growfs /
+        ;;
+      *)
+        echo "${os} not supported." 1>&2
+        exit -1
+        ;;
+    esac
+  SHELL
+
 
   SITE_PACKAGES_FROM_CACHE_TEMPLATE = <<~SHELL
 
