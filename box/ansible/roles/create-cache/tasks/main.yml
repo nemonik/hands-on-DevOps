@@ -10,12 +10,12 @@
 
 # This roles exists to speed development and spinning up the class...
 
-- name: create /vagrantcache/boxes/{{ base_box }}, if it doesn't exist
+- name: create "{{ cache_path }}/{{ base_box }}, if it doesn't exist"
   shell: |
     if [[ "windows" == "{{ host_os | default('') }}" ]]; then
       sudo su
     fi
-    mkdir -p /vagrant/cache/boxes/{{ base_box }}
+    mkdir -p "{{ cache_path }}/{{ base_box }}"
   args:
     executable: /bin/bash
   tags:
@@ -29,7 +29,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /var/cache/
     tar zcvf $tempfile apk
-    cp -f $tempfile  /vagrant/cache/boxes/{{ base_box }}/apk.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ base_box }}/apk.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
@@ -45,7 +45,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /var/cache/
     tar zcvf $tempfile apt
-    cp -f $tempfile  /vagrant/cache/boxes/{{ base_box }}/apt.tar.gz
+    cp -f $tempfile  {{ cache_path }}/{{ base_box }}/apt.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
@@ -61,7 +61,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /var/cache
     tar zcvf $tempfile cache
-    cp -f $tempfile  /vagrant/cache/boxes/{{ base_box }}/yum.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ base_box }}/yum.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
@@ -77,7 +77,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /usr/lib/{{ ansible_python_version }}*
     tar zcvf $tempfile site-packages
-    cp -f $tempfile /vagrant/cache/boxes/{{ base_box }}/site-packages.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ base_box }}/site-packages.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
@@ -92,7 +92,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /home/{{ ansible_user_id }}/
     tar zcvf $tempfile .rvm .gnupg .bash_profile .bashrc .profile .mkshrc .zshrc .zlogin
-    cp -f $tempfile /vagrant/cache/boxes/{{ base_box }}/rvm.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ base_box }}/rvm.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
@@ -108,7 +108,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /home/{{ ansible_user_id }}/
     tar zcvf $tempfile .cache
-    cp -f $tempfile /vagrant/cache/boxes/{{ base_box }}/cache.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ base_box }}/cache.tar.gz
     rm -f $tempfile    
   args:
     executable: /bin/bash
@@ -123,7 +123,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /home/{{ ansible_user_id }}/
     tar zcvf $tempfile .local
-    cp -f $tempfile /vagrant/cache/boxes/{{ base_box }}/local.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ base_box }}/local.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
@@ -138,7 +138,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /home/{{ ansible_user_id }}/
     tar zcvf $tempfile .gem
-    cp -f $tempfile /vagrant/cache/boxes/{{ base_box }}/gem.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ base_box }}/gem.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
