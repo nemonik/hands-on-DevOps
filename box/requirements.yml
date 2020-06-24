@@ -1,0 +1,28 @@
+# This is used to manage Ansible role dependences
+# http://docs.ansible.com/galaxy.html#installing-multiple-roles-from-a-file
+# Install with: `ansible-galaxy install -r requirements.yml`
+
+- name: common
+  src: https://github.com/nemonik/common-role.git
+  version: master
+
+- name: docker
+  src: https://github.com/nemonik/docker-role.git
+  version: master
+
+- name: docker-compose
+  src: https://github.com/nemonik/docker-compose-role.git
+  version: master
+
+- name: inspec
+  src: https://github.com/nemonik/inspec-role.git
+  version: master
+
+- name: drone-cli
+  src: https://github.com/nemonik/drone-cli-role.git
+  version: master
+
+- name: sonar-scanner-cli
+  src: https://github.com/nemonik/sonar-scanner-cli-role-role.git
+  version: master
+

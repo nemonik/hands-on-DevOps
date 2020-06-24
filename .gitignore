@@ -18,8 +18,19 @@ ansible/roles/k3s-server/
 ansible/roles/metallb/
 ansible/roles/traefik/
 ansible/roles/docker-registry/
+ansible/roles/taiga/
 ansible/roles/kubernetes-dashboard/
 ansible/roles/gitlab/
+ansible/roles/drone/
+ansible/roles/sonarqube/
+ansible/roles/openwhisk/
+
+box/ansible/roles/common/
+box/ansible/roles/docker/
+box/ansible/roles/docker-compose/
+box/ansible/roles/inspec/
+box/ansible/roles/drone-cli/
+box/ansible/roles/sonar-scanner-cli/
 
 # vagrant
 .vagrant/
