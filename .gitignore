@@ -15,6 +15,7 @@ hosts
 
 # ansible-galaxy installed roles
 ansible/roles/k3s-server/
+ansible/roles/k3s-agent/
 ansible/roles/metallb/
 ansible/roles/traefik/
 ansible/roles/docker-registry/

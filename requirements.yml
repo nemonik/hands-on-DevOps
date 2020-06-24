@@ -6,6 +6,10 @@
   src: https://github.com/nemonik/k3s-server-role.git
   version: master
 
+- name: k3s-agent
+  src: https://github.com/nemonik/k3s-agent-role.git
+  version: master
+
 - name: metallb
   src: https://github.com/nemonik/metallb-role.git
   version: master
