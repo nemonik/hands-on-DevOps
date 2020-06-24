@@ -1,19 +1,6 @@
 FROM {{ registry_host }}:{{ registry_port }}/owasp/zap2docker-stable:{{ zap2docker_stable_version }}
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
-{% if http_proxy %}
-ENV http_proxy={{ http_proxy }}
-ENV HTTP_PROXY={{ http_proxy }}
-{% endif %}
-{% if https_proxy %}
-ENV https_proxy={{ https_proxy }}
-ENV HTTPS_PROXY={{ https_proxy }}
-{% endif %}
-{% if no_proxy %}
-ENV no_proxy={{ no_proxy }}
-ENV NO_PROXY={{ no_proxy }}
-{% endif %} 
-
 # Drone needs containers that run as root cuz Docker volumes are owned by root by default. 
 # A possible workaround: https://stackoverflow.com/questions/50593635/how-to-specify-a-user-for-a-given-build-stage-in-drone
 

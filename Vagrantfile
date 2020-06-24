@@ -38,7 +38,7 @@ os = box.split('/')[1]
 box = "nemonik/devops_#{os}"
 
 uninstall_plugins = %w( vagrant-cachier vagrant-alpine )
-required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize vagrant-reload )
+required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize vagrant-reload ) # vagrant-disksize
 
 if (not os.downcase.include? 'alpine')
   required_plugins = required_plugins << "vagrant-vbguest"
@@ -64,6 +64,8 @@ required_plugins.each do |plugin|
     plugin_installed = true
   end
 end
+
+#system "vagrant plugin update"
 
 # if plugins were installed, restart
 if plugin_installed || plugin_uninstalled

@@ -16,12 +16,28 @@
 
 - name: docker-registry
   src: https://github.com/nemonik/docker-registry-role.git
-  version: master
+  version: passthrough
 
 - name: kubernetes-dashboard
   src: https://github.com/nemonik/kubernetes-dashboard-role.git
   version: master
 
+- name: taiga
+  src: https://github.com/nemonik/taiga-role.git
+  version: master
+
 - name: gitlab
   src: https://github.com/nemonik/gitlab-role.git
+  version: master
+
+- name: drone
+  src: https://github.com/nemonik/drone-role.git
+  version: master
+
+- name: sonarqube
+  src: https://github.com/nemonik/sonarqube-role.git
+  version: master
+
+- name: openwhisk
+  src: https://github.com/nemonik/openwhisk-role.git
   version: master

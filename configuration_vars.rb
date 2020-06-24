@@ -57,7 +57,7 @@ module ConfigurationVars
     docker_retries: '60',
     docker_delay: '10',
 
-    k3s_version: 'v1.17.5+k3s1',
+    k3s_version: 'v1.18.4+k3s1',
     k3s_cluster_secret: 'kluster_secret',
 
     kubectl_version: 'v1.17.0',
@@ -85,8 +85,8 @@ module ConfigurationVars
 
     registry_version: '2.7.1',
     registry: 'yes',
-    registry_host: '192.168.0.200',
-#    registry_host: '192.168.0.10',
+#    registry_host: '192.168.0.200',
+    registry_host: '192.168.0.10',
     registry_port: '5000',
     passthrough_registry: 'yes',
 #    passthrough_registry_host: '192.168.0.201',
@@ -106,7 +106,7 @@ module ConfigurationVars
     drone_runner_docker_version: '1.3.0',
     drone_host: '192.168.0.10',
 
-    drone_cli_version: 'v1.1.0',
+    drone_cli_version: 'v1.2.1',
 
     plantuml_server: 'yes',
     plantuml_server_version: 'latest',
@@ -123,8 +123,7 @@ module ConfigurationVars
     sonarqube_host: '192.168.0.205',
     sonarqube_port: '9000',
 
-#    sonar_scanner_cli_version: '4.2.0.1873',
-    sonar_scanner_cli_version: '4.0.0.1744',
+    sonar_scanner_cli_version: '4.3.0.2102',
 
     inspec_version: '4.18.39',
 
@@ -146,6 +145,7 @@ module ConfigurationVars
     openwhisk: 'yes',
     openwhisk_host: '192.168.0.207',
 
+    cache_path: '/vagrant/cache/boxes',
     images_cache_path: '/vagrant/cache/images',
 
     create_cache: 'yes',

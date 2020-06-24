@@ -38,7 +38,7 @@ os = box.split('/')[1]
 box = "nemonik/devops_#{os}"
 
 # nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)
-if os.downcase.include? "alpine" and Vagrant::Util::Platform.darwin?
+if os.downcase.include? "alpine" and Vagrant::Util::Platform.platform.include? 'darwin'
   puts "ERROR: Alpine requires nfs to share a project synced_folder, but nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)".red
   exit!
 end
@@ -166,7 +166,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_version = ConfigurationVars::VARS[:base_box_version]
 
   if (not os.downcase.include? 'alpine') 
-    config.disksize.size = "60GB"
+    config.disksize.size = ConfigurationVars::VARS[:vagrant_root_drive_size]
   end
 
   # nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)
@@ -194,6 +194,8 @@ Vagrant.configure("2") do |config|
 
   determine_os = ConfigurationVars::DETERMINE_OS_TEMPLATE
 
+  resize_root = ConfigurationVars::RESIZE_ROOT_TEMPLATE
+
   os_packages_from_cache = ConfigurationVars::OS_PACKAGES_FROM_CACHE_TEMPLATE
   os_packages_from_cache = os_packages_from_cache.gsub! /TYPE/, 'boxes'
 
@@ -208,11 +210,33 @@ Vagrant.configure("2") do |config|
 
     #{determine_os}
 
+    #{resize_root}
+
     #{os_packages_from_cache}
 
     #{install_ansible_dependencies}
 
     #{site_package_from_cache}
+
+    case $os in
+
+      "Alpine")
+        apk add git
+        ;;
+
+      "Ubuntu-bionic")
+        apt install -y git
+        ;;
+
+      "CentOS 7")
+        yum install -y git
+        ;;
+
+      *)
+        echo -n "${os} not supported."
+        exit -1
+        ;;
+    esac
   SHELL
 
   user_cached_content = ConfigurationVars::USER_CACHED_CONTENT_TEMPLATE
@@ -234,8 +258,9 @@ Vagrant.configure("2") do |config|
 
     echo "Running playbook 1..."
 
-    cd /vagrant
-    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook box/ansible/box-playbook-1.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' -vvvv --connection=local --inventory hosts
+    cd /vagrant/box
+    /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml
+    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook ansible/box-playbook-1.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' -vvvv --connection=local --inventory ../hosts
   SHELL
 
   config.vm.provision :reload
@@ -247,8 +272,8 @@ Vagrant.configure("2") do |config|
  
     echo "Running playbook 2..."
 
-    cd /vagrant
-    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook box/ansible/box-playbook-2.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' -vvvv --connection=local --inventory hosts
+    cd /vagrant/box
+    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook ansible/box-playbook-2.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' -vvvv --connection=local --inventory ../hosts
   SHELL
 
 

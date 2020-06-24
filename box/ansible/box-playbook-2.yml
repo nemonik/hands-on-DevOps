@@ -12,7 +12,6 @@
   connection: local
   remote_user: vagrant
   roles:
-    - pre-load-images
     - docker-compose 
     - inspec
     - drone-cli
