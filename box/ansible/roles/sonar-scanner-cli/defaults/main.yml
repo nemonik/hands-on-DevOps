@@ -1,3 +1,0 @@
----
-# defaults file for sonar-scanner
-sonarqube_port: "9000"
