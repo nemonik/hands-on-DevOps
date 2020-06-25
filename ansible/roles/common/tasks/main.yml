@@ -14,7 +14,6 @@
     content: |
       127.0.0.1 localhost localhost.localdomain {{ inventory_hostname_short }}
       ::1       localhost localhost.localdomain
-
       {{ network_prefix }}.9 development
       {% for node in range(nodes|int) %}
       {% if node|int == 0 %}
