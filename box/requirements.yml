@@ -23,6 +23,6 @@
   version: master
 
 - name: sonar-scanner-cli
-  src: https://github.com/nemonik/sonar-scanner-cli-role-role.git
+  src: https://github.com/nemonik/sonar-scanner-cli-role.git
   version: master
 
