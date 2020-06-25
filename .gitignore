@@ -24,6 +24,7 @@ ansible/roles/kubernetes-dashboard/
 ansible/roles/gitlab/
 ansible/roles/drone/
 ansible/roles/sonarqube/
+ansible/roles/helm/
 ansible/roles/openwhisk/
 
 box/ansible/roles/common/

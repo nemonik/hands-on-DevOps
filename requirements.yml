@@ -20,7 +20,7 @@
 
 - name: docker-registry
   src: https://github.com/nemonik/docker-registry-role.git
-  version: passthrough
+  version: master
 
 - name: kubernetes-dashboard
   src: https://github.com/nemonik/kubernetes-dashboard-role.git
@@ -40,6 +40,10 @@
 
 - name: sonarqube
   src: https://github.com/nemonik/sonarqube-role.git
+  version: master
+
+- name: helm
+  src: https://github.com/nemonik/helm-role.git
   version: master
 
 - name: openwhisk
