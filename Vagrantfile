@@ -223,7 +223,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.synced_folder projectPath, '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
   else
-    config.vm.synced_folder ".",  '/vagrant', type: "nfs"
+    config.vm.synced_folder '.',  '/vagrant', type: 'nfs'
   end
 
   config.timezone.value = :host
@@ -331,6 +331,7 @@ Vagrant.configure("2") do |config|
           #{install_secure_key}
 
           cd /vagrant
+          /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml
           PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="workers" --inventory-file=hosts ansible/worker-playbook.yml
         SHELL
       end
@@ -378,6 +379,7 @@ Vagrant.configure("2") do |config|
  
         echo Execute ansible-playbook...
         cd /vagrant
+        /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml
         PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
       SHELL
     end

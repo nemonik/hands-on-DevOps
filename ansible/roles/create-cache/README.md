@@ -1,7 +1,7 @@
 create-cache
 ============
 
-Configures container cache.
+Configures content cache.
 
 License
 -------

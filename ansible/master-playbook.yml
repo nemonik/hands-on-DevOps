@@ -11,11 +11,10 @@
 - hosts: masters
   remote_user: vagrant
   roles:
-    - common
     - { role: docker-registry,
         when: registry == 'yes' }
     - k3s-server
-    - helm-cli
+    - helm
     - { role: metallb,
         when: metallb == 'yes' }
     - { role: traefik,

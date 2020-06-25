@@ -16,7 +16,7 @@
         when: nodes == 1 and
               development_is_worker_node == 'yes' }
     - kubectl
-    - helm-cli
+    - helm
     - golang
     - golint
     - { role: taiga,

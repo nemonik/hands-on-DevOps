@@ -8,18 +8,18 @@
 # You should have received a copy of the license with
 # this file. If not, please email <mjwalsh@nemonik.com>
 
-- name: create /vagrant/cache/{{ group_names[0] }} if it doesn't exist
+- name: create {{ cache_path }}/{{ group_names[0] }} if it doesn't exist
   shell: |
     if [[ "windows" == "{{ host_os }}" ]]; then
       sudo su
     fi
-    mkdir -p /vagrant/cache/{{ group_names[0] }}
+    mkdir -p {{ cache_path }}/{{ group_names[0] }}
   args:
     executable: /bin/bash
   tags:
     - create-cache
 
-- name: cache /var/cache/apk contents
+- name: cache {{ cache_path }}/apk contents
   become: yes
   shell: |
     if [[ "windows" == "{{ host_os }}" ]]; then
@@ -28,7 +28,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /var/cache/
     tar zcvf $tempfile apk
-    cp -f $tempfile /vagrant/cache/{{ group_names[0] }}/apk.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ group_names[0] }}/apk.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
@@ -44,7 +44,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /usr/lib/python3.7/
     tar zcvf $tempfile site-packages
-    cp -f $tempfile /vagrant/cache/{{ group_names[0] }}/site-packages.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ group_names[0] }}/site-packages.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
@@ -60,7 +60,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /home/{{ ansible_user_id }}/
     tar zcvf $tempfile .cache
-    cp -f $tempfile /vagrant/cache/{{ group_names[0] }}/cache.tar.gz
+    cp -f $tempfile /{{ cache_path }}/{{ group_names[0] }}/cache.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
@@ -75,7 +75,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /home/{{ ansible_user_id }}/
     tar zcvf $tempfile .local
-    cp -f $tempfile /vagrant/cache/{{ group_names[0] }}/local.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ group_names[0] }}/local.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash
@@ -90,7 +90,7 @@
     tempfile="$(mktemp /tmp/nemonik.XXXXXXXXX).tar.gz"
     cd /home/{{ ansible_user_id }}/
     tar zcvf $tempfile .gem
-    cp -f $tempfile /vagrant/cache/{{ group_names[0] }}/gem.tar.gz
+    cp -f $tempfile {{ cache_path }}/{{ group_names[0] }}/gem.tar.gz
     rm -f $tempfile
   args:
     executable: /bin/bash

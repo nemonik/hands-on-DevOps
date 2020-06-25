@@ -176,9 +176,7 @@ Vagrant.configure("2") do |config|
     projectPath=File.join('/System/Volumes/Data/Users/', ENV['USER'], vagrantfilePath.split(ENV['USER']).last, '..')
 
     config.vm.synced_folder projectPath, '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
-  else 
-    puts "not detecting MAC"
-    # this method will require the user to enter their username/password periodically....
+  else
     config.vm.synced_folder "..",  '/vagrant', type: 'nfs'
   end
 
@@ -259,7 +257,9 @@ Vagrant.configure("2") do |config|
     echo "Running playbook 1..."
 
     cd /vagrant/box
+
     /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml
+
     PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook ansible/box-playbook-1.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' -vvvv --connection=local --inventory ../hosts
   SHELL
 
@@ -273,6 +273,7 @@ Vagrant.configure("2") do |config|
     echo "Running playbook 2..."
 
     cd /vagrant/box
+
     PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook ansible/box-playbook-2.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' -vvvv --connection=local --inventory ../hosts
   SHELL
 
