@@ -1,3 +1,7 @@
+# 0. Preface
+
+This class is under near constant development.  It's backlog is here https://github.com/nemonik/hands-on-DevOps/projects/1  
+
 # 1. DevOps
 
 A hands-on DevOps course covering the culture, methods and repeated practices of modern software development involving Vagrant, VirtualBox, Ansible, Kubernetes, K3s, MetalLB, Traefik, Docker-Compose, Docker, Taiga, GitLab, Drone CI, SonarQube, Selenium, InSpec, Alpine 3.10, Ubuntu-bionic, CentOS 7...
