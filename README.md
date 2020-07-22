@@ -294,7 +294,7 @@ Followed with
 
 This was written over 50 years ago.
 
-If your communication structur is broke, so shall your systems be.
+If your communication structure is broke, so shall your systems be.
 
 ## 7.6. DevOps is really about
 
