@@ -593,6 +593,11 @@ Melvin E. Conway
 Copyright 1968, F. D. Thompson Publications, Inc.
 http://www.melconway.com/Home/Conways_Law.html
 
+**The Pragmatic Programmer: Your Journey To Mastery, 20th Anniversary Edition (2nd Edition)**
+David Thomas and Andrew Hunt
+ISBN-13: 978-0135957059
+September 23, 2019
+
 # 9. Now the hands-on part
 
 In this class, you will spin up the following development and toolchain environment.
