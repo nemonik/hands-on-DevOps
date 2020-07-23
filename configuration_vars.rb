@@ -145,7 +145,7 @@ module ConfigurationVars
     openwhisk: 'yes',
     openwhisk_host: '192.168.0.207',
 
-    cache_path: '/vagrant/cache/boxes',
+    cache_path: '/vagrant/cache',
     images_cache_path: '/vagrant/cache/images',
 
     create_cache: 'yes',
