@@ -29,7 +29,7 @@ module ConfigurationVars
     development_is_worker_node: 'yes',
 
     # The number of nodes to provision the Kubernetes cluster. One will be a master.
-    nodes: 3,
+    nodes: 2,
 #    nodes: 1,
 
     # The Vagrant box to base our DevOps box on.  Pick just one.
