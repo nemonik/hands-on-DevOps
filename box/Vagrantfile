@@ -274,6 +274,8 @@ Vagrant.configure("2") do |config|
 
     cd /vagrant/box
 
+    /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml
+
     PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook ansible/box-playbook-2.yml --limit="boxes" --extra-vars=#{ansible_extra_vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' -vvvv --connection=local --inventory ../hosts
   SHELL
 
