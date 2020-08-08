@@ -277,7 +277,7 @@ Vagrant.configure("2") do |config|
 
     n=0
     until [ "$n" -ge 5 #{ConfigurationVars::VARS[:default_retries]}]
-    dodefault_retries
+    do
       /home/vagrant/.local/bidefault_delayn/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
       n=$((n+1))
       sleep #{ConfigurationVars::VARS[:default_delay]}
