@@ -315,7 +315,15 @@ Vagrant.configure("2") do |config|
         vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
           echo Configuring #{hostname} via Ansible...
           cd /vagrant
-          /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml 
+
+          n=0
+          until [ "$n" -ge 5 #{ConfigurationVars::VARS[:default_retries]}]
+          do
+            /home/vagrant/.local/bidefault_delayn/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
+            n=$((n+1))
+            sleep #{ConfigurationVars::VARS[:default_delay]}
+          done
+
           PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="masters" --inventory-file=hosts ansible/master-playbook.yml
         SHELL
       else # worker nodes
@@ -331,7 +339,15 @@ Vagrant.configure("2") do |config|
           #{install_secure_key}
 
           cd /vagrant
-          /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml
+          
+          n=0
+          until [ "$n" -ge 5 #{ConfigurationVars::VARS[:default_retries]}]
+          do
+            /home/vagrant/.local/bidefault_delayn/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
+            n=$((n+1))
+            sleep #{ConfigurationVars::VARS[:default_delay]}
+          done
+          
           PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="workers" --inventory-file=hosts ansible/worker-playbook.yml
         SHELL
       end
@@ -379,7 +395,15 @@ Vagrant.configure("2") do |config|
  
         echo Execute ansible-playbook...
         cd /vagrant
-        /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml
+    
+        n=0
+        until [ "$n" -ge 5 #{ConfigurationVars::VARS[:default_retries]}]
+        do
+          /home/vagrant/.local/bidefault_delayn/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
+          n=$((n+1))
+          sleep #{ConfigurationVars::VARS[:default_delay]}
+        done
+        
         PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
       SHELL
     end
