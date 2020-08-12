@@ -317,8 +317,7 @@ Vagrant.configure("2") do |config|
           cd /vagrant
 
           n=0
-          until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]}]
-          do
+          until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
             /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
             n=$((n+1))
             sleep #{ConfigurationVars::VARS[:default_delay]}
@@ -341,8 +340,7 @@ Vagrant.configure("2") do |config|
           cd /vagrant
           
           n=0
-          until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]}]
-          do
+          until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
             /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
             n=$((n+1))
             sleep #{ConfigurationVars::VARS[:default_delay]}
@@ -397,8 +395,7 @@ Vagrant.configure("2") do |config|
         cd /vagrant
     
         n=0
-        until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]}]
-        do
+        until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
           /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
           n=$((n+1))
           sleep #{ConfigurationVars::VARS[:default_delay]}
