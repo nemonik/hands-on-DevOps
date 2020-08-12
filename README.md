@@ -901,21 +901,21 @@ If you're doing this class on your MITRE Life cycle running Windows (I have yet 
 
 You will need to install VirtualBox, a general-purpose full virtualizer for x86 hardware.
 
-The class has been verified to work with VirtualBox 6.1.2.  Newer version may or may not work.
+The class has been verified to work with VirtualBox 6.1.q2.  Newer version may or may not work.
 
 ### 9.2.1. Installing VirtualBox
 
 For the MITRE Institute class when I teach it, it is assumed VirtualBox is installed, but below are the instructions for installing it on Windows 10.
 
 1. Open your browser to <https://www.virtualbox.org/wiki/Downloads>
-2. Click `Windows hosts` link under `VirtualBox 6.1.2 platform packages`.
+2. Click `Windows hosts` link under `VirtualBox 6.1.12 platform packages`.
 3. Find and click the installer to install.
 
 You will also need to turn off `Hyper-V`, `Windows Sandbox` and `Windows Subsystem for Linux` if installed.
 
 1. Click Windows `Start` and then type `turn Windows features on or off` into the search bar.
 2. Select the icon with the corresponding name. 
-3. This will open the `Windows Features` page and then unselect the `Hyper-V`, `Windows Sandbox` and `Windows Subsystem for Linux` checkboxes if enabled and then click `Okay`.
+3. This will open the `Windows Features` page and then unselect the `Hyper-V`, `Virtual Machine Platform`, `Windows Hypervisor Platform`, `Windows Sandbox` and `Windows Subsystem for Linux` checkboxes if enabled and then click `Okay`.
 
 The same site has the Mac OS X download. The installation is less involved.  
 
