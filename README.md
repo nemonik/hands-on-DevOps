@@ -1510,11 +1510,9 @@ module ConfigurationVars
 
     registry_version: '2.7.1',
     registry: 'yes',
-#    registry_host: '192.168.0.200',
     registry_host: '192.168.0.10',
     registry_port: '5000',
     passthrough_registry: 'yes',
-#    passthrough_registry_host: '192.168.0.201',
     passthrough_registry_host: '192.168.0.10',
     passthrough_registry_port: '5001',
     registry_deploy_via: 'docker-compose',
