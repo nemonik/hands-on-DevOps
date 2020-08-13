@@ -2596,7 +2596,7 @@ You will build a couple of Docker images and spin up containers in this class.
 
 ### 9.6.2. Docker-compose
 
-The class uses docker-compose to spin up Drone CI leaving the rest of the applications to be orchestrated by Kubernetes.  (Kubernetes is explained in the following section.)
+The class uses docker-compose to spin up Drone CI and the Docker registries (Both private and passthrough.) leaving the rest of the applications to be orchestrated by Kubernetes.  (Kubernetes is explained in the following section.)
 
 *What is docker-compose?*
 
