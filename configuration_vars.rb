@@ -37,9 +37,6 @@ module ConfigurationVars
     base_box: 'centos/7',
     base_box_version: '2004.01', 
 
-#    base_box: 'geerlingguy/centos7',
-#    base_box_version: '1.2.22',
-
 #    base_box: 'ubuntu/bionic64',
 #    base_box_version: '20200304.0.0',
 
@@ -57,7 +54,7 @@ module ConfigurationVars
     docker_retries: '60',
     docker_delay: '10',
 
-    k3s_version: 'v1.18.4+k3s1',
+    k3s_version: 'v1.18.6+k3s1',
     k3s_cluster_secret: 'kluster_secret',
 
     kubectl_version: 'v1.17.0',
@@ -67,13 +64,13 @@ module ConfigurationVars
     kubernetes_dashboard_version: 'v2.0.0',
 
     traefik: 'yes',
-    traefik_version: '1.7.24',
+    traefik_version: '1.7.26',
     traefik_http_port: '80',
     traefik_admin_port: '8080',
     traefik_host: '192.168.0.206',
 
     metallb: 'yes',
-    metallb_version: 'v0.8.3',
+    metallb_version: 'v0.9',
 
     kompose_version: '1.18.0',
 
@@ -95,15 +92,15 @@ module ConfigurationVars
     registry_deploy_via: 'docker-compose',
 
     gitlab: 'yes',
-    gitlab_version: '13.0.6',
+    gitlab_version: '13.2.3',
     gitlab_host: '192.168.0.202',
     gitlab_port: '80',
     gitlab_ssh_port: '10022',
     gitlab_user: 'root',
 
     drone: 'yes',
-    drone_version: '1.7.0',
-    drone_runner_docker_version: '1.3.0',
+    drone_version: '1.9.0',
+    drone_runner_docker_version: '1.4.0',
     drone_host: '192.168.0.10',
 
     drone_cli_version: 'v1.2.1',
@@ -119,7 +116,7 @@ module ConfigurationVars
     taiga_port: '80',
 
     sonarqube: 'yes',
-    sonarqube_version: '8.3.1-community',
+    sonarqube_version: '8.4.1-community',
     sonarqube_host: '192.168.0.205',
     sonarqube_port: '9000',
 
