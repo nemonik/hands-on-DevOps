@@ -694,9 +694,14 @@ rectangle "Host (i.e., your laptop, desktop)" {
 				component "plantuml/plantuml-server" as plantuml_server
 			}
 
-			rectangle "Registry" {
-				component "registry" as registry
+			rectangle "Private\nDocker Registry" {
+				component "registry" as private_registry
 			}
+
+      rectangle "Passthrough\nDocker Registry" {
+				component "registry" as passthrough_registry
+			}
+
 		}
 
     note left of master
@@ -736,7 +741,9 @@ you .[#0B5C92].> gitlab
 you .[#0B5C92].> taiga
 you .[#0B5C92].> plantuml_server
 you .[#0B5C92].> drone_server
-you .[#0B5C92].> registry
+you .[#0B5C92].> private_registry
+you .[#0B5C92].> passthrough_registry
+
 
 @enduml
 ```
@@ -1343,9 +1350,9 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL and 
 
 1. If you are Windows or OS X download Vagrant from 
 
-  <https://releases.hashicorp.com/vagrant/2.2.7/>  
+  <https://releases.hashicorp.com/vagrant/2.2.9/>  
 
-  The class has been verified to work with Version 2.2.7.  Newer version may or may not work.
+  The class has been verified to work with Version 2.2.9.  Newer version may or may not work.
 
   If you're using Linux, use your operating system's package manager to install `vagrant`.  For exmple, to install on Arch Linux one would use
 
@@ -1419,7 +1426,7 @@ in the Vagrantfile at the root of the project will include `configuration_vars.r
 The contents of `configuration_vars.rb` Ruby module will resemble:
 
 ```ruby
-# -*- mode: ruby -*-
+#-*- mode: ruby -*-
 # vi: set ft=ruby :
 
 # Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
@@ -1437,21 +1444,36 @@ module ConfigurationVars
     # The network block the cluster and apps will be in
     network_prefix: "192.168.0",
 
+#    # Add OpenEBS drives ('yes'/'no')
+#    openebs_drives: 'yes',
+    openebs_drives: 'no',
+
+    # Sets the OpenEBS drive size in GB
+    openebs_drive_size_in_gb: 100,
+
+    # Provision and configure development vagrant ('yes'/'no')
+#    create_development: 'no',
+    create_development: 'yes',
+    development_is_worker_node: 'yes',
+
     # The number of nodes to provision the Kubernetes cluster. One will be a master.
-    nodes: 1,
+    nodes: 2,
+#    nodes: 1,
 
     # The Vagrant box to base our DevOps box on.  Pick just one.
 
-#    base_box: 'centos/7',
-#    base_box_version: '1905.1',
+    base_box: 'centos/7',
+    base_box_version: '2004.01', 
 
 #    base_box: 'ubuntu/bionic64',
-#    base_box_version: '20200225.0.0',
+#    base_box_version: '20200304.0.0',
 
-    base_box: 'nemonik/alpine310',
-    base_box_version: '0',
+#    base_box: 'nemonik/alpine310',
+#    base_box_version: '0',
 
-    ansible_version: '2.9.4',
+    vagrant_root_drive_size: '80GB', 
+
+    ansible_version: '2.9.9',
 
     default_retries: '60',
     default_delay: '10',
@@ -1460,68 +1482,98 @@ module ConfigurationVars
     docker_retries: '60',
     docker_delay: '10',
 
-    k3s_version: 'v1.17.0+k3s.1',
+    k3s_version: 'v1.18.6+k3s1',
     k3s_cluster_secret: 'kluster_secret',
 
     kubectl_version: 'v1.17.0',
     kubectl_checksum: 'sha256:6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c',
 
-    kubernetes_dashboard_version: 'v2.0.0-beta8',
+    kubernetes_dashboard: 'yes',
+    kubernetes_dashboard_version: 'v2.0.0',
 
-    traefik_version: '1.7.20',
+    traefik: 'yes',
+    traefik_version: '1.7.26',
     traefik_http_port: '80',
     traefik_admin_port: '8080',
-    traefik_host: '192.168.0.200',
+    traefik_host: '192.168.0.206',
 
-    metallb_version: 'v0.8.3',
+    metallb: 'yes',
+    metallb_version: 'v0.9',
 
     kompose_version: '1.18.0',
 
     docker_compose_version: '1.24.1',
     docker_compose_pip_version: '1.25.0rc2',
 
-    registry_version: '2.7.1',
-    registry_host: '192.168.0.201',
-    registry_port: '5000',
+    helm_cli_version: '3.2.1',
+    helm_cli_checksum: '018f9908cb950701a5d59e757653a790c66d8eda288625dbb185354ca6f41f6b',
 
-    gitlab_version: '12.7.0',
+    registry_version: '2.7.1',
+    registry: 'yes',
+#    registry_host: '192.168.0.200',
+    registry_host: '192.168.0.10',
+    registry_port: '5000',
+    passthrough_registry: 'yes',
+#    passthrough_registry_host: '192.168.0.201',
+    passthrough_registry_host: '192.168.0.10',
+    passthrough_registry_port: '5001',
+    registry_deploy_via: 'docker-compose',
+
+    gitlab: 'yes',
+    gitlab_version: '13.2.3',
     gitlab_host: '192.168.0.202',
     gitlab_port: '80',
     gitlab_ssh_port: '10022',
     gitlab_user: 'root',
 
-    drone_deploy_via: 'docker-compose',
-    drone_version: '1.6.5',
-    drone_agent_version: '1.6.2',
+    drone: 'yes',
+    drone_version: '1.9.0',
+    drone_runner_docker_version: '1.4.0',
     drone_host: '192.168.0.10',
-    drone_port: '80',
 
-    drone_cli_version: 'v1.1.0',
+    drone_cli_version: 'v1.2.1',
 
+    plantuml_server: 'yes',
     plantuml_server_version: 'latest',
     plantuml_host: '192.168.0.203',
     plantuml_port: '80',
 
+    taiga: 'yes',
     taiga_version: 'latest',
     taiga_host: '192.168.0.204',
     taiga_port: '80',
 
-    sonarqube_version: '7.9.1-community',
+    sonarqube: 'yes',
+    sonarqube_version: '8.4.1-community',
     sonarqube_host: '192.168.0.205',
     sonarqube_port: '9000',
 
-    sonar_scanner_cli_version: '4.0.0.1744',
+    sonar_scanner_cli_version: '4.3.0.2102',
 
     inspec_version: '4.18.39',
 
+    python_container_image: 'yes', 
     python_version: '2.7.17',
 
-    golang_version: '1.13.5',
+    golang_container_image: 'yes',
+    golang_sonarqube_scanner_image: 'yes',
+    golang_version: '1.13.7',  
 
     selenium_standalone_chrome_version: '3.141',
+
+    standalone_firefox_container_image: 'yes',
     selenium_standalone_firefox_version: '3.141',
 
+    owasp_zap2docker_stable_image: 'yes',
     zap2docker_stable_version: '2.8.0',
+
+    openwhisk: 'yes',
+    openwhisk_host: '192.168.0.207',
+
+    cache_path: '/vagrant/cache',
+    images_cache_path: '/vagrant/cache/images',
+
+    create_cache: 'yes',
 
     host_os: (
       host_os = RbConfig::CONFIG['host_os']
@@ -1552,7 +1604,7 @@ module ConfigurationVars
 
     vars = VARS
 
-    vars[:http_proxy] = (!http_proxy ? "" : http_proxy)
+    vars[:http_proxy] = (!http_proxy ? "" : http_proxy) 
     vars[:https_proxy] = (!https_proxy ? "" : https_proxy)
     vars[:ftp_proxy] = (!ftp_proxy ? "" : ftp_proxy)
     vars[:no_proxy] = (!no_proxy ? "" : no_proxy)
@@ -1576,7 +1628,7 @@ module ConfigurationVars
         if (value.is_a? Integer)
           value = value.to_s
         end
-
+      
         vars_string = vars_string + "\\\"#{key}\\\":\\\"#{value}\\\","
       end
     end
@@ -1586,55 +1638,45 @@ module ConfigurationVars
 
   DETERMINE_OS_TEMPLATE = <<~SHELL
     os=""
-    if [[ $(command -v lsb_release | wc -l) == *"1"* ]]; then
+    if [[ $(command -v lsb_release | wc -l) == *"1"* ]]; then 
       os="$(lsb_release -is)-$(lsb_release -cs)"
     elif [ -f "/etc/os-release" ]; then
-      if [[ $(cat /etc/os-release | grep -i alpine | wc -l) -gt "0" ]]; then
+      if [[ $(cat /etc/os-release | grep -i alpine | wc -l) -gt "0" ]]; then 
         os="Alpine"
       elif [[ $(cat /etc/os-release | grep -i "CentOS Linux 7" | wc -l) -gt "0" ]]; then
         os="CentOS 7"
       fi
-    else
+    else 
       echo -n "Cannot determine OS."
-      exit -1
+      exit -1    
     fi
   SHELL
 
   OS_PACKAGES_FROM_CACHE_TEMPLATE = <<~SHELL
-
     mkdir -p /tmp/root-cache
-
     box="#{VARS[:base_box]}"
-
     case $os in
-
       "Alpine")
         package_manager="apk"
         ;;
-
       "Ubuntu-bionic")
         package_manager="apt"
         ;;
-
       "CentOS 7")
         package_manager="yum"
         ;;
-
       *)
         echo -n "${os} not supported."
         exit -1
         ;;
     esac
-
     if [ -f "/vagrant/cache/TYPE/${box}/${package_manager}.tar.gz" ]; then
       update=true
-
       if [ -f "/tmp/root-cache/${package_manager}.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/${package_manager}.tar.gz"`!=`stat -c%s "/tmp/root-cache/${package_manager}.tar.gz"`)); then
           update=false
         fi
       fi
-
       if ($update == true); then
         echo Installing ${box} ${package_manager} packages from cache...
         cd /tmp/root-cache
@@ -1656,14 +1698,12 @@ module ConfigurationVars
             "CentOS 7")
               mv yum /var/cache/
               ;;
-
             *)
               echo "${os} not supported." 1>&2
               exit -1
-              ;;
+              ;;              
           esac
         fi
-
         rm -Rf ${package_manager}
       else
         echo No new ${box} packages in cache...
@@ -1695,17 +1735,37 @@ module ConfigurationVars
     esac
   SHELL
 
-  SITE_PACKAGES_FROM_CACHE_TEMPLATE = <<~SHELL
+  RESIZE_ROOT_TEMPLATE = <<~SHELL
+    case $os in
+      "Alpine")
+        # install Alpine packages
+        echo "resize root not yet handled."
+        ;;
+      "Ubuntu-bionic")
+      echo "resize root not yet handled."
+        ;;
+      "CentOS 7")
+      echo "Resizing root volume..."
+      yum -y install cloud-utils-growpart
+      growpart /dev/sda 1
+      xfs_growfs /
+        ;;
+      *)
+        echo "${os} not supported." 1>&2
+        exit -1
+        ;;
+    esac
+  SHELL
 
+
+  SITE_PACKAGES_FROM_CACHE_TEMPLATE = <<~SHELL
     if [ -f "/vagrant/cache/TYPE/${box}/site-packages.tar.gz" ]; then
       update=true
-
       if [ -f "/tmp/root-cache/site-packages.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/site-packages"`!=`stat -c%s "/tmp/root-cache/site-packages"`)); then
           update=false
         fi
       fi
-
       if ($update == true); then
         echo Unpacking #{ VARS[:ansible_python_version] } site-packages from cache...
         cd /tmp/root-cache
@@ -1720,18 +1780,14 @@ module ConfigurationVars
 
   USER_CACHED_CONTENT_TEMPLATE = <<~SHELL
     mkdir -p /tmp/vagrant-cache
-
     box="#{VARS[:base_box]}"
-
     if [ "${os}" == "CentOS 7" ] && [ -f "/vagrant/cache/TYPE/${box}/rvm.tar.gz" ]; then
       update=true
-
       if [ -f "/tmp/vagrant-cache/rvm.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/rvm.tar.gz"`!=`stat -c%s "/tmp/vagrant-cache/rvm.tar.gz"`)); then
           update=false
         fi
       fi
-
       if ($update == true); then
         echo Unpacking /home/vagrant/[.rvm .gnupg .bash_profile .bashrc .profile .mkshrc .zshrc .zlogin] from cache...
         cp /vagrant/cache/TYPE/${box}/rvm.tar.gz /tmp/vagrant-cache/rvm.tar.gz
@@ -1743,16 +1799,13 @@ module ConfigurationVars
     else
       echo No /home/vagrant/[.rvm .gnupg .bash_profile .bashrc .profile .mkshrc .zshrc .zlogin] in cache...
     fi
-
     if [ -f "/vagrant/cache/TYPE/${box}/cache.tar.gz" ]; then
       update=true
-
       if [ -f "/tmp/vagrant-cache/cache.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/cache.tar.gz"`!=`stat -c%s "/tmp/vagrant-cache/cache.tar.gz"`)); then
           update=false
         fi
       fi
-
       if ($update == true); then
         echo Unpacking /home/vagrant/.cache from cache...
         cp /vagrant/cache/TYPE/${box}/cache.tar.gz /tmp/vagrant-cache/cache.tar.gz
@@ -1764,16 +1817,13 @@ module ConfigurationVars
     else
       echo No /home/vagrant/.cache cache...
     fi
-
     if [ -f "/vagrant/cache/TYPE/${box}/local.tar.gz" ]; then
       update=true
-
       if [ -f "/tmp/vagrant-cache/local.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/local.tar.gz"`!=`stat -c%s "/tmp/vagrant-cache/local.tar.gz"`)); then
           update=false
         fi
       fi
-
       if ($update == true); then
         echo Unpacking /home/vagrant/.local from cache...
         cp /vagrant/cache/TYPE/${box}/local.tar.gz /tmp/vagrant-cache/local.tar.gz
@@ -1785,16 +1835,13 @@ module ConfigurationVars
     else
       echo No /home/vagrant/.local cache...
     fi
-
     if [ -f "/vagrant/cache/TYPE/${box}/gem.tar.gz" ]; then
       update=true
-
       if [ -f "/tmp/vagrant-cache/gem.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/gem.tar.gz"`!=`stat -c%s "/tmp/vagrant-cache/gem.tar.gz"`)); then
           update=false
         fi
       fi
-
       if ($update == true); then
         echo Unpacking /home/vagrant/.gem from cache...
         cp /vagrant/cache/TYPE/${box}/gem.tar.gz /tmp/vagrant-cache/gem.tar.gz
@@ -2255,11 +2302,22 @@ The `master` vagrant leverages `ansible/master-playbook.yml` and it contains:
   remote_user: vagrant
   roles:
     - common
+    - { role: docker-registry,
+        when: registry == 'yes' }
     - k3s-server
-    - docker-registry
-    - gitlab
-    - drone
-    - create-cache
+    - helm
+    - { role: metallb,
+        when: metallb == 'yes' }
+    - { role: traefik,
+        when: traefik == 'yes' }
+    - { role: kubernetes-dashboard,
+        when: kubernetes_dashboard == 'yes' }
+    - { role: gitlab,
+        when: gitlab == 'yes' }
+    - { role: drone,
+        when: drone == 'yes' }
+    - { role: create-cache,
+        when: create_cache == 'yes' }
 ```
 
 ##### 9.5.3.1.2. The `worker` vagrant's playbook
@@ -2304,17 +2362,31 @@ The `development` vagrant leverages `ansible/development-playbook.yml` and it co
   remote_user: vagrant
   roles:
     - common
+    - { role: k3s-agent,
+        when: nodes == 1 and
+              development_is_worker_node == 'yes' }
     - kubectl
+    - helm
     - golang
     - golint
-    - taiga
-    - plantuml-server
-    - sonarqube
-    - golang-container-image
-    - golang-sonarqube-scanner-image
-    - python-container-image
-    - owasp-zap2docker-stable-image
-    - standalone-firefox-container-image
+    - { role: taiga,
+        when: taiga == 'yes' }
+    - { role: plantuml-server,
+        when: plantuml_server == 'yes' }
+    - { role: sonarqube,
+        when: sonarqube == 'yes' }
+    - { role: golang-container-image,
+        when: golang_container_image == 'yes' }
+    - { role: golang-sonarqube-scanner-image,
+        when: golang_sonarqube_scanner_image == 'yes' }
+    - { role: python-container-image,
+        when: python_container_image == 'yes' }
+    - { role: owasp-zap2docker-stable-image,
+        when: owasp_zap2docker_stable_image == 'yes' }
+    - { role: standalone-firefox-container-image,
+        when: standalone_firefox_container_image == 'yes' }
+    - { role: create-cache,
+        when: create_cache == 'yes' }
 ```
 
 #### 9.5.3.2. Roles
@@ -2338,6 +2410,7 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
     images:
       - { repository: "python", tag: "3.6" }
       - { repository: "sameersbn/postgresql", tag: "10-2" }
+      - { repository: "nemonik/taiga", tag: "latest" }
 
 - name: copy taiga files to /home/{{ ansible_user_id }}/taiga
   copy:
@@ -2346,26 +2419,7 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
   tags:
     - taiga
 
-- name: template files into /home/{{ ansible_user_id }}/taiga
-  template:
-    src: templates/{{ item }}.j2
-    dest: /home/{{ ansible_user_id }}/taiga/{{ item }}
-    force: yes
-  with_items:
-    - "README.MD"
-    - "Dockerfile"
-    - "dockerfile_build.sh"
-  tags:
-    - taiga
-
-- name: make /home/{{ ansible_user_id }}/taiga/dockerfile_build.sh executable
-  file:
-    path: /home/{{ ansible_user_id }}/taiga/dockerfile_build.sh
-    mode: "u=rwx,g=r,o=r"
-  tags:
-    - taiga
-
-- name: emplace images into private container registry
+- name: load {{ images }} they exist or pull
   block:
   - name: load {{ images }} from cache
     include_tasks: retrieve_container_image.yml
@@ -2381,44 +2435,6 @@ A role, such as a Taiga role is comprised of many components (e.g., files, templ
     register: result
     until: result is succeeded
     loop: "{{ images }}"
-
-  - name: tag and push {{ images }} into private registry
-    shell: |
-      docker tag {{ item.repository }}:{{ item.tag }} {{ registry_host }}:{{ registry_port }}/{{ item.repository }}:{{ item.tag }}
-      docker push {{ registry_host }}:{{ registry_port }}/{{ item.repository }}:{{ item.tag }}
-    retries: "{{ default_retries }}"
-    delay: "{{ default_delay }}"
-    register: result
-    until: result is succeeded
-    loop: "{{ images }}"
-
-  - name: build nemonik/taiga:{{ taiga_version }} docker image
-    docker_image:
-      name: nemonik/taiga
-      repository: "{{ registry_host }}:{{ registry_port }}/nemonik/taiga"
-      tag: "{{ taiga_version }}"
-      source: build
-      build:
-        pull: yes
-        path: /home/{{ ansible_user_id }}/taiga
-        args:
-          http_proxy: "{{ http_proxy|default('') }}"
-          HTTP_PROXY: "{{ http_proxy|default('') }}"
-          https_proxy: "{{ https_proxy|default('') }}"
-          HTTPS_PROXY: "{{ https_proxy|default('') }}"
-          NO_PROXY: "{{ no_proxy|default('') }}"
-          no_proxy: "{{ no_proxy|default('') }}"
-      push: yes
-    retries: "{{ docker_retries }}"
-    delay: "{{ docker_delay }}"
-    register: result
-    until: result is succeeded
-
-  - name: Append nemonik/taiga:latest to images fact
-    set_fact:
-      images: "{{ images + [{ 'repository': 'nemonik/taiga', 'tag': '{{ taiga_version }}' }]  }}"
-  tags:
-   - taiga
 
 - name: spin up Taiga via Kubernetes
   block:
@@ -2561,7 +2577,7 @@ Kubernetes is an open-source system for automating deployment, scaling, and mana
 
 #### 9.6.3.1. K3S, light-weight Kubernetes
 
-K3S is a light-weight, certified Kubernetes distribution designed for resource-constrained environments, where one doesn't need the added steps and dependencies a full Kubernetes cluster would require.  K3s fits our need perfectly.
+K3S is a light-weight, CNCF certified Kubernetes distribution designed for resource-constrained environments, where one doesn't need the added steps and dependencies a full Kubernetes cluster would require.  K3s fits our need perfectly.
 
 It's canonical source can be found at
 
@@ -2601,7 +2617,7 @@ Kubernetes will tell you the nodes that comprise the cluster.  The output will l
 
 ```
 NAME     STATUS   ROLES    AGE   VERSION
-master   Ready    master   45s   v1.17.0+k3s.1
+master   Ready    master   45s   v1.18.6+k3s1
 ```
 
 There is a convenience bash script at the root of the project `./watch_nodes.sh` that will secure shell into the master and run the same command periodically until you force kill the script.
@@ -2617,24 +2633,24 @@ it will return all the pods, where a pod is container or group of containers tha
 In our case the the command will return something resembling:
 
 ```
-NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE
-metallb-system         speaker-hj5fc                                1/1     Running   0          51m
-kube-system            metrics-server-6d684c7b5-tmb96               1/1     Running   0          51m
-metallb-system         controller-6765b97cf9-8q77l                  1/1     Running   0          51m
-kube-system            traefik-5856b64c59-9b9nr                     1/1     Running   0          51m
-kubernetes-dashboard   dashboard-metrics-scraper-76585494d8-hcqwp   1/1     Running   0          51m
-kube-system            local-path-provisioner-58fb86bdfd-8jrpv      1/1     Running   0          51m
-kube-system            coredns-d798c9dd-zq65c                       1/1     Running   0          51m
-kubernetes-dashboard   kubernetes-dashboard-5996555fd8-55b6w        1/1     Running   0          51m
-registry               registry-6c6588c46b-gqb6r                    1/1     Running   0          50m
-taiga                  postgresql-78c4f58c59-whm5h                  1/1     Running   0          32m
-taiga                  taiga-6b9b7f5c47-p4wsh                       1/1     Running   0          32m
-gitlab                 postgresql-7fc7b46d75-kjcxh                  1/1     Running   0          23m
-gitlab                 redis-85657cfc6c-vsnbc                       1/1     Running   0          23m
-gitlab                 gitlab-78fc8f6ddb-7wntn                      1/1     Running   0          23m
-sonarqube              postgresql-6b767db968-cs4cm                  1/1     Running   0          14m
-plantuml-server        plantuml-server-7f956b5458-mcprf             1/1     Running   0          15m
-sonarqube              sonarqube-566f9c5755-fb975                   1/1     Running   0          14m
+NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE   IP             NODE     NOMINATED NODE   READINESS GATES
+kube-system            local-path-provisioner-6d59f47c7-fhrgl       1/1     Running   0          13h   10.42.0.2      master   <none>           <none>
+metallb-system         speaker-7lfx4                                1/1     Running   0          13h   192.168.0.10   master   <none>           <none>
+metallb-system         controller-674ffcfcb5-gbxww                  1/1     Running   0          13h   10.42.0.4      master   <none>           <none>
+kube-system            metrics-server-7566d596c8-44wr8              1/1     Running   0          13h   10.42.0.5      master   <none>           <none>
+kube-system            traefik-db6bd8cf5-68rx7                      1/1     Running   0          13h   10.42.0.6      master   <none>           <none>
+kubernetes-dashboard   dashboard-metrics-scraper-694557449d-9wqdh   1/1     Running   0          13h   10.42.0.7      master   <none>           <none>
+kubernetes-dashboard   kubernetes-dashboard-7585d9796f-65lfg        1/1     Running   0          13h   10.42.0.8      master   <none>           <none>
+kube-system            coredns-8655855d6-gjbt5                      1/1     Running   0          13h   10.42.0.3      master   <none>           <none>
+gitlab                 postgresql-54f4644855-22hl8                  1/1     Running   0          12h   10.42.0.13     master   <none>           <none>
+gitlab                 redis-6fdb7c89dc-85bqr                       1/1     Running   0          12h   10.42.0.14     master   <none>           <none>
+gitlab                 gitlab-d849c68dc-v8krx                       1/1     Running   0          12h   10.42.0.12     master   <none>           <none>
+metallb-system         speaker-6qdvn                                1/1     Running   0          12h   192.168.0.11   node1    <none>           <none>
+taiga                  postgresql-7df8d6c5d9-lkppf                  1/1     Running   0          12h   10.42.1.3      node1    <none>           <none>
+plantuml-server        plantuml-server-666d7b789b-v9rkg             1/1     Running   0          12h   10.42.1.4      node1    <none>           <none>
+sonarqube              postgresql-6f8d997d76-g6gzh                  1/1     Running   0          11h   10.42.0.18     master   <none>           <none>
+taiga                  taiga-966b6b7ff-rvskh                        1/1     Running   0          12h   10.42.0.17     master   <none>           <none>
+sonarqube              sonarqube-8577859c74-6d6s2                   1/1     Running   0          11h   10.42.0.19     master   <none>           <none>
 ```
 
 There is another convenience bash script at the root of the project `./watch_pods.sh` that will secure shell into the master and run essentially the same command periodically until you force kill the script.  I usually leave this running in another shell to monitor the cluster as the long running apps are deployed by Kubernetes.
@@ -4129,7 +4145,7 @@ steps:
 - If I didn't update the documentation correctly, it is possible the tag for the `nemonik/golang` container image maybe off.  To verify this tag  enter the following into the shell
   
   ```
-  curl http://192.168.0.201:5000/v2/nemonik/golang/tags/list
+  curl http://192.168.0.10:5000/v2/nemonik/golang/tags/list
   ```
 
   who will return something like
@@ -6750,7 +6766,7 @@ latest: digest: sha256:2080f1daf0facf99f416364e03dcacfe1d891abef0033a1889891cc26
 The Docker registry container image shipped by Docker does not provide a GUI, but we can verify by querying the catalog of the private registry through a web browser or Unix command line tool `curl` by entering into the command line
 
 ```bash
-curl -X GET http://192.168.0.201:5000/v2/_catalog
+curl -X GET http://192.168.0.10:5000/v2/_catalog
 ```
 
 Returns in the command line
@@ -6800,13 +6816,13 @@ Quite a bit of container images we got there.
 To list container images the registry holds for the `helloworld-web` container image enter
 
 ```bash
-curl -X GET http://192.168.0.201:5000/v2/nemonik/helloworld-web/tags/list
+curl -X GET http://192.168.0.10:5000/v2/nemonik/helloworld-web/tags/list
 ```
 
 Returns in the command line
 
 ```
-development:~/go/src/github.com/nemonik/helloworld-web$ curl -X GET http://192.168.0.201:5000/v2/nemonik/helloworld-web/tags/list
+development:~/go/src/github.com/nemonik/helloworld-web$ curl -X GET http://192.168.0.10:5000/v2/nemonik/helloworld-web/tags/list
 {"name":"nemonik/helloworld-web","tags":["latest"]}
 ```
 
@@ -7001,7 +7017,7 @@ Things to note in the above
 - This step uses an image, `nemonik/golang-sonarqube-scanner:4.0.0.1744`, built on top of the `nemonik/golang:1.13.7` image to speed builds along.
 - I may have forgotten to update the documentation.  To verify the container image tage is correct perform the following on the command-line and correct the drone step as needed
   ```
-  curl -X GET http://192.168.0.201:5000/v2/nemonik/golang-sonarqube-scanner/tags/list
+  curl -X GET http://192.168.0.10:5000/v2/nemonik/golang-sonarqube-scanner/tags/list
   ```
 - Cut-and-pasting may split the last command (i.e., the line beginning with `  - sonar-scanner`) into multiple lines in your editor that when executed by Drone will result in your build failing. If this happens, correct in your editor and re-push. 
 - The following commands is a bit of filesystem juggling, so that the scan can be executed
@@ -8324,7 +8340,7 @@ docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web:latest
 In another `vagrant ssh` to `development` enter
 
 ```
-curl -X GET http://192.168.0.201:5000/v2/nemonik/standalone-firefox/tags/list
+curl -X GET http://192.168.0.10:5000/v2/nemonik/standalone-firefox/tags/list
 ```
 
 the output will resemble
@@ -8770,7 +8786,7 @@ First we'll exercise ZAP locally opening `vagrant ssh` to `development`.
 At the root of the project, we need to query our Docker registry to determine what `zap2docker` container is available, we'll do this using `curl`
 
 ```bash
-[vagrant@development helloworld-web]$ curl -X GET http://192.168.0.201:5000/v2/nemonik/zap2docker-stable/tags/list
+[vagrant@development helloworld-web]$ curl -X GET http://192.168.0.10:5000/v2/nemonik/zap2docker-stable/tags/list
 {"name":"nemonik/zap2docker-stable","tags":["2.8.0"]}
 ```
 
