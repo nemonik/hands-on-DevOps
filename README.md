@@ -2102,10 +2102,9 @@ Vagrant needs a image to start from in much the same reason one builds an Amazon
 
 ##### 9.5.2.3.9. Configuring the Kubernetes cluster vagrant(s)
 
-By default the class is configured for a single node cluster, a single master node by having `:nodes` set to `1` in the `ConfigurationVars` module.
+By default the class is configured as a two node cluster, a single master node and one worker node by having `:nodes` set to `2` in the `ConfigurationVars` module.
 
-The Vagrant file uses the value of `:nodes` and the shell scripting templates defined in the `ConfigurationVars` module to create the 
-cluster starting with a master node and each subsequent node being created as a worker node. 
+The Vagrant file uses the value of `:nodes` and the shell scripting templates defined in the `ConfigurationVars` module to create the cluster starting with a master node and each subsequent node being created as a worker node. 
 
 ```ruby
   # shell scripting to install root user cached content
@@ -2155,6 +2154,22 @@ cluster starting with a master node and each subsequent node being created as a 
           virtualbox.memory = 2048
           virtualbox.cpus = 2
         end
+
+        if (ConfigurationVars::VARS[:openebs_drives].downcase == 'yes') then # create OpenEBS drives on each node
+
+          openebs_disk = "./#{hostname}_openebs_disk.vdi"
+
+          # Add a second drive for OpenEBS
+          unless File.exist?(openebs_disk)
+            virtualbox.customize ['createmedium', '--filename', openebs_disk, '--size', ConfigurationVars::VARS[:openebs_drive_size_in_gb] * 1024]
+          end
+
+          # the value of storage_system_bus depends on your platform
+          storage_system_bus = "IDE"
+
+          # provisions the drive
+          virtualbox.customize ['storageattach', :id, '--storagectl', storage_system_bus, '--port', 1, '--device', 0, '--type', 'hdd', '--medium', openebs_disk]
+        end
       end
 
       # Configure via shell and Ansible
@@ -2170,6 +2185,14 @@ cluster starting with a master node and each subsequent node being created as a 
         vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
           echo Configuring #{hostname} via Ansible...
           cd /vagrant
+
+          n=0
+          until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
+            /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
+            n=$((n+1))
+            sleep #{ConfigurationVars::VARS[:default_delay]}
+          done
+
           PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="masters" --inventory-file=hosts ansible/master-playbook.yml
         SHELL
       else # worker nodes
@@ -2185,6 +2208,14 @@ cluster starting with a master node and each subsequent node being created as a 
           #{install_secure_key}
 
           cd /vagrant
+
+          n=0
+          until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
+            /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
+            n=$((n+1))
+            sleep #{ConfigurationVars::VARS[:default_delay]}
+          done
+
           PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="workers" --inventory-file=hosts ansible/worker-playbook.yml
         SHELL
       end
@@ -2192,7 +2223,7 @@ cluster starting with a master node and each subsequent node being created as a 
   end
 ```
 
-The Kubernetes cluster, whether a single node or many nodes will orechestrate the lifecycle of Traefik, GitLab, Drone CI, a private Docker registry, SonarQube, Selenium, Taiga...
+The Kubernetes cluster, whether a single node or many nodes will orechestrate the lifecycle of Traefik, GitLab, Drone CI, SonarQube, Taiga... 
 
 **NOTE**
 
@@ -2200,6 +2231,7 @@ The Kubernetes cluster, whether a single node or many nodes will orechestrate th
 - By default the `master` vagrant is given 8GB (i.e., `8192`. For me a 1GB is 1024MB, not 1000MB. Is this so hard?  Must we dumb everything down?) of memory and 8 cores. If your host has more memory and cores you can configure this vagrant with more.  
 - I've seen this course run on an i5 Dell Laptop, so one can squeak by on 4GB of memory, but I wouldn't advise it.  I also wouldn't drop the `master` vagrant below 4 cores, either.  
 - Running additional worker nodes will tax most laptops, so I wouldn't advise it.
+- Some services and tools are orchestrated via Docker-compose, such as, the Docker registries and Drone CI.
 
 
 ##### 9.5.2.3.10. Provisioning and configuring the *development* vagrant
@@ -2207,49 +2239,58 @@ The Kubernetes cluster, whether a single node or many nodes will orechestrate th
 The development vagrant  used for development is proisioned and configured with the following code:
 
 ```ruby
-  config.vm.define 'development' do |vagrant|
-    vagrant.vm.network 'private_network', ip: "#{ ConfigurationVars::VARS[:network_prefix] }.9"
-    vagrant.vm.hostname = 'development'
+  if (ConfigurationVars::VARS[:create_development].downcase == 'yes') then # create development vagrant
+    config.vm.define 'development' do |vagrant|
+      vagrant.vm.network 'private_network', ip: "#{ ConfigurationVars::VARS[:network_prefix] }.9"
+      vagrant.vm.hostname = 'development'
 
-    vagrant.vm.provider :virtualbox do |virtualbox|
-      virtualbox.name = "Hands-on DevOps class - #{os} - #{vagrant.vm.hostname}"
-      virtualbox.gui = false
+      vagrant.vm.provider :virtualbox do |virtualbox|
+        virtualbox.name = "Hands-on DevOps class - #{os} - #{vagrant.vm.hostname}"
+        virtualbox.gui = false
 
-      virtualbox.customize ['modifyvm', :id, '--audio', 'none']
-      virtualbox.customize ['modifyvm', :id, '--nic1', 'nat']
-      virtualbox.customize ['modifyvm', :id, '--cableconnected1', 'on']
-      virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        virtualbox.customize ['modifyvm', :id, '--audio', 'none']
+        virtualbox.customize ['modifyvm', :id, '--nic1', 'nat']
+        virtualbox.customize ['modifyvm', :id, '--cableconnected1', 'on']
+        virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
 
-      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-interval", 10000 ]
-      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-min-adjust", 100 ]
-      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-on-restore", 1 ]
-      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-start", 1 ]
-      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-interval", 10000 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-min-adjust", 100 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-on-restore", 1 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-start", 1 ]
+        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
 
-      virtualbox.memory = 2048
-      virtualbox.cpus = 2
+        virtualbox.memory = 2048
+        virtualbox.cpus = 2
+      end
+
+      developments_root_cached = root_cached_template.gsub! /TYPE/, 'developments'
+      developments_user_cached = user_cached_template.gsub! /TYPE/, 'developments'
+
+      # install root user cached content
+      vagrant.vm.provision 'root_cached_content', type: :shell, privileged: true, inline: "#{developments_root_cached}"
+
+      # install user cached content
+      vagrant.vm.provision 'user_cached_content', type: :shell,  privileged: false, inline: "#{developments_user_cached}"
+
+      vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
+        echo Configuring development node...
+
+        #{install_secure_key}
+
+        echo Execute ansible-playbook...
+        cd /vagrant
+
+        n=0
+        until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
+          /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
+          n=$((n+1))
+          sleep #{ConfigurationVars::VARS[:default_delay]}
+        done
+
+        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
+      SHELL
     end
-
-    developments_root_cached = root_cached_template.gsub! /TYPE/, 'developments'
-    developments_user_cached = user_cached_template.gsub! /TYPE/, 'developments'
-
-    # install root user cached content
-    vagrant.vm.provision 'root_cached_content', type: :shell, privileged: true, inline: "#{developments_root_cached}"
-
-    # install user cached content
-    vagrant.vm.provision 'user_cached_content', type: :shell,  privileged: false, inline: "#{developments_user_cached}"
-
-    vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
-      echo Configuring development node...
-
-      #{install_secure_key}
-
-      echo Execute ansible-playbook...
-      cd /vagrant
-      PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
-    SHELL
-  end
 ```
 
 Let me breakdown what is occuring above:
@@ -2935,7 +2976,7 @@ GitLab will take sometime to start.  You may see the following in the Ansible ve
     development: }
 ```
 
-This is perfectly normal.  The course's Ansible code will poll GitLab waiting for it to spin up.  This is only a problem if the polling hits its limit.  If this does happen then the deployment of the long running tools will stop.
+This is perfectly normal.  The course's Ansible code will poll GitLab waiting for it to spin up.  This is only a problem if the polling hits its limit.  If this does happen then the deployment of the long running tools will stop.  Usually, GitLab is up by try 30.
 
 ### 9.7.3. Drone CI, an example of CICD orchestrator
 
@@ -2945,7 +2986,7 @@ Drone is essentially a Continuous Delivery system built on container technology.
 
 Drone is distributed as a set of Docker images. Drone CI can be run with an internal SQLite database, but it is advisable to run with an external database and this is the configuration the class uses. It also integrates with multiple version control providers (i.e., GitHub, GitLab, BitBucket, Stash, and Gogs). Both CMS and database are configured using environment variables passed along when the Drone CI container is first to run.  The `.drone.yml` is authored in a domain specific language (DSL) that is a superset of the docker-compose DSL. The file is used to describe the build with multiple named steps with each step executed in a separate Docker container having shared disk access to the checked out branch of the source repository.  Steps make use of Drone plugins to deploy code, publish artifacts, send a notification, etc.  Drone's approach is novel as plugins are really just Docker containers distributed in the typical manner.  Each plugin is designed to perform pre-defined tasks and is configured as steps in your pipeline. The containers are executed with read/write/execute access at the root of the source branch therefore permitting the pipeline to interact with that specific, checked out branch of the source. 
 
-Drone and its brethren (e.g., Jenkins CI, GitLab CICD) are used to facilitate Continuous Integration (CI), a software development practice where members of an Agile team frequently integrate their work in order to detect integration issues as soon as possible. Each integration is orchestrated through a service that essentially assembles a build and runs tests every time a predetermined trigger has been met and then reports with immediate feedback.
+Drone and its brethren (e.g., Jenkins CI, GitLab Runners) are used to facilitate Continuous Integration (CI), a software development practice where members of an Agile team frequently integrate their work in order to detect integration issues as soon as possible. Each integration is orchestrated through a service that essentially assembles a build and runs tests every time a predetermined trigger has been met and then reports with immediate feedback.
 
 I don't use Jenkins unless I have to. Why? I'm simply not a fan. Initially, because its plugin architecture is painful to manage and with prior versions your pipelines existed entirely in the Jenkins CI tool itself. Later, Jenkins CI introduced Groovy-based Jenkin Pipelines that are CMed (i.e., placed under configuration management) with your project's source. And while every orchestrator has based their DSL on YAML and although I love the Groovy language for its power, I don't think it makes for a good orchestration language. Your opinion may differ. I'm okay with that. Really. I am.
 
