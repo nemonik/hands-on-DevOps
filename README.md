@@ -799,7 +799,7 @@ if [[ $set_proxy = true ]]; then
   export HTTPS_PROXT=$PROXY
   export https_proxy=$PROXY
   export ALL_PROXY=$PROXY
-  export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,192.168.0.9,192.168.0.10,192.168.0.11,192.168.0.200,192.168.0.201,192.168.0.202,192.168.0.203,192.168.0.204,192.168.0.205"
+  export NO_PROXY="127.0.0.1,localhost,.mitre.org,.local,192.168.0.9,192.168.0.10,192.168.0.11,192.168.0.206,192.168.0.10,192.168.0.202,192.168.0.203,192.168.0.204,192.168.0.205"
  export no_proxy=$NO_PROXY
 else
   echo "Unsetting proxy environment varaibles"
@@ -891,7 +891,7 @@ If you are on Windows perform the following to set environmental variable adjust
 | proxy                              | http://gatekeeper.mitre.org:80                                                                                                                                  |
 | http_proxy                         | http://gatekeeper.mitre.org:80                                                                                                                                  |
 | https_proxy                        | http://gatekeeper.mitre.org:80                                                                                                                                  |
-| no_proxy                           | 127.0.0.1,localhost,.mitre.org,.local,192.168.0.9,192.168.0.10,192.168.0.11,192.168.0.200,192.168.0.201,192.168.0.202,192.168.0.203,192.168.0.204,192.168.0.205 |
+| no_proxy                           | 127.0.0.1,localhost,.mitre.org,.local,192.168.0.9,192.168.0.10,192.168.0.11,192.168.0.206,192.168.0.10,192.168.0.202,192.168.0.203,192.168.0.204,192.168.0.205 |
 | CA_CERTIFICATES                    | http://pki.mitre.org/MITRE%20BA%20Root.crt,http://pki.mitre.org/MITRE%20BA%20NPE%20CA-3%281%29.crt                                                              |
 | VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS | 0                                                                                                                                                               |
 
@@ -908,7 +908,7 @@ If you're doing this class on your MITRE Life cycle running Windows (I have yet 
 
 You will need to install VirtualBox, a general-purpose full virtualizer for x86 hardware.
 
-The class has been verified to work with VirtualBox 6.1.q2.  Newer version may or may not work.
+The class has been verified to work with VirtualBox 6.1.12.  Newer version may or may not work.
 
 ### 9.2.1. Installing VirtualBox
 
@@ -1014,7 +1014,16 @@ Packer v1.5.1
 
 **Installing on Windows**
 
-To be written.
+To install on Windows
+1. right click the downloaded zip file
+2. extract all
+3. enter `C:\Program Files\packer_1.5.1_windows_amd64` as the path
+4. extract
+5. continue (give admin permission)
+6. In the Windows taskbar, enter `env` into `Search Windows` and select `edit the system environment variables`
+7. In the `Systems Property`'s `Advanced` tab select `Environment Variables...` button.
+8. In `Environment Variables` windows that opens, in `User variables for...` select the Path variable then select`Edit ...` to open a `Edit environment variable` window
+9. select `new` and enter `C:\Program Files\packer_1.5.1_windows_amd64`
 
 #### 9.5.1.3. Packer project explained
 
@@ -1602,7 +1611,7 @@ module ConfigurationVars
 
     vars = VARS
 
-    vars[:http_proxy] = (!http_proxy ? "" : http_proxy) 
+    vars[:http_proxy] = (!http_proxy ? "" : http_proxy)
     vars[:https_proxy] = (!https_proxy ? "" : https_proxy)
     vars[:ftp_proxy] = (!ftp_proxy ? "" : ftp_proxy)
     vars[:no_proxy] = (!no_proxy ? "" : no_proxy)
@@ -1626,7 +1635,7 @@ module ConfigurationVars
         if (value.is_a? Integer)
           value = value.to_s
         end
-      
+
         vars_string = vars_string + "\\\"#{key}\\\":\\\"#{value}\\\","
       end
     end
@@ -1636,17 +1645,17 @@ module ConfigurationVars
 
   DETERMINE_OS_TEMPLATE = <<~SHELL
     os=""
-    if [[ $(command -v lsb_release | wc -l) == *"1"* ]]; then 
+    if [[ $(command -v lsb_release | wc -l) == *"1"* ]]; then
       os="$(lsb_release -is)-$(lsb_release -cs)"
     elif [ -f "/etc/os-release" ]; then
-      if [[ $(cat /etc/os-release | grep -i alpine | wc -l) -gt "0" ]]; then 
+      if [[ $(cat /etc/os-release | grep -i alpine | wc -l) -gt "0" ]]; then
         os="Alpine"
       elif [[ $(cat /etc/os-release | grep -i "CentOS Linux 7" | wc -l) -gt "0" ]]; then
         os="CentOS 7"
       fi
-    else 
+    else
       echo -n "Cannot determine OS."
-      exit -1    
+      exit -1
     fi
   SHELL
 
@@ -1699,7 +1708,7 @@ module ConfigurationVars
             *)
               echo "${os} not supported." 1>&2
               exit -1
-              ;;              
+              ;;
           esac
         fi
         rm -Rf ${package_manager}
@@ -2155,7 +2164,7 @@ The Vagrant file uses the value of `:nodes` and the shell scripting templates de
           virtualbox.cpus = 2
         end
 
-        if (ConfigurationVars::VARS[:openebs_drives].downcase == 'yes') then # create OpenEBS drives on each node
+                if (ConfigurationVars::VARS[:openebs_drives].downcase == 'yes') then # create OpenEBS drives on each node
 
           openebs_disk = "./#{hostname}_openebs_disk.vdi"
 
@@ -2241,45 +2250,45 @@ The development vagrant  used for development is proisioned and configured with 
 ```ruby
   if (ConfigurationVars::VARS[:create_development].downcase == 'yes') then # create development vagrant
     config.vm.define 'development' do |vagrant|
-      vagrant.vm.network 'private_network', ip: "#{ ConfigurationVars::VARS[:network_prefix] }.9"
-      vagrant.vm.hostname = 'development'
+    vagrant.vm.network 'private_network', ip: "#{ ConfigurationVars::VARS[:network_prefix] }.9"
+    vagrant.vm.hostname = 'development'
 
-      vagrant.vm.provider :virtualbox do |virtualbox|
-        virtualbox.name = "Hands-on DevOps class - #{os} - #{vagrant.vm.hostname}"
-        virtualbox.gui = false
+    vagrant.vm.provider :virtualbox do |virtualbox|
+      virtualbox.name = "Hands-on DevOps class - #{os} - #{vagrant.vm.hostname}"
+      virtualbox.gui = false
 
-        virtualbox.customize ['modifyvm', :id, '--audio', 'none']
-        virtualbox.customize ['modifyvm', :id, '--nic1', 'nat']
-        virtualbox.customize ['modifyvm', :id, '--cableconnected1', 'on']
-        virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-        virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      virtualbox.customize ['modifyvm', :id, '--audio', 'none']
+      virtualbox.customize ['modifyvm', :id, '--nic1', 'nat']
+      virtualbox.customize ['modifyvm', :id, '--cableconnected1', 'on']
+      virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
 
-        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-interval", 10000 ]
-        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-min-adjust", 100 ]
-        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-on-restore", 1 ]
-        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-start", 1 ]
-        virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
+      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-interval", 10000 ]
+      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-min-adjust", 100 ]
+      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-on-restore", 1 ]
+      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-start", 1 ]
+      virtualbox.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
 
-        virtualbox.memory = 2048
-        virtualbox.cpus = 2
-      end
+      virtualbox.memory = 2048
+      virtualbox.cpus = 2
+    end
 
-      developments_root_cached = root_cached_template.gsub! /TYPE/, 'developments'
-      developments_user_cached = user_cached_template.gsub! /TYPE/, 'developments'
+    developments_root_cached = root_cached_template.gsub! /TYPE/, 'developments'
+    developments_user_cached = user_cached_template.gsub! /TYPE/, 'developments'
 
-      # install root user cached content
-      vagrant.vm.provision 'root_cached_content', type: :shell, privileged: true, inline: "#{developments_root_cached}"
+    # install root user cached content
+    vagrant.vm.provision 'root_cached_content', type: :shell, privileged: true, inline: "#{developments_root_cached}"
 
-      # install user cached content
-      vagrant.vm.provision 'user_cached_content', type: :shell,  privileged: false, inline: "#{developments_user_cached}"
+    # install user cached content
+    vagrant.vm.provision 'user_cached_content', type: :shell,  privileged: false, inline: "#{developments_user_cached}"
 
-      vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
-        echo Configuring development node...
+    vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
+      echo Configuring development node...
 
-        #{install_secure_key}
+      #{install_secure_key}
 
-        echo Execute ansible-playbook...
-        cd /vagrant
+      echo Execute ansible-playbook...
+      cd /vagrant
 
         n=0
         until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
@@ -2288,9 +2297,9 @@ The development vagrant  used for development is proisioned and configured with 
           sleep #{ConfigurationVars::VARS[:default_delay]}
         done
 
-        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
-      SHELL
-    end
+      PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
+    SHELL
+  end
 ```
 
 Let me breakdown what is occuring above:
@@ -4167,12 +4176,12 @@ name: default
 
 steps:
 - name: build
-  image: 192.168.0.201:5000/nemonik/golang:1.13.7
+  image: 192.168.0.10:5000/nemonik/golang:1.13.7
   commands:
   - make build
 
 - name: run
-  image: 192.168.0.201:5000/nemonik/golang:1.13.7
+  image: 192.168.0.10:5000/nemonik/golang:1.13.7
   commands:
   - make run
 ```
@@ -4199,7 +4208,7 @@ The pipeline is authored in YAML like almost all the CI orchestrators out there 
 
 - `steps:` - defines the list of steps followed to build, test and deploy your code.
 - `build` and `run` - defines the names of the step. These are yours to name. Name steps something meaningful as to what the step is orchestrating. Each step is executed serially, in the order defined.
-- `image: 192.168.0.201:5000/nemonik/golang:1.13.4` - defines the container image to execute the step.  The nemonik/golang container tagged `1.13.4` will be retrieved from private Docker registry located at `192.168.0.201:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
+- `image: 192.168.0.10:5000/nemonik/golang:1.13.4` - defines the container image to execute the step.  The nemonik/golang container tagged `1.13.4` will be retrieved from private Docker registry located at `192.168.0.10:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
 - `commands` - defines a collection of terminal commands to be executed. These are all the same commands we executed previously in the command line. If anyone of these commands were to fail returning a non-zero exit code, the pipeline will immediately end resulting in a failed build.
 
 #### 9.8.11.1. Configure Drone to execute your pipeline
@@ -5396,7 +5405,7 @@ development:~/go/src/github.com/nemonik/helloworld-web$ go test -v ./... -json >
 development:~/go/src/github.com/nemonik/helloworld-web$ sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
-INFO: SonarQube Scanner 4.0.0.1744
+INFO: SonarQube Scanner 4.3.0.2102
 INFO: Java 1.8.0_242 IcedTea (64-bit)
 INFO: Linux 4.19.98-0-virt amd64
 INFO: User cache: /home/vagrant/.sonar/cache
@@ -5691,7 +5700,7 @@ go test -v ./... -json > report.json
 sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
-INFO: SonarQube Scanner 4.0.0.1744
+INFO: SonarQube Scanner 4.3.0.2102
 INFO: Java 1.8.0_242 IcedTea (64-bit)
 INFO: Linux 4.19.98-0-virt amd64
 INFO: User cache: /home/vagrant/.sonar/cache
@@ -5852,10 +5861,10 @@ skinparam note {
 -left-> (*)
 ```
 
-We can build a Docker image for our application on top of a `192.168.0.201:5000/nemonik/golang:1.13.7` image by creating a `Dockerfile` with the following content
+We can build a Docker image for our application on top of a `192.168.0.10:5000/nemonik/golang:1.13.7` image by creating a `Dockerfile` with the following content
 
 ```docker
-FROM 192.168.0.201:5000/nemonik/golang:1.13.7
+FROM 192.168.0.10:5000/nemonik/golang:1.13.7
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
 RUN mkdir /app
@@ -5886,7 +5895,7 @@ development:~/go/src/github.com/nemonik/helloworld-web$ make build
 go build -o helloworld-web -v
 development:~/go/src/github.com/nemonik/helloworld-web$ docker build -t nemonik/helloworld-web .
 Sending build context to Docker daemon  10.77MB
-Step 1/7 : FROM 192.168.0.201:5000/nemonik/golang:1.13.7
+Step 1/7 : FROM 192.168.0.10:5000/nemonik/golang:1.13.7
  ---> 6dd8c4661085
 Step 2/7 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
  ---> Using cache
@@ -5937,7 +5946,7 @@ You've created an approximately 1.06 GB sized `nemonik/helloworld-web` image tag
 
 **NOTE:**
 
-- The registry will also contain the `192.168.0.201:5000/nemonik/golang:1.13.7` on which `nemonik/helloworld-web:latest` is based, so the next time re-build image you won't have to wait for `192.168.0.201:5000/nemonik/golang:1.13.7` to be retrieved.   
+- The registry will also contain the `192.168.0.10:5000/nemonik/golang:1.13.7` on which `nemonik/helloworld-web:latest` is based, so the next time re-build image you won't have to wait for `192.168.0.10:5000/nemonik/golang:1.13.7` to be retrieved.   
 
 But this approach doesn't create the smallest most secure container image. You can accomplish this by instead using Docker's reserved, minimal image `scratch`, as a starting point for your `Dockerfile` like so
 
@@ -6049,7 +6058,7 @@ go test -v ./... -json > report.json
 sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
-INFO: SonarQube Scanner 4.0.0.1744
+INFO: SonarQube Scanner 4.3.0.2102
 INFO: Java 1.8.0_242 IcedTea (64-bit)
 INFO: Linux 4.19.98-0-virt amd64
 INFO: User cache: /home/vagrant/.sonar/cache
@@ -6492,15 +6501,15 @@ skinparam note {
 In the development vagrant, push the `nemonik/helloworld-web` container image into the private Docker registry running in the Kubernetes cluster, so that all the vagrants can create containers from the image with the commands
 
 ```bash
-docker tag nemonik/helloworld-web 192.168.0.201:5000/nemonik/helloworld-web
-docker push 192.168.0.201:5000/nemonik/helloworld-web
+docker tag nemonik/helloworld-web 192.168.0.10:5000/nemonik/helloworld-web
+docker push 192.168.0.10:5000/nemonik/helloworld-web
 ```
 
 Command line output will be
 
 ```
-development:~/go/src/github.com/nemonik/helloworld-web$ docker push 192.168.0.201:5000/nemonik/helloworld-web
-The push refers to repository [192.168.0.201:5000/nemonik/helloworld-web]
+development:~/go/src/github.com/nemonik/helloworld-web$ docker push 192.168.0.10:5000/nemonik/helloworld-web
+The push refers to repository [192.168.0.10:5000/nemonik/helloworld-web]
 3c1e3378eec3: Pushed
 latest: digest: sha256:fa0a235be59f156e1bc26174ad5a2ac570252ac7a21f33a67e90c8e480f75eaf size: 528
 ```
@@ -6509,8 +6518,8 @@ We can update the project's Makefile adding a `docker-push` target
 
 ```makefile
 docker-push: docker-build
-	docker tag nemonik/helloworld-web 192.168.0.201:5000/nemonik/helloworld-web
-	docker push 192.168.0.201:5000/nemonik/helloworld-web
+	docker tag nemonik/helloworld-web 192.168.0.10:5000/nemonik/helloworld-web
+	docker push 192.168.0.10:5000/nemonik/helloworld-web
 ```
 
 Also, add replace `docker-build` with `docker-push` in the `all` target  line like so:
@@ -6583,7 +6592,7 @@ go test -v ./... -json > report.json
 sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go
 INFO: Scanner configuration file: /usr/local/sonar-scanner/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
-INFO: SonarQube Scanner 4.0.0.1744
+INFO: SonarQube Scanner 4.3.0.2102
 INFO: Java 1.8.0_242 IcedTea (64-bit)
 INFO: Linux 4.19.98-0-virt amd64
 INFO: User cache: /home/vagrant/.sonar/cache
@@ -6795,9 +6804,9 @@ Removing intermediate container f0718890639b
  ---> 9015eb60e569
 Successfully built 9015eb60e569
 Successfully tagged nemonik/helloworld-web:latest
-docker tag nemonik/helloworld-web 192.168.0.201:5000/nemonik/helloworld-web
-docker push 192.168.0.201:5000/nemonik/helloworld-web
-The push refers to repository [192.168.0.201:5000/nemonik/helloworld-web]
+docker tag nemonik/helloworld-web 192.168.0.10:5000/nemonik/helloworld-web
+docker push 192.168.0.10:5000/nemonik/helloworld-web
+The push refers to repository [192.168.0.10:5000/nemonik/helloworld-web]
 17e268bf386b: Pushed
 latest: digest: sha256:2080f1daf0facf99f416364e03dcacfe1d891abef0033a1889891cc261c84802 size: 528
 ```
@@ -7035,7 +7044,7 @@ name: default
 
 steps:
 - name: sonarqube
-  image: 192.168.0.201:5000/nemonik/golang-sonarqube-scanner:4.0.0.1744
+  image: 192.168.0.10:5000/nemonik/golang-sonarqube-scanner:4.3.0.2102
   commands:
   - export DRONESRC=`pwd`
   - export GOBIN=$GOPATH/bin
@@ -7053,7 +7062,7 @@ steps:
 
 Things to note in the above
 
-- This step uses an image, `nemonik/golang-sonarqube-scanner:4.0.0.1744`, built on top of the `nemonik/golang:1.13.7` image to speed builds along.
+- This step uses an image, `nemonik/golang-sonarqube-scanner:4.3.0.2102`, built on top of the `nemonik/golang:1.13.7` image to speed builds along.
 - I may have forgotten to update the documentation.  To verify the container image tage is correct perform the following on the command-line and correct the drone step as needed
   ```
   curl -X GET http://192.168.0.10:5000/v2/nemonik/golang-sonarqube-scanner/tags/list
@@ -7144,9 +7153,9 @@ coverage: 55.6% of statements
 ok  	github.com/nemonik/helloworld-web	0.008s	coverage: 55.6% of statements
 + go test -v ./... -json > report.json || true
 + sonar-scanner -D sonar.host.url=http://192.168.0.205:9000 -D sonar.projectKey=helloworld-web -D sonar.projectName=helloworld-web -D sonar.projectVersion=1.0 -D sonar.sources=main.go -D sonar.go.gometalinter.reportPaths=gometalinter-report.out -D sonar.go.golint.reportPaths=golint-report.out -D sonar.go.coverage.reportPaths=coverage.out -D sonar.go.tests.reportPaths=report.json -D sonar.exclusions=**/*test.go || true
-INFO: Scanner configuration file: /usr/local/sonar-scanner-4.0.0.1744-linux/conf/sonar-scanner.properties
+INFO: Scanner configuration file: /usr/local/sonar-scanner-4.3.0.2102-linux/conf/sonar-scanner.properties
 INFO: Project root configuration file: NONE
-INFO: SonarQube Scanner 4.0.0.1744
+INFO: SonarQube Scanner 4.3.0.2102
 INFO: Java 11.0.3 AdoptOpenJDK (64-bit)
 INFO: Linux 4.19.98-0-virt amd64
 INFO: User cache: /root/.sonar/cache
@@ -7308,7 +7317,7 @@ Add a build step to our `.drone.yml`
 
 ```yaml
 - name: build
-  image: 192.168.0.201:5000/nemonik/golang:1.13.7
+  image: 192.168.0.10:5000/nemonik/golang:1.13.7
   commands:
   - make build
 ```
@@ -7512,8 +7521,8 @@ Add the publish step to your `.drone.yml` so that the container image is publish
   settings:
     storage_driver: overlay
     insecure: true
-    registry: 192.168.0.201:5000
-    repo: 192.168.0.201:5000/nemonik/helloworld-web
+    registry: 192.168.0.10:5000
+    repo: 192.168.0.10:5000/nemonik/helloworld-web
     force_tag: true
     tags:
     - latest
@@ -7532,7 +7541,7 @@ git push origin master
 The publish step will resemble:
 
 ```
-+ /usr/local/bin/dockerd --data-root /var/lib/docker -s overlay --insecure-registry 192.168.0.201:5000
++ /usr/local/bin/dockerd --data-root /var/lib/docker -s overlay --insecure-registry 192.168.0.10:5000
 Registry credentials not provided. Guest mode enabled.
 + /usr/local/bin/docker version
 Client: Docker Engine - Community
@@ -7597,7 +7606,7 @@ Registry: https://index.docker.io/v1/
 Labels:
 Experimental: false
 Insecure Registries:
- 192.168.0.201:5000
+ 192.168.0.10:5000
  127.0.0.0/8
 Live Restore Enabled: false
 Product License: Community Engine
@@ -7643,9 +7652,9 @@ Removing intermediate container db379bb45195
  ---> 59fd805ffd19
 Successfully built 59fd805ffd19
 Successfully tagged 89289971260b36ae681991d005b5bcc6cf3d98a8:latest
-+ /usr/local/bin/docker tag 89289971260b36ae681991d005b5bcc6cf3d98a8 192.168.0.201:5000/nemonik/helloworld-web:latest
-+ /usr/local/bin/docker push 192.168.0.201:5000/nemonik/helloworld-web:latest
-The push refers to repository [192.168.0.201:5000/nemonik/helloworld-web]
++ /usr/local/bin/docker tag 89289971260b36ae681991d005b5bcc6cf3d98a8 192.168.0.10:5000/nemonik/helloworld-web:latest
++ /usr/local/bin/docker push 192.168.0.10:5000/nemonik/helloworld-web:latest
+The push refers to repository [192.168.0.10:5000/nemonik/helloworld-web]
 9e55b147d94f: Preparing
 9e55b147d94f: Pushed
 latest: digest: sha256:d32f78d4eaf40eae3aee5facd27985fad8c1f4ae47844a06fc1894f3b9564f7b size: 528
@@ -7831,8 +7840,8 @@ Now, open `.drone.yml` in your editor and add the following `deploy:` step below
     script:
     - docker stop helloworld-web 2>/dev/null
     - docker rm helloworld-web 2>/dev/null
-    - docker rmi 192.168.0.201:5000/nemonik/helloworld-web 2>/dev/null
-    - docker run -d --restart=always --name helloworld-web --publish 3000:3000 192.168.0.201:5000/nemonik/helloworld-web
+    - docker rmi 192.168.0.10:5000/nemonik/helloworld-web 2>/dev/null
+    - docker run -d --restart=always --name helloworld-web --publish 3000:3000 192.168.0.10:5000/nemonik/helloworld-web
 ```
 
 To execute your pipeline, push your changes to GitLab
@@ -7849,16 +7858,16 @@ The final deploy step output will resemble:
 ======CMD======
 docker stop helloworld-web 2>/dev/null
 docker rm helloworld-web 2>/dev/null
-docker rmi 192.168.0.201:5000/nemonik/helloworld-web 2>/dev/null
-docker run -d --restart=always --name helloworld-web --publish 3000:3000 192.168.0.201:5000/nemonik/helloworld-web
+docker rmi 192.168.0.10:5000/nemonik/helloworld-web 2>/dev/null
+docker run -d --restart=always --name helloworld-web --publish 3000:3000 192.168.0.10:5000/nemonik/helloworld-web
 ======END======
-err: Unable to find image '192.168.0.201:5000/nemonik/helloworld-web:latest' locally
+err: Unable to find image '192.168.0.10:5000/nemonik/helloworld-web:latest' locally
 err: latest: Pulling from nemonik/helloworld-web
 err: 9e94e439c1d0: Pulling fs layer
 err: 9e94e439c1d0: Download complete
 err: 9e94e439c1d0: Pull complete
 err: Digest: sha256:932616bcc82a494e2531c218ebbb57210e7f3dfc75c01a3492c1361fc23faff2
-err: Status: Downloaded newer image for 192.168.0.201:5000/nemonik/helloworld-web:latest
+err: Status: Downloaded newer image for 192.168.0.10:5000/nemonik/helloworld-web:latest
 out: 756f84653491b4c74d06f0fbbd031aa71a21ce936113f5f290b1fc16711c5732
 ==============================================
 ✅ Successfully executed commands to all host.
@@ -7890,7 +7899,7 @@ Command line output will resemble
 ```
 master:~$ docker ps --filter "name=helloworld-web"
 CONTAINER ID        IMAGE                                       COMMAND             CREATED              STATUS              PORTS                    NAMES
-756f84653491        192.168.0.201:5000/nemonik/helloworld-web   "/helloworld-web"   About a minute ago   Up About a minute   0.0.0.0:3000->3000/tcp   helloworld-web
+756f84653491        192.168.0.10:5000/nemonik/helloworld-web   "/helloworld-web"   About a minute ago   Up About a minute   0.0.0.0:3000->3000/tcp   helloworld-web
 ```
 
 Then either on your docker host in a browser open
@@ -8057,7 +8066,7 @@ control 'docker-checks-1.1' do
   describe docker_container(name: 'helloworld-web') do
     it { should exist }
     it { should be_running }
-    its('repo') { should eq '192.168.0.201:5000/nemonik/helloworld-web' }
+    its('repo') { should eq '192.168.0.10:5000/nemonik/helloworld-web' }
     its('ports') { should eq '0.0.0.0:3000->3000/tcp' }
     its('command') { should eq '/helloworld-web' }
   end
@@ -8087,10 +8096,10 @@ supports:
 
 #### 9.9.19.2. Execute your test
 
-First, we'll execute the test against container running locally by first spinning up a `192.168.0.201:5000/nemonik/helloworld-web:latest` container via
+First, we'll execute the test against container running locally by first spinning up a `192.168.0.10:5000/nemonik/helloworld-web:latest` container via
 
 ```bash
-docker run -d -p 3000:3000 --name helloworld-web 192.168.0.201:5000/nemonik/helloworld-web:latest
+docker run -d -p 3000:3000 --name helloworld-web 192.168.0.10:5000/nemonik/helloworld-web:latest
 ```
 
 If this command fails you likely already have a instance of the container running, you can kill the previous instance and try again
@@ -8098,7 +8107,7 @@ If this command fails you likely already have a instance of the container runnin
 ```
 docker stop helloworld-web
 docker rm helloworld-web
-docker run -d -p 3000:3000 --name helloworld-web 192.168.0.201:5000/nemonik/helloworld-web:latest
+docker run -d -p 3000:3000 --name helloworld-web 192.168.0.10:5000/nemonik/helloworld-web:latest
 ```
 
 And then in the root of your `helloworld-web` project
@@ -8123,7 +8132,7 @@ Target:  local://
   ✔  docker-checks-1.1: Verify Docker Container exists and is running
      ✔  Docker Container helloworld-web is expected to exist
      ✔  Docker Container helloworld-web is expected to be running
-     ✔  Docker Container helloworld-web repo is expected to eq "192.168.0.201:5000/nemonik/helloworld-web"
+     ✔  Docker Container helloworld-web repo is expected to eq "192.168.0.10:5000/nemonik/helloworld-web"
      ✔  Docker Container helloworld-web ports is expected to eq "0.0.0.0:3000->3000/tcp"
      ✔  Docker Container helloworld-web command is expected to eq "/helloworld-web"
 
@@ -8164,7 +8173,7 @@ Test Summary: 5 successful, 0 failures, 0 skipped
      1: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec input_registry.rb:262:in `handle_raw_input_from_metadata'
      /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec input_registry.rb:262:in `join': no implicit conversion of nil into String (TypeError)
    ``` 
-- Upon leaving this section, remember to stop your `helloworld-web` docker container via
+- 
   ```bash
   docker rm -f helloworld-web
   ```
@@ -8231,7 +8240,7 @@ out:
 out:   ✔  docker-checks-1.1: Verify Docker Container exists and is running
 out:      ✔  Docker Container helloworld-web is expected to exist
 out:      ✔  Docker Container helloworld-web is expected to be running
-out:      ✔  Docker Container helloworld-web repo is expected to eq "192.168.0.201:5000/nemonik/helloworld-web"
+out:      ✔  Docker Container helloworld-web repo is expected to eq "192.168.0.10:5000/nemonik/helloworld-web"
 out:      ✔  Docker Container helloworld-web ports is expected to eq "0.0.0.0:3000->3000/tcp"
 out:      ✔  Docker Container helloworld-web command is expected to eq "/helloworld-web"
 out: 
@@ -8252,7 +8261,7 @@ We'll use Heimdall-lite, a single page JavaScript implementation of the MITRE He
 Restart the container
 
 ```bash
-docker run -d -p 3000:3000 --name helloworld-web 192.168.0.201:5000/nemonik/helloworld-web:latest
+docker run -d -p 3000:3000 --name helloworld-web 192.168.0.10:5000/nemonik/helloworld-web:latest
 ```
 
 In the `helloworld-web` project on the `development` vagrant, use `inspec` to write a report in JSON to `/vagrant/inspec_helloworld.json`
@@ -8261,11 +8270,10 @@ In the `helloworld-web` project on the `development` vagrant, use `inspec` to wr
 inspec exec --chef-license=accept-silent helloworld --reporter json > /vagrant/inspec_helloworld.json
 ```
 
-Upon leaving this section, remember to stop your `helloworld-web` docker container via
 
 Open Heimdall-lite https://mitre.github.io/heimdall-lite/, select `Load JSON`, the `Browse` to navigate to `inspec_helloworld.json` in the root of the class project and upload to view the results. 
 
-Remember to stop your container leaving this section
+Upon leaving this section, remember to stop your `helloworld-web` docker container via
 
 ```bash
 docker rm -f helloworld-web
@@ -8391,7 +8399,7 @@ the output will resemble
 This tell you tag `3.141` is available, so let us pull it
 
 ```
-docker pull 192.168.0.201:5000/nemonik/standalone-firefox:3.141
+docker pull 192.168.0.10:5000/nemonik/standalone-firefox:3.141
 ```
 
 It will retrieved rather quickly, because the image was built on the `development` box via the Ansible automation.
@@ -8399,7 +8407,7 @@ It will retrieved rather quickly, because the image was built on the `developmen
 Then enter into the command line
 
 ```bash
-docker run -p 4444:4444 --name standalone-firefox 192.168.0.201:5000/nemonik/standalone-firefox:3.141
+docker run -p 4444:4444 --name standalone-firefox 192.168.0.10:5000/nemonik/standalone-firefox:3.141
 ```
 
 This stands up Selenium specifically running Firefox.  The container is running in the foreground so we can watch the log output.
@@ -8407,7 +8415,7 @@ This stands up Selenium specifically running Firefox.  The container is running 
 A good start outputs to the command line
 
 ```
-[vagrant@development helloworld-web]$ docker run -p 4444:4444 192.168.0.201:5000/nemonik/standalone-firefox:3.141
+[vagrant@development helloworld-web]$ docker run -p 4444:4444 192.168.0.10:5000/nemonik/standalone-firefox:3.141
 2019-09-18 15:04:54,535 INFO Included extra file "/etc/supervisor/conf.d/selenium.conf" during parsing
 2019-09-18 15:04:54,537 INFO supervisord started with pid 7
 2019-09-18 15:04:55,540 INFO spawned: 'xvfb' with pid 10
@@ -8614,7 +8622,7 @@ Edit the `.drone.yml` file at the root of your `helloworld-web` project and add 
 
 ```yaml
 - name: selenium
-  image: 192.168.0.201:5000/nemonik/python:2.7.17
+  image: 192.168.0.10:5000/nemonik/python:2.7.17
   commands:
   - export NO_PROXY=$NO_PROXY,$(python selenium-test/resolve.py firefox)
   - export no_proxy=$no_proxy,$(python selenium-test/resolve.py firefox)
@@ -8629,7 +8637,7 @@ volumes:
 
 services:
 - name: firefox
-  image: 192.168.0.201:5000/nemonik/standalone-firefox:3.141
+  image: 192.168.0.10:5000/nemonik/standalone-firefox:3.141
   volumes:
   - name: shared_memory
     path: /dev/shm
@@ -8832,8 +8840,8 @@ At the root of the project, we need to query our Docker registry to determine wh
 We see have version `2.8.0` available, so will pull and run this tagged container inspecting the `nemonik/helloworld-web` container we deployed to the `master` vagrant in the prior section vice spinning up an instance on `development`. 
 
 ```
-docker pull 192.168.0.201:5000/nemonik/zap2docker-stable:2.8.0
-docker run 192.168.0.201:5000/nemonik/zap2docker-stable:2.8.0 zap-baseline.py -t http://192.168.0.10:3000
+docker pull 192.168.0.10:5000/nemonik/zap2docker-stable:2.8.0
+docker run 192.168.0.10:5000/nemonik/zap2docker-stable:2.8.0 zap-baseline.py -t http://192.168.0.10:3000
 ```
 
 OWASP ZAP will take some time to run as it works to find security vulnerabilities in our running application, so give it time.
@@ -8909,7 +8917,7 @@ Great, now lets add another step to our pipeline after the `selenium` step, but 
 
 ```yaml
 - name: owasp-zaproxy
-  image: 192.168.0.201:5000/nemonik/zap2docker-stable:2.8.0
+  image: 192.168.0.10:5000/nemonik/zap2docker-stable:2.8.0
   commands:
   - zap-baseline.py -t http://192.168.0.10:3000 || true
 ```
@@ -9157,7 +9165,7 @@ spec:
     spec:
       containers:
       - name: helloworld-container
-        image: 192.168.0.201:5000/nemonik/helloworld-web:latest
+        image: 192.168.0.10:5000/nemonik/helloworld-web:latest
         imagePullPolicy: Always
         ports:
         - name: http
@@ -9259,7 +9267,7 @@ spec:
     spec:
       containers:
       - name: helloworld-container
-        image: 192.168.0.201:5000/nemonik/helloworld-web:latest
+        image: 192.168.0.10:5000/nemonik/helloworld-web:latest
         imagePullPolicy: Always
         ports:
         - name: http
@@ -9379,9 +9387,9 @@ spec:
           servicePort: http
 ```
 
-An `Ingress` gives `Service`s externally-reachable URLs, load balance traffic...  We are exposing our service via Traefik at http://192.168.0.200/helloworld.
+An `Ingress` gives `Service`s externally-reachable URLs, load balance traffic...  We are exposing our service via Traefik at http://192.168.0.206/helloworld.
 
-Once our application is deployed to the cluster, Traefik's dashboard will permit a view into how it is handling things at http://192.168.0.200:8080/dashboard/
+Once our application is deployed to the cluster, Traefik's dashboard will permit a view into how it is handling things at http://192.168.0.206:8080/dashboard/
 
 #### 9.11.2.3. Deploy your application
 
@@ -9431,7 +9439,7 @@ I often prepend the command with `watch` to monitor progress
 watch kubectl --namespace=helloworld get all
 ```
 
-What you see above is the cluster is managing 1 pod of the `192.168.0.201:5000/nemonik/helloworld-web:latest` container.
+What you see above is the cluster is managing 1 pod of the `192.168.0.10:5000/nemonik/helloworld-web:latest` container.
 
 You can retrieve more information about this pod with 
 
@@ -9454,13 +9462,13 @@ One `service` is being manage and `replicatset` is maintaining the specified 1 p
 Now test your microservice
 
 ```
-curl http://192.168.0.200/helloworld
+curl http://192.168.0.206/helloworld
 ```
 
 The output will look like
 
 ```
-[vagrant@development helloworld-web]$ curl http://192.168.0.200/helloworld
+[vagrant@development helloworld-web]$ curl http://192.168.0.206/helloworld
 Hello world! helloworld-deployment-cf4667475-pqhk4
 ```
 
@@ -9470,7 +9478,7 @@ That random hex number is the result of our code change.  It is the host name of
 
 Now, let's scale our application.  Open the Traefik Dashboard
 
-<http://192.168.0.200:8080/dashboard/>
+<http://192.168.0.206:8080/dashboard/>
 
 Traefik is an open-source reverse proxy and load balancer for HTTP and TCP-based applications.  You'll see one `/helloworld` front-end and one `/helloworld` back-end.
 
@@ -9541,14 +9549,14 @@ So, the cluster is now running 4 replicas.  Let's explore the ramifications of t
 ```bash
 for i in {1..10}
 do
-curl http://192.168.0.10:8082/helloworld
+curl http://192.168.0.206/helloworld
 done
 ```
 
 The output will resemble 
 
 ```
-[vagrant@development helloworld-web]$ for i in {1..10}; do curl http://192.168.0.200/helloworld; done
+[vagrant@development helloworld-web]$ for i in {1..10}; do curl http://192.168.0.206/helloworld; done
 Hello world! helloworld-deployment-cf4667475-vvhqn
 Hello world! helloworld-deployment-cf4667475-5d77b
 Hello world! helloworld-deployment-cf4667475-755jr
