@@ -1014,16 +1014,25 @@ Packer v1.5.1
 
 **Installing on Windows**
 
-To install on Windows
-1. Right click the downloaded zip file
-2. Extract all
-3. enter `C:\Program Files\packer_1.5.1_windows_amd64` as the path
-4. Extract
-5. Continue (give admin permission.)
-6. In the Windows taskbar, enter `env` into `Search Windows` and select `edit the system environment variables`
+To install on Windows:
+
+1. Right click the downloaded zip file.
+
+2. Extract all.
+
+3. Enter `C:\Program Files\packer_1.5.1_windows_amd64` as the path.
+
+4. Extract.
+
+5. Continue (Give admin permission.)
+
+6. In the Windows taskbar, enter `env` into `Search Windows` and select `edit the system environment variables`.
+
 7. In the `Systems Property`'s `Advanced` tab select `Environment Variables...` button.
-8. In `Environment Variables` windows that opens, in `User variables for...` select the Path variable then select`Edit ...` to open a `Edit environment variable` window
-9. Select `new` and enter `C:\Program Files\packer_1.5.1_windows_amd64`
+
+8. In `Environment Variables` windows that opens, in `User variables for...` select the Path variable then select`Edit ...` to open a `Edit environment variable` window.
+
+9. Select `new` and enter `C:\Program Files\packer_1.5.1_windows_amd64`.
 
 #### 9.5.1.3. Packer project explained
 
