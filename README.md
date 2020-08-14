@@ -937,15 +937,10 @@ Git Bash is `git` packaged for Windows with bash (a command-line shell) and a co
 If you are on Windows, you'll need to install `git`.
 
 1. Download from https://git-scm.com/download/win
-
 2. Click the installer.
-
 3. Click `next` until you reach the `Configuring the line ending conversions` page select `Checkout as, commit Unix-style line endings`.
-
 4. Then `next`, `next`, `next`...
-
 5. Don't open git-bash from the final window as it will not have the environmental variables set.  Go onto step-6.
-
 6. On the Windows task bar, enter `git` into `Search Windows` then select `Git Bash`.  Use `Git Bash` instead of `Command` or `Powershell`.
 
 On OS X, `git` can be installed via [Homebrew](https://brew.sh/) or you can install the Git client directly <https://git-scm.com/download/mac>.
@@ -1017,21 +1012,13 @@ Packer v1.5.1
 To install on Windows:
 
 1. Right click the downloaded zip file.
-
 2. Extract all.
-
 3. Enter `C:\Program Files\packer_1.5.1_windows_amd64` as the path.
-
 4. Extract.
-
 5. Continue (Give admin permission.)
-
 6. In the Windows taskbar, enter `env` into `Search Windows` and select `edit the system environment variables`.
-
 7. In the `Systems Property`'s `Advanced` tab select `Environment Variables...` button.
-
 8. In `Environment Variables` windows that opens, in `User variables for...` select the Path variable then select`Edit ...` to open a `Edit environment variable` window.
-
 9. Select `new` and enter `C:\Program Files\packer_1.5.1_windows_amd64`.
 
 #### 9.5.1.3. Packer project explained
@@ -1878,12 +1865,8 @@ end
 Vagrant can be extended by plugins and this class makes use of a number of them.  One of which, the `vagrant-vbguest` plugin is not installed if the Vagrant's base operating system is Alpine, but is installed otherwise.
 
 ```ruby
-box = ConfigurationVars::VARS[:base_box]
-os = box.split('/')[1]
-box = "nemonik/devops_#{os}"
-
 uninstall_plugins = %w( vagrant-cachier vagrant-alpine )
-required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize vagrant-reload )
+required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize vagrant-reload ) # vagrant-disksize
 
 if (not os.downcase.include? 'alpine')
   required_plugins = required_plugins << "vagrant-vbguest"
@@ -1909,6 +1892,8 @@ required_plugins.each do |plugin|
     plugin_installed = true
   end
 end
+
+#system "vagrant plugin update"
 
 # if plugins were installed, restart
 if plugin_installed || plugin_uninstalled
@@ -1993,16 +1978,16 @@ Later still, a bit of code makes use of the `vagrant-certificates` plugin's to i
 
   if ENV['CA_CERTIFICATES']
     # Because @williambailey's vagrant-ca-certificates has an issue  https://github.com/williambailey/vagrant-ca-certificates/issues/34 I am using @Toilal fork, vagrant-certificates
-    if Vagrant.has_plugin?('vagrant-certificates')
+    if ( ARGV.include? 'up' ) || ( ARGV.include? 'provision' )
       puts "INFO: CA Certificates set to #{ ENV['CA_CERTIFICATES'] }".green
-
-      config.certificates.enabled = true
-      config.certificates.certs = ENV['CA_CERTIFICATES'].split(',')
-    else
-      raise "Missing vagrant-certificates plugin.  Install via: vagrant plugin install vagrant-certificates"
     end
+
+    config.certificates.enabled = true
+    config.certificates.certs = ENV['CA_CERTIFICATES'].split(',')
   else
-    puts "INFO: No CA_CERTIFICATES environment variable set.".green
+    if ( ARGV.include? 'up' ) || ( ARGV.include? 'provision' )
+      puts "INFO: No CA_CERTIFICATES environment variable set.".green
+    end
     config.certificates.certs = nil
     config.certificates.enabled = false
   end
@@ -2077,10 +2062,15 @@ Each vagrant (e.g., master, worker nodes if provisioned, development) will have 
 The code in the Vagrantfile to accomplish this is the following lines:
 
 ```ruby
+  # nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)
   if Vagrant::Util::Platform.windows?
     config.vm.synced_folder '.', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
+  elsif Vagrant::Util::Platform.platform.include? 'darwin'
+    projectPath=File.join('/System/Volumes/Data/Users/', ENV['USER'], vagrantfilePath.split(ENV['USER']).last)
+
+    config.vm.synced_folder projectPath, '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
   else
-    config.vm.synced_folder ".",  '/vagrant', type: "nfs"
+    config.vm.synced_folder '.',  '/vagrant', type: 'nfs'
   end
 ```
 
@@ -2089,11 +2079,16 @@ The code in the Vagrantfile to accomplish this is the following lines:
 - If you're host laptop or PC is using a version of Linux that Vagrant is unable configure `nfs` on, then you may have to comment out portions of this section in both `Vagrantfile` and `box/Vagrantfile`, so that the default `type` will be used like so
 
   ```ruby
+  # nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)
   #  if Vagrant::Util::Platform.windows?
   config.vm.synced_folder '.', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
-  #  else
-  #    config.vm.synced_folder ".",  '/vagrant', type: "nfs"
-  #  end
+  #   elsif Vagrant::Util::Platform.platform.include? 'darwin'
+  #     projectPath=File.join('/System/Volumes/Data/Users/', ENV['USER'], vagrantfilePath.split(ENV['USER']).last)
+  # 
+  #     config.vm.synced_folder projectPath, '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
+  #   else
+  #     config.vm.synced_folder '.',  '/vagrant', type: 'nfs'
+  #   end
   ``` 
 
 ##### 9.5.2.3.8. Build a Vagrant Box
@@ -2173,7 +2168,7 @@ The Vagrant file uses the value of `:nodes` and the shell scripting templates de
           virtualbox.cpus = 2
         end
 
-                if (ConfigurationVars::VARS[:openebs_drives].downcase == 'yes') then # create OpenEBS drives on each node
+        if (ConfigurationVars::VARS[:openebs_drives].downcase == 'yes') then # create OpenEBS drives on each node
 
           openebs_disk = "./#{hostname}_openebs_disk.vdi"
 
@@ -2250,7 +2245,6 @@ The Kubernetes cluster, whether a single node or many nodes will orechestrate th
 - I've seen this course run on an i5 Dell Laptop, so one can squeak by on 4GB of memory, but I wouldn't advise it.  I also wouldn't drop the `master` vagrant below 4 cores, either.  
 - Running additional worker nodes will tax most laptops, so I wouldn't advise it.
 - Some services and tools are orchestrated via Docker-compose, such as, the Docker registries and Drone CI.
-
 
 ##### 9.5.2.3.10. Provisioning and configuring the *development* vagrant
 
@@ -2538,12 +2532,18 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
 - If you're host laptop or PC is using a version of Linux that Vagrant is unable configure `nfs` on, then you may have to comment portions of the section configuring the sync_folder in both `Vagrantfile` and `box/Vagrantfile`, so that the default `type` will be used like so
 
   ```ruby
+  # nfs does not appear to work reliably on OS X Catalina (See: https://github.com/hashicorp/vagrant/issues/11234)
   #  if Vagrant::Util::Platform.windows?
   config.vm.synced_folder '.', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
-  #  else
-  #    config.vm.synced_folder ".",  '/vagrant', type: "nfs"
-  #  end
-  ```
+  #   elsif Vagrant::Util::Platform.platform.include? 'darwin'
+  #     projectPath=File.join('/System/Volumes/Data/Users/', ENV['USER'], vagrantfilePath.split(ENV['USER']).last)
+  # 
+  #     config.vm.synced_folder projectPath, '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
+  #   else
+  #     config.vm.synced_folder '.',  '/vagrant', type: 'nfs'
+  #   end
+  ``` 
+  
 - It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you can speed things along by commenting out the roles that proceeded and re-run the automation by entering into the command-line at the root of the project
   ```bash
   vagrant provision
@@ -2577,7 +2577,6 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
   mount.nfs: requested NFS version or transport protocol is not supported
   ```
   you will need to enable NFS over UDP. See [NFS/Troubleshooting#UDP mounts not working](https://wiki.archlinux.org/index.php/NFS/Troubleshooting#UDP_mounts_not_working).
-
 
 The toolchain IaC will spin up a number of tools.  Following sections unpack what theses tools are, but first I'd like to unpack the cloud-native technologies underrunning the long-running tools.
 
@@ -2797,7 +2796,7 @@ This section will describe the long-running tools leaving subsequent sections to
 
 Taiga is an Open Source project management platform for agile development.
 
-There are many project management platforms for Agile.
+There are many project management platforms for Agile software development.
 
 Typically, Agile teams work using a visual task management tool such as a project board, task board or Kanban or Scrum visual management board. These boards can be implemented using a whiteboard or open space on a wall or in software. The board is at a minimum segmented into a few columns _To do_, _In process_, and _Done_, but the board can be tailored. I've personally seen boards for very large projects consume every bit of wall space of a very large cavernous room, but as Lean-Agile has matured, teams have grown larger and more disparate, tools have emerged to provide a clear view into a project's management to all levels of concern (e.g., developers, managers, product owner, and the customer) answering:
 
@@ -2837,6 +2836,12 @@ dedicated to the front-end, and
 dedicated to the back-end.
 
 Taiga doesn't directly offer a Docker container image for, but I've authored a container image that collapses both taiga-front-dist and -back behind an NGINX reverse proxy onto single container.
+
+The GitHub hosted project for my container can befound at 
+
+<https://github.com/nemonik/taiga>
+
+The project contains a [pipeline](https://github.com/nemonik/taiga/blob/master/.github/workflows/main.yml) that executes daily to build and publish a new container image named [nemonik/taiga](https://hub.docker.com/r/nemonik/taiga) hosted in Docker Hub.
 
 #### 9.7.1.2. URL, Username and password
 
@@ -3283,7 +3288,7 @@ A backlog is essentially your (or your team's) to-do list, a prioritized list of
 
 Open Taiga in your web browser
 
-http://192.168.0.204
+<http://192.168.0.204>
 
 The default admin account username and password are
 
@@ -3927,7 +3932,7 @@ for automated unit testing of Go packages.  Unit testing is a software developme
 
 For more on this topic read Martin Fowler's
 
-https://martinfowler.com/bliki/TestPyramid.html
+<https://martinfowler.com/bliki/TestPyramid.html>
 
 but in short unit testing in comparison to integration and functional testing provides the greatest bang for buck followed by integration and functional testing (i.e., unit testing is the cheapest most valuable from of testing.)  Functional testing, where the system is tested against the functional requirements, is by far the most expensive, most brittle, and arguably less valuable in comparison.
 
@@ -4202,7 +4207,7 @@ steps:
 - If I didn't update the documentation correctly, it is possible the tag for the `nemonik/golang` container image maybe off.  To verify this tag  enter the following into the shell
   
   ```
-  curl http://192.168.0.10:5000/v2/nemonik/golang/tags/list
+  curl --no-progress-meter http://192.168.0.10:5000/v2/nemonik/golang/tags/list
   ```
 
   who will return something like
@@ -4217,7 +4222,7 @@ The pipeline is authored in YAML like almost all the CI orchestrators out there 
 
 - `steps:` - defines the list of steps followed to build, test and deploy your code.
 - `build` and `run` - defines the names of the step. These are yours to name. Name steps something meaningful as to what the step is orchestrating. Each step is executed serially, in the order defined.
-- `image: 192.168.0.10:5000/nemonik/golang:1.13.4` - defines the container image to execute the step.  The nemonik/golang container tagged `1.13.4` will be retrieved from private Docker registry located at `192.168.0.10:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
+- `image: 192.168.0.10:5000/nemonik/golang:1.13.7` - defines the container image to execute the step.  The nemonik/golang container tagged `1.13.7` will be retrieved from private Docker registry located at `192.168.0.10:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
 - `commands` - defines a collection of terminal commands to be executed. These are all the same commands we executed previously in the command line. If anyone of these commands were to fail returning a non-zero exit code, the pipeline will immediately end resulting in a failed build.
 
 #### 9.8.11.1. Configure Drone to execute your pipeline
@@ -4259,7 +4264,7 @@ The execution of this pipeline will follow as so:
 
 1. A new build will appear. Click on it.
 2. Drone will clone your project's repository in a `clone` step.
-3. And then will execute a `build` and `run` steps in order each spinning up `nemonik/golang:1.13.4` container, whose container image was patched if proxy environmental variable are set to work behind MITRE's http proxy and SSL introspection. (Later, you may want examine the contents of ansible/roles/golang-container-image/files/Dockerfile for more details as to how this was accomplished.)
+3. And then will execute a `build` and `run` steps in order each spinning up `nemonik/golang:1.13.7` container, whose container image was patched if proxy environmental variable are set to work behind MITRE's http proxy and SSL introspection. (Later, you may want examine the contents of ansible/roles/golang-container-image/files/Dockerfile for more details as to how this was accomplished.)
 4. These steps execute the commands in the same way you executed them yourself: a. make lint b. make test c. make build d. make run
 
 The output of the `build` (An arbitrary name. You could use "skippy".) step will resemble:
@@ -4374,7 +4379,7 @@ skinparam note {
 
 Open Taiga in your web browser
 
-http://192.168.0.204
+<http://192.168.0.204>
 
 Complete the follow to track your progress in completing the _helloworld-web_ project
 
@@ -4811,7 +4816,7 @@ listening on :3000
 To run the application, either
 
 - Open <http://192.168.0.9:3000> in a web browser, or
-- Enter ```curl http://192.168.0.9:3000``` into the command-line of another terminal.
+- Enter ```curl --no-progress-meter http://192.168.0.9:3000``` into the command-line of another terminal.
 
 Both will return:
 
@@ -5370,7 +5375,7 @@ Provide the `key` of
 The SonarGo plugin was an optional install now it comes installed by default, but lets update it if need be.
 
 1. Open you browser to <http://192.168.0.205:9000/admin/marketplace>
-2. If you need to login as `admin` with the password `admin`.  (Shhhhhh. Don't tell anyone.)
+2. If you need to login as `admin` with the password `admin` by selecting `more options` after clicking the `Login` button.
 3. Submit `SonarGo` in the search box with `Search by features, tags, or categories...` in it and **not** the one in the upper right side of the page.
 3. In the result, look for the button starting with `Update to`, click it and the plugin will be updated.
 4. The button will be replaced with "Update Pending" and info message will be rendered at the top of the page. Click `Restart Server` in this info message.
@@ -6382,7 +6387,7 @@ Spin up a new `nemonik/helloworld-web` container by entering either
   and the hit the same URL in the command-line via
 
   ```bash
-  curl http://192.168.0.9:3000
+  curl --no-progress-meter http://192.168.0.9:3000
   ```
 
 Where
@@ -6823,63 +6828,78 @@ latest: digest: sha256:2080f1daf0facf99f416364e03dcacfe1d891abef0033a1889891cc26
 The Docker registry container image shipped by Docker does not provide a GUI, but we can verify by querying the catalog of the private registry through a web browser or Unix command line tool `curl` by entering into the command line
 
 ```bash
-curl -X GET http://192.168.0.10:5000/v2/_catalog
+curl --no-progress-meter -X GET http://192.168.0.10:5000/v2/_catalog
 ```
 
 Returns in the command line
 
 ```
-{"repositories":["alpine","appleboy/drone-ssh","drone/agent","drone/drone","drone/git","golang","nemonik/agent","nemonik/drone","nemonik/gitlab","nemonik/golang","nemonik/golang-sonarqube-scanner","nemonik/helloworld-web","nemonik/plantuml-server","nemonik/python","nemonik/sonarqube","nemonik/standalone-firefox","nemonik/taiga","nemonik/zap2docker-stable","owasp/zap2docker-stable","plantuml/plantuml-server","plugins/docker","python","sameersbn/gitlab","sameersbn/postgresql","sameersbn/redis","selenium/standalone-firefox","sonarqube"]}
+{"repositories":["golang","nemonik/drone","nemonik/drone-runner-docker","nemonik/gitlab","nemonik/golang","nemonik/golang-sonarqube-scanner","nemonik/plantuml-server","nemonik/python","nemonik/sonarqube","nemonik/standalone-firefox","nemonik/zap2docker-stable","owasp/zap2docker-stable","plantuml/plantuml-server","python","selenium/standalone-firefox"]}
 ```
 
 The pretty print form of this looks like so
 
 ```
-{ 
-   "repositories":[ 
-      "alpine",
-      "appleboy/drone-ssh",
-      "drone/agent",
-      "drone/drone",
-      "drone/git",
-      "golang",
-      "nemonik/agent",
-      "nemonik/drone",
-      "nemonik/gitlab",
-      "nemonik/golang",
-      "nemonik/golang-sonarqube-scanner",
-      "nemonik/helloworld-web",
-      "nemonik/plantuml-server",
-      "nemonik/python",
-      "nemonik/sonarqube",
-      "nemonik/standalone-firefox",
-      "nemonik/taiga",
-      "nemonik/zap2docker-stable",
-      "owasp/zap2docker-stable",
-      "plantuml/plantuml-server",
-      "plugins/docker",
-      "python",
-      "sameersbn/gitlab",
-      "sameersbn/postgresql",
-      "sameersbn/redis",
-      "selenium/standalone-firefox",
-      "sonarqube"
-   ]
+{
+  "repositories": [
+    "golang",
+    "nemonik/drone",
+    "nemonik/drone-runner-docker",
+    "nemonik/gitlab",
+    "nemonik/golang",
+    "nemonik/golang-sonarqube-scanner",
+    "nemonik/plantuml-server",
+    "nemonik/python",
+    "nemonik/sonarqube",
+    "nemonik/standalone-firefox",
+    "nemonik/zap2docker-stable",
+    "owasp/zap2docker-stable",
+    "plantuml/plantuml-server",
+    "python",
+    "selenium/standalone-firefox"
+  ]
 }
 ```
 
-Quite a bit of container images we got there.
+Quite a bit of container images we got there, but these aren't the only ones in use by the class. There is also a passthrough Docker registry holding all the container images pulled from Docker Hub and not held in private registry.  "Passthrough" in a sense the images are cached in the repository and if asked for again the image will be pulled from this registry vice going all the way to Docker Hub to be retrieved.
 
-To list container images the registry holds for the `helloworld-web` container image enter
+These cached container images can be listed via
+
+```
+curl --no-progress-meter -X GET http://192.168.0.10:5001/v2/_catalog
+```
+
+with results that look like
+
+```
+{
+  "repositories": [
+    "library/busybox",
+    "library/golang",
+    "library/python",
+    "library/sonarqube",
+    "nemonik/taiga",
+    "owasp/zap2docker-stable",
+    "plantuml/plantuml-server",
+    "rancher/coredns-coredns",
+    "sameersbn/gitlab",
+    "sameersbn/postgresql",
+    "selenium/standalone-firefox"
+  ]
+}
+```
+
+when pretty printed.
+
+To list container images the private registry holds for the `helloworld-web` container image enter
 
 ```bash
-curl -X GET http://192.168.0.10:5000/v2/nemonik/helloworld-web/tags/list
+curl --no-progress-meter -X GET http://192.168.0.10:5000/v2/nemonik/helloworld-web/tags/list
 ```
 
 Returns in the command line
 
 ```
-development:~/go/src/github.com/nemonik/helloworld-web$ curl -X GET http://192.168.0.10:5000/v2/nemonik/helloworld-web/tags/list
 {"name":"nemonik/helloworld-web","tags":["latest"]}
 ```
 
