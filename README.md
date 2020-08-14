@@ -1015,15 +1015,15 @@ Packer v1.5.1
 **Installing on Windows**
 
 To install on Windows
-1. right click the downloaded zip file
-2. extract all
+1. Right click the downloaded zip file
+2. Extract all
 3. enter `C:\Program Files\packer_1.5.1_windows_amd64` as the path
-4. extract
-5. continue (give admin permission)
+4. Extract
+5. Continue (give admin permission.)
 6. In the Windows taskbar, enter `env` into `Search Windows` and select `edit the system environment variables`
 7. In the `Systems Property`'s `Advanced` tab select `Environment Variables...` button.
 8. In `Environment Variables` windows that opens, in `User variables for...` select the Path variable then select`Edit ...` to open a `Edit environment variable` window
-9. select `new` and enter `C:\Program Files\packer_1.5.1_windows_amd64`
+9. Select `new` and enter `C:\Program Files\packer_1.5.1_windows_amd64`
 
 #### 9.5.1.3. Packer project explained
 
@@ -2623,7 +2623,7 @@ Kubernetes; specifically, K3s is used in the default configuration of the course
 
 Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications. Essentially, it serves as an operating system for a cluster of computing resources and manages the life cycle and discovery of the applications running upon it. In the case of this course, the computing resources I'm speaking of are your vagrants. When Vagrant executes the ansible-playbook `ansible/master-playbook.yml` on the `master` vagrant it uses the `k3s-server` role to configure the vagrant as a Kubernetes master node. On the development vagrant, the `ansible/worker-playbook.yml` playbook uses the `k3s-agent` role to configure the vagrant as a Kubernetes worker node.  The class by default is not configured to provision and configure any worker nodes as doing so would tax any powerful laptop.
 
-#### 9.6.3.1. K3S, light-weight Kubernetes
+#### 9.6.3.1. K3s, light-weight Kubernetes
 
 K3S is a light-weight, CNCF certified Kubernetes distribution designed for resource-constrained environments, where one doesn't need the added steps and dependencies a full Kubernetes cluster would require.  K3s fits our need perfectly.
 
