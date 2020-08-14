@@ -7094,7 +7094,7 @@ Things to note in the above
 - This step uses an image, `nemonik/golang-sonarqube-scanner:4.3.0.2102`, built on top of the `nemonik/golang:1.13.7` image to speed builds along.
 - I may have forgotten to update the documentation.  To verify the container image tage is correct perform the following on the command-line and correct the drone step as needed
   ```
-  curl -X GET http://192.168.0.10:5000/v2/nemonik/golang-sonarqube-scanner/tags/list
+  curl --no-progress-meter -X GET http://192.168.0.10:5000/v2/nemonik/golang-sonarqube-scanner/tags/list
   ```
 - Cut-and-pasting may split the last command (i.e., the line beginning with `  - sonar-scanner`) into multiple lines in your editor that when executed by Drone will result in your build failing. If this happens, correct in your editor and re-push. 
 - The following commands is a bit of filesystem juggling, so that the scan can be executed
@@ -7938,7 +7938,7 @@ Then either on your docker host in a browser open
 or in the command-line of your `development` vagrant enter 
 
 ```bash
-curl http://192.168.0.10:3000
+curl --no-progress-meter http://192.168.0.10:3000
 ```
 
 Either way the container will return
@@ -8416,7 +8416,7 @@ docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web:latest
 In another `vagrant ssh` to `development` enter
 
 ```
-curl -X GET http://192.168.0.10:5000/v2/nemonik/standalone-firefox/tags/list
+curl --no-progress-meter -X GET http://192.168.0.10:5000/v2/nemonik/standalone-firefox/tags/list
 ```
 
 the output will resemble
@@ -8862,8 +8862,8 @@ First we'll exercise ZAP locally opening `vagrant ssh` to `development`.
 At the root of the project, we need to query our Docker registry to determine what `zap2docker` container is available, we'll do this using `curl`
 
 ```bash
-[vagrant@development helloworld-web]$ curl -X GET http://192.168.0.10:5000/v2/nemonik/zap2docker-stable/tags/list
-{"name":"nemonik/zap2docker-stable","tags":["2.8.0"]}
+[vagrant@development helloworld-web]$ curl --no-progress-meter -X GET http://192.168.0.10:5000/v2/nemonik/zap2docker-stable/tags/list
+{"name":"nemonik/zap2docker-stable","tags":["2.8.0--no-progress-meter"]}
 ```
 
 We see have version `2.8.0` available, so will pull and run this tagged container inspecting the `nemonik/helloworld-web` container we deployed to the `master` vagrant in the prior section vice spinning up an instance on `development`. 
@@ -9491,13 +9491,12 @@ One `service` is being manage and `replicatset` is maintaining the specified 1 p
 Now test your microservice
 
 ```
-curl http://192.168.0.206/helloworld
+curl --no-progress-meter http://192.168.0.206/helloworld
 ```
 
 The output will look like
 
 ```
-[vagrant@development helloworld-web]$ curl http://192.168.0.206/helloworld
 Hello world! helloworld-deployment-cf4667475-pqhk4
 ```
 
@@ -9522,7 +9521,7 @@ kubectl scale --namespace=helloworld --replicas=4 deployment.apps/helloworld-dep
 whose output will resemble
 
 ```
-[vagrant@development helloworld-web]$ kubectl scale --namespace=helloworld --replicas=4 deployment.apps/helloworld-deployment
+helloworld-deployment
 deployment.apps/helloworld-deployment scaled
 ```
 
@@ -9537,7 +9536,6 @@ kubectl --namespace=helloworld get all
 will also return output resembling
 
 ```
-[vagrant@development helloworld-web]$ kubectl --namespace=helloworld get all
 NAME                                        READY   STATUS    RESTARTS   AGE
 pod/helloworld-deployment-cf4667475-5d77b   1/1     Running   0          16m
 pod/helloworld-deployment-cf4667475-755jr   1/1     Running   0          100s
@@ -9563,7 +9561,6 @@ kubectl --namespace=helloworld get pods -o wide
 May show you, at least in this case, that Pods are spread across the cluster like so
 
 ```
-[vagrant@development helloworld-web]$ kubectl --namespace=helloworld get pods -o wide
 NAME                                     READY   STATUS    RESTARTS   AGE     IP           NODE          NOMINATED NODE   READINESS GATES
 helloworld-deployment-6879449688-5d4ls   1/1     Running   0          2m35s   10.42.0.32   toolchain     <none>           <none>
 helloworld-deployment-6879449688-vj65k   1/1     Running   0          32s     10.42.1.10   development   <none>           <none>
@@ -9578,14 +9575,13 @@ So, the cluster is now running 4 replicas.  Let's explore the ramifications of t
 ```bash
 for i in {1..10}
 do
-curl http://192.168.0.206/helloworld
+curl --no-progress-meter http://192.168.0.206/helloworld
 done
 ```
 
 The output will resemble 
 
 ```
-[vagrant@development helloworld-web]$ for i in {1..10}; do curl http://192.168.0.206/helloworld; done
 Hello world! helloworld-deployment-cf4667475-vvhqn
 Hello world! helloworld-deployment-cf4667475-5d77b
 Hello world! helloworld-deployment-cf4667475-755jr
