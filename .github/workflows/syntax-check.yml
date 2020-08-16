@@ -26,7 +26,7 @@ jobs:
             echo ${path}
             cd ${path}
             for role in `find . -maxdepth 1 -type d`; do
-              if [ "$role" != "." && "$role" != ".." ]; then
+              if [ "$role" != "." ] && [ "$role" != ".." ]; then
                 cd ${role}
                 echo $PWD
                 ls -las
