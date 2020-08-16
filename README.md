@@ -3254,6 +3254,9 @@ Run `golint` again and it should return no output indicating it sees nothing wro
 
 ### 9.8.7. Build the application
 
+![Activity Diagram for helloworld project: Author the application](diagrams/helloworld-build-the-application.svg)
+[PlantUML source for this diagram](./plantuml/helloworld-build-the-application.puml)
+
 Build the project by executing
 
 ```bash
@@ -3264,64 +3267,8 @@ Success returns no command line output.  What?  Did you want a cookie?  No cooki
 
 ### 9.8.8. Run your application
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->“Create\nthe project’s\nbacklog”
--right->“Create\nthe project\nin GitLab”
--right->“Setup\nyour project on\nthe development\nVagrant”
--right->“Author\nthe application”
--right->“Align source\ncode with Go\ncoding standards”
--right->“Lint\nthe code”
--right->“Build\nthe application”
--down->“Run\nyour application” #FFFFFF
--left->“Author\nthe unit tests”
--left->“Write the Makefile”
--left->“Author Drone-based\nContinuous Integration”
--left-> (*)
-```
+![Activity Diagram for helloworld project: Author the application](diagrams/helloworld-run-your-application.svg)
+[PlantUML source for this diagram](./plantuml/helloworld-run-your-application.puml)
 
 Now run your application
 
@@ -3338,64 +3285,8 @@ hello world
 
 ### 9.8.9. Author the unit tests
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->“Create\nthe project’s\nbacklog”
--right->“Create\nthe project\nin GitLab”
--right->“Setup\nyour project on\nthe development\nVagrant”
--right->“Author\nthe application”
--right->“Align source\ncode with Go\ncoding standards”
--right->“Lint\nthe code”
--right->“Build\nthe application”
--down->“Run\nyour application”
--left->“Author\nthe unit tests” #FFFFFF
--left->“Write the Makefile”
--left->“Author Drone-based\nContinuous Integration”
--left-> (*)
-```
+![Activity Diagram for helloworld project: Author the application](diagrams/helloword-author-unit-tests.svg)
+[PlantUML source for this diagram](./plantuml/helloworld-author-unit-tests.puml)
 
 GoLang ships with a built-in `testing` package 
 
