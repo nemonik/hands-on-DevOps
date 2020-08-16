@@ -612,7 +612,7 @@ In this class, you will spin up the following development and toolchain environm
 - This diagrams used in this document are authored in PlantUML.  I am presently migrating each diagram out into a separate file in [plantuml folder in the root of the project](./plantuml) and having GitHub worflow render each as SVG into the [diagrams folder at the root of the project](./diagrams) and the updating this document to use the rendered SVG.  Instructions are provided below how to add the class repository, so you can view the diagrams that aren't yet rendered to SVG.
 
 ![Deployment Diagram](./diagrams/deployment.svg)
-![Link to PlantUML source for this diagram](./plantuml/deployment.puml)
+[Link to PlantUML source for this diagram](./plantuml/deployment.puml)
 
 ## 9.1. Configuring environmental variables
 
