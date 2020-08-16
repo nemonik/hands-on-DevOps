@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="203px" preserveAspectRatio="none" style="width:1019px;height:203px;" version="1.1" viewBox="0 0 1019 203" width="1019px" zoomAndPan="magnify"><defs/><g><ellipse cx="16" cy="53" fill="#0B5C92" rx="10" ry="10" style="stroke: none; stroke-width: 1.0;"/><rect fill="#FEFECE" height="72.3828" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="112" x="46" y="17"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="49" x="77.5" y="40.9233">Create</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="92" x="56" y="58.3843">the project’s</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="55" x="74.5" y="75.8452">backlog</text><rect fill="#FEFECE" height="72.3828" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="99" x="178.5" y="17"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="49" x="203.5" y="40.9233">Create</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="79" x="188.5" y="58.3843">the project</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="64" x="196" y="75.8452">in GitLab</text><rect fill="#FEFECE" height="89.8438" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="144" x="298" y="8"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="43" x="348.5" y="31.9233">Setup</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="110" x="315" y="49.3843">your project on</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="124" x="308" y="66.8452">the development</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="58" x="341" y="84.3062">Vagrant</text><rect fill="#FEFECE" height="54.9219" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="126" x="462" y="25.5"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="49" x="500.5" y="49.4233">Author</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="106" x="472" y="66.8843">the application</text><rect fill="#FFFFFF" height="72.3828" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="145" x="608.5" y="17"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="88" x="637" y="40.9233">Align source</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="97" x="632.5" y="58.3843">code with Go</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="125" x="618.5" y="75.8452">coding standards</text><rect fill="#FEFECE" height="54.9219" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="84" x="774" y="25.5"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="26" x="803" y="49.4233">Lint</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="64" x="784" y="66.8843">the code</text><rect fill="#FEFECE" height="54.9219" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="126" x="878" y="25.5"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="34" x="924" y="49.4233">Build</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="106" x="888" y="66.8843">the application</text><rect fill="#FEFECE" height="54.9219" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="134" x="874" y="138"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="28" x="927" y="161.9233">Run</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="114" x="884" y="179.3843">your application</text><rect fill="#FEFECE" height="54.9219" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="118" x="736" y="138"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="49" x="770.5" y="161.9233">Author</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="98" x="746" y="179.3843">the unit tests</text><rect fill="#FEFECE" height="37.4609" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="152" x="564" y="147"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="132" x="574" y="170.9233">Write the Makefile</text><rect fill="#FEFECE" height="54.9219" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="184" x="360" y="138"/><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="147" x="378.5" y="161.9233">Author Drone-based</text><text fill="#000000" font-family="Yanone Kaffeesatz" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="164" x="370" y="179.3843">Continuous Integration</text><ellipse cx="330" cy="165.5" fill="none" rx="10" ry="10" style="stroke: #0B5C92; stroke-width: 1.0;"/><ellipse cx="330.5" cy="166" fill="#0B5C92" rx="6" ry="6" style="stroke: none; stroke-width: 1.0;"/><!--MD5=[285d3bc73a69d376ad1af3a2e9dd2599]
+link start to Create\nthe project’s\nbacklog--><path d="M26.0781,53 C30.9422,53 35.8062,53 40.6703,53 " fill="none" id="start-&gt;Create\nthe project’s\nbacklog" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="45.9483,53,36.9483,49,40.9483,53,36.9483,57,45.9483,53" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[2e0a9e67360af22933501a3652eeba71]
+link Create\nthe project’s\nbacklog to Create\nthe project\nin GitLab--><path d="M158.1094,53 C163.1601,53 168.2108,53 173.2614,53 " fill="none" id="Create\nthe project’s\nbacklog-&gt;Create\nthe project\nin GitLab" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="178.3121,53,169.3121,49,173.3121,53,169.3121,57,178.3121,53" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[25bdae66f4d0ae7b1638140264e352fd]
+link Create\nthe project\nin GitLab to Setup\nyour project on\nthe development\nVagrant--><path d="M277.6445,53 C282.6952,53 287.7459,53 292.7966,53 " fill="none" id="Create\nthe project\nin GitLab-&gt;Setup\nyour project on\nthe development\nVagrant" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="297.8473,53,288.8473,49,292.8473,53,288.8473,57,297.8473,53" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[2f3c98db3e5388c0b9c8fe2ddd904e46]
+link Setup\nyour project on\nthe development\nVagrant to Author\nthe application--><path d="M442.0508,53 C446.8891,53 451.7275,53 456.5659,53 " fill="none" id="Setup\nyour project on\nthe development\nVagrant-&gt;Author\nthe application" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="461.816,53,452.816,49,456.816,53,452.816,57,461.816,53" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[7dc023ec3be24e96182de644842458c7]
+link Author\nthe application to Align source\ncode with Go\ncoding standards--><path d="M588.0703,53 C593.1524,53 598.2345,53 603.3166,53 " fill="none" id="Author\nthe application-&gt;Align source\ncode with Go\ncoding standards" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="608.3987,53,599.3987,49,603.3987,53,599.3987,57,608.3987,53" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[84e58908501a3299e88b5eda710c7919]
+link Align source\ncode with Go\ncoding standards to Lint\nthe code--><path d="M753.5098,53 C758.5139,53 763.518,53 768.5221,53 " fill="none" id="Align source\ncode with Go\ncoding standards-&gt;Lint\nthe code" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="773.5262,53,764.5262,49,768.5262,53,764.5262,57,773.5262,53" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[4877a978cefee1150d9f9c318dc73635]
+link Lint\nthe code to Build\nthe application--><path d="M858.4805,53 C863.2149,53 867.9493,53 872.6837,53 " fill="none" id="Lint\nthe code-&gt;Build\nthe application" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="877.821,53,868.821,49,872.821,53,868.821,57,877.821,53" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[942b7ce435ae3580c5eb028c3950b5dd]
+link Build\nthe application to Run\nyour application--><path d="M941,80.5206 C941,96.3196 941,116.2518 941,132.8409 " fill="none" id="Build\nthe application-&gt;Run\nyour application" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="941,137.8736,945,128.8736,941,132.8736,937,128.8736,941,137.8736" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[e01615860692da628e7de479a66191c6]
+reverse link Author\nthe unit tests to Run\nyour application--><path d="M859.2614,165.5 C864.085,165.5 868.9085,165.5 873.7321,165.5 " fill="none" id="Author\nthe unit tests&lt;-Run\nyour application" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="854.0273,165.5,863.0273,169.5,859.0273,165.5,863.0273,161.5,854.0273,165.5" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[d7d36bd628e10b562072aaf9b7f5e956]
+reverse link Write the Makefile to Author\nthe unit tests--><path d="M721.516,165.5 C726.3329,165.5 731.1499,165.5 735.9668,165.5 " fill="none" id="Write the Makefile&lt;-Author\nthe unit tests" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="716.2891,165.5,725.2891,169.5,721.2891,165.5,725.2891,161.5,716.2891,165.5" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[41180d68c15c11e08752982a2e466037]
+reverse link Author Drone-based\nContinuous Integration to Write the Makefile--><path d="M549.3349,165.5 C554.1002,165.5 558.8655,165.5 563.6307,165.5 " fill="none" id="Author Drone-based\nContinuous Integration&lt;-Write the Makefile" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="544.1641,165.5,553.1641,169.5,549.1641,165.5,553.1641,161.5,544.1641,165.5" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[c50ad205e281dc18801b024586b122b0]
+reverse link end to Author Drone-based\nContinuous Integration--><path d="M345.2369,165.5 C350.0559,165.5 354.8749,165.5 359.6939,165.5 " fill="none" id="end&lt;-Author Drone-based\nContinuous Integration" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="340.0078,165.5,349.0078,169.5,345.0078,165.5,349.0078,161.5,340.0078,165.5" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[4301628cb2213cbcbcd5bf335f3ad4e7]
+@startuml
+skinparam shadowing false
+
+skinparam title {
+  FontStyle "Thin"
+  FontSize 30
+}
+
+skinparam activity {
+  BorderColor #0B5C92
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam activityDiamond {
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam activityStart {
+  Color #0B5C92
+}
+
+skinparam activityEnd {
+  Color #0B5C92
+}
+
+skinparam arrow {
+  Color #0B5C92
+}
+
+skinparam note {
+  BorderColor #0B5C92
+  BackgroundColor #FEFECE
+  FontStyle "Thin"
+  FontSize 15
+}
+
+(*) -right->“Create\nthe project’s\nbacklog”
+-right->“Create\nthe project\nin GitLab”
+-right->“Setup\nyour project on\nthe development\nVagrant”
+-right->“Author\nthe application”
+-right->“Align source\ncode with Go\ncoding standards” #FFFFFF
+-right->“Lint\nthe code”
+-right->“Build\nthe application”
+-down->“Run\nyour application”
+-left->“Author\nthe unit tests”
+-left->“Write the Makefile”
+-left->“Author Drone-based\nContinuous Integration”
+-left-> (*)
+@enduml
+
+PlantUML version 1.2020.06(Sun Apr 05 12:38:32 GMT 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 14-ea+33
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
