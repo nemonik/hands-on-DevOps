@@ -23,6 +23,7 @@ jobs:
             echo "[defaults]" >$HOME/.ansible.cfg
             echo "roles_path=${path}" >>$HOME/.ansible.cfg
             cat $HOME/.ansible.cfg
+            cd ${path}
             for role in `find . -maxdepth 1 -type d`; do
               if [ "$role" != "." ] && [ "$role" != ".." ]; then
                 cd ${role}
