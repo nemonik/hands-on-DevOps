@@ -21,13 +21,10 @@ jobs:
           paths=( "${PWD}/ansible/roles" "${PWD}/box/ansible/roles" )
           for path in "${paths[@]}"; do
             printf '[defaults]\nroles_path=${path}' >$HOME/.ansible.cfg
-            cat 
-            cd ${path}
+            cat $HOME/.ansible.cfg
             for role in `find . -maxdepth 1 -type d`; do
               if [ "$role" != "." ] && [ "$role" != ".." ]; then
                 cd ${role}
-                echo $PWD
-                ls -las
                 ansible-playbook tests/test.yml -i tests/inventory --syntax-check
               fi
             done
