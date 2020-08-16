@@ -29,6 +29,7 @@ jobs:
                 cd ${role}
                 pwd
                 ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+                cd ..
               fi
             done
           done 
