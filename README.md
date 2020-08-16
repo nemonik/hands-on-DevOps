@@ -2957,7 +2957,7 @@ The second value in the Agile Manifesto is
 
 > Working software over comprehensive documentation
 
-The documentation for this class, this `readme.md` file, is authored in Markdown, a light-weight markup language.  The course's diagrams included inline in the readme are authored to assist the reader are authored in PlantUML, a domain-specific language used to author well-formed and human-readable code to render UML diagrams.
+The documentation for this class, this `readme.md` file, is authored in Markdown, a light-weight markup language.  The course's diagrams are authored in PlantUML, a domain-specific language used to author well-formed and human-readable code to render UML diagrams.
 
 For me, I don't need to see the diagrams rendered to follow them. The code alone is sufficient.  
 
@@ -3034,64 +3034,8 @@ In this next part, we will create a simple helloworld GoLang project to demonstr
 
 ### 9.8.1. Create the project's backlog
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->“Create\nthe project’s\nbacklog” #FFFFFF
--right->“Create\nthe project\nin GitLab”
--right->“Setup\nyour project on\nthe development\nVagrant”
--right->“Author\nthe application”
--right->“Align source\ncode with Go\ncoding standards”
--right->“Lint\nthe code”
--right->“Build\nthe application”
--down->“Run\nyour application”
--left->“Author\nthe unit tests”
--left->“Write the Makefile”
--left->“Author Drone-based\nContinuous Integration”
--left-> (*)
-```
+![Activity Diagram for helloworld project: Create the project's backlog](diagrams/helloworld-create-the-projects-backlog.svg)
+[PlantUML source for this diagram](./plantuml/helloworld-create-the-projects-backlog.puml)
 
 A backlog is essentially your (or your team's) to-do list, a prioritized list of work derived from the road map (e.g., the outline for future product functionality and when new features will be released) and its requirements.
 
