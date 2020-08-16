@@ -20,7 +20,8 @@ jobs:
         run: | 
           paths=( "${PWD}/ansible/roles" "${PWD}/box/ansible/roles" )
           for path in "${paths[@]}"; do
-            printf "%s\n" "[defaults]\n" "roles_path=${path}" >$HOME/.ansible.cfg
+            echo "[defaults]" >$HOME/.ansible.cfg
+            echo "roles_path=${path}" >>$HOME/.ansible.cfg
             cat $HOME/.ansible.cfg
             for role in `find . -maxdepth 1 -type d`; do
               if [ "$role" != "." ] && [ "$role" != ".." ]; then
