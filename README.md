@@ -891,67 +891,10 @@ To install on Windows:
 
 The terraform project to build `nemonik/alpine310` box is found in `box/packer-alpine310` looks like so:
 
-```plantuml
-@startuml
-skinparam shadowing false
 
-skinparam folder {
-        BorderColor #0B5C92
-        BackgroundColor none
-        FontName "Yanone Kaffeesatz"
-        FontStyle "Thin"
-        FontSize 18
-}
+![Packer project for Alpine 310](./diagrams/packer-alpine310.svg)
+[PlantUML source for this diagram](./plantuml/packer-alpine310.puml)
 
-skinparam file {
-        BorderColor #0B5C92
-        BackgroundColor #ffffff
-        FontName "Yanone Kaffeesatz"
-        FontStyle "Thin"
-        FontSize 15
-}
-
-skinparam note {
-        BorderColor #0B5C92
-        BackgroundColor #FEFECE
-        FontName "Yanone Kaffeesatz"
-        FontStyle "Thin"
-        FontSize 15
-}
-
-folder "packer-alpine310" as packeralpine310
-file "alpine310.json" as alpine310json
-file "build_box.sh" as buildboxsh
-folder "configs" as configs
-file "vagrantfile.tpl" as vagrantfiletpl
-folder "http" as http
-file "answer" as answer
-folder "isos" as isos
-file "nemonik_alpine310.box" as nemonikalpine310box
-folder "packer_cache" as packercache
-file "remove_box.sh" as removeboxsh
-folder "scripts" as scripts
-file "configure.sh" as configuresh
-
-packeralpine310 -[#0B5C92]- alpine310json
-packeralpine310 -[#0B5C92]- buildboxsh
-
-packeralpine310 -[#0B5C92]- configs
-configs -[#0B5C92]- vagrantfiletpl
-
-packeralpine310 -[#0B5C92]- http
-http -[#0B5C92]- answer
-
-packeralpine310 -[#0B5C92]- isos
-packeralpine310 -[#0B5C92]- nemonikalpine310box
-packeralpine310 -[#0B5C92]- packercache
-packeralpine310 -[#0B5C92]- removeboxsh
-
-packeralpine310 -[#0B5C92]- scripts
-scripts -[#0B5C92]- configuresh
-
-@enduml
-```
 
 The folders and files have the following purpose:
 - `alpine310.json` - is the packer template used to orchestrate the creation of the `nemonik_alpine310.box`. It defines the number of CPUs, the memory, the ISO used to install the VM's OS, the root password, the automation to install the OS, the scripts to call to further configure, and the box to result

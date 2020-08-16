@@ -1,0 +1,56 @@
+@startuml
+skinparam shadowing false
+
+skinparam folder {
+        BorderColor #0B5C92
+        BackgroundColor none
+        FontStyle "Thin"
+        FontSize 18
+}
+
+skinparam file {
+        BorderColor #0B5C92
+        BackgroundColor #ffffff
+        FontStyle "Thin"
+        FontSize 15
+}
+
+skinparam note {
+        BorderColor #0B5C92
+        BackgroundColor #FEFECE
+        FontStyle "Thin"
+        FontSize 15
+}
+
+folder "packer-alpine310" as packeralpine310
+file "alpine310.json" as alpine310json
+file "build_box.sh" as buildboxsh
+folder "configs" as configs
+file "vagrantfile.tpl" as vagrantfiletpl
+folder "http" as http
+file "answer" as answer
+folder "isos" as isos
+file "nemonik_alpine310.box" as nemonikalpine310box
+folder "packer_cache" as packercache
+file "remove_box.sh" as removeboxsh
+folder "scripts" as scripts
+file "configure.sh" as configuresh
+
+packeralpine310 -[#0B5C92]- alpine310json
+packeralpine310 -[#0B5C92]- buildboxsh
+
+packeralpine310 -[#0B5C92]- configs
+configs -[#0B5C92]- vagrantfiletpl
+
+packeralpine310 -[#0B5C92]- http
+http -[#0B5C92]- answer
+
+packeralpine310 -[#0B5C92]- isos
+packeralpine310 -[#0B5C92]- nemonikalpine310box
+packeralpine310 -[#0B5C92]- packercache
+packeralpine310 -[#0B5C92]- removeboxsh
+
+packeralpine310 -[#0B5C92]- scripts
+scripts -[#0B5C92]- configuresh
+
+@enduml
