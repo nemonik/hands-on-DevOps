@@ -27,6 +27,8 @@ jobs:
             cd ${path}
             for role in `find . -maxdepth 1 -type d`; do
               cd ${role}
+              echo $PWD
+              ls -las
               ansible-playbook tests/test.yml -i tests/inventory --syntax-check
             done
           done 
