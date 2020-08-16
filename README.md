@@ -3081,64 +3081,8 @@ Track your progress in Taiga as you work through each section.
 
 ### 9.8.2. Create the project in GitLab
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->“Create\nthe project’s\nbacklog”
--right->“Create\nthe project\nin GitLab” #FFFFFF
--right->“Setup\nyour project on\nthe development\nVagrant”
--right->“Author\nthe application”
--right->“Align source\ncode with Go\ncoding standards”
--right->“Lint\nthe code”
--right->“Build\nthe application”
--down->“Run\nyour application”
--left->“Author\nthe unit tests”
--left->“Write the Makefile”
--left->“Author Drone-based\nContinuous Integration”
--left-> (*)
-```
+![Activity Diagram for helloworld project: Create the project in GitLab](diagrams/helloworld-create-project-in-gitlab.svg)
+[PlantUML source for this diagram](./plantuml/helloworld-create-project-in-gitlab.puml)
 
 1. In GitLab (<http://192.168.0.202>) click on `Projects` in the upper left.
    a. Select `Create Project`.  
@@ -3153,64 +3097,8 @@ The UI will refresh to show you a landing page for the project that should be ac
 
 ### 9.8.3. Setup the project on the _development_ Vagrant
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->“Create\nthe project’s\nbacklog”
--right->“Create\nthe project\nin GitLab”
--right->“Setup\nyour project on\nthe development\nVagrant” #FFFFFF
--right->“Author\nthe application”
--right->“Align source\ncode with Go\ncoding standards”
--right->“Lint\nthe code”
--right->“Build\nthe application”
--down->“Run\nyour application”
--left->“Author\nthe unit tests”
--left->“Write the Makefile”
--left->“Author Drone-based\nContinuous Integration”
--left-> (*)
-```
+![Activity Diagram for helloworld project: Setup the project in the development Vagrant](diagrams/helloworld-setup-project-on-development-vagrant.svg)
+[PlantUML source for this diagram](./plantuml/helloworld-setup-project-on-development-vagrant.puml)
 
 On your host open a shell to the `development` vagrant, and configure your user name and email:
 
@@ -3265,64 +3153,8 @@ helloworld
 
 ### 9.8.4. Author the application
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->“Create\nthe project’s\nbacklog”
--right->“Create\nthe project\nin GitLab”
--right->“Setup\nyour project on\nthe development\nVagrant”
--right->“Author\nthe application” #FFFFFF
--right->“Align source\ncode with Go\ncoding standards”
--right->“Lint\nthe code”
--right->“Build\nthe application”
--down->“Run\nyour application”
--left->“Author\nthe unit tests”
--left->“Write the Makefile”
--left->“Author Drone-based\nContinuous Integration”
--left-> (*)
-```
+![Activity Diagram for helloworld project: Author the application](diagrams/helloworld-author-the-application.svg)
+[PlantUML source for this diagram](./plantuml/helloworld-author-the-application.puml)
 
 In the project folder (i.e., `/home/vagrant/go/src/github.com/nemonik/helloworld`), create `main.go` in `emacs`, `nano`, `vi` or `vim` with this content:
 
@@ -3342,64 +3174,8 @@ func HelloWorld() string {
 
 ### 9.8.5. Align source code with Go coding standards
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->“Create\nthe project’s\nbacklog”
--right->“Create\nthe project\nin GitLab”
--right->“Setup\nyour project on\nthe development\nVagrant”
--right->“Author\nthe application”
--right->“Align source\ncode with Go\ncoding standards” #FFFFFF
--right->“Lint\nthe code”
--right->“Build\nthe application”
--down->“Run\nyour application”
--left->“Author\nthe unit tests”
--left->“Write the Makefile”
--left->“Author Drone-based\nContinuous Integration”
--left-> (*)
-```
+![Activity Diagram for helloworld project: Align source code to Go coding standards](diagrams/helloworld-align-source.svg)
+[PlantUML source for this diagram](./plantuml/helloworld-align-source.puml)
 
 Format source code according to Go coding standards using
 
@@ -3439,64 +3215,8 @@ func HelloWorld() string {
 
 ### 9.8.6. Lint your code
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->“Create\nthe project’s\nbacklog”
--right->“Create\nthe project\nin GitLab”
--right->“Setup\nyour project on\nthe development\nVagrant”
--right->“Author\nthe application”
--right->“Align source\ncode with Go\ncoding standards”
--right->“Lint\nthe code” #FFFFFF
--right->“Build\nthe application”
--down->“Run\nyour application”
--left->“Author\nthe unit tests”
--left->“Write the Makefile”
--left->“Author Drone-based\nContinuous Integration”
--left-> (*)
-```
+![Activity Diagram for helloworld project: Lint your code](diagrams/helloworld-lint-your-code.svg)
+[PlantUML source for this diagram](./plantuml/helloworld-lint-your-code.puml)
 
 Already installed on your `development` vagrant is `golint`. Where `go fmt` reformatted the code to GoLang standards, `golint` prints style mistakes.
 
