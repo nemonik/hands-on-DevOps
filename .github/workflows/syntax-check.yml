@@ -26,6 +26,7 @@ jobs:
             for role in `find . -maxdepth 1 -type d`; do
               if [ "$role" != "." ] && [ "$role" != ".." ]; then
                 cd ${role}
+                pwd
                 ansible-playbook tests/test.yml -i tests/inventory --syntax-check
               fi
             done
