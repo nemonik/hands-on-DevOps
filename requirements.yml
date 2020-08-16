@@ -38,6 +38,10 @@
   src: https://github.com/nemonik/drone-role.git
   version: master
 
+- name: plantuml-server
+  src: https://github.com/nemonik/plantuml-server-role.git
+  version: master
+
 - name: sonarqube
   src: https://github.com/nemonik/sonarqube-role.git
   version: master
