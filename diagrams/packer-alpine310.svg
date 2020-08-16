@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="307px" preserveAspectRatio="none" style="width:1339px;height:307px;" version="1.1" viewBox="0 0 1339 307" width="1339px" zoomAndPan="magnify"><defs/><g><!--MD5=[09ef865c27634d0c4ae7f7e63bfc57a2]
+entity packeralpine310--><polygon fill="#FFFFFF" points="481,8,527,8,534,29,663,29,663,72.9063,481,72.9063,481,8" style="stroke: #0B5C92; stroke-width: 1.5;"/><line style="stroke: #0B5C92; stroke-width: 1.5;" x1="481" x2="534" y1="29" y2="29"/><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="152" x="491" y="52.708">packer-alpine310</text><!--MD5=[4c7f32ecb83f31213c9a1c83a2bec8b0]
+entity alpine310json--><polygon fill="#FFFFFF" points="6,147,6,184.4609,132,184.4609,132,157,122,147,6,147" style="stroke: #0B5C92; stroke-width: 1.5;"/><path d="M122,147 L122,157 L132,157 " fill="#FFFFFF" style="stroke: #0B5C92; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="106" x="16" y="170.9233">alpine310.json</text><!--MD5=[5685ed0b8495f7881cec8e6f61c9df95]
+entity buildboxsh--><polygon fill="#FFFFFF" points="167.5,147,167.5,184.4609,278.5,184.4609,278.5,157,268.5,147,167.5,147" style="stroke: #0B5C92; stroke-width: 1.5;"/><path d="M268.5,147 L268.5,157 L278.5,157 " fill="#FFFFFF" style="stroke: #0B5C92; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="91" x="177.5" y="170.9233">build_box.sh</text><!--MD5=[35f20c3ff0bad97ea862739a8cdc35a7]
+entity configs--><polygon fill="#FFFFFF" points="313.5,133,359.5,133,366.5,154,404.5,154,404.5,197.9063,313.5,197.9063,313.5,133" style="stroke: #0B5C92; stroke-width: 1.5;"/><line style="stroke: #0B5C92; stroke-width: 1.5;" x1="313.5" x2="366.5" y1="154" y2="154"/><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="61" x="323.5" y="177.708">configs</text><!--MD5=[2f205e782a9f44d979879aa39c70f6cc]
+entity vagrantfiletpl--><polygon fill="#FFFFFF" points="290.5,258,290.5,295.4609,409.5,295.4609,409.5,268,399.5,258,290.5,258" style="stroke: #0B5C92; stroke-width: 1.5;"/><path d="M399.5,258 L399.5,268 L409.5,268 " fill="#FFFFFF" style="stroke: #0B5C92; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="99" x="300.5" y="281.9233">vagrantfile.tpl</text><!--MD5=[fcd7b9b58b982891a4c065296d4ac5c8]
+entity http--><polygon fill="#FFFFFF" points="440,133,486,133,493,154,506,154,506,197.9063,440,197.9063,440,133" style="stroke: #0B5C92; stroke-width: 1.5;"/><line style="stroke: #0B5C92; stroke-width: 1.5;" x1="440" x2="493" y1="154" y2="154"/><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="36" x="450" y="177.708">http</text><!--MD5=[c32a75e9a7e9a655d23f61c16b974305]
+entity answer--><polygon fill="#FFFFFF" points="445,258,445,295.4609,519,295.4609,519,268,509,258,445,258" style="stroke: #0B5C92; stroke-width: 1.5;"/><path d="M509,258 L509,268 L519,268 " fill="#FFFFFF" style="stroke: #0B5C92; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="54" x="455" y="281.9233">answer</text><!--MD5=[8bf9e5598d4a442dbd657ab17aabbc6e]
+entity isos--><polygon fill="#FFFFFF" points="541,133,587,133,594,154,603,154,603,197.9063,541,197.9063,541,133" style="stroke: #0B5C92; stroke-width: 1.5;"/><line style="stroke: #0B5C92; stroke-width: 1.5;" x1="541" x2="594" y1="154" y2="154"/><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="32" x="551" y="177.708">isos</text><!--MD5=[66fbb3664eb04776576049777dd58f69]
+entity nemonikalpine310box--><polygon fill="#FFFFFF" points="637.5,147,637.5,184.4609,832.5,184.4609,832.5,157,822.5,147,637.5,147" style="stroke: #0B5C92; stroke-width: 1.5;"/><path d="M822.5,147 L822.5,157 L832.5,157 " fill="#FFFFFF" style="stroke: #0B5C92; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="175" x="647.5" y="170.9233">nemonik_alpine310.box</text><!--MD5=[07f1663ed579231e95b0d871c5c5b118]
+entity packercache--><polygon fill="#FFFFFF" points="868,133,914,133,921,154,1016,154,1016,197.9063,868,197.9063,868,133" style="stroke: #0B5C92; stroke-width: 1.5;"/><line style="stroke: #0B5C92; stroke-width: 1.5;" x1="868" x2="921" y1="154" y2="154"/><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="118" x="878" y="177.708">packer_cache</text><!--MD5=[d8cf71a59c359d438c07bdbf9610ac57]
+entity removeboxsh--><polygon fill="#FFFFFF" points="1051,147,1051,184.4609,1185,184.4609,1185,157,1175,147,1051,147" style="stroke: #0B5C92; stroke-width: 1.5;"/><path d="M1175,147 L1175,157 L1185,157 " fill="#FFFFFF" style="stroke: #0B5C92; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="114" x="1061" y="170.9233">remove_box.sh</text><!--MD5=[d7f85479b11e81629d6db8aaff2361ac]
+entity scripts--><polygon fill="#FFFFFF" points="1220,133,1266,133,1273,154,1306,154,1306,197.9063,1220,197.9063,1220,133" style="stroke: #0B5C92; stroke-width: 1.5;"/><line style="stroke: #0B5C92; stroke-width: 1.5;" x1="1220" x2="1273" y1="154" y2="154"/><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="56" x="1230" y="177.708">scripts</text><!--MD5=[a117ff5f25defa9bb0ee19f6401c1e10]
+entity configuresh--><polygon fill="#FFFFFF" points="1208.5,258,1208.5,295.4609,1317.5,295.4609,1317.5,268,1307.5,258,1208.5,258" style="stroke: #0B5C92; stroke-width: 1.5;"/><path d="M1307.5,258 L1307.5,268 L1317.5,268 " fill="#FFFFFF" style="stroke: #0B5C92; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="89" x="1218.5" y="281.9233">configure.sh</text><!--MD5=[5fe3972e68c1f7bf18b552e04aab0c8e]
+link packeralpine310 to alpine310json--><path d="M480.7338,55.9804 C394.4917,71.6674 262.0041,98.5155 150,133 C137.2564,136.9236 123.7027,141.99 111.4017,146.95 " fill="none" id="packeralpine310-alpine310json" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[479bb92b70754cb52a1a42787d5073dd]
+link packeralpine310 to buildboxsh--><path d="M480.7875,68.6517 C426.631,85.9643 356.8712,109.3118 296,133 C285.1401,137.2261 273.5474,142.178 262.872,146.9244 " fill="none" id="packeralpine310-buildboxsh" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[1d20fa90846bcdbdc1e20b8c7b1d5687]
+link packeralpine310 to configs--><path d="M516.5928,73.016 C481.8325,93.4152 437.5555,119.3994 404.7899,138.628 " fill="none" id="packeralpine310-configs" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[eacea7ff8b532f0b66e941f682a93d9b]
+link configs to vagrantfiletpl--><path d="M356.3484,198.2033 C354.7721,217.644 352.8296,241.6015 351.5115,257.8585 " fill="none" id="configs-vagrantfiletpl" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[32a3ad212fe3ffcfde2b06d5704d2897]
+link packeralpine310 to http--><path d="M546.2474,73.016 C531.6953,91.3898 513.5548,114.2945 498.9676,132.7126 " fill="none" id="packeralpine310-http" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[ce98b9b4ac7ccf0f288c0629d741322a]
+link http to answer--><path d="M475.6516,198.2033 C477.2279,217.644 479.1704,241.6015 480.4885,257.8585 " fill="none" id="http-answer" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[9eb87f17f2c30648c585256d6082ed0f]
+link packeralpine310 to isos--><path d="M572,73.016 C572,91.3898 572,114.2945 572,132.7126 " fill="none" id="packeralpine310-isos" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[869cf4de42320921dcc8cd46c9580b34]
+link packeralpine310 to nemonikalpine310box--><path d="M614.4008,73.016 C644.9632,96.4534 685.1392,127.2632 710.5229,146.7292 " fill="none" id="packeralpine310-nemonikalpine310box" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[9a253c246d8f3a8593e9028fc9b7704f]
+link packeralpine310 to packercache--><path d="M663.2296,70.3872 C717.5554,88.3012 787.8122,111.6717 850,133 C855.7684,134.9784 861.7338,137.043 867.7267,139.1306 " fill="none" id="packeralpine310-packercache" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[628e446eac3935b921baf7675dbbae41]
+link packeralpine310 to removeboxsh--><path d="M663.1795,54.1716 C756.9647,69.307 906.7527,96.4767 1033,133 C1046.3553,136.8637 1060.5728,141.9114 1073.4816,146.8726 " fill="none" id="packeralpine310-removeboxsh" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[0708b0270613e24dd1ebe7c7dd1e10c3]
+link packeralpine310 to scripts--><path d="M663.1134,43.8832 C787.8822,50.7364 1017.5615,71.344 1203,133 C1208.6208,134.8688 1214.3348,137.2474 1219.8911,139.8654 " fill="none" id="packeralpine310-scripts" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[39c3cc085545291f47859857a5cd0542]
+link scripts to configuresh--><path d="M1263,198.2033 C1263,217.644 1263,241.6015 1263,257.8585 " fill="none" id="scripts-configuresh" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[d009a08bbcea1a94afd9aeaf70e5f9ce]
+@startuml
+skinparam shadowing false
+
+skinparam folder {
+        BorderColor #0B5C92
+        BackgroundColor none
+        FontStyle "Thin"
+        FontSize 18
+}
+
+skinparam file {
+        BorderColor #0B5C92
+        BackgroundColor #ffffff
+        FontStyle "Thin"
+        FontSize 15
+}
+
+skinparam note {
+        BorderColor #0B5C92
+        BackgroundColor #FEFECE
+        FontStyle "Thin"
+        FontSize 15
+}
+
+folder "packer-alpine310" as packeralpine310
+file "alpine310.json" as alpine310json
+file "build_box.sh" as buildboxsh
+folder "configs" as configs
+file "vagrantfile.tpl" as vagrantfiletpl
+folder "http" as http
+file "answer" as answer
+folder "isos" as isos
+file "nemonik_alpine310.box" as nemonikalpine310box
+folder "packer_cache" as packercache
+file "remove_box.sh" as removeboxsh
+folder "scripts" as scripts
+file "configure.sh" as configuresh
+
+packeralpine310 -[#0B5C92]- alpine310json
+packeralpine310 -[#0B5C92]- buildboxsh
+
+packeralpine310 -[#0B5C92]- configs
+configs -[#0B5C92]- vagrantfiletpl
+
+packeralpine310 -[#0B5C92]- http
+http -[#0B5C92]- answer
+
+packeralpine310 -[#0B5C92]- isos
+packeralpine310 -[#0B5C92]- nemonikalpine310box
+packeralpine310 -[#0B5C92]- packercache
+packeralpine310 -[#0B5C92]- removeboxsh
+
+packeralpine310 -[#0B5C92]- scripts
+scripts -[#0B5C92]- configuresh
+
+@enduml
+
+PlantUML version 1.2020.06(Sun Apr 05 12:38:32 GMT 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 14-ea+33
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
