@@ -207,7 +207,7 @@ What you should bring:
             - [9.9.9.1. Optionally, register your app in SonarQube](#9991-optionally-register-your-app-in-sonarqube)
             - [9.9.9.2. Install the SonarGo plugin](#9992-install-the-sonargo-plugin)
             - [9.9.9.3. Perform static analysis (run *sonar-scanner*) on the command line](#9993-perform-static-analysis-run-sonar-scanner-on-the-command-line)
-        - [9.9.10. Automated the build (i.e., write the Makefile)](#9910-automated-the-build-ie-write-the-makefile)
+        - [9.9.10. Automate the build (i.e., write the Makefile)](#9910-automate-the-build-ie-write-the-makefile)
         - [9.9.11. Dockerize the application](#9911-dockerize-the-application)
         - [9.9.12. Run the Docker container](#9912-run-the-docker-container)
             - [9.9.12.1. Option 1](#99121-option-1)
