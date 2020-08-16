@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="425px" preserveAspectRatio="none" style="width:1893px;height:425px;" version="1.1" viewBox="0 0 1893 425" width="1893px" zoomAndPan="magnify"><defs/><g><!--MD5=[c922f588f59f9d06f7301630eba9f075]
+cluster Host (i.e., your laptop, desktop)--><rect fill="#FFFFFF" height="314.5" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="1868" x="14" y="99.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="233" x="831.5" y="115.4233">Host (i.e., your laptop, desktop)</text><!--MD5=[ece2d303a65492ea42053e4b72d468b2]
+cluster K3s Cluster\n(i.e., master, node<ConfigurationVars::VARS[:nodes] - 1>, and\ndevelopment (if ConfigurationVars::VARS[:development_is_worker_node]='yes') VMs)--><rect fill="#FFFFFF" height="270.5" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="1160" x="714" y="127.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="84" x="1252" y="143.4233">K3s Cluster</text><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="465" x="1061.5" y="160.8843">(i.e., master, node&lt;ConfigurationVars::VARS[:nodes] - 1&gt;, and</text><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="624" x="982" y="178.3452">development (if ConfigurationVars::VARS[:development_is_worker_node]='yes') VMs)</text><!--MD5=[623da42d3b6bfbffe6c31d2597564f1d]
+cluster Taiga--><rect fill="#FFFFFF" height="182.5" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="200" x="1666" y="207.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="39" x="1746.5" y="223.4233">Taiga</text><!--MD5=[e4f170d383db359e829ab86fd29b4a68]
+cluster GitLab--><rect fill="#FFFFFF" height="182.5" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="290" x="1358" y="207.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="47" x="1479.5" y="223.4233">GitLab</text><!--MD5=[da8915261ce98068ecc3e6c24d523002]
+cluster SonarQube--><rect fill="#FFFFFF" height="73" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="112" x="1238" y="207.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="82" x="1253" y="223.4233">SonarQube</text><!--MD5=[876ab546157cd01ef2f939fb2ee3c0ee]
+cluster PlantUML Server--><rect fill="#FFFFFF" height="73" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="218" x="1000" y="207.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="121" x="1048.5" y="223.4233">PlantUML Server</text><!--MD5=[c226b8ee8602407f35f402b2e83a5400]
+cluster Private\nDocker Registry--><rect fill="#FFFFFF" height="90" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="131" x="861" y="190.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="50" x="901.5" y="206.4233">Private</text><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="115" x="869" y="223.8843">Docker Registry</text><!--MD5=[0aaae6de4401ee4b237ea7e326afccf9]
+cluster Passthrough\nDocker Registry--><rect fill="#FFFFFF" height="90" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="131" x="722" y="190.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="91" x="742" y="206.4233">Passthrough</text><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="115" x="730" y="223.8843">Docker Registry</text><!--MD5=[41c7305037531e8b8f8d341ce85fbd35]
+cluster master--><rect fill="#FFFFFF" height="254.5" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="376" x="330" y="151.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="79" x="478.5" y="167.4233">Master VM</text><!--MD5=[a615c3b5958dda842e4e3d4ad00358ef]
+cluster docker1--><rect fill="#FFFFFF" height="218.5" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="360" x="338" y="179.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="75" x="480.5" y="195.4233">Docker CE</text><!--MD5=[9bd06b50bb26403a36056e55298bf935]
+cluster Drone CI--><rect fill="#FFFFFF" height="182.5" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="344" x="346" y="207.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="62" x="487" y="223.4233">Drone CI</text><!--MD5=[c3611fa1db4512162b90b60581e898fa]
+cluster development--><rect fill="#FFFFFF" height="73" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="176" x="146" y="207.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="160" x="154" y="223.4233">Development Vagrant</text><path d="M22.5,223 L22.5,285.3828 L137.5,285.3828 L137.5,233 L127.5,223 L22.5,223 " fill="#FEFECE" style="stroke: #0B5C92; stroke-width: 1.0;"/><path d="M127.5,223 L127.5,233 L137.5,233 L127.5,223 " fill="#FEFECE" style="stroke: #0B5C92; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="68" x="28.5" y="241.9233">Where all</text><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="89" x="28.5" y="259.3843">your work is</text><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="82" x="28.5" y="276.8452">performed.</text><!--MD5=[4d75d79b92da33bc2d29332283d47d73]
+entity taiga--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="123" x="1689.5" y="235.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1684.5" y="240.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1684.5" y="262.9609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="103" x="1699.5" y="259.4233">nemonik/taiga</text><!--MD5=[37e84a38d0a21f3c6ab4bbb51072986d]
+entity taiga_postgresql--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="183" x="1674.5" y="345"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1669.5" y="350"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1669.5" y="372.4609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="163" x="1684.5" y="368.9233">sameersbn/postgresql</text><!--MD5=[670ed58fbcfa18955cb1914f9e6929f5]
+entity gitlab--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="126" x="1395" y="235.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1390" y="240.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1390" y="262.9609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="106" x="1405" y="259.4233">nemonik/gitlab</text><!--MD5=[9632e8ace16088cbc45dd945ba559e48]
+entity gitlab_postgresql--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="183" x="1366.5" y="345"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1361.5" y="350"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1361.5" y="372.4609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="163" x="1376.5" y="368.9233">sameersbn/postgresql</text><!--MD5=[686d33b7c4ac93a7c6af39158d956b11]
+entity gitlab_redis--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="55" x="1584.5" y="345"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1579.5" y="350"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1579.5" y="372.4609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="35" x="1594.5" y="368.9233">redis</text><!--MD5=[e847a74e70eb890cacdcf5c5829348e8]
+entity sonarqube--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="97" x="1245.5" y="235.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1240.5" y="240.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1240.5" y="262.9609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="77" x="1255.5" y="259.4233">sonarqube</text><!--MD5=[524ab8556cbb665269a12109d7bc13a8]
+entity plantuml_server--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="202" x="1008" y="235.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1003" y="240.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="1003" y="262.9609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="182" x="1018" y="259.4233">plantuml/plantuml-server</text><!--MD5=[07bb54a82a792e3633d19f9b3934520f]
+entity private_registry--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="75" x="897.5" y="235.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="892.5" y="240.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="892.5" y="262.9609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="55" x="907.5" y="259.4233">registry</text><!--MD5=[4134fca8eefb70f1480ac9d7e118b99c]
+entity passthrough_registry--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="75" x="770.5" y="235.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="765.5" y="240.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="765.5" y="262.9609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="55" x="780.5" y="259.4233">registry</text><!--MD5=[5b13040bb91ac0b87f95c3db248947db]
+entity drone_server--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="113" x="533.5" y="235.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="528.5" y="240.5"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="528.5" y="262.9609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="93" x="543.5" y="259.4233">drone/server</text><!--MD5=[75949fcd2682395aab286dc5567a62ce]
+entity drone_agent--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="109" x="354.5" y="345"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="349.5" y="350"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="349.5" y="372.4609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="89" x="364.5" y="368.9233">drone/agent</text><!--MD5=[d048c8e8e1e9ef53bbd5bf2cad89835a]
+entity drone_postgresql--><rect fill="#E0E59A" height="37.4609" style="stroke: #0B5C92; stroke-width: 1.5;" width="183" x="498.5" y="345"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="493.5" y="350"/><rect fill="#E0E59A" height="5" style="stroke: #0B5C92; stroke-width: 1.5;" width="10" x="493.5" y="372.4609"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="163" x="508.5" y="368.9233">sameersbn/postgresql</text><!--MD5=[90bd7bfaf115c178cab719a530508b90]
+entity shell--><rect fill="#FFFFFF" height="37.4609" rx="12.5" ry="12.5" style="stroke: #0B5C92; stroke-width: 1.5;" width="52" x="200" y="235.5"/><text fill="#000000" font-family="sans-serif" font-size="15" lengthAdjust="spacingAndGlyphs" textLength="32" x="210" y="259.4233">shell</text><!--MD5=[5f66382a65af237d8b1cbd7b4edbed42]
+entity you--><ellipse cx="1022" cy="18" fill="#FFFFFF" rx="8" ry="8" style="stroke: #0B5C92; stroke-width: 1.5;"/><path d="M1022,26 L1022,53 M1009,34 L1035,34 M1022,53 L1009,68 M1022,53 L1035,68 " fill="none" style="stroke: #0B5C92; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="34" x="1005" y="87.208">You</text><!--MD5=[e2e7ea02acd317adf9b1b62d8f2eaa0a]
+link GMN28 to development--><path d="M83.6412,222.9736 C89.4644,187.7421 104.2508,131.0701 141,99.5 C150.7736,91.1038 202.6109,89.871 252.5,95.5 C260.4281,96.3945 264.6923,93.5432 270,99.5 C291.9013,124.0796 296.7888,160.3206 295.9048,191.5258 C295.7942,195.4265 295.5936,199.2485 295.3247,202.9591 C295.2574,203.8868 295.1859,204.8075 295.1105,205.7208 C295.0728,206.1774 295.0341,206.6322 294.9945,207.085 " fill="none" id="GMN28-development" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[a3ad3967b6de923a207dab065e281add]
+link taiga to taiga_postgresql--><path d="M1753.5445,272.5752 C1756.0766,291.0591 1759.9726,319.4999 1762.7322,339.6449 " fill="none" id="taiga-&gt;taiga_postgresql" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="1763.443,344.8337,1766.1843,335.374,1762.7643,339.88,1758.2583,336.46,1763.443,344.8337" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[af3a04e06991b9dc2f05a18d7c71d2df]
+link gitlab to gitlab_postgresql--><path d="M1458,272.5752 C1458,291.0591 1458,319.4999 1458,339.6449 " fill="none" id="gitlab-&gt;gitlab_postgresql" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="1458,344.8337,1462,335.8337,1458,339.8337,1454,335.8337,1458,344.8337" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[a28e587d28c49512d7f7bdb4ae7218b8]
+link gitlab to gitlab_redis--><path d="M1484.124,272.5752 C1511.1153,291.767 1553.2029,321.6929 1581.6527,341.9219 " fill="none" id="gitlab-&gt;gitlab_redis" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="1585.7478,344.8337,1580.7308,336.3585,1581.6729,341.9363,1576.095,342.8784,1585.7478,344.8337" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[a859ed64eca5807a0434ec7fa3d656bd]
+link drone_server to drone_agent--><path d="M559.2958,272.5752 C527.4423,291.8457 477.7,321.9384 444.2576,342.1701 " fill="none" id="drone_server-&gt;drone_agent" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="439.8548,344.8337,449.6258,343.5976,444.1329,342.2456,445.4848,336.7527,439.8548,344.8337" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[3d67df5eedab9b40ccdf711b720f0c8e]
+link drone_server to drone_postgresql--><path d="M590,272.5752 C590,291.0591 590,319.4999 590,339.6449 " fill="none" id="drone_server-&gt;drone_postgresql" style="stroke: #0B5C92; stroke-width: 1.0;"/><polygon fill="#0B5C92" points="590,344.8337,594,335.8337,590,339.8337,586,335.8337,590,344.8337" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[cb744e0cd64e3ec308c6307c6c4e5170]
+link you to sonarqube--><path d="M1039.0125,52.1693 C1082.6633,58.0338 1197.2199,75.4005 1226,99.5 C1266.4163,133.3432 1283.6082,195.905 1290.2589,230.1188 " fill="none" id="you-&gt;sonarqube" style="stroke: #0B5C92; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#0B5C92" points="1291.2377,235.3577,1293.5165,225.7761,1290.3193,230.4428,1285.6526,227.2456,1291.2377,235.3577" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[3351750b4c3f891b4373887f1b77b1c1]
+link you to gitlab--><path d="M1039.2714,50.6878 C1100.1801,53.393 1304.1849,64.9064 1358,99.5 C1406.8007,130.8702 1436.6816,195.4622 1449.9316,230.3695 " fill="none" id="you-&gt;gitlab" style="stroke: #0B5C92; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#0B5C92" points="1451.7661,235.2969,1452.3744,225.4668,1450.0215,230.6111,1444.8772,228.2582,1451.7661,235.2969" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[2dc11f41b88f270d44436d778f0634e6]
+link you to taiga--><path d="M1039.237,50.4193 C1135.2751,52.8774 1601.9546,66.4603 1656,99.5 C1704.9077,129.3988 1732.2976,194.9038 1744.041,230.2548 " fill="none" id="you-&gt;taiga" style="stroke: #0B5C92; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#0B5C92" points="1745.6608,235.2439,1746.6858,225.4485,1744.1167,230.4883,1739.0769,227.9192,1745.6608,235.2439" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[f90636479f26f81f382c4d4d5267413f]
+link you to plantuml_server--><path d="M1039.1884,90.3038 C1057.0297,132.1386 1084.3298,196.1526 1098.9426,230.4172 " fill="none" id="you-&gt;plantuml_server" style="stroke: #0B5C92; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#0B5C92" points="1101.0039,235.2506,1101.1525,225.4029,1099.0424,230.6514,1093.7938,228.5413,1101.0039,235.2506" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[0000924fc67ac7f1094d44473633e64b]
+link you to drone_server--><path d="M1004.7023,51.1495 C947.3632,55.2079 764.3234,70.2228 714,99.5 C659.8007,131.0321 619.9088,196.0114 601.4347,230.8055 " fill="none" id="you-&gt;drone_server" style="stroke: #0B5C92; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#0B5C92" points="599.0765,235.3037,606.798,229.19,601.3981,230.8754,599.7127,225.4754,599.0765,235.3037" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[43eccda0398717c6db732b8f368fa79c]
+link you to private_registry--><path d="M1004.8463,76.1956 C1000.3692,83.5745 995.7524,91.7151 992,99.5 C970.4076,144.2966 951.8431,199.5436 942.16,230.36 " fill="none" id="you-&gt;private_registry" style="stroke: #0B5C92; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#0B5C92" points="940.5698,235.4563,947.0691,228.0564,942.0592,230.6833,939.4323,225.6734,940.5698,235.4563" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[cdebac81d027eba42907cf2ea3ac3087]
+link you to passthrough_registry--><path d="M1004.9561,52.8619 C966.512,59.6421 874.71,77.7572 853,99.5 C817.5862,134.9673 809.7079,196.6004 808.1638,230.3075 " fill="none" id="you-&gt;passthrough_registry" style="stroke: #0B5C92; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#0B5C92" points="807.9671,235.4693,812.307,226.6282,808.1575,230.4729,804.3128,226.3235,807.9671,235.4693" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[9f56e64074e60a2bd283788f62d34fc9]
+link you to shell--><path d="M1004.876,50.5677 C895.5237,54.2617 298.5464,75.4848 269,99.5 C229.9312,131.255 224.6009,195.2348 224.8393,230.0716 " fill="none" id="you-&gt;shell" style="stroke: #0B5C92; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#0B5C92" points="224.9211,235.4031,228.7823,226.3427,224.8442,230.4037,220.7832,226.4657,224.9211,235.4031" style="stroke: #0B5C92; stroke-width: 1.0;"/><!--MD5=[f236f0709a9344860df4f745adbd694b]
+@startuml
+skinparam shadowing false
+
+skinparam actor {
+  BorderColor #0B5C92
+  BackgroundColor none
+  FontStyle "Thin"
+  FontSize 18
+}
+
+skinparam node {
+  BorderColor #0B5C92
+  BackgroundColor #ffffff
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam rectangle {
+  roundCorner 25
+  BorderColor #0B5C92
+  BackgroundColor #ffffff
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam component {
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontStyle "Thin"
+  FontSize 15
+}
+
+
+skinparam note {
+  BorderColor #0B5C92
+  BackgroundColor #FEFECE
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam database {
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontStyle "Thin"
+  FontSize 15
+}
+
+actor "You" as you
+
+rectangle "Host (i.e., your laptop, desktop)" {
+
+  rectangle "K3s Cluster\n(i.e., master, node<ConfigurationVars::VARS[:nodes] - 1>, and\ndevelopment (if ConfigurationVars::VARS[:development_is_worker_node]='yes') VMs)" {
+
+    rectangle "Taiga" {
+      component "nemonik/taiga" as taiga
+      component "sameersbn/postgresql" as taiga_postgresql
+    }
+      
+    rectangle "GitLab" {
+      component "nemonik/gitlab" as gitlab
+      component "sameersbn/postgresql" as gitlab_postgresql
+      component "redis" as gitlab_redis
+    }
+      
+    rectangle "SonarQube" {
+      component "sonarqube" as sonarqube
+    }
+      
+    rectangle "PlantUML Server" {
+      component "plantuml/plantuml-server" as plantuml_server
+    }
+    
+    rectangle "Private\nDocker Registry" {
+      component "registry" as private_registry
+    }
+      
+    rectangle "Passthrough\nDocker Registry" {
+      component "registry" as passthrough_registry
+    }
+  }
+
+  rectangle "Master VM" as master {
+    rectangle "Docker CE" as docker1 {
+      rectangle "Drone CI" {
+        component "drone/server" as drone_server
+        component "drone/agent" as drone_agent
+        component "sameersbn/postgresql" as drone_postgresql
+      }
+    }
+  }
+
+  rectangle "Development Vagrant" as development {
+    rectangle "shell" as shell {
+    }
+  }
+
+  note left of development
+     Where all
+     your work is 
+     performed.
+  end note
+}
+
+taiga -[#0B5C92]d-> taiga_postgresql
+
+gitlab -[#0B5C92]d-> gitlab_postgresql
+gitlab -[#0B5C92]d-> gitlab_redis
+
+drone_server -[#0B5C92]d-> drone_agent
+drone_server -[#0B5C92]d-> drone_postgresql
+
+you .[#0B5C92]d.> sonarqube
+you .[#0B5C92]d.> gitlab
+you .[#0B5C92]d.> taiga
+you .[#0B5C92]d.> plantuml_server
+you .[#0B5C92]d.> drone_server
+you .[#0B5C92]d.> private_registry
+you .[#0B5C92]d.> passthrough_registry
+you .[#0B5C92]d.> shell
+
+@enduml
+
+PlantUML version 1.2020.06(Sun Apr 05 12:38:32 GMT 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 14-ea+33
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
