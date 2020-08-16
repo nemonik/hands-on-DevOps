@@ -616,53 +616,53 @@ In this class, you will spin up the following development and toolchain environm
 skinparam shadowing false
 
 skinparam actor {
-        BorderColor #0B5C92
-        BackgroundColor none
-        FontName "Yanone Kaffeesatz"
-        FontStyle "Thin"
-        FontSize 18
+  BorderColor #0B5C92
+  BackgroundColor none
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 18
 }
 
 skinparam node {
-        BorderColor #0B5C92
-        BackgroundColor #ffffff
-        FontName "Yanone Kaffeesatz"
-        FontStyle "Thin"
-        FontSize 15
+  BorderColor #0B5C92
+  BackgroundColor #ffffff
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 15
 }
 
 skinparam rectangle {
-        roundCorner 25
-        BorderColor #0B5C92
-        BackgroundColor #ffffff
-        FontName "Yanone Kaffeesatz"
-        FontStyle "Thin"
-        FontSize 15
+  roundCorner 25
+  BorderColor #0B5C92
+  BackgroundColor #ffffff
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 15
 }
 
 skinparam component {
-        BorderColor #0B5C92
-        BackgroundColor #e0e59a
-        FontName "Yanone Kaffeesatz"
-        FontStyle "Thin"
-        FontSize 15
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 15
 }
 
 
 skinparam note {
-        BorderColor #0B5C92
-        BackgroundColor #FEFECE
-        FontName "Yanone Kaffeesatz"
-        FontStyle "Thin"
-        FontSize 15
+  BorderColor #0B5C92
+  BackgroundColor #FEFECE
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 15
 }
 
 skinparam database {
-        BorderColor #0B5C92
-        BackgroundColor #e0e59a
-        FontName "Yanone Kaffeesatz"
-        FontStyle "Thin"
-        FontSize 15
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 15
 }
 
 actor "You" as you
@@ -671,65 +671,55 @@ rectangle "Host (i.e., your laptop, desktop)" {
 
   rectangle "Master Vagrant" as master {
 
-	  rectangle "Docker CE" as docker1 {
+    rectangle "Docker CE" as docker1 {
 
-			rectangle "Taiga" {
-				component "nemonik/taiga" as taiga
+      rectangle "Taiga" {
+        component "nemonik/taiga" as taiga
         component "sameersbn/postgresql" as taiga_postgresql
-			}
+      }
 
-			rectangle "GitLab" {
-				component "nemonik/gitlab" as gitlab
-			  component "sameersbn/postgresql" as gitlab_postgresql
+      rectangle "GitLab" {
+        component "nemonik/gitlab" as gitlab
+        component "sameersbn/postgresql" as gitlab_postgresql
         component "redis" as gitlab_redis
-			}
+      }
 
-			rectangle "Drone CI" {
-		    component "drone/server" as drone_server
-    		component "drone/agent" as drone_agent
+      rectangle "Drone CI" {
+        component "drone/server" as drone_server
+        component "drone/agent" as drone_agent
         component "sameersbn/postgresql" as drone_postgresql
-			}
+      }
 
-			rectangle "SonarQube" {
-				component "sonarqube" as sonarqube
-			}
-  
-			rectangle "PlantUML Server" {
-				component "plantuml/plantuml-server" as plantuml_server
-			}
+      rectangle "SonarQube" {
+        component "sonarqube" as sonarqube
+      }
 
-			rectangle "Private\nDocker Registry" {
-				component "registry" as private_registry
-			}
+      rectangle "PlantUML Server" {
+        component "plantuml/plantuml-server" as plantuml_server
+      }
+
+      rectangle "Private\nDocker Registry" {
+        component "registry" as private_registry
+      }
 
       rectangle "Passthrough\nDocker Registry" {
-				component "registry" as passthrough_registry
-			}
-
-		}
+        component "registry" as passthrough_registry
+      }
+    }
 
     note left of master
-      Plus possible 
-      additional worker 
-      node Vagrant(s), 
+      Plus possible
+      additional worker
+      node Vagrant(s),
       if configured.
     end note
 
-		note left of docker1
-			K3s containers
-			not shown.
-		end note
-	}
+  }
 
-	rectangle "Development Vagrant" {
-		rectangle "Docker CE" as docker2 {
-		}
-
-    note left of docker2
-      K3s containers
-      not shown.
-    end note
-	}
+  rectangle "Development Vagrant" {
+     rectangle "Docker CE" as docker2 {
+     }
+  }
 }
 
 taiga -[#0B5C92]-> taiga_postgresql
