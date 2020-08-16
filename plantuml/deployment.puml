@@ -1,0 +1,121 @@
+@startuml
+skinparam shadowing false
+
+skinparam actor {
+  BorderColor #0B5C92
+  BackgroundColor none
+  FontStyle "Thin"
+  FontSize 18
+}
+
+skinparam node {
+  BorderColor #0B5C92
+  BackgroundColor #ffffff
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam rectangle {
+  roundCorner 25
+  BorderColor #0B5C92
+  BackgroundColor #ffffff
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam component {
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontStyle "Thin"
+  FontSize 15
+}
+
+
+skinparam note {
+  BorderColor #0B5C92
+  BackgroundColor #FEFECE
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam database {
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontStyle "Thin"
+  FontSize 15
+}
+
+actor "You" as you
+
+rectangle "Host (i.e., your laptop, desktop)" {
+
+  rectangle "K3s Cluster\n(i.e., master, node<ConfigurationVars::VARS[:nodes] - 1>, and\ndevelopment (if ConfigurationVars::VARS[:development_is_worker_node]='yes') VMs)" {
+
+    rectangle "Taiga" {
+      component "nemonik/taiga" as taiga
+      component "sameersbn/postgresql" as taiga_postgresql
+    }
+      
+    rectangle "GitLab" {
+      component "nemonik/gitlab" as gitlab
+      component "sameersbn/postgresql" as gitlab_postgresql
+      component "redis" as gitlab_redis
+    }
+      
+    rectangle "SonarQube" {
+      component "sonarqube" as sonarqube
+    }
+      
+    rectangle "PlantUML Server" {
+      component "plantuml/plantuml-server" as plantuml_server
+    }
+    
+    rectangle "Private\nDocker Registry" {
+      component "registry" as private_registry
+    }
+      
+    rectangle "Passthrough\nDocker Registry" {
+      component "registry" as passthrough_registry
+    }
+  }
+
+  rectangle "Master VM" as master {
+    rectangle "Docker CE" as docker1 {
+      rectangle "Drone CI" {
+        component "drone/server" as drone_server
+        component "drone/agent" as drone_agent
+        component "sameersbn/postgresql" as drone_postgresql
+      }
+    }
+  }
+
+  rectangle "Development Vagrant" as development {
+    rectangle "shell" as shell {
+    }
+  }
+
+  note left of development
+     Where all
+     your work is 
+     performed.
+  end note
+}
+
+taiga -[#0B5C92]d-> taiga_postgresql
+
+gitlab -[#0B5C92]d-> gitlab_postgresql
+gitlab -[#0B5C92]d-> gitlab_redis
+
+drone_server -[#0B5C92]d-> drone_agent
+drone_server -[#0B5C92]d-> drone_postgresql
+
+you .[#0B5C92]d.> sonarqube
+you .[#0B5C92]d.> gitlab
+you .[#0B5C92]d.> taiga
+you .[#0B5C92]d.> plantuml_server
+you .[#0B5C92]d.> drone_server
+you .[#0B5C92]d.> private_registry
+you .[#0B5C92]d.> passthrough_registry
+you .[#0B5C92]d.> shell
+
+@enduml

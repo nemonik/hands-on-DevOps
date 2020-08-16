@@ -1,0 +1,33 @@
+name: generate diagrams
+on:
+  push:
+    paths-ignore:
+      - 'diagrams/**'
+    branches:
+      - master
+
+jobs:
+  generate-plantuml-diagrams:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Generate diagrams
+        run: |
+          docker ps
+          docker pull think/plantuml:latest
+          mkdir -p diagrams 
+          for f in plantuml/*.puml; do 
+            f=$(basename -- "$f")
+            f="${f%.*}"
+            cat plantuml/${f}.puml | docker run --rm -i think/plantuml > diagrams/${f}.svg
+          done
+          ansible --version
+
+      - name: Push new diagrams
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply plantuml diagram changes
+        
