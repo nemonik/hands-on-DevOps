@@ -3306,18 +3306,18 @@ In your editor create `main_test.go` with this content:
 package main
 
 import (
-  "os"
-  "testing"
+	"os"
+	"testing"
 )
 
 func TestMain(m *testing.M) {
-  os.Exit(m.Run())
+	os.Exit(m.Run())
 }
 
 func TestHelloWorld(t *testing.T) {
-  if HelloWorld() != "hello world" {
-    t.Errorf("got %s expected %s", HelloWorld(), "hello world")
-  }
+	if HelloWorld() != "hello world" {
+		t.Errorf("got %s expected %s", HelloWorld(), "hello world")
+	}
 }
 ```
 
