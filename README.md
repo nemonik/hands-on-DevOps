@@ -189,7 +189,7 @@ What you should bring:
         - [9.8.7. Build the application](#987-build-the-application)
         - [9.8.8. Run your application](#988-run-your-application)
         - [9.8.9. Author the unit tests](#989-author-the-unit-tests)
-        - [9.8.10. Automated the build (i.e., write the Makefile)](#9810-automated-the-build-ie-write-the-makefile)
+        - [9.8.10. Automate the build (i.e., write the Makefile)](#9810-automate-the-build-ie-write-the-makefile)
         - [9.8.11. Author Drone-based Continuous Integration](#9811-author-drone-based-continuous-integration)
             - [9.8.11.1. Configure Drone to execute your pipeline](#98111-configure-drone-to-execute-your-pipeline)
             - [9.8.11.2. Trigger the build](#98112-trigger-the-build)
@@ -3357,68 +3357,12 @@ ok  	github.com/nemonik/helloworld	0.002s
 
 This step and all the proceeding follows of a DevOps tenant where "Developers are expected to pre-flight new code."
 
-### 9.8.10. Automated the build (i.e., write the Makefile)
+### 9.8.10. Automate the build (i.e., write the Makefile)
 
-```plantuml
-skinparam shadowing false
+![Activity Diagram for helloworld project: Automate the build](diagrams/helloworld-write-make-file.svg)
+[PlantUML source for this diagram](plantuml/helloworld-write-make-file.puml)
 
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->“Create\nthe project’s\nbacklog”
--right->“Create\nthe project\nin GitLab”
--right->“Setup\nyour project on\nthe development\nVagrant”
--right->“Author\nthe application”
--right->“Align source\ncode with Go\ncoding standards”
--right->“Lint\nthe code”
--right->“Build\nthe application”
--down->“Run\nyour application”
--left->“Author\nthe unit tests”
--left->“Write the Makefile” #FFFFFF
--left->“Author Drone-based\nContinuous Integration”
--left-> (*)
-```
-
- Build automation is a key practice of CI.  So, let's make the build reproducible by automating everything we've done this far via authoring a Makefile.
+Build automation is a key practice of CI.  So, let's make the build reproducible by automating everything we've done this far via authoring a Makefile.
 
 In the root of the project create `Makefile` and add the following contents
 
@@ -3479,64 +3423,8 @@ go build -o helloworld -v
 
 ### 9.8.11. Author Drone-based Continuous Integration
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->“Create\nthe project’s\nbacklog”
--right->“Create\nthe project\nin GitLab”
--right->“Setup\nyour project on\nthe development\nVagrant”
--right->“Author\nthe application”
--right->“Align source\ncode with Go\ncoding standards”
--right->“Lint\nthe code”
--right->“Build\nthe application”
--down->“Run\nyour application”
--left->“Author\nthe unit tests”
--left->“Write the Makefile”
--left->“Author Drone-based\nContinuous Integration” #FFFFFF
--left-> (*)
-```
+![Activity Diagram for helloworld project: Author Drone-based continuous integration](diagrams/helloworld-author-drone-based-continuous-integration.svg)
+[PlantUML source for this diagram](plantuml/helloworld-author-drone-based-continuous-integration.puml)
 
 CI integrates all of the steps we have worked to ensure a high quality build into a pipeline, so let's do that.
 
