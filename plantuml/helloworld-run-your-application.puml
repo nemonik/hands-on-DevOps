@@ -1,0 +1,54 @@
+@startuml
+skinparam shadowing false
+
+skinparam title {
+  FontStyle "Thin"
+  FontSize 30
+}
+
+skinparam activity {
+  BorderColor #0B5C92
+  FontName "Yanone Kaffeesatz"
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam activityDiamond {
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam activityStart {
+  Color #0B5C92
+}
+
+skinparam activityEnd {
+  Color #0B5C92
+}
+
+skinparam arrow {
+  Color #0B5C92
+}
+
+skinparam note {
+  BorderColor #0B5C92
+  BackgroundColor #FEFECE
+  FontStyle "Thin"
+  FontSize 15
+}
+
+(*) -right->“Create\nthe project’s\nbacklog”
+-right->“Create\nthe project\nin GitLab”
+-right->“Setup\nyour project on\nthe development\nVagrant”
+-right->“Author\nthe application”
+-right->“Align source\ncode with Go\ncoding standards”
+-right->“Lint\nthe code”
+-right->“Build\nthe application”
+-down->“Run\nyour application” #FFFFFF
+-left->“Author\nthe unit tests”
+-left->“Write the Makefile”
+-left->“Author Drone-based\nContinuous Integration”
+-left-> (*)
+@enduml
