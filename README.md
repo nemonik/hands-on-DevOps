@@ -614,7 +614,6 @@ In this class, you will spin up the following development and toolchain environm
 ![Deployment Diagram](./diagrams/deployment.svg)
 ![Link to PlantUML source for this diagram](./plantuml/deployment.puml)
 
-
 ## 9.1. Configuring environmental variables
 
 If your environment makes use of an HTTP proxy or SSL inspection, you will need to configure environment variables for this class. 
