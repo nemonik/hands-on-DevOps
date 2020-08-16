@@ -1,0 +1,64 @@
+@startuml
+skinparam shadowing false
+
+skinparam title {
+  FontStyle "Thin"
+  FontSize 30
+}
+
+skinparam activity {
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam activityDiamond {
+  BorderColor #0B5C92
+  BackgroundColor #e0e59a
+  FontStyle "Thin"
+  FontSize 15
+}
+
+skinparam activityStart {
+  Color #0B5C92
+}
+
+skinparam activityEnd {
+  Color #0B5C92
+}
+
+skinparam arrow {
+  Color #0B5C92
+}
+
+skinparam note {
+  BorderColor #0B5C92
+  BackgroundColor #FEFECE
+  FontStyle "Thin"
+  FontSize 15
+}
+
+(*) -right->”Create\nthe project's\nbacklog”
+-right->"Create\nthe project\nin GitLab"
+-right->"Setup the project\nin the development\nVagrant"
+-right->"Author\nthe application"
+-right->"Build and run\nthe application"
+-right->"Run gometalinter.v2\non application"
+-down->"Fix\nthe application"
+-left->"Author\nunit tests"
+-left->"Perform\nstatic analysis\non the CLI"
+-left->"Write\nthe Makefile"
+-left->"Dockerize\nthe application"
+-left->"Run the\nDocker container"
+-down->"Push the container\nimage to the\nprivate registry"
+-right->"Configure Drone\nto execute\nthe CICD pipeline"
+-right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline" 
+-right->"Add build step\nto pipeline" #FFFFFF
+-right->"Add container\nimage publish\nstep to pipeline"
+-right->"Add container\ndeploy step\nto pipeline"
+-down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
+-left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
+-left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
+-left-> (*)
+@enduml
