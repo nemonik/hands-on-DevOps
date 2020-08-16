@@ -3267,7 +3267,7 @@ Success returns no command line output.  What?  Did you want a cookie?  No cooki
 
 ### 9.8.8. Run your application
 
-![Activity Diagram for helloworld project: Author the application](diagrams/helloworld-run-your-application.svg)
+![Activity Diagram for helloworld project: Run your application](diagrams/helloworld-run-your-application.svg)
 [PlantUML source for this diagram](./plantuml/helloworld-run-your-application.puml)
 
 Now run your application
@@ -3285,8 +3285,8 @@ hello world
 
 ### 9.8.9. Author the unit tests
 
-![Activity Diagram for helloworld project: Author the application](diagrams/helloword-author-unit-tests.svg)
-[PlantUML source for this diagram](./plantuml/helloworld-author-unit-tests.puml)
+![Activity Diagram for helloworld project: Author the unit tests](diagrams/helloworld-author-unit-tests.svg)
+[PlantUML source for this diagram](plantuml/helloworld-author-unit-tests.puml)
 
 GoLang ships with a built-in `testing` package 
 
@@ -4449,7 +4449,7 @@ func main() {
 func handler(w http.ResponseWriter, r *http.Request) {
 	_, err := fmt.Fprintf(w, "Hello world!\n")
 	if err != nil {
-       		log.Fatal(err)
+		log.Fatal(err)
 	}
 }
 
