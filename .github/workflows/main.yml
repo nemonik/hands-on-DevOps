@@ -1,8 +1,8 @@
 name: generate diagrams
 on:
   push:
-    paths-ignore:
-      - 'diagrams/**'
+    paths:
+      - 'plantuml/**'
     branches:
       - master
 
