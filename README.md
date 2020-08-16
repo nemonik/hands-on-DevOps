@@ -1,5 +1,5 @@
-![GitHub Forks](https://img.shields.io/github/forks/nemonik/hands-on-DevOps?style=flat-square)
-![Github Stars](https://img.shields.io/github/stars/nemonik/hands-on-DevOps?style=flat-square)
+[![GitHub Forks](https://img.shields.io/github/forks/nemonik/hands-on-DevOps?style=flat-square)][https://github.com/nemonik/hands-on-DevOps/network/members]
+[![Github Stars](https://img.shields.io/github/stars/nemonik/hands-on-DevOps?style=flat-square)][https://github.com/nemonik/hands-on-DevOps/stargazers]
 ![Tweet](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fnemonik%2Fhands-on-DevOps)
 
 # 1. Preface
