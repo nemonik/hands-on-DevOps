@@ -3560,74 +3560,8 @@ Like `helloworld`, the `helloworld-web` project is a very simple application tha
 
 ### 9.9.1. Create the project's backlog
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog” #FFFFFF
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Crete the project's backlog](diagrams/helloworld-web-create-the-projects-backlog.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-create-the-projects-backlog.puml)
 
 Open Taiga in your web browser
 
@@ -3675,74 +3609,8 @@ Track your progress in Taiga as you work through each section.
 
 ### 9.9.2. Create the project in GitLab
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab" #FFFFFF
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Create the project in GitLab](diagrams/helloworld-web-create-project-in-gitlab.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-create-project-in-gitlab.puml)
 
 1. In GitLab (<http://192.168.0.202>) click on the GitLab logo in the upper left.
    a. Click the green `New Project` on the far upper-right or
@@ -3759,74 +3627,8 @@ The UI will refresh to show you landing page for the project that should be acce
 
 ### 9.9.3. Setup the project on the _development_ Vagrant
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant" #FFFFFF
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Setup the project on the development Vagrant](diagrams/helloworld-web-setup-project-on-development-vagrant.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-setup-project-on-development-vagrant.puml)
 
 You'll now clone the new `helloworld-web` GitLab hosted repo as you did prior for the `helloworld` project.
 
@@ -3869,74 +3671,8 @@ helloworld-web
 
 ### 9.9.4. Author the application
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application" #FFFFFF
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Author the application](diagrams/helloworld-web-author-the-application.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-author-the-application.puml)
 
 Create `main.go` in `emacs`, `nano`, `vi` or `vim` with this content:
 
@@ -3975,74 +3711,8 @@ golint
 
 ### 9.9.5. Build and run the application
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application" #FFFFFF
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Build and run the application](diagrams/helloworld-web-build-and-run-the-application.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-build-and-run-the-application.puml)
 
 Build the application
 
@@ -4089,74 +3759,8 @@ Your browser is looking for a `favicon.ico`, but we don't serve that up of cours
 
 ### 9.9.6. Run gometalinter.v2 on application
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application" #FFFFFF
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Run gometalinter.v2 on application](diagrams/helloworld-web-run-linter-on-application.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-run-linter-on-application.puml)
 
 Install the `gometalinter.v2` in the `development` vagrant
 
@@ -4248,74 +3852,8 @@ Oops. Line 11 and line 15 have problems:
 
 ### 9.9.7. Fix the application
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application" #FFFFFF
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Fix the application](diagrams/helloworld-web-fix-the-application.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-fix-the-application.puml)
 
 Let's fix the problems by opening `main.go` in our editor, make the following changes to address the concerns and save
 
@@ -4365,74 +3903,8 @@ And after some time, nothing is returned.  Problem solved.  If they could all be
 
 ### 9.9.8. Author unit tests
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests" #FFFFFF
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Author unit tests](diagrams/helloworld-web-author-unit-tests.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-author-unit-tests.puml)
 
 Like most software written for the government, we don't have any unit tests, so let's fix that.
 
@@ -4529,74 +4001,9 @@ ok  	github.com/nemonik/helloworld-web	0.006s
 Notice, we only scored 55.6% coverage, but we appear to have a unit test for all our methods?  This where discernment comes in.  Do you battle for a 100%, 80%, some other number snatched from the air or call this a win.  Up to you or really your team.
 
 ### 9.9.9. Perform static analysis (i.e., sonar-scanner) on the command line
-```plantuml
-skinparam shadowing false
 
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI" #FFFFFF
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline"
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Perform static analysis](diagrams/helloworld-web-perform-static-analysis.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-perform-static-analysis.puml)
 
 SonarQube provides a static analysis capability to show the health of an application's source code, highlighting issues as they are introduced. 
 
@@ -4784,76 +4191,10 @@ Open in your host's web browser
 
 to view your SonarQube report.
 
-### 9.9.10. Automated the build (i.e., write the Makefile)
+### 9.9.10. Automate the build (i.e., write the Makefile)
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile" #FFFFFF
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Automate the build](diagrams/helloworld-web-write-make-file.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-write-make-file.puml)
 
 In your editor create a `Makefile` to ensure the build and the steps leading to are repeatable.
 
@@ -5058,74 +4399,8 @@ github.com/nemonik/helloworld-web
 
 ### 9.9.11. Dockerize the application
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application" #FFFFFF
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Dockerize the application](diagrams/helloworld-web-dockerize-the-application.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-dockerize-the-application.puml)
 
 We can build a Docker image for our application on top of a `192.168.0.10:5000/nemonik/golang:1.13.7` image by creating a `Dockerfile` with the following content
 
@@ -5548,74 +4823,8 @@ This image is 7.4 MB vice 1.06GB and way more secure.
 
 ### 9.9.12. Run the Docker container
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container" #FFFFFF
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Run the Docker container](diagrams/helloworld-web-run-the-docker-container.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-run-the-docker-container.puml)
 
 Spin up a new `nemonik/helloworld-web` container by entering either
 
@@ -5695,74 +4904,8 @@ docker rm -f helloworld-web
 
 ### 9.9.13. Push the container image to the private Docker registry
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry" #FFFFFF
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Push the container image](diagrams/helloworld-web-push-container-image.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-push-container-image.puml)
 
 In the development vagrant, push the `nemonik/helloworld-web` container image into the private Docker registry running in the Kubernetes cluster, so that all the vagrants can create containers from the image with the commands
 
@@ -6168,74 +5311,8 @@ The pretty print of this look like
 
 ### 9.9.14. Configure Drone to execute your CICD pipeline
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline" #FFFFFF
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Configure Drone to execute your CICD pipeline](diagrams/helloworld-web-configure-drone-to-execute.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-configure-drone-to-execute.puml)
 
 As you did for the purpose of CI (Continuous Integration) of the prior application, you will need to configure Drone to perform CICD (a combination of Continuous Integration and Continuous Delivery) on the `helloworld-web` application.
 
@@ -6248,74 +5325,8 @@ Complete the following:
 
 ### 9.9.15. Add Static Analysis (*SonarQube*) step to pipeline
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline" #FFFFFF
--right->"Add build step\nto pipeline" 
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Add Static Analysis step to pipeline](diagrams/helloworld-web-add-static-analysis.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-add-static-analysis.puml)
 
 So, lets create our pipeline starting with a `sonarqube` step to update SonarQube with code quality scans automatically by opening `.drone.yml` in our text editor 
 
@@ -6525,74 +5536,8 @@ INFO: ------------------------------------------------------------------------
 
 ### 9.9.16. Add the build step to the pipeline
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline" 
--right->"Add build step\nto pipeline" #FFFFFF
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Add the build step to pipeline](diagrams/helloworld-web-add-build-step.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-add-build-step.puml)
 
 Add a build step to our `.drone.yml`
 
@@ -6725,74 +5670,8 @@ Mirroring what you saw in development in your local environment.
 
 ### 9.9.17. Add container image publish step to pipeline
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline"
--right->"Add container\nimage publish\nstep to pipeline" #FFFFFF
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Add image publish step to pipeline](diagrams/helloworld-web-add-container-image-publish-step.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-add-container-image-publish-step.puml)
 
 Add the publish step to your `.drone.yml` so that the container image is publish to the private registry via the pipeline.  The `publish:` step must be indented the same as the prior `build:` step.
 
@@ -6951,75 +5830,8 @@ This step is typically painfully slow if your container isn't optimized suchs as
 
 ### 9.9.18. Add container deploy step to pipeline
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline"
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline" #FFFFFF
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
-
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Add container deploy step to pipeline](diagrams/helloworld-web-add-container-deploy-step.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-add-container-deploy-step.puml)
 
 We're going to add a `deploy` step to our Drone pipeline to secure shell into `master` vagrant and deploy the `nemonik/helloworld` container image published by the prior step.
 
@@ -7203,74 +6015,8 @@ So, now we have beginnings of a real CICD pipeline. There are no strings on me e
 
 ### 9.9.19. Add compliance and policy automation (InSpec) test to the pipeline
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline"
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline" #FFFFFF
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Add InSpec test to the pipeline](diagrams/helloworld-web-add-inspec.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-add-inspec.puml)
 
 First let me switch gears into discussing DevSecOps.  
 
@@ -7570,74 +6316,8 @@ docker rm -f helloworld-web
 
 ### 9.9.20. Add automated functional test to pipeline
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline"
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline" #FFFFFF
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline"
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Add automated functional test to the pipeline](diagrams/helloworld-web-add-automated-functional-test.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-add-automated-functional-test.puml)
 
 Although, functional testing, where a system is tested against the functional requirements, is by far the most expensive, most brittle and arguably least valuable in comparison to integration and unit testing, it still has its place in testing an application.
 
@@ -8036,74 +6716,8 @@ If you click on the `firefox` service for this build, you will see similar outpu
 
 ### 9.9.21. Add DAST step (*OWASP ZAP*) to pipeline
 
-```plantuml
-skinparam shadowing false
-
-skinparam title {
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 30
-}
-
-skinparam activity {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityDiamond {
-  BorderColor #0B5C92
-  BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-skinparam activityStart {
-  Color #0B5C92
-}
-
-skinparam activityEnd {
-  Color #0B5C92
-}
-
-skinparam arrow {
-  Color #0B5C92
-}
-
-skinparam note {
-  BorderColor #0B5C92
-  BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
-  FontStyle "Thin"
-  FontSize 15
-}
-
-(*) -right->”Create\nthe project's\nbacklog”
--right->"Create\nthe project\nin GitLab"
--right->"Setup the project\nin the development\nVagrant"
--right->"Author\nthe application"
--right->"Build and run\nthe application"
--right->"Run gometalinter.v2\non application"
--down->"Fix\nthe application"
--left->"Author\nunit tests"
--left->"Perform\nstatic analysis\non the CLI"
--left->"Write\nthe Makefile"
--left->"Dockerize\nthe application"
--left->"Run the\nDocker container"
--down->"Push the container\nimage to the\nprivate registry"
--right->"Configure Drone\nto execute\nthe CICD pipeline"
--right->"Add\nStatic Analysis\n(SonarQube)\nstep to pipeline"
--right->"Add build step\nto pipeline"
--right->"Add container\nimage publish\nstep to pipeline"
--right->"Add container\ndeploy step\nto pipeline"
--down->"Add\ncomplaince automation\ntest (InSpec)\nstep to pipeline"
--left->"Add automated\nfuntional test\n(Selenium)\nto pipeline"
--left->"Add DAST step\n(OWASP ZAP)\nto the pipeline" #FFFFFF
--left-> (*)
-```
+![Activity Diagram for helloworld-web project: Add DAST step to the pipeline](diagrams/helloworld-web-add-dast-step.svg)
+[PlantUML source for this diagram](plantuml/helloworld-web-add-dast-step.puml)
 
 Dynamic application security testing (DAST) is used to detect security vulnerabilities in an application while it is running, so as to help you remediate these concerns while in development.  Again, yet another example of "thinking about application and infrastructure security from the start."
 

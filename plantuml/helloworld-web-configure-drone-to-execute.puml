@@ -2,7 +2,6 @@
 skinparam shadowing false
 
 skinparam title {
-  FontName "Yanone Kaffeesatz"
   FontStyle "Thin"
   FontSize 30
 }
@@ -10,7 +9,6 @@ skinparam title {
 skinparam activity {
   BorderColor #0B5C92
   BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
   FontStyle "Thin"
   FontSize 15
 }
@@ -18,7 +16,6 @@ skinparam activity {
 skinparam activityDiamond {
   BorderColor #0B5C92
   BackgroundColor #e0e59a
-  FontName "Yanone Kaffeesatz"
   FontStyle "Thin"
   FontSize 15
 }
@@ -38,7 +35,6 @@ skinparam arrow {
 skinparam note {
   BorderColor #0B5C92
   BackgroundColor #FEFECE
-  FontName "Yanone Kaffeesatz"
   FontStyle "Thin"
   FontSize 15
 }
