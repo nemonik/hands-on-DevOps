@@ -8,7 +8,7 @@ skinparam title {
 
 skinparam activity {
   BorderColor #0B5C92
-  FontName "Yanone Kaffeesatz"
+  BackgroundColor #e0e59a
   FontStyle "Thin"
   FontSize 15
 }
