@@ -65,189 +65,7 @@ What you should bring:
 
 # 6. Table of Contents
 
-<!-- TOC -->
-
-- [1. Preface](#1-preface)
-- [2. DevOps](#2-devops)
-- [3. Author](#3-author)
-- [4. Copyright and license](#4-copyright-and-license)
-- [5. Prerequisites](#5-prerequisites)
-- [6. Table of Contents](#6-table-of-contents)
-- [7. DevOps unpacked](#7-devops-unpacked)
-    - [7.1. What is DevOps?](#71-what-is-devops)
-    - [7.2. What DevOps is not](#72-what-devops-is-not)
-    - [7.3. To succeed at DevOps you must](#73-to-succeed-at-devops-you-must)
-    - [7.4. If your effort doesn't](#74-if-your-effort-doesnt)
-    - [7.5. Conway's Law states](#75-conways-law-states)
-    - [7.6. DevOps is really about](#76-devops-is-really-about)
-    - [7.7. What is DevOps culture?](#77-what-is-devops-culture)
-        - [7.7.1. We were taught the requisite skills as children](#771-we-were-taught-the-requisite-skills-as-children)
-        - [7.7.2. Maintaining relationships is your most important skill](#772-maintaining-relationships-is-your-most-important-skill)
-        - [7.7.3. Be quick... Be slow to...](#773-be-quick-be-slow-to)
-        - [7.7.4. The pressures of social media](#774-the-pressures-of-social-media)
-    - [7.8. How is DevOps related to the Agile?](#78-how-is-devops-related-to-the-agile)
-    - [7.9. How do they differ?](#79-how-do-they-differ)
-    - [7.10. Why?](#710-why)
-    - [7.11. What are the principles of DevOps?](#711-what-are-the-principles-of-devops)
-    - [7.12. Much of this is achieved](#712-much-of-this-is-achieved)
-    - [7.13. What is Continuous Integration (CI)?](#713-what-is-continuous-integration-ci)
-    - [7.14. How?](#714-how)
-    - [7.15. CI best practices](#715-ci-best-practices)
-        - [7.15.1. Utilize a Configuration Management System](#7151-utilize-a-configuration-management-system)
-        - [7.15.2. Automate the build](#7152-automate-the-build)
-        - [7.15.3. Employ one or more CI services/orchestrators](#7153-employ-one-or-more-ci-servicesorchestrators)
-        - [7.15.4. Make builds self-testing](#7154-make-builds-self-testing)
-        - [7.15.5. Never commit broken](#7155-never-commit-broken)
-        - [7.15.6. Stakeholders are expected to pre-flight new code](#7156-stakeholders-are-expected-to-pre-flight-new-code)
-        - [7.15.7. The CI service/orchestrator provides feedback](#7157-the-ci-serviceorchestrator-provides-feedback)
-    - [7.16. What is Continuous Delivery?](#716-what-is-continuous-delivery)
-        - [7.16.1. Extending Continuous Integration (CI)](#7161-extending-continuous-integration-ci)
-        - [7.16.2. Consistency](#7162-consistency)
-    - [7.17. But wait. What's a pipeline?](#717-but-wait-whats-a-pipeline)
-    - [7.18. How is a pipeline manifested?](#718-how-is-a-pipeline-manifested)
-    - [7.19. What underlines all of this?](#719-what-underlines-all-of-this)
-    - [7.20. But really why do we automate err. code?](#720-but-really-why-do-we-automate-err-code)
-        - [7.20.1. Why do I mention Larry Wall?](#7201-why-do-i-mention-larry-wall)
-        - [7.20.2. Laziness](#7202-laziness)
-        - [7.20.3. Impatience](#7203-impatience)
-        - [7.20.4. Hubris](#7204-hubris)
-        - [7.20.5. We automate for](#7205-we-automate-for)
-    - [7.21. Monitoring](#721-monitoring)
-        - [7.21.1. The _primary_ metric](#7211-the-_primary_-metric)
-        - [7.21.2. An understanding of performance](#7212-an-understanding-of-performance)
-        - [7.21.3. Establish a baseline performance](#7213-establish-a-baseline-performance)
-        - [7.21.4. Set reaction thresholds](#7214-set-reaction-thresholds)
-        - [7.21.5. Reacting](#7215-reacting)
-        - [7.21.6. Gaps in CICD](#7216-gaps-in-cicd)
-        - [7.21.7. Eliminating waste](#7217-eliminating-waste)
-    - [7.22. Crawl, walk, run](#722-crawl-walk-run)
-        - [7.22.1. Ultimately, DevOps is Goal](#7221-ultimately-devops-is-goal)
-- [8. Reading list](#8-reading-list)
-- [9. Now the hands-on part](#9-now-the-hands-on-part)
-    - [9.1. Configuring environmental variables](#91-configuring-environmental-variables)
-    - [9.2. VirtualBox](#92-virtualbox)
-        - [9.2.1. Installing VirtualBox](#921-installing-virtualbox)
-    - [9.3. Git Bash](#93-git-bash)
-        - [9.3.1. Installing Git Bash](#931-installing-git-bash)
-    - [9.4. Retrieve the course material](#94-retrieve-the-course-material)
-    - [9.5. Infrastructure as code (IaC)](#95-infrastructure-as-code-iac)
-        - [9.5.1. Hashicorp Packer](#951-hashicorp-packer)
-            - [9.5.1.1. Packer document and source](#9511-packer-document-and-source)
-            - [9.5.1.2. Installing Packer](#9512-installing-packer)
-            - [9.5.1.3. Packer project explained](#9513-packer-project-explained)
-            - [9.5.1.4. Packer execution](#9514-packer-execution)
-        - [9.5.2. Vagrant](#952-vagrant)
-            - [9.5.2.1. Vagrant documentation and source](#9521-vagrant-documentation-and-source)
-            - [9.5.2.2. Installing Vagrant](#9522-installing-vagrant)
-            - [9.5.2.3. The Vagrantfile explained](#9523-the-vagrantfile-explained)
-                - [9.5.2.3.1. Modelines](#95231-modelines)
-                - [9.5.2.3.2. Setting extra variables for Ansible roles](#95232-setting-extra-variables-for-ansible-roles)
-                - [9.5.2.3.3. Automatically installing and removing the necessary Vagrant plugins](#95233-automatically-installing-and-removing-the-necessary-vagrant-plugins)
-                - [9.5.2.3.4. Inserting Proxy setting via host environmental variables](#95234-inserting-proxy-setting-via-host-environmental-variables)
-                - [9.5.2.3.5. Inserting enterprise CA certificates](#95235-inserting-enterprise-ca-certificates)
-                - [9.5.2.3.6. Auto-generate the Ansible inventory file](#95236-auto-generate-the-ansible-inventory-file)
-                - [9.5.2.3.7. Mounting the project folder into each vagrant](#95237-mounting-the-project-folder-into-each-vagrant)
-                - [9.5.2.3.8. Build a Vagrant Box](#95238-build-a-vagrant-box)
-                - [9.5.2.3.9. Configuring the Kubernetes cluster vagrant(s)](#95239-configuring-the-kubernetes-cluster-vagrants)
-                - [9.5.2.3.10. Provisioning and configuring the *development* vagrant](#952310-provisioning-and-configuring-the-development-vagrant)
-        - [9.5.3. Ansible](#953-ansible)
-            - [9.5.3.1. Playbooks](#9531-playbooks)
-                - [9.5.3.1.1. The `master` vagrant's playbook](#95311-the-master-vagrants-playbook)
-                - [9.5.3.1.2. The `worker` vagrant's playbook](#95312-the-worker-vagrants-playbook)
-                - [9.5.3.1.3. The `development` playbooks](#95313-the-development-playbooks)
-            - [9.5.3.2. Roles](#9532-roles)
-            - [9.5.3.3. Bringing all the vagrants up](#9533-bringing-all-the-vagrants-up)
-    - [9.6. The cloud-native technologies underlying the tools](#96-the-cloud-native-technologies-underlying-the-tools)
-        - [9.6.1. Docker image and containers](#961-docker-image-and-containers)
-        - [9.6.2. Docker-compose](#962-docker-compose)
-        - [9.6.3. Kubernetes](#963-kubernetes)
-            - [9.6.3.1. K3S, light-weight Kubernetes](#9631-k3s-light-weight-kubernetes)
-            - [9.6.3.2. Kubectl, the Kubernetes command-line tool](#9632-kubectl-the-kubernetes-command-line-tool)
-            - [9.6.3.3. Kubernetes-Dashboard](#9633-kubernetes-dashboard)
-    - [9.7. The long-running tools](#97-the-long-running-tools)
-        - [9.7.1. Taiga, an example of Agile project management software](#971-taiga-an-example-of-agile-project-management-software)
-            - [9.7.1.1. Documentation, source, container image](#9711-documentation-source-container-image)
-            - [9.7.1.2. URL, Username and password](#9712-url-username-and-password)
-        - [9.7.2. GitLab CE, an example of configuration management software](#972-gitlab-ce-an-example-of-configuration-management-software)
-            - [9.7.2.1. Documentation, source, container image](#9721-documentation-source-container-image)
-            - [9.7.2.2. URL, Username and password](#9722-url-username-and-password)
-            - [9.7.2.3. Notes in regards to the class GitLab](#9723-notes-in-regards-to-the-class-gitlab)
-        - [9.7.3. Drone CI, an example of CICD orchestrator](#973-drone-ci-an-example-of-cicd-orchestrator)
-            - [9.7.3.1. Documentation, source, container image](#9731-documentation-source-container-image)
-            - [9.7.3.2. URL, Username and password](#9732-url-username-and-password)
-        - [9.7.4. SonarQube, an example of a platform for the inspection of code quality](#974-sonarqube-an-example-of-a-platform-for-the-inspection-of-code-quality)
-            - [9.7.4.1. Documentation, source, container image](#9741-documentation-source-container-image)
-            - [9.7.4.2. URL, Username and password](#9742-url-username-and-password)
-        - [9.7.5. PlantUML Server, an example of light-weight documentation](#975-plantuml-server-an-example-of-light-weight-documentation)
-            - [9.7.5.1. Documentation, source, container image](#9751-documentation-source-container-image)
-            - [9.7.5.2. URL](#9752-url)
-            - [9.7.5.3. Optionally, add the *hands-on-DevOps* repository to GitLab](#9753-optionally-add-the-hands-on-devops-repository-to-gitlab)
-    - [9.8. Golang _helloworld_ project](#98-golang-_helloworld_-project)
-        - [9.8.1. Create the project's backlog](#981-create-the-projects-backlog)
-        - [9.8.2. Create the project in GitLab](#982-create-the-project-in-gitlab)
-        - [9.8.3. Setup the project on the _development_ Vagrant](#983-setup-the-project-on-the-_development_-vagrant)
-        - [9.8.4. Author the application](#984-author-the-application)
-        - [9.8.5. Align source code with Go coding standards](#985-align-source-code-with-go-coding-standards)
-        - [9.8.6. Lint your code](#986-lint-your-code)
-        - [9.8.7. Build the application](#987-build-the-application)
-        - [9.8.8. Run your application](#988-run-your-application)
-        - [9.8.9. Author the unit tests](#989-author-the-unit-tests)
-        - [9.8.10. Automate the build (i.e., write the Makefile)](#9810-automate-the-build-ie-write-the-makefile)
-        - [9.8.11. Author Drone-based Continuous Integration](#9811-author-drone-based-continuous-integration)
-            - [9.8.11.1. Configure Drone to execute your pipeline](#98111-configure-drone-to-execute-your-pipeline)
-            - [9.8.11.2. Trigger the build](#98112-trigger-the-build)
-        - [9.8.12. The completed source for *helloworld*](#9812-the-completed-source-for-helloworld)
-    - [9.9. Golang *helloworld-web* project](#99-golang-helloworld-web-project)
-        - [9.9.1. Create the project's backlog](#991-create-the-projects-backlog)
-        - [9.9.2. Create the project in GitLab](#992-create-the-project-in-gitlab)
-        - [9.9.3. Setup the project on the _development_ Vagrant](#993-setup-the-project-on-the-_development_-vagrant)
-        - [9.9.4. Author the application](#994-author-the-application)
-        - [9.9.5. Build and run the application](#995-build-and-run-the-application)
-        - [9.9.6. Run gometalinter.v2 on application](#996-run-gometalinterv2-on-application)
-        - [9.9.7. Fix the application](#997-fix-the-application)
-        - [9.9.8. Author unit tests](#998-author-unit-tests)
-        - [9.9.9. Perform static analysis (i.e., sonar-scanner) on the command line](#999-perform-static-analysis-ie-sonar-scanner-on-the-command-line)
-            - [9.9.9.1. Optionally, register your app in SonarQube](#9991-optionally-register-your-app-in-sonarqube)
-            - [9.9.9.2. Install the SonarGo plugin](#9992-install-the-sonargo-plugin)
-            - [9.9.9.3. Perform static analysis (run *sonar-scanner*) on the command line](#9993-perform-static-analysis-run-sonar-scanner-on-the-command-line)
-        - [9.9.10. Automate the build (i.e., write the Makefile)](#9910-automate-the-build-ie-write-the-makefile)
-        - [9.9.11. Dockerize the application](#9911-dockerize-the-application)
-        - [9.9.12. Run the Docker container](#9912-run-the-docker-container)
-            - [9.9.12.1. Option 1](#99121-option-1)
-            - [9.9.12.2. Option 2](#99122-option-2)
-        - [9.9.13. Push the container image to the private Docker registry](#9913-push-the-container-image-to-the-private-docker-registry)
-        - [9.9.14. Configure Drone to execute your CICD pipeline](#9914-configure-drone-to-execute-your-cicd-pipeline)
-        - [9.9.15. Add Static Analysis (*SonarQube*) step to pipeline](#9915-add-static-analysis-sonarqube-step-to-pipeline)
-        - [9.9.16. Add the build step to the pipeline](#9916-add-the-build-step-to-the-pipeline)
-        - [9.9.17. Add container image publish step to pipeline](#9917-add-container-image-publish-step-to-pipeline)
-        - [9.9.18. Add container deploy step to pipeline](#9918-add-container-deploy-step-to-pipeline)
-        - [9.9.19. Add compliance and policy automation (InSpec) test to the pipeline](#9919-add-compliance-and-policy-automation-inspec-test-to-the-pipeline)
-            - [9.9.19.1. First author an InSpec test](#99191-first-author-an-inspec-test)
-            - [9.9.19.2. Execute your test](#99192-execute-your-test)
-            - [9.9.19.3. Add InSpec to the pipeline](#99193-add-inspec-to-the-pipeline)
-            - [9.9.19.4. Viewing the results in Heimdall-lite](#99194-viewing-the-results-in-heimdall-lite)
-        - [9.9.20. Add automated functional test to pipeline](#9920-add-automated-functional-test-to-pipeline)
-            - [9.9.20.1. Run the *helloworld-web* application](#99201-run-the-helloworld-web-application)
-            - [9.9.20.2. Pull and run Selenium Firefox Standalone](#99202-pull-and-run-selenium-firefox-standalone)
-            - [9.9.20.3. Create our test automation](#99203-create-our-test-automation)
-            - [9.9.20.4. Enable `Trusted` for the repository in Drone](#99204-enable-trusted-for-the-repository-in-drone)
-            - [9.9.20.5. Add a *selenium* step to the pipeline](#99205-add-a-selenium-step-to-the-pipeline)
-        - [9.9.21. Add DAST step (*OWASP ZAP*) to pipeline](#9921-add-dast-step-owasp-zap-to-pipeline)
-        - [9.9.22. All the source for *helloworld-web*](#9922-all-the-source-for-helloworld-web)
-    - [9.10. Additional best practices to consider around securing containerized applications](#910-additional-best-practices-to-consider-around-securing-containerized-applications)
-    - [9.11. Microservices](#911-microservices)
-        - [9.11.1. What's cloud-native?](#9111-whats-cloud-native)
-        - [9.11.2. Let's create a microservice](#9112-lets-create-a-microservice)
-            - [9.11.2.1. Modify the helloworld-web application](#91121-modify-the-helloworld-web-application)
-            - [9.11.2.2. Create a Kubernetes manifest for the microservice](#91122-create-a-kubernetes-manifest-for-the-microservice)
-            - [9.11.2.3. Deploy your application](#91123-deploy-your-application)
-            - [9.11.2.4. Test your microservice](#91124-test-your-microservice)
-            - [9.11.2.5. Scale your microservice](#91125-scale-your-microservice)
-    - [9.12. Using what you've learned](#912-using-what-youve-learned)
-    - [9.13. Shoo away your vagrants](#913-shoo-away-your-vagrants)
-    - [9.14. That's it](#914-thats-it)
-
-<!-- /TOC -->
+<!-- TOC -->autoauto- [1. Preface](#1-preface)auto- [2. DevOps](#2-devops)auto- [3. Author](#3-author)auto- [4. Copyright and license](#4-copyright-and-license)auto- [5. Prerequisites](#5-prerequisites)auto- [6. Table of Contents](#6-table-of-contents)auto- [7. DevOps unpacked](#7-devops-unpacked)auto    - [7.1. What is DevOps?](#71-what-is-devops)auto    - [7.2. What DevOps is not](#72-what-devops-is-not)auto    - [7.3. To succeed at DevOps you must](#73-to-succeed-at-devops-you-must)auto    - [7.4. If your effort doesn't](#74-if-your-effort-doesnt)auto    - [7.5. Conway's Law states](#75-conways-law-states)auto    - [7.6. DevOps is really about](#76-devops-is-really-about)auto    - [7.7. What is DevOps culture?](#77-what-is-devops-culture)auto        - [7.7.1. We were taught the requisite skills as children](#771-we-were-taught-the-requisite-skills-as-children)auto        - [7.7.2. Maintaining relationships is your most important skill](#772-maintaining-relationships-is-your-most-important-skill)auto        - [7.7.3. Be quick... Be slow to...](#773-be-quick-be-slow-to)auto        - [7.7.4. The pressures of social media](#774-the-pressures-of-social-media)auto    - [7.8. How is DevOps related to the Agile?](#78-how-is-devops-related-to-the-agile)auto    - [7.9. How do they differ?](#79-how-do-they-differ)auto    - [7.10. Why?](#710-why)auto    - [7.11. What are the principles of DevOps?](#711-what-are-the-principles-of-devops)auto    - [7.12. Much of this is achieved](#712-much-of-this-is-achieved)auto    - [7.13. What is Continuous Integration (CI)?](#713-what-is-continuous-integration-ci)auto    - [7.14. How?](#714-how)auto    - [7.15. CI best practices](#715-ci-best-practices)auto        - [7.15.1. Utilize a Configuration Management System](#7151-utilize-a-configuration-management-system)auto        - [7.15.2. Automate the build](#7152-automate-the-build)auto        - [7.15.3. Employ one or more CI services/orchestrators](#7153-employ-one-or-more-ci-servicesorchestrators)auto        - [7.15.4. Make builds self-testing](#7154-make-builds-self-testing)auto        - [7.15.5. Never commit broken](#7155-never-commit-broken)auto        - [7.15.6. Stakeholders are expected to pre-flight new code](#7156-stakeholders-are-expected-to-pre-flight-new-code)auto        - [7.15.7. The CI service/orchestrator provides feedback](#7157-the-ci-serviceorchestrator-provides-feedback)auto    - [7.16. What is Continuous Delivery?](#716-what-is-continuous-delivery)auto        - [7.16.1. Extending Continuous Integration (CI)](#7161-extending-continuous-integration-ci)auto        - [7.16.2. Consistency](#7162-consistency)auto    - [7.17. But wait. What's a pipeline?](#717-but-wait-whats-a-pipeline)auto    - [7.18. How is a pipeline manifested?](#718-how-is-a-pipeline-manifested)auto    - [7.19. What underlines all of this?](#719-what-underlines-all-of-this)auto    - [7.20. But really why do we automate err. code?](#720-but-really-why-do-we-automate-err-code)auto        - [7.20.1. Why do I mention Larry Wall?](#7201-why-do-i-mention-larry-wall)auto        - [7.20.2. Laziness](#7202-laziness)auto        - [7.20.3. Impatience](#7203-impatience)auto        - [7.20.4. Hubris](#7204-hubris)auto        - [7.20.5. We automate for](#7205-we-automate-for)auto    - [7.21. Monitoring](#721-monitoring)auto        - [7.21.1. The _primary_ metric](#7211-the-_primary_-metric)auto        - [7.21.2. An understanding of performance](#7212-an-understanding-of-performance)auto        - [7.21.3. Establish a baseline performance](#7213-establish-a-baseline-performance)auto        - [7.21.4. Set reaction thresholds](#7214-set-reaction-thresholds)auto        - [7.21.5. Reacting](#7215-reacting)auto        - [7.21.6. Gaps in CICD](#7216-gaps-in-cicd)auto        - [7.21.7. Eliminating waste](#7217-eliminating-waste)auto    - [7.22. Crawl, walk, run](#722-crawl-walk-run)auto        - [7.22.1. Ultimately, DevOps is Goal](#7221-ultimately-devops-is-goal)auto- [8. Reading list](#8-reading-list)auto- [9. Now the hands-on part](#9-now-the-hands-on-part)auto    - [9.1. Configuring environmental variables](#91-configuring-environmental-variables)auto    - [9.2. VirtualBox](#92-virtualbox)auto        - [9.2.1. Installing VirtualBox](#921-installing-virtualbox)auto    - [9.3. Git Bash](#93-git-bash)auto        - [9.3.1. Installing Git Bash](#931-installing-git-bash)auto    - [9.4. Retrieve the course material](#94-retrieve-the-course-material)auto    - [9.5. Infrastructure as code (IaC)](#95-infrastructure-as-code-iac)auto        - [9.5.1. Hashicorp Packer](#951-hashicorp-packer)auto            - [9.5.1.1. Packer document and source](#9511-packer-document-and-source)auto            - [9.5.1.2. Installing Packer](#9512-installing-packer)auto            - [9.5.1.3. Packer project explained](#9513-packer-project-explained)auto            - [9.5.1.4. Packer execution](#9514-packer-execution)auto        - [9.5.2. Vagrant](#952-vagrant)auto            - [9.5.2.1. Vagrant documentation and source](#9521-vagrant-documentation-and-source)auto            - [9.5.2.2. Installing Vagrant](#9522-installing-vagrant)auto            - [9.5.2.3. The Vagrantfile explained](#9523-the-vagrantfile-explained)auto                - [9.5.2.3.1. Modelines](#95231-modelines)auto                - [9.5.2.3.2. Setting extra variables for Ansible roles](#95232-setting-extra-variables-for-ansible-roles)auto                - [9.5.2.3.3. Automatically installing and removing the necessary Vagrant plugins](#95233-automatically-installing-and-removing-the-necessary-vagrant-plugins)auto                - [9.5.2.3.4. Inserting Proxy setting via host environmental variables](#95234-inserting-proxy-setting-via-host-environmental-variables)auto                - [9.5.2.3.5. Inserting enterprise CA certificates](#95235-inserting-enterprise-ca-certificates)auto                - [9.5.2.3.6. Auto-generate the Ansible inventory file](#95236-auto-generate-the-ansible-inventory-file)auto                - [9.5.2.3.7. Mounting the project folder into each vagrant](#95237-mounting-the-project-folder-into-each-vagrant)auto                - [9.5.2.3.8. Build a Vagrant Box](#95238-build-a-vagrant-box)auto                - [9.5.2.3.9. Configuring the Kubernetes cluster vagrant(s)](#95239-configuring-the-kubernetes-cluster-vagrants)auto                - [9.5.2.3.10. Provisioning and configuring the *development* vagrant](#952310-provisioning-and-configuring-the-development-vagrant)auto        - [9.5.3. Ansible](#953-ansible)auto            - [9.5.3.1. Playbooks](#9531-playbooks)auto                - [9.5.3.1.1. The `master` vagrant's playbook](#95311-the-master-vagrants-playbook)auto                - [9.5.3.1.2. The `worker` vagrant's playbook](#95312-the-worker-vagrants-playbook)auto                - [9.5.3.1.3. The `development` playbooks](#95313-the-development-playbooks)auto            - [9.5.3.2. Roles](#9532-roles)auto            - [9.5.3.3. Bringing all the vagrants up](#9533-bringing-all-the-vagrants-up)auto    - [9.6. The cloud-native technologies underlying the tools](#96-the-cloud-native-technologies-underlying-the-tools)auto        - [9.6.1. Docker image and containers](#961-docker-image-and-containers)auto        - [9.6.2. Docker-compose](#962-docker-compose)auto        - [9.6.3. Kubernetes](#963-kubernetes)auto            - [9.6.3.1. K3s, light-weight Kubernetes](#9631-k3s-light-weight-kubernetes)auto            - [9.6.3.2. Kubectl, the Kubernetes command-line tool](#9632-kubectl-the-kubernetes-command-line-tool)auto            - [9.6.3.3. Kubernetes-Dashboard](#9633-kubernetes-dashboard)auto    - [9.7. The long-running tools](#97-the-long-running-tools)auto        - [9.7.1. Taiga, an example of Agile project management software](#971-taiga-an-example-of-agile-project-management-software)auto            - [9.7.1.1. Documentation, source, container image](#9711-documentation-source-container-image)auto            - [9.7.1.2. URL, Username and password](#9712-url-username-and-password)auto        - [9.7.2. GitLab CE, an example of configuration management software](#972-gitlab-ce-an-example-of-configuration-management-software)auto            - [9.7.2.1. Documentation, source, container image](#9721-documentation-source-container-image)auto            - [9.7.2.2. URL, Username and password](#9722-url-username-and-password)auto            - [9.7.2.3. Notes in regards to the class GitLab](#9723-notes-in-regards-to-the-class-gitlab)auto        - [9.7.3. Drone CI, an example of CICD orchestrator](#973-drone-ci-an-example-of-cicd-orchestrator)auto            - [9.7.3.1. Documentation, source, container image](#9731-documentation-source-container-image)auto            - [9.7.3.2. URL, Username and password](#9732-url-username-and-password)auto        - [9.7.4. SonarQube, an example of a platform for the inspection of code quality](#974-sonarqube-an-example-of-a-platform-for-the-inspection-of-code-quality)auto            - [9.7.4.1. Documentation, source, container image](#9741-documentation-source-container-image)auto            - [9.7.4.2. URL, Username and password](#9742-url-username-and-password)auto        - [9.7.5. PlantUML Server, an example of light-weight documentation](#975-plantuml-server-an-example-of-light-weight-documentation)auto            - [9.7.5.1. Documentation, source, container image](#9751-documentation-source-container-image)auto            - [9.7.5.2. URL](#9752-url)auto    - [9.8. Golang _helloworld_ project](#98-golang-_helloworld_-project)auto        - [9.8.1. Create the project's backlog](#981-create-the-projects-backlog)auto        - [9.8.2. Create the project in GitLab](#982-create-the-project-in-gitlab)auto        - [9.8.3. Setup the project on the _development_ Vagrant](#983-setup-the-project-on-the-_development_-vagrant)auto        - [9.8.4. Author the application](#984-author-the-application)auto        - [9.8.5. Align source code with Go coding standards](#985-align-source-code-with-go-coding-standards)auto        - [9.8.6. Lint your code](#986-lint-your-code)auto        - [9.8.7. Build the application](#987-build-the-application)auto        - [9.8.8. Run your application](#988-run-your-application)auto        - [9.8.9. Author the unit tests](#989-author-the-unit-tests)auto        - [9.8.10. Automate the build (i.e., write the Makefile)](#9810-automate-the-build-ie-write-the-makefile)auto        - [9.8.11. Author Drone-based Continuous Integration](#9811-author-drone-based-continuous-integration)auto            - [9.8.11.1. Configure Drone to execute your pipeline](#98111-configure-drone-to-execute-your-pipeline)auto            - [9.8.11.2. Trigger the build](#98112-trigger-the-build)auto        - [9.8.12. The completed source for *helloworld*](#9812-the-completed-source-for-helloworld)auto    - [9.9. Golang *helloworld-web* project](#99-golang-helloworld-web-project)auto        - [9.9.1. Create the project's backlog](#991-create-the-projects-backlog)auto        - [9.9.2. Create the project in GitLab](#992-create-the-project-in-gitlab)auto        - [9.9.3. Setup the project on the _development_ Vagrant](#993-setup-the-project-on-the-_development_-vagrant)auto        - [9.9.4. Author the application](#994-author-the-application)auto        - [9.9.5. Build and run the application](#995-build-and-run-the-application)auto        - [9.9.6. Run gometalinter.v2 on application](#996-run-gometalinterv2-on-application)auto        - [9.9.7. Fix the application](#997-fix-the-application)auto        - [9.9.8. Author unit tests](#998-author-unit-tests)auto        - [9.9.9. Perform static analysis (i.e., sonar-scanner) on the command line](#999-perform-static-analysis-ie-sonar-scanner-on-the-command-line)auto            - [9.9.9.1. Optionally, register your app in SonarQube](#9991-optionally-register-your-app-in-sonarqube)auto            - [9.9.9.2. Install the SonarGo plugin](#9992-install-the-sonargo-plugin)auto            - [9.9.9.3. Perform static analysis (run *sonar-scanner*) on the command line](#9993-perform-static-analysis-run-sonar-scanner-on-the-command-line)auto        - [9.9.10. Automate the build (i.e., write the Makefile)](#9910-automate-the-build-ie-write-the-makefile)auto        - [9.9.11. Dockerize the application](#9911-dockerize-the-application)auto        - [9.9.12. Run the Docker container](#9912-run-the-docker-container)auto            - [9.9.12.1. Option 1](#99121-option-1)auto            - [9.9.12.2. Option 2](#99122-option-2)auto        - [9.9.13. Push the container image to the private Docker registry](#9913-push-the-container-image-to-the-private-docker-registry)auto        - [9.9.14. Configure Drone to execute your CICD pipeline](#9914-configure-drone-to-execute-your-cicd-pipeline)auto        - [9.9.15. Add Static Analysis (*SonarQube*) step to pipeline](#9915-add-static-analysis-sonarqube-step-to-pipeline)auto        - [9.9.16. Add the build step to the pipeline](#9916-add-the-build-step-to-the-pipeline)auto        - [9.9.17. Add container image publish step to pipeline](#9917-add-container-image-publish-step-to-pipeline)auto        - [9.9.18. Add container deploy step to pipeline](#9918-add-container-deploy-step-to-pipeline)auto        - [9.9.19. Add compliance and policy automation (InSpec) test to the pipeline](#9919-add-compliance-and-policy-automation-inspec-test-to-the-pipeline)auto            - [9.9.19.1. First author an InSpec test](#99191-first-author-an-inspec-test)auto            - [9.9.19.2. Execute your test](#99192-execute-your-test)auto            - [9.9.19.3. Add InSpec to the pipeline](#99193-add-inspec-to-the-pipeline)auto            - [9.9.19.4. Viewing the results in Heimdall-lite](#99194-viewing-the-results-in-heimdall-lite)auto        - [9.9.20. Add automated functional test to pipeline](#9920-add-automated-functional-test-to-pipeline)auto            - [9.9.20.1. Run the *helloworld-web* application](#99201-run-the-helloworld-web-application)auto            - [9.9.20.2. Pull and run Selenium Firefox Standalone](#99202-pull-and-run-selenium-firefox-standalone)auto            - [9.9.20.3. Create our test automation](#99203-create-our-test-automation)auto            - [9.9.20.4. Enable `Trusted` for the repository in Drone](#99204-enable-trusted-for-the-repository-in-drone)auto            - [9.9.20.5. Add a *selenium* step to the pipeline](#99205-add-a-selenium-step-to-the-pipeline)auto        - [9.9.21. Add DAST step (*OWASP ZAP*) to pipeline](#9921-add-dast-step-owasp-zap-to-pipeline)auto        - [9.9.22. All the source for *helloworld-web*](#9922-all-the-source-for-helloworld-web)auto    - [9.10. Additional best practices to consider around securing containerized applications](#910-additional-best-practices-to-consider-around-securing-containerized-applications)auto    - [9.11. Microservices](#911-microservices)auto        - [9.11.1. What's cloud-native?](#9111-whats-cloud-native)auto        - [9.11.2. Let's create a microservice](#9112-lets-create-a-microservice)auto            - [9.11.2.1. Modify the helloworld-web application](#91121-modify-the-helloworld-web-application)auto            - [9.11.2.2. Create a Kubernetes manifest for the microservice](#91122-create-a-kubernetes-manifest-for-the-microservice)auto            - [9.11.2.3. Deploy your application](#91123-deploy-your-application)auto            - [9.11.2.4. Test your microservice](#91124-test-your-microservice)auto            - [9.11.2.5. Scale your microservice](#91125-scale-your-microservice)auto    - [9.12. Using what you've learned](#912-using-what-youve-learned)auto    - [9.13. Shoo away your vagrants](#913-shoo-away-your-vagrants)auto    - [9.14. That's it](#914-thats-it)autoauto<!-- /TOC -->
 
 # 7. DevOps unpacked
 
@@ -452,37 +270,25 @@ The second edition of the same book provided definitions for these terms
 
 Well...
 
-> _Once you have established yourself as an icon in your field 
-> it is important that you pay tribute  to some of the great legends that came before you. 
-> This kind of gesture will create the illusion that you’re still humble 
-> and serve as a preemptive strike against anyone who has noticed 
-> what a callus and delusional ass you have become._
+> _Once you have established yourself as an icon in your field it is important that you pay tribute  to some of the great legends that came before you. This kind of gesture will create the illusion that you’re still humble and serve as a preemptive strike against anyone who has noticed what a callus and delusional ass you have become._
 >
-> The opening monologue to the Blue Man Group’s _I Feel Love_
-> https://www.youtube.com/watch?v=8vBKI3ya-l0
+> From the opening monologue to the Blue Man Group’s _I Feel Love_ https://www.youtube.com/watch?v=8vBKI3ya-l0
 
-I kid, but in all serious the sentiment of this seminal book still holds true.
+I kid, but in all serious the sentiment of this seminal, nearly twenty-something year-old book still holds true.
 
 Let me explain.
 
 ### 7.20.2. Laziness
 
-> The quality that makes you go to great effort to reduce overall energy expenditure. 
-> It makes you write labor-saving programs that other people will find useful, and 
-> document what you wrote so you don't have to answer so many questions about it. 
-> Hence, the first great virtue of a programmer._ (p.609)
+> The quality that makes you go to great effort to reduce overall energy expenditure. It makes you write labor-saving programs that other people will find useful, and document what you wrote so you don't have to answer so many questions about it. Hence, the first great virtue of a programmer._ (p.609)
 
 ### 7.20.3. Impatience
 
-> The anger you feel when the computer is being lazy. This makes you write programs 
-> that don't just react to your needs, but actually anticipate them. Or at least 
-> pretend to. Hence, the second great virtue of a programmer._ (p.608)
+> The anger you feel when the computer is being lazy. This makes you write programs that don't just react to your needs, but actually anticipate them. Or at least pretend to. Hence, the second great virtue of a programmer._ (p.608)
 
 ### 7.20.4. Hubris
 
-> Excessive pride, the sort of thing Zeus zaps you for. Also, the quality that makes 
-> you write (and maintain) programs that other people won't want to say bad things 
-> about. Hence, the third great virtue of a programmer._ (p.607)
+> Excessive pride, the sort of thing Zeus zaps you for. Also, the quality that makes you write (and maintain) programs that other people won't want to say bad things about. Hence, the third great virtue of a programmer._ (p.607)
 
 ### 7.20.5. We automate for
 
@@ -607,12 +413,12 @@ September 23, 2019
 
 # 9. Now the hands-on part
 
-In this class, you will spin up the following development and toolchain environment.
+In this class, you will spin up a development and toolchain environment.
 
 **NOTE**
 
 - This class makes use of **NOTE** sections to call out things that are important to know or to drop a few tidbits. Reading these notes may save you some aggravation.
-- This diagrams used in this document are authored in PlantUML.  I am presently migrating each diagram out into a separate file in [plantuml folder in the root of the project](plantuml) and having GitHub worflow render each as SVG into the [diagrams folder at the root of the project](diagrams) and the updating this document to use the rendered SVG.  Instructions are provided below how to add the class repository, so you can view the diagrams that aren't yet rendered to SVG.
+- This diagrams used in this document are authored in PlantUML. Each diagram is authored in a PlantUML domain-specific language (DSL) and can be found in a separate file in the [plantuml folder](plantuml) in the root of the project.  The class project makes use of [GitHub worflow](.github/worflows/main.yml) to render each file into a scalable vector graphic (SVG) placing each in the [diagrams folder](diagrams) also at the root of the class project.
 
 ![Deployment Diagram](diagrams/deployment.svg)
 [PlantUML source for this diagram](plantuml/deployment.puml)
@@ -2966,9 +2772,9 @@ For me, I don't need to see the diagrams rendered to follow them. The code alone
 
 PlantUML supports a number of UML diagrams: Sequence, Use Case, Class diagram, Activity diagram, Component, State, Object, Deployment, and Timing. The DSL also supports a number of other non-UML diagrams: Wireframe graphical interface, Specification and Description Language (SDL), Ditaa diagram... 
 
-This class makes use of just two types: Activity and Deployment diagrams. The PlantUML diagram source code exist in [plantuml folder](plantuml) in the root of the project and rendered by a [GitHub workflow](.github/workflows/main.yml) into SVG and pushed to the [diagrams folder](diagrams) upon changes commited to the PlantUML source.
+This class makes use of just two types: Activity and Deployment diagrams. The diagrams are especially helpful to visual learners.  Each PlantUML diagram's source file exist in [plantuml folder](plantuml) in the root of the project and is rendered by a [GitHub workflow](.github/workflows/main.yml) into scalable vector graphic (SVG) that is pushed to the [diagrams folder](diagrams) upon changes commited to each diagram's source file.
 
-The PlantUML effort also provides server for rendering diagrams in PNG, SVG or LaTeX formats. Plugins for Microsoft Code, Atom, and other editors have been authored to assist in auhoring in the PlantUML DSL.  The class automation deploys this server to <http://192.168.0.203>.
+The PlantUML effort also provides server for rendering diagrams in PNG, SVG or LaTeX formats. Plugins for Microsoft Code, Atom, and other editors have been authored to assist in auhoring in the PlantUML DSL.  
 
 #### 9.7.5.1. Documentation, source, container image
 
@@ -2984,50 +2790,19 @@ I'm using the container image provided at
 
 <https://hub.docker.com/r/plantuml/plantuml-server/>
 
+The aforementioned workflow is using
+
+<https://hub.docker.com/r/think/plantuml/>
+
+to render the diagrams.
+
 #### 9.7.5.2. URL
 
 Once, stood up your instance of PlantUML server will reachable at
 
 <http://192.168.0.203>
 
-#### 9.7.5.3. Optionally, add the *hands-on-DevOps* repository to GitLab
-
-I'd encourage you to perform the following as GitLab will make use of the PlantUML server the class automation spins up to render the embedded UML diagrams in the class `readme.md`. The diagrams are especially helpful to visual learners.
-
-To read this document with rendered PlantUML diagrams perform the following:
-
-1. In GitLab (<http://192.168.0.202>) click on `Projects` in the upper left.
-   a. Select `Create Project`.  
-   b. Or click <http://192.168.0.202/projects/new>  
-2. Leave the `Project path` defaulted to `http://192.168.0.202/root/`.
-3. Enter `hands-on-DevOps` (the form field the page defaults to) for the `Project name`.
-4. Provide an optional `Project description`. Something descriptive, such as, _"An awesome DevOps class"_.
-5. Make the application `public` to save yourself from entering your username and password when cloning.
-6. Click the green `Create Project` button on the lower left.
-
-The UI will refresh to show you a landing page for the project that should be accessible from <http://192.168.0.202/root/hands-on-DevOps>
-
-On your host in the DevOps class project:
-
-1. Enter into the following into the command line 
-   ```bash
-   git config --global user.name "Administrator"
-   git config --global user.email "admin@example.com"
-   ```
-2. Then enter the following 
-   ```bash
-   git remote add toolchain http://192.168.0.202/root/hands-on-DevOps.git
-   git push -u toolchain --all
-   git push -u toolchain --tags
-   ```
-
-**NOTE**
-
-- Since we have not registered an SSH key with GitLab, during the push we will be prompted to enter a `Username` and `Password`.
-- Your `Username` is `root` and your `Password` is `password`. 
-- The git command-line client will not display your password as you enter it. 
-
-You now have a clone of the project hosted in the GitLab running on the Kubernetes cluster.  This way you can open the readme.md and follow along with rendered PlanUML diagrams.
+In prior versions of this class I had the source for the PlantUML diagrams embedded in this README, but GitHub could not render the diagrams whereas GitLab when integrated with a PlantUML-server can.
 
 ## 9.8. Golang _helloworld_ project
 
@@ -3491,7 +3266,7 @@ You won't have any builds to start, but when you do the builds will increment st
 
 The build colors mean something:
 
-- `Red`- indicates a failed build. 
+- `Red` - indicates a failed build. 
 - `Yellow-orange` - is the presently executing build. 
 - `Green` - is a build that passed. 
 
@@ -6930,9 +6705,9 @@ Wth that, here's some best practices for containerized application development a
    For an example, see my taiga Dockerfile [ansible/roles/taiga/templates/Dockerfile.j2](ansible/roles/taiga/templates/Dockerfile.j2) on line 22 where I `apt clean`.
 5. Avoid running the container’s process as root. 
 
-   See my taiga Dockerfile [ansible/roles/taiga/templates/Dockerfile.j2](ansible/roles/taiga/templates/Dockerfile.j2) lines 79 - 80 and 96 - 102. 
+   See my taiga Dockerfile <https://github.com/nemonik/taiga/blob/master/Dockerfile> lines 71 - 77 . 
 
-   That said, a number of containers don’t come this way and would require your time to refactor resulting in something you’ve forked and now must carry applying upstream changess unless you can convince upstream to go your way.  Also, some extenrnal applications rely on a container running at root.  Drone CI for one wants the containers you orchestrate your pipelines with to run as root. Jenkins container slaves are likely the same way, but I need to verify.
+   That said, a number of containers don’t come this way and would require your time to refactor resulting in something you’ve forked and now must carry applying upstream changess unless you can convince upstream to go your way.  Also, some external applications rely on a container running as root.  Drone CI for one needs to run as root to orchestrate your pipelines. Jenkins container slaves are likely the same way, but I need to verify.
 6. Harden your Docker configuration as per an InSpec compliance profile, such as https://github.com/mitre/docker-ce-cis-baseline and https://github.com/dev-sec/cis-docker-benchmark or if you are using another container runtime either find one for the runtime or write your own compliance profile.
 7. Doing item-6 will require you to make use of a notary (https://github.com/theupdateframework/notary) and private Docker registry (e.g., https://hub.docker.com/_/registry, https://hub.docker.com/r/sonatype/nexus3). I’ve written Ansible IaC to deploy Notary and it was a real pain in the butt to figure it out and took my countless hours, because the documentation is to put it plainly, "Sh!t." It would seem, they (i.e., whoever owns Docker Enterprise now) wants you to use Docker Enterprise vice getting Notary up and running with Docker CE.
 8. Put your application development through a CICD pipeline like this class of the following that applies: code format enforcement, linting, static analysis, build automation, unit testing, compliance-as-code for the container image, automated functional test, and dynamic analysis.
