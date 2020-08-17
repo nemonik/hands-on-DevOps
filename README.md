@@ -3133,9 +3133,9 @@ func HelloWorld() string {
 
 **NOTE**
 
-- Starting on page 135 of [The Linux Command Line by William Shotts](http://linuxcommand.org/tlcl.php) Mr Shotts covers how to use nano. 
+- Starting on page 135 of [The Linux Command Line by William Shotts](http://linuxcommand.org/tlcl.php) Mr Shotts covers how to use `nano`. 
 - There are countless tutorials online for the aforementioned editors. 
-- You should be able to pick up and start using any of these in 5 or so minutes.
+- You should be able to pick up and start using any of these in 5 or so minutes.  I use all of them switching back and forth between. You are likely to see at least `vi` on any barebones *NIX system, so maybe start there if you wanna be a survivalist.
 
 ### 9.8.5. Align source code with Go coding standards
 
