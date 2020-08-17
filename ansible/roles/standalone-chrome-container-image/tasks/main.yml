@@ -75,7 +75,7 @@
     docker_image:
       name: nemonik/standalone-chrome
       tag: "{{ selenium_standalone_chrome_version }}"
-      repository: {{ registry_host }}:{{ registry_port }}/nemonik/standalone-chrome
+      repository: "{{ registry_host }}:{{ registry_port }}/nemonik/standalone-chrome"
       build:
         path: /home/{{ ansible_user_id }}/standalone-chrome-container-image
         pull: yes
