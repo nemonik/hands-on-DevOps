@@ -1,4 +1,5 @@
-name: generate diagrams
+name: Generate diagrams
+
 on:
   push:
     paths:
