@@ -52,7 +52,7 @@ Don't fixate on the tools used, nor the apps we develop in the course of learnin
 
 # 4. Copyright and license
 
-See the License file at the root of this project.
+See the [License file](LICENCE) at the root of this project.
 
 # 5. Prerequisites
 
