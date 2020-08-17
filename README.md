@@ -2966,7 +2966,7 @@ For me, I don't need to see the diagrams rendered to follow them. The code alone
 
 PlantUML supports a number of UML diagrams: Sequence, Use Case, Class diagram, Activity diagram, Component, State, Object, Deployment, and Timing. The DSL also supports a number of other non-UML diagrams: Wireframe graphical interface, Specification and Description Language (SDL), Ditaa diagram... 
 
-This class makes use of just two types: Activity and Deployment diagrams. The PlantUML diagram source code exist in [plantuml folder](plantuml) in the root of the project and rendered by a [GitHub workflow](.github/workflow/main.yml) into SVG and pushed to the [diagrams folder](diagrams) upon changes commited to the PlantUML source.
+This class makes use of just two types: Activity and Deployment diagrams. The PlantUML diagram source code exist in [plantuml folder](plantuml) in the root of the project and rendered by a [GitHub workflow](.github/workflows/main.yml) into SVG and pushed to the [diagrams folder](diagrams) upon changes commited to the PlantUML source.
 
 The PlantUML effort also provides server for rendering diagrams in PNG, SVG or LaTeX formats. Plugins for Microsoft Code, Atom, and other editors have been authored to assist in auhoring in the PlantUML DSL.  The class automation deploys this server to <http://192.168.0.203>.
 
