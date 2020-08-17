@@ -3131,6 +3131,12 @@ func HelloWorld() string {
 }
 ```
 
+**NOTE**
+
+- Starting on page 135 of [The Linux Command Line by William Shotts](http://linuxcommand.org/tlcl.php) Mr Shotts covers how to use nano. 
+- There are countless tutorials online for the aforementioned editors. 
+- You should be able to pick up and start using any of these in 5 or so minutes.
+
 ### 9.8.5. Align source code with Go coding standards
 
 ![Activity Diagram for helloworld project: Align source code to Go coding standards](diagrams/helloworld-align-source.svg)
