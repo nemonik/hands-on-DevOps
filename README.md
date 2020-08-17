@@ -612,10 +612,10 @@ In this class, you will spin up the following development and toolchain environm
 **NOTE**
 
 - This class makes use of **NOTE** sections to call out things that are important to know or to drop a few tidbits. Reading these notes may save you some aggravation.
-- This diagrams used in this document are authored in PlantUML.  I am presently migrating each diagram out into a separate file in [plantuml folder in the root of the project](./plantuml) and having GitHub worflow render each as SVG into the [diagrams folder at the root of the project](./diagrams) and the updating this document to use the rendered SVG.  Instructions are provided below how to add the class repository, so you can view the diagrams that aren't yet rendered to SVG.
+- This diagrams used in this document are authored in PlantUML.  I am presently migrating each diagram out into a separate file in [plantuml folder in the root of the project](plantuml) and having GitHub worflow render each as SVG into the [diagrams folder at the root of the project](diagrams) and the updating this document to use the rendered SVG.  Instructions are provided below how to add the class repository, so you can view the diagrams that aren't yet rendered to SVG.
 
-![Deployment Diagram](./diagrams/deployment.svg)
-[PlantUML source for this diagram](./plantuml/deployment.puml)
+![Deployment Diagram](diagrams/deployment.svg)
+[PlantUML source for this diagram](plantuml/deployment.puml)
 
 ## 9.1. Configuring environmental variables
 
@@ -895,8 +895,8 @@ To install on Windows:
 The terraform project to build `nemonik/alpine310` box is found in `box/packer-alpine310` looks like so:
 
 
-![Packer project for Alpine 310](./diagrams/packer-alpine310.svg)
-[PlantUML source for this diagram](./plantuml/packer-alpine310.puml)
+![Packer project for Alpine 310](diagrams/packer-alpine310.svg)
+[PlantUML source for this diagram](plantuml/packer-alpine310.puml)
 
 
 The folders and files have the following purpose:
@@ -2960,15 +2960,15 @@ The second value in the Agile Manifesto is
 
 > Working software over comprehensive documentation
 
-The documentation for this class, this `readme.md` file, is authored in Markdown, a light-weight markup language.  The course's diagrams are authored in PlantUML, a domain-specific language used to author well-formed and human-readable code to render UML diagrams.
+The documentation for this class, this `readme.md` file, is authored in Markdown, a light-weight markup language.  The course's diagrams are authored in [PlantUML](https://www.plantuml.com), a domain-specific language used to author well-formed and human-readable code to render UML diagrams.
 
 For me, I don't need to see the diagrams rendered to follow them. The code alone is sufficient.  
 
 PlantUML supports a number of UML diagrams: Sequence, Use Case, Class diagram, Activity diagram, Component, State, Object, Deployment, and Timing. The DSL also supports a number of other non-UML diagrams: Wireframe graphical interface, Specification and Description Language (SDL), Ditaa diagram... 
 
-This class makes use of just two types: State and Deployment diagrams.  
+This class makes use of just two types: Activity and Deployment diagrams. The PlantUML diagram source code exist in [plantuml folder](plantuml) in the root of the project and rendered by a [GitHub workflow](.github/workflow/main.yml) into SVG and pushed to the [diagrams folder](diagrams) upon changes commited to the PlantUML source.
 
-The PlantUML effort also provides server for rendering diagrams in PNG, SVG or LaTeX formats. Plugins for Microsoft Code, Atom, and other editors have been authored to assist in auhoring in the PlantUML DSL.
+The PlantUML effort also provides server for rendering diagrams in PNG, SVG or LaTeX formats. Plugins for Microsoft Code, Atom, and other editors have been authored to assist in auhoring in the PlantUML DSL.  The class automation deploys this server to <http://192.168.0.203>.
 
 #### 9.7.5.1. Documentation, source, container image
 
@@ -3038,7 +3038,7 @@ In this next part, we will create a simple helloworld GoLang project to demonstr
 ### 9.8.1. Create the project's backlog
 
 ![Activity Diagram for helloworld project: Create the project's backlog](diagrams/helloworld-create-the-projects-backlog.svg)
-[PlantUML source for this diagram](./plantuml/helloworld-create-the-projects-backlog.puml)
+[PlantUML source for this diagram](plantuml/helloworld-create-the-projects-backlog.puml)
 
 A backlog is essentially your (or your team's) to-do list, a prioritized list of work derived from the road map (e.g., the outline for future product functionality and when new features will be released) and its requirements.
 
@@ -3085,7 +3085,7 @@ Track your progress in Taiga as you work through each section.
 ### 9.8.2. Create the project in GitLab
 
 ![Activity Diagram for helloworld project: Create the project in GitLab](diagrams/helloworld-create-project-in-gitlab.svg)
-[PlantUML source for this diagram](./plantuml/helloworld-create-project-in-gitlab.puml)
+[PlantUML source for this diagram](plantuml/helloworld-create-project-in-gitlab.puml)
 
 1. In GitLab (<http://192.168.0.202>) click on `Projects` in the upper left.
    a. Select `Create Project`.  
@@ -3101,7 +3101,7 @@ The UI will refresh to show you a landing page for the project that should be ac
 ### 9.8.3. Setup the project on the _development_ Vagrant
 
 ![Activity Diagram for helloworld project: Setup the project in the development Vagrant](diagrams/helloworld-setup-project-on-development-vagrant.svg)
-[PlantUML source for this diagram](./plantuml/helloworld-setup-project-on-development-vagrant.puml)
+[PlantUML source for this diagram](plantuml/helloworld-setup-project-on-development-vagrant.puml)
 
 On your host open a shell to the `development` vagrant, and configure your user name and email:
 
@@ -3157,7 +3157,7 @@ helloworld
 ### 9.8.4. Author the application
 
 ![Activity Diagram for helloworld project: Author the application](diagrams/helloworld-author-the-application.svg)
-[PlantUML source for this diagram](./plantuml/helloworld-author-the-application.puml)
+[PlantUML source for this diagram](plantuml/helloworld-author-the-application.puml)
 
 In the project folder (i.e., `/home/vagrant/go/src/github.com/nemonik/helloworld`), create `main.go` in `emacs`, `nano`, `vi` or `vim` with this content:
 
@@ -3178,7 +3178,7 @@ func HelloWorld() string {
 ### 9.8.5. Align source code with Go coding standards
 
 ![Activity Diagram for helloworld project: Align source code to Go coding standards](diagrams/helloworld-align-source.svg)
-[PlantUML source for this diagram](./plantuml/helloworld-align-source.puml)
+[PlantUML source for this diagram](plantuml/helloworld-align-source.puml)
 
 Format source code according to Go coding standards using
 
@@ -3219,7 +3219,7 @@ func HelloWorld() string {
 ### 9.8.6. Lint your code
 
 ![Activity Diagram for helloworld project: Lint your code](diagrams/helloworld-lint-your-code.svg)
-[PlantUML source for this diagram](./plantuml/helloworld-lint-your-code.puml)
+[PlantUML source for this diagram](plantuml/helloworld-lint-your-code.puml)
 
 Already installed on your `development` vagrant is `golint`. Where `go fmt` reformatted the code to GoLang standards, `golint` prints style mistakes.
 
@@ -3258,7 +3258,7 @@ Run `golint` again and it should return no output indicating it sees nothing wro
 ### 9.8.7. Build the application
 
 ![Activity Diagram for helloworld project: Author the application](diagrams/helloworld-build-the-application.svg)
-[PlantUML source for this diagram](./plantuml/helloworld-build-the-application.puml)
+[PlantUML source for this diagram](plantuml/helloworld-build-the-application.puml)
 
 Build the project by executing
 
@@ -3271,7 +3271,7 @@ Success returns no command line output.  What?  Did you want a cookie?  No cooki
 ### 9.8.8. Run your application
 
 ![Activity Diagram for helloworld project: Run your application](diagrams/helloworld-run-your-application.svg)
-[PlantUML source for this diagram](./plantuml/helloworld-run-your-application.puml)
+[PlantUML source for this diagram](plantuml/helloworld-run-your-application.puml)
 
 Now run your application
 
