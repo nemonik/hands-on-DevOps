@@ -1,4 +1,3 @@
-![Generate diagrams](https://github.com/nemonik/hands-on-DevOps/workflows/Generate%20diagrams/badge.svg)
 ![Basic role syntax check](https://github.com/nemonik/hands-on-DevOps/workflows/Basic%20role%20syntax%20check/badge.svg)
 [![GitHub license](https://img.shields.io/github/license/nemonik/hands-on-DevOps?style=flat-square)](./LICENSE)
 [![GitHub Forks](https://img.shields.io/github/forks/nemonik/hands-on-DevOps?style=flat-square)](https://github.com/nemonik/hands-on-DevOps/network/members)
