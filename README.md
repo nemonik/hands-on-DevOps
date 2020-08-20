@@ -2,7 +2,7 @@
 [![GitHub license](https://img.shields.io/github/license/nemonik/hands-on-DevOps?style=flat-square)](./LICENSE)
 [![GitHub Forks](https://img.shields.io/github/forks/nemonik/hands-on-DevOps?style=flat-square)](https://github.com/nemonik/hands-on-DevOps/network/members)
 [![Github Stars](https://img.shields.io/github/stars/nemonik/hands-on-DevOps?style=flat-square)](https://github.com/nemonik/hands-on-DevOps/stargazers)
-[![Twitter](https://img.shields.io/twitter/url?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fnemonik%2Fhands-on-DevOps)
+[![Twitter](https://img.shields.io/twitter/url?style=social)](https://twitter.com/intent/tweet?text=Wow:%20https%3A%2F%2Fgithub.com%2Fnemonik%2Fhands-on-DevOps)
 
 # 1. Preface
 
