@@ -1,6 +1,6 @@
 ![Basic role syntax check](https://github.com/nemonik/hands-on-DevOps/workflows/Basic%20role%20syntax%20check/badge.svg)
 [![GitHub license](https://img.shields.io/github/license/nemonik/hands-on-DevOps?style=flat-square)](./LICENSE)
-[![GitHub Forks](https://img.shields.io/github/forks/nemonik/hands-on-DevOps?label=Fork)](https://github.com/nemonik/hands-on-DevOps/network/members)
+[![GitHub Forks](https://img.shields.io/github/forks/nemonik/hands-on-DevOps?style=social)](https://github.com/nemonik/hands-on-DevOps/network/members)
 [![Github Stars](https://img.shields.io/github/stars/nemonik/hands-on-DevOps?style=social)](https://github.com/nemonik/hands-on-DevOps/stargazers)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fnemonik%2Fhands-on-DevOps)](https://twitter.com/intent/tweet?text=I%27ve%20found%20a%20nifty%20hands-on%20DevOps%20course%20developed%20by%20%40nemonik%20at%20https%3A%2F%2Fgithub.com%2Fnemonik%2Fhands-on-DevOps)
 
