@@ -90,15 +90,16 @@ Its not about the tools.
 
 --
 
-To succeed at DevOps you must 
+To succeed at DevOps
 
 --
 
-To succeed at DevOps you must __combine software development and information technology operations in the systems development life cycle__ with __a focus on collaboration across the life cycle to deliver features, fixes, and updates frequently in close alignment with business objectives__.
+You must __combine software development and information technology operations in the systems development life cycle__ with __a focus on collaboration across the life cycle to deliver features, fixes, and updates frequently in close alignment with business objectives__.
 
 --
 
 If the effort cannot combine both Dev and Ops in collaboration with this focus the effort will most certainly fail.
+
 --
 
 If your effort doesn't 
@@ -109,7 +110,7 @@ __grok (i.e, understand intuitively) what DevOps is in practice__ and have perfo
 
 --
 
-the effort again will likely fail.  
+The effort again will likely fail.  
 
 --
 
