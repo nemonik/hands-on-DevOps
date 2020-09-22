@@ -1153,9 +1153,9 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL and 
 
 1. If you are Windows or OS X download Vagrant from 
 
-  <https://releases.hashicorp.com/vagrant/2.2.9/>  
+  <https://releases.hashicorp.com/vagrant/2.2.10/>  
 
-  The class has been verified to work with Version 2.2.9.  Newer version may or may not work.
+  The class has been verified to work with Version 2.2.10.  Newer version may or may not work.
 
   If you're using Linux, use your operating system's package manager to install `vagrant`.  For exmple, to install on Arch Linux one would use
 
