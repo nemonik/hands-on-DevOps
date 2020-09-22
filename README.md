@@ -773,7 +773,7 @@ For the MITRE Institute class when I teach it, it is assumed VirtualBox is insta
 2. Click `Windows hosts` link under `VirtualBox 6.1.12 platform packages`.
 3. Find and click the installer to install.
 
-You will also need to turn off `Hyper-V`, `Windows Sandbox` and `Windows Subsystem for Linux` if installed.
+You will also need to turn off `Hyper-V`, `Virtual Machine Platform`, `Windows Sandbox` and `Windows Subsystem for Linux` if installed.
 
 1. Click Windows `Start` and then type `turn Windows features on or off` into the search bar.
 2. Select the icon with the corresponding name. 
