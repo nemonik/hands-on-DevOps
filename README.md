@@ -783,6 +783,10 @@ The same site has the Mac OS X download. The installation is less involved.
 
 If you're using Linux use your package manager.  For example, to install on Arch Linux one would use `sudo pacman -Syu virtualbox`.
 
+**NOTE**
+
+- On Windows 10, if you are running into a VirtualBox that is partially working -- Generally, just flaking out. -- check to make sure you have turned off all the features listed above.
+
 ## 9.3. Git Bash
 
 Git Bash is `git` packaged for Windows with bash (a command-line shell) and a collection of other, separate *NIX utilities, such as, `ssh`, `scp`, `cat`, `find` and others compiled for Windows.
