@@ -249,8 +249,8 @@ Vagrant.configure("2") do |config|
     #{user_cached_content}
 
     # install Ansible locally vice using Vagrant ansible_local provisioner   
-    #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user --upgrade pip setuptools 
-    #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user paramiko ansible==#{ConfigurationVars::VARS[:ansible_version]}
+    {ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user --upgrade pip setuptools 
+    {ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user paramiko ansible==#{ConfigurationVars::VARS[:ansible_version]}
 
     # run playbook
 

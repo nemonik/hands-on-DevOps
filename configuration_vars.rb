@@ -308,7 +308,7 @@ module ConfigurationVars
         ;;
       "CentOS 7")
         yum install -y epel-release
-        yum install -y python python-pip make gcc
+        yum install -y python python-pip make gcc 
         ;;
       *)
         echo "${os} not supported." 1>&2
