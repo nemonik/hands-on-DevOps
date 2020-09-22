@@ -45,7 +45,8 @@ module ConfigurationVars
 
     vagrant_root_drive_size: '80GB', 
 
-    ansible_version: '2.9.9',
+    ansible_version: '2.9.13',
+
 
     default_retries: '60',
     default_delay: '10',
@@ -308,7 +309,7 @@ module ConfigurationVars
         ;;
       "CentOS 7")
         yum install -y epel-release
-        yum install -y python python-pip make gcc 
+        yum install -y python python-pip make gcc python-cffi
         ;;
       *)
         echo "${os} not supported." 1>&2

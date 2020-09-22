@@ -188,6 +188,8 @@ Vagrant.configure("2") do |config|
     virtualbox.customize ['modifyvm', :id, '--cableconnected1', 'on']
     virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    virtualbox.memory = 2048
+    virtualbox.cpus = 2
   end
 
   determine_os = ConfigurationVars::DETERMINE_OS_TEMPLATE
@@ -248,9 +250,10 @@ Vagrant.configure("2") do |config|
 
     #{user_cached_content}
 
-    # install Ansible locally vice using Vagrant ansible_local provisioner   
-    #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user --upgrade pip setuptools 
-    #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user paramiko ansible==#{ConfigurationVars::VARS[:ansible_version]}
+    # install Ansible locally vice using Vagrant ansible_local provisioner
+    #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user --upgrade pip
+    /home/vagrant/.local/bin/pip install --user --upgrade setuptools
+    /home/vagrant/.local/bin/pip install --user paramiko ansible==#{ConfigurationVars::VARS[:ansible_version]}
 
     # run playbook
 
