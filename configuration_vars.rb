@@ -16,6 +16,8 @@ module ConfigurationVars
     # The network block the cluster and apps will be in
     network_prefix: "192.168.0",
 
+    k3s_server_hostname: "192.168.0.10",
+
 #    # Add OpenEBS drives ('yes'/'no')
 #    openebs_drives: 'yes',
     openebs_drives: 'no',
@@ -55,11 +57,14 @@ module ConfigurationVars
     docker_retries: '60',
     docker_delay: '10',
 
-    k3s_version: 'v1.18.6+k3s1',
+    k3s_version: 'v1.19.2+k3s1',
     k3s_cluster_secret: 'kluster_secret',
 
-    kubectl_version: 'v1.17.0',
-    kubectl_checksum: 'sha256:6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c',
+    kubectl_version: 'v1.19.0',
+    kubectl_checksum: 'sha256:79bb0d2f05487ff533999a639c075043c70a0a1ba25c1629eb1eef6ebe3ba70f',
+
+#    kubectl_version: 'v1.18.0',
+#    kubectl_checksum: 'sha256:bb16739fcad964c197752200ff89d89aad7b118cb1de5725dc53fe924c40e3f7',
 
     kubernetes_dashboard: 'yes',
     kubernetes_dashboard_version: 'v2.0.0',
