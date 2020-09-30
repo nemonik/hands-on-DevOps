@@ -36,9 +36,10 @@ After this course, you will
     7. various commands in Docker (e.g., building a container image, pushing a container into a registry, creating and running a container); 
     8. authoring a pipeline for Drone CI; 
     9. using Sonar Scanner CLI to perform static analysis; 
-    10. authoring security test in InSpec; (k) author an automated functional test in Selenium; 
-    11. authoring a dynamic security test in OWASP Zap; and 
-    12. using container platform to author and scale services;
+    10. authoring security test in InSpec;
+    11. author an automated functional test in Selenium; 
+    12. authoring a dynamic security test in OWASP Zap; and 
+    13. using container platform to author and scale services;
 6. Have had hands-on experience authoring code to include authoring and running automated tests in a CICD pipeline all under Configuration Management to ensure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected.
 
 We will be spending most of the course hands-on working with the tools and in the Unix command line making methods and repeated practices of DevOps happen, so as to grow an understanding of how DevOps actually works. Although, not necessary I would encourage you to pick up a free PDF of [The Linux Command Line by William Shotts](http://linuxcommand.org/tlcl.php) if you are no familiar wit the Linux command line.
