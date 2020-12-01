@@ -37,6 +37,8 @@ box = ConfigurationVars::VARS[:base_box]
 os = box.split('/')[1]
 box = "nemonik/devops_#{os}"
 
+determine_os = ConfigurationVars::DETERMINE_OS_TEMPLATE
+
 uninstall_plugins = %w( vagrant-cachier vagrant-alpine )
 required_plugins = %w( vagrant-timezone vagrant-proxyconf vagrant-certificates vagrant-disksize vagrant-reload ) # vagrant-disksize
 
@@ -312,18 +314,21 @@ Vagrant.configure("2") do |config|
         # install user cached content
         vagrant.vm.provision 'user_cached_content', type: :shell, privileged: false, inline: "#{masters_user_cached}"
 
+        run_master_playbook = ConfigurationVars::RUN_ANSIBLE_TEMPLATE.clone
+        run_master_playbook = run_master_playbook.gsub! /PLAYBOOK_PATH/, 'ansible/master-playbook.yml'
+        run_master_playbook = run_master_playbook.gsub! /INVENTORY_PATH/, 'hosts'
+        run_master_playbook = run_master_playbook.gsub! /ANSIBLE_EXTRA_VARS/, vars_string
+        run_master_playbook = run_master_playbook.gsub! /LIMIT/, 'masters'
+        run_master_playbook = run_master_playbook.gsub! /VAULT_PASS_PATH/, 'vault_pass'
+
         vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
-          echo Configuring #{hostname} via Ansible...
+          echo Configuring k3s master node...
+
+          #{determine_os}
+
           cd /vagrant
 
-          n=0
-          until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
-            /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
-            n=$((n+1))
-            sleep #{ConfigurationVars::VARS[:default_delay]}
-          done
-
-          PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="masters" --inventory-file=hosts ansible/master-playbook.yml
+          #{run_master_playbook}
         SHELL
       else # worker nodes
         # install root user cached content
@@ -332,21 +337,23 @@ Vagrant.configure("2") do |config|
         # install user cached content
         vagrant.vm.provision 'user_cached_content', type: :shell, privileged: false, inline: "#{workers_user_cached}"
 
+        run_worker_playbook = ConfigurationVars::RUN_ANSIBLE_TEMPLATE.clone
+        run_worker_playbook = run_worker_playbook.gsub! /PLAYBOOK_PATH/, 'ansible/worker-playbook.yml'
+        run_worker_playbook = run_worker_playbook.gsub! /INVENTORY_PATH/, 'hosts'
+        run_worker_playbook = run_worker_playbook.gsub! /ANSIBLE_EXTRA_VARS/, vars_string
+        run_worker_playbook = run_worker_playbook.gsub! /LIMIT/, 'workers'
+        run_worker_playbook = run_worker_playbook.gsub! /VAULT_PASS_PATH/, 'vault_pass'
+
         vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
           echo Configuring k3s worker node...
+
+          #{determine_os}
 
           #{install_secure_key}
 
           cd /vagrant
           
-          n=0
-          until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
-            /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
-            n=$((n+1))
-            sleep #{ConfigurationVars::VARS[:default_delay]}
-          done
-          
-          PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="workers" --inventory-file=hosts ansible/worker-playbook.yml
+          #{run_worker_playbook}
         SHELL
       end
     end
@@ -386,22 +393,23 @@ Vagrant.configure("2") do |config|
       # install user cached content
       vagrant.vm.provision 'user_cached_content', type: :shell,  privileged: false, inline: "#{developments_user_cached}"
 
+      run_development_playbook = ConfigurationVars::RUN_ANSIBLE_TEMPLATE.clone
+      run_development_playbook = run_development_playbook.gsub! /PLAYBOOK_PATH/, 'ansible/development-playbook.yml'
+      run_development_playbook = run_development_playbook.gsub! /INVENTORY_PATH/, 'hosts'
+      run_development_playbook = run_development_playbook.gsub! /ANSIBLE_EXTRA_VARS/, vars_string
+      run_development_playbook = run_development_playbook.gsub! /LIMIT/, 'developments'
+      run_development_playbook = run_development_playbook.gsub! /VAULT_PASS_PATH/, 'vault_pass'
+
       vagrant.vm.provision 'ansible', type: :shell, privileged: false, reset: true, inline: <<-SHELL
         echo Configuring development node...
 
+        #{determine_os}
+
         #{install_secure_key}
  
-        echo Execute ansible-playbook...
         cd /vagrant
     
-        n=0
-        until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
-          /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
-          n=$((n+1))
-          sleep #{ConfigurationVars::VARS[:default_delay]}
-        done
-        
-        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook -vvvv --extra-vars=#{vars_string} --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=vault_pass --limit="developments" --inventory-file=hosts ansible/development-playbook.yml
+        #{run_development_playbook}
       SHELL
     end
   end

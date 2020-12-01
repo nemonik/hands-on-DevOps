@@ -26,7 +26,7 @@ module ConfigurationVars
     # Provision and configure development vagrant ('yes'/'no')
 #    create_development: 'no',
     create_development: 'yes',
-    development_is_worker_node: 'yes',
+#    development_is_worker_node: 'yes',
 
     # The number of nodes to provision the Kubernetes cluster. One will be a master.
     nodes: 2,
@@ -45,7 +45,7 @@ module ConfigurationVars
 
     vagrant_root_drive_size: '80GB', 
 
-    ansible_version: '2.9.9',
+    ansible_version: '2.10.3',
 
     default_retries: '60',
     default_delay: '10',
@@ -54,10 +54,10 @@ module ConfigurationVars
     docker_retries: '60',
     docker_delay: '10',
 
-    k3s_version: 'v1.18.6+k3s1',
+    k3s_version: 'v1.19.4+k3s1',
     k3s_cluster_secret: 'kluster_secret',
 
-    kubectl_version: 'v1.17.0',
+    kubectl_version: 'v1.19.0',
     kubectl_checksum: 'sha256:6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c',
 
     kubernetes_dashboard: 'yes',
@@ -74,7 +74,7 @@ module ConfigurationVars
 
     kompose_version: '1.18.0',
 
-    docker_compose_version: '1.24.1',
+    docker_compose_version: '1.27.4',
     docker_compose_pip_version: '1.25.0rc2',
 
     helm_cli_version: '3.2.1',
@@ -207,6 +207,8 @@ module ConfigurationVars
   end
 
   DETERMINE_OS_TEMPLATE = <<~SHELL
+    echo Determining OS...
+
     os=""
     if [[ $(command -v lsb_release | wc -l) == *"1"* ]]; then 
       os="$(lsb_release -is)-$(lsb_release -cs)"
@@ -223,6 +225,8 @@ module ConfigurationVars
   SHELL
 
   OS_PACKAGES_FROM_CACHE_TEMPLATE = <<~SHELL
+
+    echo OS packages from cache...
 
     mkdir -p /tmp/root-cache
 
@@ -278,7 +282,6 @@ module ConfigurationVars
             "CentOS 7")
               mv yum /var/cache/
               ;;
-
             *)
               echo "${os} not supported." 1>&2
               exit -1
@@ -295,7 +298,9 @@ module ConfigurationVars
     fi
   SHELL
 
-  INSTALL_ANSIBLE_DEPENDENCIES_TEMPLATE = <<~SHELL
+  ROOT_INSTALL_ANSIBLE_DEPENDENCIES_TEMPLATE = <<~SHELL
+    echo Root installing ansible dependencies...
+
     case $os in
       "Alpine")
         # install Alpine packages
@@ -307,8 +312,11 @@ module ConfigurationVars
         apt install -y python3 python3-dev python3-pip make gcc
         ;;
       "CentOS 7")
-        yum install -y epel-release
-        yum install -y python python-pip make gcc
+        yum update -y
+        yum install -y epel-release 
+        yum install -y python-pip python-devel make gcc python-cffi
+#        pip uninstall -y bcrypt
+#        yum --enablerepo=epel install -y python2-bcrypt
         ;;
       *)
         echo "${os} not supported." 1>&2
@@ -317,7 +325,72 @@ module ConfigurationVars
     esac
   SHELL
 
+  USER_INSTALL_DEPENDENCIES_TEMPLATE = <<~SHELL
+    echo User installing ansible dependencies...
+ 
+    #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user --upgrade pip
+    /home/vagrant/.local/bin/pip install --user --upgrade setuptools
+    /home/vagrant/.local/bin/pip install --user paramiko ansible==#{ConfigurationVars::VARS[:ansible_version]}
+
+    case $os in
+      "Alpine"|"Ubuntu-bionic")
+        ;;
+      "CentOS 7")
+#        /home/vagrant/.local/bin/pip uninstall -y bcrypt
+#        /home/vagrant/.local/bin/pip install -y bcrypt==3.1.7
+        ;;
+      *)
+        echo "${os} not supported." 1>&2
+        exit -1
+        ;;
+    esac
+  SHELL
+
+  INSTALL_ANSIBLE_TEMPLATE = <<~SHELL
+    case $os in
+      "Alpine"|"Ubuntu-bionic"|"CentOS 7")
+        #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user --upgrade pip setuptools
+        #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user paramiko ansible==#{ConfigurationVars::VARS[:ansible_version]}
+        ;;
+      *)
+        echo "${os} not supported." 1>&2
+        exit -1
+        ;;
+    esac
+  SHELL
+
+  RUN_ANSIBLE_TEMPLATE = <<~SHELL
+    echo Running ansible-playbook PLAYBOOK_PATH...
+
+    case $os in
+      "Alpine"|"Ubuntu-bionic"|"CentOS 7")
+        n=0
+        until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
+          /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
+          n=$((n+1))
+          sleep #{ConfigurationVars::VARS[:default_delay]}
+        done
+        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook PLAYBOOK_PATH --limit="LIMIT" --extra-vars=ANSIBLE_EXTRA_VARS --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=VAULT_PASS_PATH -vvvv --connection=local --inventory=INVENTORY_PATH
+        ;;
+#      "CentOS 7")
+#        n=0
+#        until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
+#          ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
+#          n=$((n+1))
+#          sleep #{ConfigurationVars::VARS[:default_delay]}
+#        done
+#        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook PLAYBOOK_PATH --limit="LIMIT" --extra-vars=ANSIBLE_EXTRA_VARS  --vault-password-file=VAULT_PASS_PATH -vvvv --connection=local --inventory=INVENTORY_PATH
+#        ;;
+      *)
+        echo "${os} not supported." 1>&2
+        exit -1
+        ;;
+    esac
+  SHELL
+
   RESIZE_ROOT_TEMPLATE = <<~SHELL
+    echo Resizing root...
+
     case $os in
       "Alpine")
         # install Alpine packages
@@ -339,8 +412,9 @@ module ConfigurationVars
     esac
   SHELL
 
-
   SITE_PACKAGES_FROM_CACHE_TEMPLATE = <<~SHELL
+
+    echo Site packages from cache...
 
     if [ -f "/vagrant/cache/TYPE/${box}/site-packages.tar.gz" ]; then
       update=true
@@ -364,6 +438,8 @@ module ConfigurationVars
   SHELL
 
   USER_CACHED_CONTENT_TEMPLATE = <<~SHELL
+    echo Use cached content...
+
     mkdir -p /tmp/vagrant-cache
 
     box="#{VARS[:base_box]}"

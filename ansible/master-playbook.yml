@@ -18,13 +18,13 @@
     - helm
     - { role: metallb,
         when: metallb == 'yes' }
-    - { role: traefik,
-        when: traefik == 'yes' }
-    - { role: kubernetes-dashboard,
-        when: kubernetes_dashboard == 'yes' }
+#    - { role: traefik,
+#        when: traefik == 'yes' }
+#    - { role: kubernetes-dashboard,
+#        when: kubernetes_dashboard == 'yes' }
     - { role: gitlab,
         when: gitlab == 'yes' }
     - { role: drone,
         when: drone == 'yes' }
-    - { role: create-cache,
-        when: create_cache == 'yes' }
+#    - { role: create-cache,
+#        when: create_cache == 'yes' }
