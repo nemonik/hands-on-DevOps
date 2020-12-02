@@ -12,4 +12,4 @@
 # `vagrant ssh` presently seems buggy
 
 ssh-keygen -R 192.168.0.10
-ssh -t -o StrictHostKeyChecking=no -i ~/.vagrant.d/insecure_private_key -l vagrant 192.168.0.10 'sudo watch -c -d -n 5 /usr/local/bin/kubectl --all-namespaces=true get pods -o wide'
+ssh -t -o StrictHostKeyChecking=no -i ~/.vagrant.d/insecure_private_key -l vagrant 192.168.0.10 'sudo watch -c -d -n 2 /usr/local/bin/kubectl --all-namespaces=true get pods -o wide'

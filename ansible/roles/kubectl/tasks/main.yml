@@ -32,7 +32,6 @@
       url: https://storage.googleapis.com/kubernetes-release/release/{{ kubectl_version }}/bin/linux/amd64/kubectl
       dest: /vagrant/cache/{{ group_names[0] }} 
       checksum: "{{ kubectl_checksum }}"
-      remote_src: yes
     retries: "{{ default_retries }}"
     delay: "{{ default_delay }}"
     register: result
@@ -49,10 +48,17 @@
   tags:
     - kubectl
 
+
+- debug:
+    msg: "{{ k3s_server_hostname not in ansible_all_ipv4_addresses }}"
+
+
 - name: ensure {{ ansible_user_id }} can access Kubernetes
   block:
   - name: ensure the {{ ansible_user_id }} user has an kubeconfig.yml file to access kubernetes
-    shell: scp -qp -oStrictHostKeyChecking=no -i /home/{{ ansible_user_id }}/.ssh/id_rsa {{ ansible_user_id }}@master:/home/{{ ansible_user_id }}/kubeconfig.yml /home/{{ ansible_user_id }}/kubeconfig.yml
+    shell: scp -qp -oStrictHostKeyChecking=no -i /home/{{ ansible_user_id }}/.ssh/id_rsa {{ ansible_user_id }}@{{ k3s_server_hostname }}:/home/{{ ansible_user_id }}/kubeconfig.yml /home/{{ ansible_user_id }}/kubeconfig.yml
+    when: k3s_server_hostname not in ansible_all_ipv4_addresses
+
 
   - name: chown and fix permissions on /home/{{ ansible_user_id }}/kubeconfig.yml
     file:

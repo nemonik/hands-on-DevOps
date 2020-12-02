@@ -1,12 +1,12 @@
 ![Basic role syntax check](https://github.com/nemonik/hands-on-DevOps/workflows/Basic%20role%20syntax%20check/badge.svg)
-[![GitHub license](https://img.shields.io/github/license/nemonik/hands-on-DevOps?style=flat-square)](./LICENSE)
-[![GitHub Forks](https://img.shields.io/github/forks/nemonik/hands-on-DevOps?style=flat-square)](https://github.com/nemonik/hands-on-DevOps/network/members)
-[![Github Stars](https://img.shields.io/github/stars/nemonik/hands-on-DevOps?style=flat-square)](https://github.com/nemonik/hands-on-DevOps/stargazers)
-[![Twitter](https://img.shields.io/twitter/url?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fnemonik%2Fhands-on-DevOps)
+[![GitHub license](https://img.shields.io/github/license/nemonik/hands-on-DevOps)](./LICENSE)
+[![GitHub Forks](https://img.shields.io/github/forks/nemonik/hands-on-DevOps?style=social)](https://github.com/nemonik/hands-on-DevOps/network/members)
+[![Github Stars](https://img.shields.io/github/stars/nemonik/hands-on-DevOps?style=social)](https://github.com/nemonik/hands-on-DevOps/stargazers)
+[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fnemonik%2Fhands-on-DevOps)](https://twitter.com/intent/tweet?text=I%27ve%20found%20a%20nifty%20hands-on%20DevOps%20course%20developed%20by%20%40nemonik%20at%20https%3A%2F%2Fgithub.com%2Fnemonik%2Fhands-on-DevOps)
 
 # 1. Preface
 
-This class is under near constant development.  It's backlog is here https://github.com/nemonik/hands-on-DevOps/projects/1  
+This class is under near constant development.  It's backlog is here https://github.com/nemonik/hands-on-DevOps/projects/1
 
 # 2. DevOps
 
@@ -26,19 +26,20 @@ After this course, you will
 2. Address challenges transitioning to DevOps methods and repeated practices;
 3. Have had hands-on experience with Infrastructure as Code( Vagrant and Ansible ) to provision and configure an entire DevOps Factory (i.e. a toolchain and development environment) on VirtualBox including Docker Registry, Taiga, GitLab, Drone CI, and SonarQube;
 4. Have had hands-on experience authoring code to include authoring and running automated tests in a CICD pipeline all under Configuration Management to ensure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected;
-5. Have had hands-on experience with 
-    1. using Infrastructure as Code (IaC) in Vagrant and Ansible; 
-    2. creating and using Kanban board in Taiga; 
-    3. code configuration in git and GitLab; 
-    4. authoring code in Go; 
-    5. using style checkers and linters; 
-    6. authoring a Makefile; 
-    7. various commands in Docker (e.g., building a container image, pushing a container into a registry, creating and running a container); 
-    8. authoring a pipeline for Drone CI; 
-    9. using Sonar Scanner CLI to perform static analysis; 
-    10. authoring security test in InSpec; (k) author an automated functional test in Selenium; 
-    11. authoring a dynamic security test in OWASP Zap; and 
-    12. using container platform to author and scale services;
+5. Have had hands-on experience with
+    1. using Infrastructure as Code (IaC) in Vagrant and Ansible;
+    2. creating and using Kanban board in Taiga;
+    3. code configuration in git and GitLab;
+    4. authoring code in Go;
+    5. using style checkers and linters;
+    6. authoring a Makefile;
+    7. various commands in Docker (e.g., building a container image, pushing a container into a registry, creating and running a container);
+    8. authoring a pipeline for Drone CI;
+    9. using Sonar Scanner CLI to perform static analysis;
+    10. authoring security test in InSpec;
+    11. author an automated functional test in Selenium;
+    12. authoring a dynamic security test in OWASP Zap; and
+    13. using container platform to author and scale services;
 6. Have had hands-on experience authoring code to include authoring and running automated tests in a CICD pipeline all under Configuration Management to ensure an application follows style, adheres to good coding practices, builds, identify security issues, and functions as expected.
 
 We will be spending most of the course hands-on working with the tools and in the Unix command line making methods and repeated practices of DevOps happen, so as to grow an understanding of how DevOps actually works. Although, not necessary I would encourage you to pick up a free PDF of [The Linux Command Line by William Shotts](http://linuxcommand.org/tlcl.php) if you are no familiar wit the Linux command line.
@@ -255,11 +256,11 @@ DevOps (a clipped compound of the words *development* and *operations*) is a sof
 
 *Ops* in DevOps gathers up every IT operation stakeholders (i.e., cybersecurity, testing, DB admin, infrastructure and operations practitioners -- essentially, any stakeholder not commonly thought of as directly part of the development team in the system development life cycle).
 
-Yeah, that's the formal definition.  
+Yeah, that's the formal definition.
 
 In the opening sentences of _Security Engineering: : A Guide to Building Dependable Distributed Systems — Third Edition_, author Ross Anderson defines what a security engineer is
 
-> Security engineering is about building systems to remain dependable in the face of malice, error, or mischance. As a discipline, it focuses on the tools, processes, and methods needed to design, implement, and test complete systems, and to adapt existing systems as their environment evolve. 
+> Security engineering is about building systems to remain dependable in the face of malice, error, or mischance. As a discipline, it focuses on the tools, processes, and methods needed to design, implement, and test complete systems, and to adapt existing systems as their environment evolve.
 
 The words _security engineering_ could be replaced in the opening sentence with each one of the various stakeholders (e.g., development, quality assurance, technology operations).
 
@@ -277,13 +278,13 @@ About the tools.
 
 ## 7.3. To succeed at DevOps you must
 
-__Combine software development and information technology operations in the systems development life cycle__ with __a focus on collaboration across the life cycle to deliver features, fixes, and updates frequently in close alignment with business objectives__. 
+__Combine software development and information technology operations in the systems development life cycle__ with __a focus on collaboration across the life cycle to deliver features, fixes, and updates frequently in close alignment with business objectives__.
 
 If the effort cannot combine both Dev and Ops in collaboration with this focus the effort will most certainly fail.
- 
+
 ## 7.4. If your effort doesn't
 
-__grok (i.e, Understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.  
+__grok (i.e, Understand intuitively) what DevOps is in practice__ and have performed the __necessary analysis of the existing culture and a strategy for how to affect a change__ the effort again will likely fail.
 
 I say this because the culture is the largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
 
@@ -295,7 +296,7 @@ From ["How Do Committees Invent?"](http://www.melconway.com/Home/Conways_Law.htm
 
 Followed with
 
-> Ways must be found to reward design managers for keeping their organizations lean and flexible. 
+> Ways must be found to reward design managers for keeping their organizations lean and flexible.
 
 This was written over 50 years ago.
 
@@ -322,7 +323,7 @@ With the stakeholders sharing the same attitudes, values, goals, using the same 
 
 ![Maintaining Relationships](./images/maintaining_relationships.png)
 
-### 7.7.3. Be quick... Be slow to... 
+### 7.7.3. Be quick... Be slow to...
 
 ![Quick to slow](./images/quick_to_slow_to.png)
 
@@ -524,50 +525,50 @@ Through re-scoping of requirements, re-prioritizing of a backlog, or the depreca
 
 # 8. Reading list
 
-**AntiPatterns: Refactoring Software, Architectures, and Projects in Crisis**  
-William J. Brown, Raphael C. Malveau, Hays W. "Skip" McCormick,  and Thomas J. Mowbray  
-ISBN: 978-0-471-19713-3  
+**AntiPatterns: Refactoring Software, Architectures, and Projects in Crisis**
+William J. Brown, Raphael C. Malveau, Hays W. "Skip" McCormick,  and Thomas J. Mowbray
+ISBN: 978-0-471-19713-3
 Apr 1998
 
-**Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation (Addison-Wesley Signature Series (Fowler))**  
-David Farley and Jez Humble  
-ISBN-13: 978-0321601919  
+**Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation (Addison-Wesley Signature Series (Fowler))**
+David Farley and Jez Humble
+ISBN-13: 978-0321601919
 August 2010
 
-**The DevOps Handbook: How to Create World-Class Agility, Reliability, and Security in Technology Organizations**  
-Gene Kim Jez Humble,  Patrick Debois, and John Willis  
-ISBN-13: 978-1942788003  
+**The DevOps Handbook: How to Create World-Class Agility, Reliability, and Security in Technology Organizations**
+Gene Kim Jez Humble,  Patrick Debois, and John Willis
+ISBN-13: 978-1942788003
 October 2016
 
-**Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations**  
-Nicole Forsgren PhD, Jez Humble, and Gene Kim  
-ISBN-13: 978-1942788331  
+**Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations**
+Nicole Forsgren PhD, Jez Humble, and Gene Kim
+ISBN-13: 978-1942788331
 March 27, 2018
 
-**Site Reliability Engineering: How Google Runs Production Systems 1st Edition**  
-Betsy Beyer, Chris Jones, Jennifer Petoff, and Niall Richard Murphy  
-ISBN-13: 978-1491929124  
-April 16, 2016  
+**Site Reliability Engineering: How Google Runs Production Systems 1st Edition**
+Betsy Beyer, Chris Jones, Jennifer Petoff, and Niall Richard Murphy
+ISBN-13: 978-1491929124
+April 16, 2016
 Also, available online at https://landing.google.com/sre/book/index.html
 
-**Release It!: Design and Deploy Production-Ready Software 2nd Edition**  
-Michael T. Nygard  
-ISBN-13: 978-1680502398  
+**Release It!: Design and Deploy Production-Ready Software 2nd Edition**
+Michael T. Nygard
+ISBN-13: 978-1680502398
 January 18, 2018
 
-**The SPEED of TRUST: The One Thing That Changes Everything**  
-Stephen M .R. Covey  
-ISBN-13: 978-1416549000  
-February 5, 2008  
+**The SPEED of TRUST: The One Thing That Changes Everything**
+Stephen M .R. Covey
+ISBN-13: 978-1416549000
+February 5, 2008
 The gist of the book can be found at SlideShare https://www.slideshare.net/nileshchamoli/the-speed-of-trust-13205957
 
-**RELATIONSHIP TRUST: The 13 Behaviors of High-Trust Leaders Mini Session**  
-Franklin Covey Co.  
+**RELATIONSHIP TRUST: The 13 Behaviors of High-Trust Leaders Mini Session**
+Franklin Covey Co.
 https://archive.franklincovey.com/facilitator/minisessions/handouts/13_Behaviors_MiniSession_Handout.pdf
 
-**How to Deal With Difficult People**  
-Ujjwal Sinha  
-Oct 25, 2014  
+**How to Deal With Difficult People**
+Ujjwal Sinha
+Oct 25, 2014
 The SlideShare can be found here https://www.slideshare.net/abhiujjwal/how-2-deal-wid-diiclt-ppl
 
 **Leadership Secrets of the Rouge Warrior: A Commando's Guide to Success**
@@ -605,11 +606,11 @@ In this class, you will spin up a development and toolchain environment.
 
 ## 9.1. Configuring environmental variables
 
-If your environment makes use of an HTTP proxy or SSL inspection, you will need to configure environment variables for this class. 
+If your environment makes use of an HTTP proxy or SSL inspection, you will need to configure environment variables for this class.
 
 **On Mac OS X or \*NIX environments**
 
-The following `set_env.sh` BASH script is included in the root of the project and can be used to configure the UNIX environment variables, but must be adjusted for your specific environment. 
+The following `set_env.sh` BASH script is included in the root of the project and can be used to configure the UNIX environment variables, but must be adjusted for your specific environment.
 
 ```bash
 #!/usr/bin/env bash
@@ -730,13 +731,13 @@ Execute in terminal session via
 
 ```bash
 . ./unset.sh
-``` 
+```
 
 **On Windows**
 
 If you are on Windows perform the following to set environmental variable adjusting for your environment:
 
-1. In the Windows taskbar, enter `edit the system environment variables` into `Search Windows` and select the icon with the corresponding name. 
+1. In the Windows taskbar, enter `edit the system environment variables` into `Search Windows` and select the icon with the corresponding name.
 3. The `Systems Property` window will likely open in the background, so you will likely need to go find it and bring it forward.
 4. In the `Systems Property`'s `Advanced` tab select `Environment Variables...` button.
 5. In `Environment Variables` windows that opens, under `User variables for...` press `New ...` to open a `New User Variable` window, enter each `Variable Name` and and its respective `Value` for each pair in the table below
@@ -752,7 +753,7 @@ If you are on Windows perform the following to set environmental variable adjust
 
 If you're on MITRE Institute Lab PC you will want to set all of these variables.
 
-If you're doing this class on your MITRE Life cycle running Windows (I have yet to verify a Windows MITRE Life cycle.) you will likely **NOT** want to set the `proxy`, `http_proxy`, `https_proxy`, `no_proxy` or any proxy related environmental variables. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables. 
+If you're doing this class on your MITRE Life cycle running Windows (I have yet to verify a Windows MITRE Life cycle.) you will likely **NOT** want to set the `proxy`, `http_proxy`, `https_proxy`, `no_proxy` or any proxy related environmental variables. You will only need to set the `CA_CERTIFICATES` and `VAGRANT_ALLOW_PLUGIN_SOURCE_ERRORS` environment variables.
 
 **NOTE**
 
@@ -763,25 +764,29 @@ If you're doing this class on your MITRE Life cycle running Windows (I have yet 
 
 You will need to install VirtualBox, a general-purpose full virtualizer for x86 hardware.
 
-The class has been verified to work with VirtualBox 6.1.12.  Newer version may or may not work.
+The class has been verified to work with VirtualBox 6.1.14.  Newer version may or may not work.
 
 ### 9.2.1. Installing VirtualBox
 
 For the MITRE Institute class when I teach it, it is assumed VirtualBox is installed, but below are the instructions for installing it on Windows 10.
 
 1. Open your browser to <https://www.virtualbox.org/wiki/Downloads>
-2. Click `Windows hosts` link under `VirtualBox 6.1.12 platform packages`.
+2. Click `Windows hosts` link under `VirtualBox 6.1.14 platform packages`.
 3. Find and click the installer to install.
 
-You will also need to turn off `Hyper-V`, `Windows Sandbox` and `Windows Subsystem for Linux` if installed.
+You will also need to turn off `Hyper-V`, `Virtual Machine Platform`, `Windows Sandbox` and `Windows Subsystem for Linux` if installed.
 
 1. Click Windows `Start` and then type `turn Windows features on or off` into the search bar.
-2. Select the icon with the corresponding name. 
+2. Select the icon with the corresponding name.
 3. This will open the `Windows Features` page and then unselect the `Hyper-V`, `Virtual Machine Platform`, `Windows Hypervisor Platform`, `Windows Sandbox` and `Windows Subsystem for Linux` checkboxes if enabled and then click `Okay`.
 
-The same site has the Mac OS X download. The installation is less involved.  
+The same site has the Mac OS X download. The installation is less involved.
 
 If you're using Linux use your package manager.  For example, to install on Arch Linux one would use `sudo pacman -Syu virtualbox`.
+
+**NOTE**
+
+- On Windows 10, if you are running into a VirtualBox that is partially working -- Generally, just flaking out. -- check to make sure you have turned off all the features listed above.
 
 ## 9.3. Git Bash
 
@@ -1151,11 +1156,11 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL and 
 
 #### 9.5.2.2. Installing Vagrant
 
-1. If you are Windows or OS X download Vagrant from 
+1. If you are Windows or OS X download Vagrant from
 
-  <https://releases.hashicorp.com/vagrant/2.2.9/>  
+  <https://releases.hashicorp.com/vagrant/2.2.10/>
 
-  The class has been verified to work with Version 2.2.9.  Newer version may or may not work.
+  The class has been verified to work with Version 2.2.10.  Newer version may or may not work.
 
   If you're using Linux, use your operating system's package manager to install `vagrant`.  For exmple, to install on Arch Linux one would use
 
@@ -1165,12 +1170,12 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL and 
 
 2. Click on the installer once downloaded and follow along. On Windows, the installer may stall calculating for a bit and may bury modals you'll need to respond to in the Windows Task bar, so keep an eye out for that. The installer will automatically add the vagrant command to your system path so that it is available on the command line. If it is not found, the documentation advises you to try logging out and logging back into your system. This is particularly necessary sometimes for Windows. Windows will require a reboot, so remember to **come back and complete step-3, if you are on the MITRE corporate network**.
 
-3. **If you're not on the MITRE corporate network please skip this step.**  
+3. **If you're not on the MITRE corporate network please skip this step.**
 
    - On Windows, use the File Explorer to replace the existing `C:\Hashicorp\vagrant\embedded\cacert.pem` file with the project's `vagrant_files/cacert.pem` by using the File Explorer.
 
    - On Mac OS X, copy it to `/opt/vagrant/embedded` as *root* using
-   
+
    ```bash
    sudo cp vagrant_files/cacert.pem /opt/vagrant/embedded/.
    ```
@@ -1178,7 +1183,7 @@ Vagrant is written in Ruby. In fact, a Vagrantfile is written in a Ruby DSL and 
 **NOTE**
 
 - Vagrant respects `SSL_CERT_FILE` and `CURL_CA_BUNDLE` environment variables used to point to cacert bundles.  If you run into SSL errors, you may have `SSL_CERT_FILE` and/or `CURL_CA_BUNDLE` environment variable files set requiring you to add MITRE CA certificates to the file specified by these environment variables.  If you use the `set_env.sh` at the root of the project it will unset these environment variables forcing vagrant to use its cacert.pem file you replace above.
-- The same site has the Mac OS X download, whose installation is less involved.  
+- The same site has the Mac OS X download, whose installation is less involved.
 
 #### 9.5.2.3. The Vagrantfile explained
 
@@ -1186,9 +1191,9 @@ The `Vagrantfile` found at the root of the project describes how to provision an
 
 Vagrant's own documentation puts it best:
 
-> Vagrant is meant to run with one Vagrantfile per project, and the Vagrantfile is 
+> Vagrant is meant to run with one Vagrantfile per project, and the Vagrantfile is
 > supposed to be committed to version control. This allows other developers involved
-> in the project to check out the code, run vagrant up, and be on their way. 
+> in the project to check out the code, run vagrant up, and be on their way.
 > Vagrantfiles are portable across every platform Vagrant supports.
 
 If we were instead provisioning Amazon EC2 instances, we'd alternatively use [Terraform](https://www.terraform.io/), a tool for building, changing, and versioning infrastructure.
@@ -1206,7 +1211,7 @@ When authoring, tells your text editor (e.g. emacs or vim) to choose a specific 
 
 ##### 9.5.2.3.2. Setting extra variables for Ansible roles
 
-The following lines: 
+The following lines:
 
 ```ruby
 # Vagrant will start at your current path and then move upward looking
@@ -1257,7 +1262,7 @@ module ConfigurationVars
     # Provision and configure development vagrant ('yes'/'no')
 #    create_development: 'no',
     create_development: 'yes',
-    development_is_worker_node: 'yes',
+#    development_is_worker_node: 'yes',
 
     # The number of nodes to provision the Kubernetes cluster. One will be a master.
     nodes: 2,
@@ -1266,7 +1271,7 @@ module ConfigurationVars
     # The Vagrant box to base our DevOps box on.  Pick just one.
 
     base_box: 'centos/7',
-    base_box_version: '2004.01', 
+    base_box_version: '2004.01',
 
 #    base_box: 'ubuntu/bionic64',
 #    base_box_version: '20200304.0.0',
@@ -1274,9 +1279,9 @@ module ConfigurationVars
 #    base_box: 'nemonik/alpine310',
 #    base_box_version: '0',
 
-    vagrant_root_drive_size: '80GB', 
+    vagrant_root_drive_size: '80GB',
 
-    ansible_version: '2.9.9',
+    ansible_version: '2.10.3',
 
     default_retries: '60',
     default_delay: '10',
@@ -1285,11 +1290,11 @@ module ConfigurationVars
     docker_retries: '60',
     docker_delay: '10',
 
-    k3s_version: 'v1.18.6+k3s1',
+    k3s_version: 'v1.19.4+k3s1',
     k3s_cluster_secret: 'kluster_secret',
 
-    kubectl_version: 'v1.17.0',
-    kubectl_checksum: 'sha256:6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c',
+    kubectl_version: 'v1.19.4',
+    kubectl_checksum: 'sha256:7df333f1fc1207d600139fe8196688303d05fbbc6836577808cda8fe1e3ea63f',
 
     kubernetes_dashboard: 'yes',
     kubernetes_dashboard_version: 'v2.0.0',
@@ -1301,11 +1306,11 @@ module ConfigurationVars
     traefik_host: '192.168.0.206',
 
     metallb: 'yes',
-    metallb_version: 'v0.9',
+    metallb_version: 'v0.9.5',
 
     kompose_version: '1.18.0',
 
-    docker_compose_version: '1.24.1',
+    docker_compose_version: '1.27.4',
     docker_compose_pip_version: '1.25.0rc2',
 
     helm_cli_version: '3.2.1',
@@ -1345,7 +1350,7 @@ module ConfigurationVars
     taiga_port: '80',
 
     sonarqube: 'yes',
-    sonarqube_version: '8.4.1-community',
+    sonarqube_version: '8.5.1-community',
     sonarqube_host: '192.168.0.205',
     sonarqube_port: '9000',
 
@@ -1353,12 +1358,12 @@ module ConfigurationVars
 
     inspec_version: '4.18.39',
 
-    python_container_image: 'yes', 
-    python_version: '2.7.17',
+    python_container_image: 'yes',
+    python_version: '2.7.18',
 
     golang_container_image: 'yes',
     golang_sonarqube_scanner_image: 'yes',
-    golang_version: '1.13.7',  
+    golang_version: '1.15',
 
     selenium_standalone_chrome_version: '3.141',
 
@@ -1438,6 +1443,8 @@ module ConfigurationVars
   end
 
   DETERMINE_OS_TEMPLATE = <<~SHELL
+    echo Determining OS...
+
     os=""
     if [[ $(command -v lsb_release | wc -l) == *"1"* ]]; then
       os="$(lsb_release -is)-$(lsb_release -cs)"
@@ -1454,30 +1461,42 @@ module ConfigurationVars
   SHELL
 
   OS_PACKAGES_FROM_CACHE_TEMPLATE = <<~SHELL
+
+    echo OS packages from cache...
+
     mkdir -p /tmp/root-cache
+
     box="#{VARS[:base_box]}"
+
     case $os in
+
       "Alpine")
         package_manager="apk"
         ;;
+
       "Ubuntu-bionic")
         package_manager="apt"
         ;;
+
       "CentOS 7")
         package_manager="yum"
         ;;
+
       *)
         echo -n "${os} not supported."
         exit -1
         ;;
     esac
+
     if [ -f "/vagrant/cache/TYPE/${box}/${package_manager}.tar.gz" ]; then
       update=true
+
       if [ -f "/tmp/root-cache/${package_manager}.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/${package_manager}.tar.gz"`!=`stat -c%s "/tmp/root-cache/${package_manager}.tar.gz"`)); then
           update=false
         fi
       fi
+
       if ($update == true); then
         echo Installing ${box} ${package_manager} packages from cache...
         cd /tmp/root-cache
@@ -1505,6 +1524,7 @@ module ConfigurationVars
               ;;
           esac
         fi
+
         rm -Rf ${package_manager}
       else
         echo No new ${box} packages in cache...
@@ -1514,7 +1534,9 @@ module ConfigurationVars
     fi
   SHELL
 
-  INSTALL_ANSIBLE_DEPENDENCIES_TEMPLATE = <<~SHELL
+  ROOT_INSTALL_ANSIBLE_DEPENDENCIES_TEMPLATE = <<~SHELL
+    echo Root installing ansible dependencies...
+
     case $os in
       "Alpine")
         # install Alpine packages
@@ -1526,8 +1548,11 @@ module ConfigurationVars
         apt install -y python3 python3-dev python3-pip make gcc
         ;;
       "CentOS 7")
+        yum update -y
         yum install -y epel-release
-        yum install -y python python-pip make gcc
+        yum install -y python-pip python-devel make gcc python-cffi
+#        pip uninstall -y bcrypt
+#        yum --enablerepo=epel install -y python2-bcrypt
         ;;
       *)
         echo "${os} not supported." 1>&2
@@ -1536,7 +1561,72 @@ module ConfigurationVars
     esac
   SHELL
 
+  USER_INSTALL_DEPENDENCIES_TEMPLATE = <<~SHELL
+    echo User installing ansible dependencies...
+
+    #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user --upgrade pip
+    /home/vagrant/.local/bin/pip install --user --upgrade setuptools
+    /home/vagrant/.local/bin/pip install --user paramiko ansible==#{ConfigurationVars::VARS[:ansible_version]}
+
+    case $os in
+      "Alpine"|"Ubuntu-bionic")
+        ;;
+      "CentOS 7")
+#        /home/vagrant/.local/bin/pip uninstall -y bcrypt
+#        /home/vagrant/.local/bin/pip install -y bcrypt==3.1.7
+        ;;
+      *)
+        echo "${os} not supported." 1>&2
+        exit -1
+        ;;
+    esac
+  SHELL
+
+  INSTALL_ANSIBLE_TEMPLATE = <<~SHELL
+    case $os in
+      "Alpine"|"Ubuntu-bionic"|"CentOS 7")
+        #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user --upgrade pip setuptools
+        #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user paramiko ansible==#{ConfigurationVars::VARS[:ansible_version]}
+        ;;
+      *)
+        echo "${os} not supported." 1>&2
+        exit -1
+        ;;
+    esac
+  SHELL
+
+  RUN_ANSIBLE_TEMPLATE = <<~SHELL
+    echo Running ansible-playbook PLAYBOOK_PATH...
+
+    case $os in
+      "Alpine"|"Ubuntu-bionic"|"CentOS 7")
+        n=0
+        until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
+          /home/vagrant/.local/bin/ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
+          n=$((n+1))
+          sleep #{ConfigurationVars::VARS[:default_delay]}
+        done
+        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true /home/vagrant/.local/bin/ansible-playbook PLAYBOOK_PATH --limit="LIMIT" --extra-vars=ANSIBLE_EXTRA_VARS --extra-vars='ansible_python_interpreter="/usr/bin/env #{ConfigurationVars::VARS[:ansible_python_version]}"' --vault-password-file=VAULT_PASS_PATH -vvvv --connection=local --inventory=INVENTORY_PATH
+        ;;
+#      "CentOS 7")
+#        n=0
+#        until [ "$n" -ge #{ConfigurationVars::VARS[:default_retries]} ]; do
+#          ansible-galaxy install --force --roles-path ansible/roles --role-file requirements.yml && break
+#          n=$((n+1))
+#          sleep #{ConfigurationVars::VARS[:default_delay]}
+#        done
+#        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook PLAYBOOK_PATH --limit="LIMIT" --extra-vars=ANSIBLE_EXTRA_VARS  --vault-password-file=VAULT_PASS_PATH -vvvv --connection=local --inventory=INVENTORY_PATH
+#        ;;
+      *)
+        echo "${os} not supported." 1>&2
+        exit -1
+        ;;
+    esac
+  SHELL
+
   RESIZE_ROOT_TEMPLATE = <<~SHELL
+    echo Resizing root...
+
     case $os in
       "Alpine")
         # install Alpine packages
@@ -1558,15 +1648,19 @@ module ConfigurationVars
     esac
   SHELL
 
-
   SITE_PACKAGES_FROM_CACHE_TEMPLATE = <<~SHELL
+
+    echo Site packages from cache...
+
     if [ -f "/vagrant/cache/TYPE/${box}/site-packages.tar.gz" ]; then
       update=true
+
       if [ -f "/tmp/root-cache/site-packages.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/site-packages"`!=`stat -c%s "/tmp/root-cache/site-packages"`)); then
           update=false
         fi
       fi
+
       if ($update == true); then
         echo Unpacking #{ VARS[:ansible_python_version] } site-packages from cache...
         cd /tmp/root-cache
@@ -1580,15 +1674,21 @@ module ConfigurationVars
   SHELL
 
   USER_CACHED_CONTENT_TEMPLATE = <<~SHELL
+    echo Use cached content...
+
     mkdir -p /tmp/vagrant-cache
+
     box="#{VARS[:base_box]}"
+
     if [ "${os}" == "CentOS 7" ] && [ -f "/vagrant/cache/TYPE/${box}/rvm.tar.gz" ]; then
       update=true
+
       if [ -f "/tmp/vagrant-cache/rvm.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/rvm.tar.gz"`!=`stat -c%s "/tmp/vagrant-cache/rvm.tar.gz"`)); then
           update=false
         fi
       fi
+
       if ($update == true); then
         echo Unpacking /home/vagrant/[.rvm .gnupg .bash_profile .bashrc .profile .mkshrc .zshrc .zlogin] from cache...
         cp /vagrant/cache/TYPE/${box}/rvm.tar.gz /tmp/vagrant-cache/rvm.tar.gz
@@ -1600,13 +1700,16 @@ module ConfigurationVars
     else
       echo No /home/vagrant/[.rvm .gnupg .bash_profile .bashrc .profile .mkshrc .zshrc .zlogin] in cache...
     fi
+
     if [ -f "/vagrant/cache/TYPE/${box}/cache.tar.gz" ]; then
       update=true
+
       if [ -f "/tmp/vagrant-cache/cache.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/cache.tar.gz"`!=`stat -c%s "/tmp/vagrant-cache/cache.tar.gz"`)); then
           update=false
         fi
       fi
+
       if ($update == true); then
         echo Unpacking /home/vagrant/.cache from cache...
         cp /vagrant/cache/TYPE/${box}/cache.tar.gz /tmp/vagrant-cache/cache.tar.gz
@@ -1618,13 +1721,16 @@ module ConfigurationVars
     else
       echo No /home/vagrant/.cache cache...
     fi
+
     if [ -f "/vagrant/cache/TYPE/${box}/local.tar.gz" ]; then
       update=true
+
       if [ -f "/tmp/vagrant-cache/local.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/local.tar.gz"`!=`stat -c%s "/tmp/vagrant-cache/local.tar.gz"`)); then
           update=false
         fi
       fi
+
       if ($update == true); then
         echo Unpacking /home/vagrant/.local from cache...
         cp /vagrant/cache/TYPE/${box}/local.tar.gz /tmp/vagrant-cache/local.tar.gz
@@ -1636,13 +1742,16 @@ module ConfigurationVars
     else
       echo No /home/vagrant/.local cache...
     fi
+
     if [ -f "/vagrant/cache/TYPE/${box}/gem.tar.gz" ]; then
       update=true
+
       if [ -f "/tmp/vagrant-cache/gem.tar.gz" ]; then
         if ((`stat -c%s "/vagrant/cache/TYPE/${box}/gem.tar.gz"`!=`stat -c%s "/tmp/vagrant-cache/gem.tar.gz"`)); then
           update=false
         fi
       fi
+
       if ($update == true); then
         echo Unpacking /home/vagrant/.gem from cache...
         cp /vagrant/cache/TYPE/${box}/gem.tar.gz /tmp/vagrant-cache/gem.tar.gz
@@ -1793,7 +1902,7 @@ Later still, a bit of code makes use of the `vagrant-certificates` plugin's to i
 
 ##### 9.5.2.3.6. Auto-generate the Ansible inventory file
 
-The Vagrantfile doesn't make use of the Vagrant's own [Ansible Local provisioner](https://www.vagrantup.com/docs/provisioning/ansible_local.html), but instead makes use of the `Shell` provisioner to install and use Ansible to configure the Vagrants.  
+The Vagrantfile doesn't make use of the Vagrant's own [Ansible Local provisioner](https://www.vagrantup.com/docs/provisioning/ansible_local.html), but instead makes use of the `Shell` provisioner to install and use Ansible to configure the Vagrants.
 
 To do this Ansible needs an inventory file and so the Vagrantfile dynamically creates the inventory file via the following code:
 
@@ -1855,7 +1964,7 @@ development
 
 ##### 9.5.2.3.7. Mounting the project folder into each vagrant
 
-Each vagrant (e.g., master, worker nodes if provisioned, development) will have the class project fodler mounted at `vagrant`.  If you or on OS X or Linux this will be done via the Network File Service requiring you to enter your password everytime prompted.  If you are on Windows the the mounting will be handled by VirtualBox.  
+Each vagrant (e.g., master, worker nodes if provisioned, development) will have the class project fodler mounted at `vagrant`.  If you or on OS X or Linux this will be done via the Network File Service requiring you to enter your password everytime prompted.  If you are on Windows the the mounting will be handled by VirtualBox.
 
 The code in the Vagrantfile to accomplish this is the following lines:
 
@@ -1882,16 +1991,16 @@ The code in the Vagrantfile to accomplish this is the following lines:
   config.vm.synced_folder '.', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
   #   elsif Vagrant::Util::Platform.platform.include? 'darwin'
   #     projectPath=File.join('/System/Volumes/Data/Users/', ENV['USER'], vagrantfilePath.split(ENV['USER']).last)
-  # 
+  #
   #     config.vm.synced_folder projectPath, '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
   #   else
   #     config.vm.synced_folder '.',  '/vagrant', type: 'nfs'
   #   end
-  ``` 
+  ```
 
 ##### 9.5.2.3.8. Build a Vagrant Box
 
-The master, worker nodes (if created) and development vagrant will need a base box. 
+The master, worker nodes (if created) and development vagrant will need a base box.
 
 The following section of code will call the `build_box.sh` shell script found in the `box` directory to create this box.
 
@@ -1909,13 +2018,13 @@ The following section of code will call the `build_box.sh` shell script found in
   end
 ```
 
-Vagrant needs a image to start from in much the same reason one builds an Amazon EC2 off an Amazon Machine Image (AMI) or VMWare Image.  Vagrant calls its images _Vagrant boxes_. One can create a Vagrant box via the vagrant command line interface (CLI) or alternatively one can use Hashicorp's Packer cli. The class use existing `centos/7` and `ubuntu/bionic` Vagrant boxes to create a box ontop of which the class vagrants (VMs) are built, but if you selected `nemonik/alpine310` as your `:base_box` in the `ConfigurationVars` and have istalled the `packer` cli packer will be used to create `nemonik/alpine310` base box and then take this box and use it to create a box via Vagrant ontop of which the vagrants will be created.  
+Vagrant needs a image to start from in much the same reason one builds an Amazon EC2 off an Amazon Machine Image (AMI) or VMWare Image.  Vagrant calls its images _Vagrant boxes_. One can create a Vagrant box via the vagrant command line interface (CLI) or alternatively one can use Hashicorp's Packer cli. The class use existing `centos/7` and `ubuntu/bionic` Vagrant boxes to create a box ontop of which the class vagrants (VMs) are built, but if you selected `nemonik/alpine310` as your `:base_box` in the `ConfigurationVars` and have istalled the `packer` cli packer will be used to create `nemonik/alpine310` base box and then take this box and use it to create a box via Vagrant ontop of which the vagrants will be created.
 
 ##### 9.5.2.3.9. Configuring the Kubernetes cluster vagrant(s)
 
 By default the class is configured as a two node cluster, a single master node and one worker node by having `:nodes` set to `2` in the `ConfigurationVars` module.
 
-The Vagrant file uses the value of `:nodes` and the shell scripting templates defined in the `ConfigurationVars` module to create the cluster starting with a master node and each subsequent node being created as a worker node. 
+The Vagrant file uses the value of `:nodes` and the shell scripting templates defined in the `ConfigurationVars` module to create the cluster starting with a master node and each subsequent node being created as a worker node.
 
 ```ruby
   # shell scripting to install root user cached content
@@ -2034,13 +2143,13 @@ The Vagrant file uses the value of `:nodes` and the shell scripting templates de
   end
 ```
 
-The Kubernetes cluster, whether a single node or many nodes will orechestrate the lifecycle of Traefik, GitLab, Drone CI, SonarQube, Taiga... 
+The Kubernetes cluster, whether a single node or many nodes will orechestrate the lifecycle of Traefik, GitLab, Drone CI, SonarQube, Taiga...
 
 **NOTE**
 
 - The course has had the benefit of being authored and run hardware with i7 processors and 16GB of memory, so if you have more or less you can to tweak the `virtualbox.memory` and `virtualbox.cpus` settings above.  Node 0 is the master node.
-- By default the `master` vagrant is given 8GB (i.e., `8192`. For me a 1GB is 1024MB, not 1000MB. Is this so hard?  Must we dumb everything down?) of memory and 8 cores. If your host has more memory and cores you can configure this vagrant with more.  
-- I've seen this course run on an i5 Dell Laptop, so one can squeak by on 4GB of memory, but I wouldn't advise it.  I also wouldn't drop the `master` vagrant below 4 cores, either.  
+- By default the `master` vagrant is given 8GB (i.e., `8192`. For me a 1GB is 1024MB, not 1000MB. Is this so hard?  Must we dumb everything down?) of memory and 8 cores. If your host has more memory and cores you can configure this vagrant with more.
+- I've seen this course run on an i5 Dell Laptop, so one can squeak by on 4GB of memory, but I wouldn't advise it.  I also wouldn't drop the `master` vagrant below 4 cores, either.
 - Running additional worker nodes will tax most laptops, so I wouldn't advise it.
 - Some services and tools are orchestrated via Docker-compose, such as, the Docker registries and Drone CI.
 
@@ -2316,10 +2425,10 @@ The `Taiga` role depends on the Ansible roles used to configure the base box sel
 
 #### 9.5.3.3. Bringing all the vagrants up
 
-In a shell (I'll drop from time to time stating "into the shell" as it should understood.) at the root of the class project enter: 
+In a shell (I'll drop from time to time stating "into the shell" as it should understood.) at the root of the class project enter:
 
 ```bash
-vagrant up 
+vagrant up
 ```
 
 You will see a good deal of output and on the Windows OS, it will pester you to approve certain things.  As a trust exercise blindly approve everything.
@@ -2335,13 +2444,13 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
   config.vm.synced_folder '.', '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
   #   elsif Vagrant::Util::Platform.platform.include? 'darwin'
   #     projectPath=File.join('/System/Volumes/Data/Users/', ENV['USER'], vagrantfilePath.split(ENV['USER']).last)
-  # 
+  #
   #     config.vm.synced_folder projectPath, '/vagrant', owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=664']
   #   else
   #     config.vm.synced_folder '.',  '/vagrant', type: 'nfs'
   #   end
-  ``` 
-  
+  ```
+
 - It is very possible a network anomaly may result in Ansible failing, if you can determine the role the automation failed in, you can speed things along by commenting out the roles that proceeded and re-run the automation by entering into the command-line at the root of the project
   ```bash
   vagrant provision
@@ -2355,8 +2464,8 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
   vagrant up --no-provision
   ```
   Give the vagrants time to restart all the long-running tools.
-- You will not want to run a VPN session that does not permit bridging such as MITRE's VPN on your computer when running your vagrants as you will have no network access to your vagrants.  
-- Caution, it is easy to forget DevOps is not about tools and automaton, but is as much about culture, methods and repeated practices, so keep this in mind.  
+- You will not want to run a VPN session that does not permit bridging such as MITRE's VPN on your computer when running your vagrants as you will have no network access to your vagrants.
+- Caution, it is easy to forget DevOps is not about tools and automaton, but is as much about culture, methods and repeated practices, so keep this in mind.
 - The tools, methods and repeated practices exist to support the culture.
 - Again, I'll drop from time to time stating "into the shell" or "into the command-line" when instructing you to enter things in the CLI.
 - If you're on Linux, such as, Arch you will need to enable the nfs-server.service. See [NFS#Start the server](https://wiki.archlinux.org/index.php/NFS#Starting_the_server), but essentially enter `sudo systemctl start nfs-server` into the command-line.
@@ -2365,13 +2474,13 @@ You will see a good deal of output and on the Windows OS, it will pester you to 
   ==> default: Mounting NFS shared folders...
   The following SSH command responded with a non-zero exit status.
   Vagrant assumes that this means the command failed!
-  
+
   mount -o vers=3,udp 192.168.0.1:/home/mjwalsh/Development/workspace/hands-on-DevOps /vagrant
-  
+
   Stdout from the command:
-  
+
   Stderr from the command:
-  
+
   mount.nfs: requested NFS version or transport protocol is not supported
   ```
   you will need to enable NFS over UDP. See [NFS/Troubleshooting#UDP mounts not working](https://wiki.archlinux.org/index.php/NFS/Troubleshooting#UDP_mounts_not_working).
@@ -2423,7 +2532,7 @@ YAML bills itself as a human-friendly data serialization standard for all progra
 
 ### 9.6.3. Kubernetes
 
-Kubernetes; specifically, K3s is used in the default configuration of the course to orchestrate the life cycles of the bulk of long-running tools.  
+Kubernetes; specifically, K3s is used in the default configuration of the course to orchestrate the life cycles of the bulk of long-running tools.
 
 *What is Kubernetes?*
 
@@ -2455,7 +2564,7 @@ Once, both the `master` and `development` vagrants are provisioned and configure
 vagrant ssh master
 ```
 
-or 
+or
 
 ```bash
 ./vagrant_sh.sh master
@@ -2482,7 +2591,7 @@ If you enter
 kubectl --all-namespaces=true get pods
 ```
 
-it will return all the pods, where a pod is container or group of containers that are deployed together.  
+it will return all the pods, where a pod is container or group of containers that are deployed together.
 
 In our case the the command will return something resembling:
 
@@ -2533,13 +2642,13 @@ The course automation will also deploy the Kubernetes-Dashboard.  For the long-r
 
 <https://192.168.0.10:6443/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/>
 
-To login to the dashboard, open a terminal and in the root of the project execute 
+To login to the dashboard, open a terminal and in the root of the project execute
 
 ```
 ./get_kubeconfig_yml.sh
 ```
 
-The output will resemble 
+The output will resemble
 
 ```
 ➜  hands-on-DevOps git:(master) ✗ ./get_kubeconfig_yml.sh
@@ -2586,7 +2695,7 @@ The token starts on the line below `Connection to 127.0.0.1 closed.` and in this
 
 ## 9.7. The long-running tools
 
-The class makes use of two types of tools: those that are long-running (e.g., GitLab, Drone, SonarQube) and those used to perform short-lived individual tasks (e.g., Makefile, InSpec, OWASP-ZAP.)  
+The class makes use of two types of tools: those that are long-running (e.g., GitLab, Drone, SonarQube) and those used to perform short-lived individual tasks (e.g., Makefile, InSpec, OWASP-ZAP.)
 
 This section will describe the long-running tools leaving subsequent sections to describe the latter as you use the short-lived tools.
 
@@ -2619,7 +2728,7 @@ The 800 pound Gorilla in this market segment is JIRA Software. Some of my co-wor
 
 #### 9.7.1.1. Documentation, source, container image
 
-Taiga's documentation can be found at 
+Taiga's documentation can be found at
 
 <https://taigaio.github.io/taiga-doc/dist/>
 
@@ -2635,7 +2744,7 @@ dedicated to the back-end.
 
 Taiga doesn't directly offer a Docker container image for, but I've authored a container image that collapses both taiga-front-dist and -back behind an NGINX reverse proxy onto single container.
 
-The GitHub hosted project for my container can befound at 
+The GitHub hosted project for my container can befound at
 
 <https://github.com/nemonik/taiga>
 
@@ -2649,7 +2758,7 @@ Once, stood up the Kubernetes cluster your instance of Taiga will reachable at
 
 The default admin accont username and password are
 
-**admin**  
+**admin**
 **123123**
 
 ### 9.7.2. GitLab CE, an example of configuration management software
@@ -2805,7 +2914,7 @@ Drone CI often referred to simply as "Drone" is installed on the `master` vagran
 
 Drone is essentially a Continuous Delivery system built on container technology.
 
-Drone is distributed as a set of Docker images. Drone CI can be run with an internal SQLite database, but it is advisable to run with an external database and this is the configuration the class uses. It also integrates with multiple version control providers (i.e., GitHub, GitLab, BitBucket, Stash, and Gogs). Both CMS and database are configured using environment variables passed along when the Drone CI container is first to run.  The `.drone.yml` is authored in a domain specific language (DSL) that is a superset of the docker-compose DSL. The file is used to describe the build with multiple named steps with each step executed in a separate Docker container having shared disk access to the checked out branch of the source repository.  Steps make use of Drone plugins to deploy code, publish artifacts, send a notification, etc.  Drone's approach is novel as plugins are really just Docker containers distributed in the typical manner.  Each plugin is designed to perform pre-defined tasks and is configured as steps in your pipeline. The containers are executed with read/write/execute access at the root of the source branch therefore permitting the pipeline to interact with that specific, checked out branch of the source. 
+Drone is distributed as a set of Docker images. Drone CI can be run with an internal SQLite database, but it is advisable to run with an external database and this is the configuration the class uses. It also integrates with multiple version control providers (i.e., GitHub, GitLab, BitBucket, Stash, and Gogs). Both CMS and database are configured using environment variables passed along when the Drone CI container is first to run.  The `.drone.yml` is authored in a domain specific language (DSL) that is a superset of the docker-compose DSL. The file is used to describe the build with multiple named steps with each step executed in a separate Docker container having shared disk access to the checked out branch of the source repository.  Steps make use of Drone plugins to deploy code, publish artifacts, send a notification, etc.  Drone's approach is novel as plugins are really just Docker containers distributed in the typical manner.  Each plugin is designed to perform pre-defined tasks and is configured as steps in your pipeline. The containers are executed with read/write/execute access at the root of the source branch therefore permitting the pipeline to interact with that specific, checked out branch of the source.
 
 Drone and its brethren (e.g., Jenkins CI, GitLab Runners) are used to facilitate Continuous Integration (CI), a software development practice where members of an Agile team frequently integrate their work in order to detect integration issues as soon as possible. Each integration is orchestrated through a service that essentially assembles a build and runs tests every time a predetermined trigger has been met and then reports with immediate feedback.
 
@@ -2948,13 +3057,13 @@ The second value in the Agile Manifesto is
 
 The documentation for this class, this `readme.md` file, is authored in Markdown, a light-weight markup language.  The course's diagrams are authored in [PlantUML](https://www.plantuml.com), a domain-specific language used to author well-formed and human-readable code to render UML diagrams.
 
-For me, I don't need to see the diagrams rendered to follow them. The code alone is sufficient.  
+For me, I don't need to see the diagrams rendered to follow them. The code alone is sufficient.
 
-PlantUML supports a number of UML diagrams: Sequence, Use Case, Class diagram, Activity diagram, Component, State, Object, Deployment, and Timing. The DSL also supports a number of other non-UML diagrams: Wireframe graphical interface, Specification and Description Language (SDL), Ditaa diagram... 
+PlantUML supports a number of UML diagrams: Sequence, Use Case, Class diagram, Activity diagram, Component, State, Object, Deployment, and Timing. The DSL also supports a number of other non-UML diagrams: Wireframe graphical interface, Specification and Description Language (SDL), Ditaa diagram...
 
 This class makes use of just two types: Activity and Deployment diagrams. The diagrams are especially helpful to visual learners.  Each PlantUML diagram's source file exist in [plantuml folder](plantuml) in the root of the project and is rendered by a [GitHub workflow](.github/workflows/main.yml) into scalable vector graphic (SVG) that is pushed to the [diagrams folder](diagrams) upon changes commited to each diagram's source file.
 
-The PlantUML effort also provides server for rendering diagrams in PNG, SVG or LaTeX formats. Plugins for Microsoft Code, Atom, and other editors have been authored to assist in auhoring in the PlantUML DSL.  
+The PlantUML effort also provides server for rendering diagrams in PNG, SVG or LaTeX formats. Plugins for Microsoft Code, Atom, and other editors have been authored to assist in auhoring in the PlantUML DSL.
 
 #### 9.7.5.1. Documentation, source, container image
 
@@ -3003,8 +3112,8 @@ Open Taiga in your web browser
 
 The default admin account username and password are
 
-**admin**   
-**123123**  
+**admin**
+**123123**
 
 Complete the follow to track your progress in completing the Golang *helloworld* project
 1. Click `Create Project`.
@@ -3012,14 +3121,14 @@ Complete the follow to track your progress in completing the Golang *helloworld*
 3. Give your project a name.  For example, `Helloworld` and a description, such as, `My Kanban board for this awesome helloworld app` and then click `CREATE PROJECT`.
 4. You can skip this step and opt to chose to click `><` to fold `READY`, `USER STORY STATUS` and `ARCHIVED` only after completing step 6.  Otherwise, you can edit your Kanban board to just `NEW`, `IN PROGRESS`, and `DONE` by
 
-   a. On the bottom left, click the `ADMIN` gear.  
-   b. Click `ATTRIBUTES`.  
-   c. Scroll down to `USER STORY STATUS`.  
-   d. Hover over `Ready`, click the trash icon to delete and click `ACCEPT`.  
-   c. Do the same for `Ready for test` and `Archived`.  
+   a. On the bottom left, click the `ADMIN` gear.
+   b. Click `ATTRIBUTES`.
+   c. Scroll down to `USER STORY STATUS`.
+   d. Hover over `Ready`, click the trash icon to delete and click `ACCEPT`.
+   c. Do the same for `Ready for test` and `Archived`.
    d. Click the `KANBAN` icon on the far left. It Looks like columns.
 
-5. In the `NEW` column select `Add New bulk` icon that looks like a list and when the page updates cut-and-paste the lines below into the text box and click `SAVE`. 
+5. In the `NEW` column select `Add New bulk` icon that looks like a list and when the page updates cut-and-paste the lines below into the text box and click `SAVE`.
 
     ```
     Create the project’s backlog
@@ -3043,8 +3152,8 @@ Track your progress in Taiga as you work through each section.
 [PlantUML source for this diagram](plantuml/helloworld-create-project-in-gitlab.puml)
 
 1. In GitLab (<http://192.168.0.202>) click on `Projects` in the upper left.
-   a. Select `Create Project`.  
-   b. Or click <http://192.168.0.202/projects/new>  
+   a. Select `Create Project`.
+   b. Or click <http://192.168.0.202/projects/new>
 2. Leave the `Project path` defaulted to `http://192.168.0.202/root/`.
 3. Enter `helloworld` (the form field the page defaults to) for the `Project name`.
 4. Provide an optional `Project description`. Something descriptive, such as, _"GoLang helloworld application for the hands-on DevOps class."_.
@@ -3106,7 +3215,7 @@ helloworld
 
 **NOTE**
 
-- Make sure you pre-pend that dot (`.`) at the start of `.gitignore`. In *NIX Dot-files are hidden files. 
+- Make sure you pre-pend that dot (`.`) at the start of `.gitignore`. In *NIX Dot-files are hidden files.
 - `.gitignore` will not show up if you simply list the file system via the `ls` command, but if you use `ls -a` or `ls --all` it will.  Either arguments configures `ls` to not ignore entries starting with `.`.
 
 ### 9.8.4. Author the application
@@ -3132,8 +3241,8 @@ func HelloWorld() string {
 
 **NOTE**
 
-- Starting on page 135 of [The Linux Command Line by William Shotts](http://linuxcommand.org/tlcl.php) Mr Shotts covers how to use `nano`. 
-- There are countless tutorials online for the aforementioned editors. 
+- Starting on page 135 of [The Linux Command Line by William Shotts](http://linuxcommand.org/tlcl.php) Mr Shotts covers how to use `nano`.
+- There are countless tutorials online for the aforementioned editors.
 - You should be able to pick up and start using any of these in 5 or so minutes.  I use all of them switching back and forth between. You are likely to see at least `vi` on any barebones *NIX system, so maybe start there if you wanna be a survivalist.
 
 ### 9.8.5. Align source code with Go coding standards
@@ -3147,7 +3256,7 @@ Format source code according to Go coding standards using
 go fmt
 ```
 
-`go fmt` will output 
+`go fmt` will output
 
 ```
 main.go
@@ -3252,9 +3361,9 @@ hello world
 ![Activity Diagram for helloworld project: Author the unit tests](diagrams/helloworld-author-unit-tests.svg)
 [PlantUML source for this diagram](plantuml/helloworld-author-unit-tests.puml)
 
-GoLang ships with a built-in `testing` package 
+GoLang ships with a built-in `testing` package
 
-<https://golang.org/pkg/testing/> 
+<https://golang.org/pkg/testing/>
 
 for automated unit testing of Go packages.  Unit testing is a software development process where the smallest testable components of an application are individually tested for proper operation. Unit testing offers the biggest return for dollars spent in comparison to integration and functional testing.
 
@@ -3392,7 +3501,7 @@ go build -o helloworld -v
 
 CI integrates all of the steps we have worked to ensure a high quality build into a pipeline, so let's do that.
 
-We're going to author a continuous integration pipeline for our application and execute it on Drone. Drone expects a `.drone.yml` to exist at the root of the project and will execute the pipeline it contains when the project is committed to GitLab. 
+We're going to author a continuous integration pipeline for our application and execute it on Drone. Drone expects a `.drone.yml` to exist at the root of the project and will execute the pipeline it contains when the project is committed to GitLab.
 
 A pipeline is broken up into multiple named steps, where each step executes in an ephemeral (i.e., does its job and then poof it is gone) Docker container with shared disk access to the project's workspace. The benefit of this approach is that it relieves you from having to create and maintain slaves to execute your pipelines.
 
@@ -3406,12 +3515,12 @@ name: default
 
 steps:
 - name: build
-  image: 192.168.0.10:5000/nemonik/golang:1.13.7
+  image: 192.168.0.10:5000/nemonik/golang:1.15
   commands:
   - make build
 
 - name: run
-  image: 192.168.0.10:5000/nemonik/golang:1.13.7
+  image: 192.168.0.10:5000/nemonik/golang:1.15
   commands:
   - make run
 ```
@@ -3421,7 +3530,7 @@ steps:
 - Make sure you pre-pend that dot (`.`) at the start of `.drone.yml`.
 - Like the `.gitignore` file, `.drone.yml` is a hidden file and will not show up if you list the directory contents with `ls` alone.  You will need to enter `ls -las`.
 - If I didn't update the documentation correctly, it is possible the tag for the `nemonik/golang` container image maybe off.  To verify this tag  enter the following into the shell
-  
+
   ```
   curl --no-progress-meter http://192.168.0.10:5000/v2/nemonik/golang/tags/list
   ```
@@ -3429,7 +3538,7 @@ steps:
   who will return something like
 
   ```
-  {"name":"nemonik/golang","tags":["1.13.7"]}
+  {"name":"nemonik/golang","tags":["1.15"]}
   ```
 
   If the tag doesn't match what the private docker registry holds go ahead and correct the .drone.yml file.  My bust.
@@ -3438,7 +3547,7 @@ The pipeline is authored in YAML like almost all the CI orchestrators out there 
 
 - `steps:` - defines the list of steps followed to build, test and deploy your code.
 - `build` and `run` - defines the names of the step. These are yours to name. Name steps something meaningful as to what the step is orchestrating. Each step is executed serially, in the order defined.
-- `image: 192.168.0.10:5000/nemonik/golang:1.13.7` - defines the container image to execute the step.  The nemonik/golang container tagged `1.13.7` will be retrieved from private Docker registry located at `192.168.0.10:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
+- `image: 192.168.0.10:5000/nemonik/golang:1.15` - defines the container image to execute the step.  The nemonik/golang container tagged `1.15` will be retrieved from private Docker registry located at `192.168.0.10:5000`. Drone uses Docker images for the build environment, plugins and service containers. Drone spins them up for the execution of the pipeline and when no longer needed they go poof.
 - `commands` - defines a collection of terminal commands to be executed. These are all the same commands we executed previously in the command line. If anyone of these commands were to fail returning a non-zero exit code, the pipeline will immediately end resulting in a failed build.
 
 #### 9.8.11.1. Configure Drone to execute your pipeline
@@ -3448,13 +3557,13 @@ The pipeline is authored in YAML like almost all the CI orchestrators out there 
 3. Then click `root/helloworld` repo and `ACTIVATE REPOSITORY`, then `SAVE` under the `Main` section to enable Drone orchestration for the project.
 4. Then click the Drone logo in the upper left of the page to return home.
 
-You won't have any builds to start, but when you do the builds will increment starting from 1. 
+You won't have any builds to start, but when you do the builds will increment starting from 1.
 
 The build colors mean something:
 
-- `Red` - indicates a failed build. 
-- `Yellow-orange` - is the presently executing build. 
-- `Green` - is a build that passed. 
+- `Red` - indicates a failed build.
+- `Yellow-orange` - is the presently executing build.
+- `Green` - is a build that passed.
 
 When a build does start, click on its row to open and monitor it. The UI will update as the build proceeds informing you as to its progress.
 
@@ -3471,8 +3580,8 @@ git push origin master
 **NOTE**
 
 - Since we have not registered an SSH key with GitLab, during the push we will be prompted to enter a `Username` and `Password`.
-- Your `Username` is `root` and your `Password` is `password`  (Shhhh.  Our little secret.). 
-- The git command-line client will not display your password as you enter it. 
+- Your `Username` is `root` and your `Password` is `password`  (Shhhh.  Our little secret.).
+- The git command-line client will not display your password as you enter it.
 
 Immediately after you enter your GitLab username/password open <http://192.168.0.202/root/helloworld> in your browser, if you re-use an existing tab to this page refresh the page.
 
@@ -3480,7 +3589,7 @@ The execution of this pipeline will follow as so:
 
 1. A new build will appear. Click on it.
 2. Drone will clone your project's repository in a `clone` step.
-3. And then will execute a `build` and `run` steps in order each spinning up `nemonik/golang:1.13.7` container, whose container image was patched if proxy environmental variable are set to work behind MITRE's http proxy and SSL introspection. (Later, you may want examine the contents of ansible/roles/golang-container-image/files/Dockerfile for more details as to how this was accomplished.)
+3. And then will execute a `build` and `run` steps in order each spinning up `nemonik/golang:1.15` container, whose container image was patched if proxy environmental variable are set to work behind MITRE's http proxy and SSL introspection. (Later, you may want examine the contents of ansible/roles/golang-container-image/files/Dockerfile for more details as to how this was accomplished.)
 4. These steps execute the commands in the same way you executed them yourself: a. make lint b. make test c. make build d. make run
 
 The output of the `build` (An arbitrary name. You could use "skippy".) step will resemble:
@@ -3543,7 +3652,7 @@ Complete the follow to track your progress in completing the _helloworld-web_ pr
    d. Hover over `Ready`, click the trash icon to delete and click `ACCEPT`.
    c. Do the same for `Ready for test` and `Archived`.
    d. Click the `KANBAN` icon on the far left. It Looks like columns.  And then reload the browser to get the changes to take
-6. In the `NEW` column select `Add New bulk` icon that looks like a list and when the page updates cut-and-paste the lines below into the text box and click `SAVE`. 
+6. In the `NEW` column select `Add New bulk` icon that looks like a list and when the page updates cut-and-paste the lines below into the text box and click `SAVE`.
 
     ```
     Create the project's backlog
@@ -3776,7 +3885,7 @@ Installing:
 Now, let us run our linters.
 
 ```bash
-gometalinter.v2 
+gometalinter.v2
 ```
 
 `gometalinter.v2` will then runs all these linters:
@@ -3860,7 +3969,7 @@ go fmt
 And then run our linters again
 
 ```bash
-gometalinter.v2 
+gometalinter.v2
 ```
 
 And after some time, nothing is returned.  Problem solved.  If they could all be this easy.
@@ -3969,7 +4078,7 @@ Notice, we only scored 55.6% coverage, but we appear to have a unit test for all
 ![Activity Diagram for helloworld-web project: Perform static analysis](diagrams/helloworld-web-perform-static-analysis.svg)
 [PlantUML source for this diagram](plantuml/helloworld-web-perform-static-analysis.puml)
 
-SonarQube provides a static analysis capability to show the health of an application's source code, highlighting issues as they are introduced. 
+SonarQube provides a static analysis capability to show the health of an application's source code, highlighting issues as they are introduced.
 
 #### 9.9.9.1. Optionally, register your app in SonarQube
 
@@ -3981,17 +4090,17 @@ Open in your browser
 
 If you have to authenticate, your username and password is
 
-**admin**  
+**admin**
 
-Click `Create project`.  
+Click `Create project`.
 
-Provide the `name` of  
+Provide the `name` of
 
-**helloworld-web**  
+**helloworld-web**
 
-Provide the `key` of  
+Provide the `key` of
 
-**helloworld-web**  
+**helloworld-web**
 
 #### 9.9.9.2. Install the SonarGo plugin
 
@@ -4202,7 +4311,7 @@ run:
 
 **NOTE**
 
-- The indents are `tab` characters and not `spaces` characters otherwise your `make` will fail to execute.  
+- The indents are `tab` characters and not `spaces` characters otherwise your `make` will fail to execute.
 - And cut-and-paste may split the single line beginning with `sonar-scanner` into multiple lines.  You want this to be single line of text.
 
 Test out your `Makefile`
@@ -4366,10 +4475,10 @@ github.com/nemonik/helloworld-web
 ![Activity Diagram for helloworld-web project: Dockerize the application](diagrams/helloworld-web-dockerize-the-application.svg)
 [PlantUML source for this diagram](plantuml/helloworld-web-dockerize-the-application.puml)
 
-We can build a Docker image for our application on top of a `192.168.0.10:5000/nemonik/golang:1.13.7` image by creating a `Dockerfile` with the following content
+We can build a Docker image for our application on top of a `192.168.0.10:5000/nemonik/golang:1.15` image by creating a `Dockerfile` with the following content
 
 ```docker
-FROM 192.168.0.10:5000/nemonik/golang:1.13.7
+FROM 192.168.0.10:5000/nemonik/golang:1.15
 MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
 
 RUN mkdir /app
@@ -4382,7 +4491,7 @@ ENTRYPOINT ["/app/helloworld-web"]
 EXPOSE 3000
 ```
 
-And then build the application and create its Docker image via 
+And then build the application and create its Docker image via
 
 ```bash
 make build
@@ -4391,7 +4500,7 @@ docker build -t nemonik/helloworld-web .
 
 **NOTE**
 
-- Don't miss that last period (`.`) at the end the line above. 
+- Don't miss that last period (`.`) at the end the line above.
 
 After some time, the command line output will resemble
 
@@ -4400,7 +4509,7 @@ development:~/go/src/github.com/nemonik/helloworld-web$ make build
 go build -o helloworld-web -v
 development:~/go/src/github.com/nemonik/helloworld-web$ docker build -t nemonik/helloworld-web .
 Sending build context to Docker daemon  10.77MB
-Step 1/7 : FROM 192.168.0.10:5000/nemonik/golang:1.13.7
+Step 1/7 : FROM 192.168.0.10:5000/nemonik/golang:1.15
  ---> 6dd8c4661085
 Step 2/7 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
  ---> Using cache
@@ -4429,9 +4538,9 @@ Successfully tagged nemonik/helloworld-web:latest
 
 What just happened?
 
-- The `FROM` line instructs Docker to retrieve the `nemonik/golang:1.13.7` from the private Docker registry running on our Kubernetes cluster, which it did.  And then use this as the basis of your application's docker image.
-- Then the rest of the commands in the `Dockerfile` are executed laying down layers on top of the `nemonik/golang:1.13.7` image thereby building a new docker image entitled `nemonik/helloworld-web` and tagging it `latests`.
-- `docker build` then places the image with the name `nemonik/helloworld-web` in the `Development`'s local Docker registry so that containers can be created off this image locally. 
+- The `FROM` line instructs Docker to retrieve the `nemonik/golang:1.15` from the private Docker registry running on our Kubernetes cluster, which it did.  And then use this as the basis of your application's docker image.
+- Then the rest of the commands in the `Dockerfile` are executed laying down layers on top of the `nemonik/golang:1.15` image thereby building a new docker image entitled `nemonik/helloworld-web` and tagging it `latests`.
+- `docker build` then places the image with the name `nemonik/helloworld-web` in the `Development`'s local Docker registry so that containers can be created off this image locally.
 
 Check the development vagrant's local Docker registry via
 
@@ -4451,7 +4560,7 @@ You've created an approximately 1.06 GB sized `nemonik/helloworld-web` image tag
 
 **NOTE:**
 
-- The registry will also contain the `192.168.0.10:5000/nemonik/golang:1.13.7` on which `nemonik/helloworld-web:latest` is based, so the next time re-build image you won't have to wait for `192.168.0.10:5000/nemonik/golang:1.13.7` to be retrieved.   
+- The registry will also contain the `192.168.0.10:5000/nemonik/golang:1.15` on which `nemonik/helloworld-web:latest` is based, so the next time re-build image you won't have to wait for `192.168.0.10:5000/nemonik/golang:1.15` to be retrieved.
 
 But this approach doesn't create the smallest most secure container image. You can accomplish this by instead using Docker's reserved, minimal image `scratch`, as a starting point for your `Dockerfile` like so
 
@@ -4505,7 +4614,7 @@ And then run in the command line
 make all
 ```
 
-Whose output will be 
+Whose output will be
 
 ```
 go fmt
@@ -4793,22 +4902,22 @@ This image is 7.4 MB vice 1.06GB and way more secure.
 Spin up a new `nemonik/helloworld-web` container by entering either
 
 - Option 1 - Run the container in the foreground
-  
+
   ```bash
   docker run -p 3000:3000 --name helloworld-web  nemonik/helloworld-web
-  ``` 
-  
-  and then hitting 
-  
-  <http://192.168.0.9:3000> 
-  
+  ```
+
+  and then hitting
+
+  <http://192.168.0.9:3000>
+
   in your web browser, or
 
-- Option 2 - Run the container in the background 
-  
+- Option 2 - Run the container in the background
+
   ```
   docker run -d -p 3000:3000 --name helloworld-web nemonik/helloworld-web
-  ``` 
+  ```
   and the hit the same URL in the command-line via
 
   ```bash
@@ -4837,13 +4946,13 @@ listening on :3000
 
 #### 9.9.12.2. Option 2
 
-For the second option there will be no output written to the screen, but you can see the same output if you run 
+For the second option there will be no output written to the screen, but you can see the same output if you run
 
 ```bash
 docker logs <the container id output when started the container> -f
 ```
 
-or 
+or
 
 ```bash
 docker logs helloworld-web  -f
@@ -5265,9 +5374,9 @@ Returns in the command line
 The pretty print of this look like
 
 ```
-{ 
+{
    "name":"nemonik/helloworld-web",
-   "tags":[ 
+   "tags":[
       "latest"
    ]
 }
@@ -5292,7 +5401,7 @@ Complete the following:
 ![Activity Diagram for helloworld-web project: Add Static Analysis step to pipeline](diagrams/helloworld-web-add-static-analysis.svg)
 [PlantUML source for this diagram](plantuml/helloworld-web-add-static-analysis.puml)
 
-So, lets create our pipeline starting with a `sonarqube` step to update SonarQube with code quality scans automatically by opening `.drone.yml` in our text editor 
+So, lets create our pipeline starting with a `sonarqube` step to update SonarQube with code quality scans automatically by opening `.drone.yml` in our text editor
 
 ```yaml
 kind: pipeline
@@ -5318,12 +5427,12 @@ steps:
 
 Things to note in the above
 
-- This step uses an image, `nemonik/golang-sonarqube-scanner:4.3.0.2102`, built on top of the `nemonik/golang:1.13.7` image to speed builds along.
+- This step uses an image, `nemonik/golang-sonarqube-scanner:4.3.0.2102`, built on top of the `nemonik/golang:1.15` image to speed builds along.
 - I may have forgotten to update the documentation.  To verify the container image tage is correct perform the following on the command-line and correct the drone step as needed
   ```
   curl --no-progress-meter -X GET http://192.168.0.10:5000/v2/nemonik/golang-sonarqube-scanner/tags/list
   ```
-- Cut-and-pasting may split the last command (i.e., the line beginning with `  - sonar-scanner`) into multiple lines in your editor that when executed by Drone will result in your build failing. If this happens, correct in your editor and re-push. 
+- Cut-and-pasting may split the last command (i.e., the line beginning with `  - sonar-scanner`) into multiple lines in your editor that when executed by Drone will result in your build failing. If this happens, correct in your editor and re-push.
 - The following commands is a bit of filesystem juggling, so that the scan can be executed
 
   ```yaml
@@ -5332,7 +5441,7 @@ Things to note in the above
     - mkdir -p $GOPATH/src/github.com/nemonik
     - cd $GOPATH/src/github.com/nemonik
     - ln -s $DRONESRC helloworld-web
-  ``` 
+  ```
 
   What follows handles running the scan absorbing errors as they arise, so as to not break the build.
 
@@ -5357,7 +5466,7 @@ Open on your host
 
 <http://192.168.0.10/root/helloworld-web>
 
-And monitor the progress of the build. The pipeline should execute in a few minutes.  
+And monitor the progress of the build. The pipeline should execute in a few minutes.
 
 Typical success resembles
 
@@ -5507,7 +5616,7 @@ Add a build step to our `.drone.yml`
 
 ```yaml
 - name: build
-  image: 192.168.0.10:5000/nemonik/golang:1.13.7
+  image: 192.168.0.10:5000/nemonik/golang:1.15
   commands:
   - make build
 ```
@@ -5739,7 +5848,7 @@ Product License: Community Engine
 Sending build context to Docker daemon  10.75MB
 
 Step 1/10 : FROM scratch
- ---> 
+ --->
 Step 2/10 : MAINTAINER Michael Joseph Walsh <nemonik@gmail.com>
  ---> Running in 5c187501e27e
 Removing intermediate container 5c187501e27e
@@ -5799,7 +5908,7 @@ This step is typically painfully slow if your container isn't optimized suchs as
 
 We're going to add a `deploy` step to our Drone pipeline to secure shell into `master` vagrant and deploy the `nemonik/helloworld` container image published by the prior step.
 
-Now we could put our credentials straight into our pipeline, but keeping "security" in mind we're going to make use of a Drone Secret to store `vagrant` user's private key and then use this secret in executing the `deploy` step.  Even better would be create a service account on the `master` server for the sole purpose of performing deployments. 
+Now we could put our credentials straight into our pipeline, but keeping "security" in mind we're going to make use of a Drone Secret to store `vagrant` user's private key and then use this secret in executing the `deploy` step.  Even better would be create a service account on the `master` server for the sole purpose of performing deployments.
 
 First we need to retrieve the private key used by our vagrant user to secure shell (i.e., ssh) into the `master` vagrant.  We can retrieve this by executing the following command in the root of our project on the host computer (i.e., not inside a vagrant) in another shell
 
@@ -5828,7 +5937,7 @@ Find the line starting with `IdentityFile` and use this with the shell command `
 cat /Users/nemonik/.vagrant.d/insecure_private_key
 ```
 
-`cat` will output 
+`cat` will output
 
 ```
 -----BEGIN RSA PRIVATE KEY-----
@@ -5860,9 +5969,9 @@ NE5OgEXk2wVfZczCZpigBKbKZHNYcelXtTt/nP3rsCuGcM4h53s=
 -----END RSA PRIVATE KEY-----
 ```
 
-Now, what's this business about `insecure_private_key`?  Well, by default `vagrant up` command will replace the insecure key pair in the box it uses as a starting point with a new key pair when provisioning each vagrant.  All the vagrants for this class were deliberately configured to use the `insecure_private_key` to ease the teaching of this class, but keeping "security" in mind it would've been more secure to configure `vagrant up` by default to generate a new private key for the `master` vagrant.  
+Now, what's this business about `insecure_private_key`?  Well, by default `vagrant up` command will replace the insecure key pair in the box it uses as a starting point with a new key pair when provisioning each vagrant.  All the vagrants for this class were deliberately configured to use the `insecure_private_key` to ease the teaching of this class, but keeping "security" in mind it would've been more secure to configure `vagrant up` by default to generate a new private key for the `master` vagrant.
 
-To configure `vagrant up` to generate a private key per vagrant, replacing the `insecure_private_key`, simply comment out the following line in the project's `Vagrantfile` as the default value for `config.ssh.insert_key` is `true`. 
+To configure `vagrant up` to generate a private key per vagrant, replacing the `insecure_private_key`, simply comment out the following line in the project's `Vagrantfile` as the default value for `config.ssh.insert_key` is `true`.
 
 ```ruby
   config.ssh.insert_key = false
@@ -5933,9 +6042,9 @@ out: 756f84653491b4c74d06f0fbbd031aa71a21ce936113f5f290b1fc16711c5732
 
 Open
 
-<http://192.168.0.10/root/helloworld-web> 
+<http://192.168.0.10/root/helloworld-web>
 
-on your host and monitor the progress of the build. 
+on your host and monitor the progress of the build.
 
 The pipeline should execute in a few minutes.
 
@@ -5963,7 +6072,7 @@ Then either on your docker host in a browser open
 
 <http://192.168.0.10:3000>
 
-or in the command-line of your `development` vagrant enter 
+or in the command-line of your `development` vagrant enter
 
 ```bash
 curl --no-progress-meter http://192.168.0.10:3000
@@ -5982,7 +6091,7 @@ So, now we have beginnings of a real CICD pipeline. There are no strings on me e
 ![Activity Diagram for helloworld-web project: Add InSpec test to the pipeline](diagrams/helloworld-web-add-inspec.svg)
 [PlantUML source for this diagram](plantuml/helloworld-web-add-inspec.puml)
 
-First let me switch gears into discussing DevSecOps.  
+First let me switch gears into discussing DevSecOps.
 
 The *Dev* part of the *DevOps* clipped compound stands for *development* (i.e., the application developers) and *Ops* stands for; well, "every technology operational stakeholder (e.g., network engineers administrators, testers, and why yes, security engineers.)"  *DevSecOps* has recently emerged with the focus to embed security thought and collaboration into your team's culture when working an applications software development life cycle (SDLC) and *security-as-code* into your application pipelines.  If you're doing DevOps correctly, you're also inherently performing the methods and repeated practices of DevSecOps.  In DevOps, every technology operational stakeholder discipline must be included in the team without needing to fork DevOps to include said discipline.  We don't need *DevNetOps* nor do we need *DevTestOps* nor we need *DevShempOps*...
 
@@ -6010,13 +6119,13 @@ http://www.anniehedgie.com/inspec-basics-1
 
 #### 9.9.19.1. First author an InSpec test
 
-Back in the `development` vagrant at the root of the `helloworld-web` project, we'll initialize an InSpec profile to verify your container's compliance to policy and configuration guidance.  Yep, you're "gonna" be a security engineer. 
+Back in the `development` vagrant at the root of the `helloworld-web` project, we'll initialize an InSpec profile to verify your container's compliance to policy and configuration guidance.  Yep, you're "gonna" be a security engineer.
 
 ```bash
 inspec init profile helloworld
 ```
 
-Accept product license by entering 
+Accept product license by entering
 
 ```
 yes
@@ -6163,8 +6272,8 @@ Test Summary: 5 successful, 0 failures, 0 skipped
      2: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec/input_registry.rb:255:in `block in bind_inputs_from_metadata'
      1: from /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec input_registry.rb:262:in `handle_raw_input_from_metadata'
      /opt/inspec/embedded/lib/ruby/gems/2.6.0/gems/inspec-4.16.0/lib/inspec input_registry.rb:262:in `join': no implicit conversion of nil into String (TypeError)
-   ``` 
-- 
+   ```
+-
   ```bash
   docker rm -f helloworld-web
   ```
@@ -6223,19 +6332,19 @@ cd ..
 rm -Rf $WORK_DIR
 ======END======
 err: Cloning into 'helloworld-web'...
-out: 
+out:
 out: Profile: InSpec Profile (helloworld-tests)
 out: Version: 0.0.1
 out: Target:  local://
-out: 
+out:
 out:   ✔  docker-checks-1.1: Verify Docker Container exists and is running
 out:      ✔  Docker Container helloworld-web is expected to exist
 out:      ✔  Docker Container helloworld-web is expected to be running
 out:      ✔  Docker Container helloworld-web repo is expected to eq "192.168.0.10:5000/nemonik/helloworld-web"
 out:      ✔  Docker Container helloworld-web ports is expected to eq "0.0.0.0:3000->3000/tcp"
 out:      ✔  Docker Container helloworld-web command is expected to eq "/helloworld-web"
-out: 
-out: 
+out:
+out:
 out: Profile Summary: 1 successful control, 0 control failures, 0 controls skipped
 out: Test Summary: 5 successful, 0 failures, 0 skipped
 ==============================================
@@ -6256,13 +6365,13 @@ docker run -d -p 3000:3000 --name helloworld-web 192.168.0.10:5000/nemonik/hello
 ```
 
 In the `helloworld-web` project on the `development` vagrant, use `inspec` to write a report in JSON to `/vagrant/inspec_helloworld.json`
-  
+
 ```bash
 inspec exec --chef-license=accept-silent helloworld --reporter json > /vagrant/inspec_helloworld.json
 ```
 
 
-Open Heimdall-lite https://mitre.github.io/heimdall-lite/, select `Load JSON`, the `Browse` to navigate to `inspec_helloworld.json` in the root of the class project and upload to view the results. 
+Open Heimdall-lite https://mitre.github.io/heimdall-lite/, select `Load JSON`, the `Browse` to navigate to `inspec_helloworld.json` in the root of the class project and upload to view the results.
 
 Upon leaving this section, remember to stop your `helloworld-web` docker container via
 
@@ -6356,7 +6465,7 @@ A good start outputs to the command line
 
 #### 9.9.20.3. Create our test automation
 
-In another terminal `vagrant ssh` to `development`, so we can author and run our automated test.  
+In another terminal `vagrant ssh` to `development`, so we can author and run our automated test.
 
 In this other terminal, we'll create a folder to hold our automated functional test like so
 
@@ -6366,7 +6475,7 @@ mkdir selenium-test
 cd selenium-test
 ```
 
-We're going to write our test in Python.  Python is already installed on the `development` vagrant. Ansible uses it.  
+We're going to write our test in Python.  Python is already installed on the `development` vagrant. Ansible uses it.
 
 We'll need to install a dependency, we can install by entering into the command line
 
@@ -6547,7 +6656,7 @@ Edit the `.drone.yml` file at the root of your `helloworld-web` project and add 
 
 ```yaml
 - name: selenium
-  image: 192.168.0.10:5000/nemonik/python:2.7.17
+  image: 192.168.0.10:5000/nemonik/python:2.7.18
   commands:
   - export NO_PROXY=$NO_PROXY,$(python selenium-test/resolve.py firefox)
   - export no_proxy=$no_proxy,$(python selenium-test/resolve.py firefox)
@@ -6572,7 +6681,7 @@ services:
 
 - `services` is not part of the prior steps, because it is not a step, but enumeration of services, so be careful when you edit the pipeline.
 
-Drone uses the `services:` section to spin up a patched version of `selenium/standalone-firefox:3.141` exposed with the name `firefox`.  This is where the problem creeps in that I mentioned earlier, where the `selenium` step will hit corporate proxy to resolve `firefox`.  We don't want that to happen, so the `selenium:` step will makes use of another Python script to resolved `firefox` service to its private IP and add it the `no_proxy` and `NO_PROXY` environmental variables, so that the Python selenium test code doesn't attempt to pass the request on to the corporate proxy and result in the test failing.  
+Drone uses the `services:` section to spin up a patched version of `selenium/standalone-firefox:3.141` exposed with the name `firefox`.  This is where the problem creeps in that I mentioned earlier, where the `selenium` step will hit corporate proxy to resolve `firefox`.  We don't want that to happen, so the `selenium:` step will makes use of another Python script to resolved `firefox` service to its private IP and add it the `no_proxy` and `NO_PROXY` environmental variables, so that the Python selenium test code doesn't attempt to pass the request on to the corporate proxy and result in the test failing.
 
 Create in a text editor `selenium-test/resolve.py` with
 
@@ -6602,7 +6711,7 @@ git commit -m "added selenium step to pipeline"
 git push origin master
 ```
 
-Open on your host  
+Open on your host
 
 http://192.168.0.10/root/helloworld-web
 
@@ -6696,7 +6805,7 @@ At the root of the project, we need to query our Docker registry to determine wh
 {"name":"nemonik/zap2docker-stable","tags":["2.8.0--no-progress-meter"]}
 ```
 
-We see have version `2.8.0` available, so will pull and run this tagged container inspecting the `nemonik/helloworld-web` container we deployed to the `master` vagrant in the prior section vice spinning up an instance on `development`. 
+We see have version `2.8.0` available, so will pull and run this tagged container inspecting the `nemonik/helloworld-web` container we deployed to the `master` vagrant in the prior section vice spinning up an instance on `development`.
 
 ```
 docker pull 192.168.0.10:5000/nemonik/zap2docker-stable:2.8.0
@@ -6793,7 +6902,7 @@ git commit -m "added owasp-zaproxy step to pipeline"
 git push origin master
 ```
 
-Open on your host  
+Open on your host
 
 http://192.168.0.10/root/helloworld-web
 
@@ -6857,7 +6966,7 @@ PASS: Insecure JSF ViewState [90001]
 PASS: Charset Mismatch [90011]
 PASS: Application Error Disclosure [90022]
 PASS: Loosely Scoped Cookie [90033]
-WARN-NEW: X-Content-Type-Options Header Missing [10021] x 4 
+WARN-NEW: X-Content-Type-Options Header Missing [10021] x 4
 	http://192.168.0.10:3000/
 	http://192.168.0.10:3000/robots.txt
 	http://192.168.0.10:3000
@@ -6875,23 +6984,23 @@ The `helloworld-web` project can be viewed completed at
 
 ## 9.10. Additional best practices to consider around securing containerized applications
 
-This class doesn't cover a number of container application development best practices.  A topic out of scope of the original intention of this course; especially, as I'm already cramming in several days of course material into a one-day course when taught in person, but perhaps subsequent course updates I'll cover a few of the following not already covered in the course material as additional topics. The biggest reason why relates with the followin sections. Agile and DevOps both exist to deliver features into the hands of users. We're not doing DevOps to do DevOps. If all anyone talks about is DevOps in the absense of the application life cycle you have a problem.  Also, DevOps is very much intertwined with modern cloud-native development this is the reason for the folloiwing sections. 
+This class doesn't cover a number of container application development best practices.  A topic out of scope of the original intention of this course; especially, as I'm already cramming in several days of course material into a one-day course when taught in person, but perhaps subsequent course updates I'll cover a few of the following not already covered in the course material as additional topics. The biggest reason why relates with the followin sections. Agile and DevOps both exist to deliver features into the hands of users. We're not doing DevOps to do DevOps. If all anyone talks about is DevOps in the absense of the application life cycle you have a problem.  Also, DevOps is very much intertwined with modern cloud-native development this is the reason for the folloiwing sections.
 
 Wth that, here's some best practices for containerized application development and operation:
 
 1. Follow https://docs.docker.com/develop/develop-images/dockerfile_best-practices/ and http://www.projectatomic.io/docs/docker-image-author-guidance/ guidance.
-2. Re-use existing upstream images from trusted sources.  
-   
+2. Re-use existing upstream images from trusted sources.
+
    For an example, see my taiga Dockerfile [ansible/roles/taiga/templates/Dockerfile.j2](ansible/roles/taiga/templates/Dockerfile.j2) on line 1 where I base my container image on the `python:3.6` container image. (The link may only when the readme is rendered in GitHub.)
-3. Avoid multiple processes executing in your own container images.  
+3. Avoid multiple processes executing in your own container images.
 
    My taiga image breaks with this guidance in running Nginx and django, but Ngninx is managed as service in the container. See line 50 - 54 of [ansible/roles/taiga/files/docker-entrypoint.sh](ansible/roles/taiga/files/docker-entrypoint.sh).
 4. Clean temporary files, such as, OS package repository caches, when creating your images.
 
    For an example, see my taiga Dockerfile [ansible/roles/taiga/templates/Dockerfile.j2](ansible/roles/taiga/templates/Dockerfile.j2) on line 22 where I `apt clean`.
-5. Avoid running the container’s process as root. 
+5. Avoid running the container’s process as root.
 
-   See my taiga Dockerfile <https://github.com/nemonik/taiga/blob/master/Dockerfile> lines 71 - 77 . 
+   See my taiga Dockerfile <https://github.com/nemonik/taiga/blob/master/Dockerfile> lines 71 - 77 .
 
    That said, a number of containers don’t come this way and would require your time to refactor resulting in something you’ve forked and now must carry applying upstream changess unless you can convince upstream to go your way.  Also, some external applications rely on a container running as root.  Drone CI for one needs to run as root to orchestrate your pipelines. Jenkins container slaves are likely the same way, but I need to verify.
 6. Harden your Docker configuration as per an InSpec compliance profile, such as https://github.com/mitre/docker-ce-cis-baseline and https://github.com/dev-sec/cis-docker-benchmark or if you are using another container runtime either find one for the runtime or write your own compliance profile.
@@ -6929,7 +7038,7 @@ In this era of cloud computing, DevOps and cloud-native application development 
 
 ### 9.11.1. What's cloud-native?
 
-Cloud-native computing deploys applications as microservices - packaging each into its own container - and by doing so you have opened yourself up to the capability of being able to dynamically orchestrate the microservice to optimize resource utilization, elastic scaling, security isolation...  
+Cloud-native computing deploys applications as microservices - packaging each into its own container - and by doing so you have opened yourself up to the capability of being able to dynamically orchestrate the microservice to optimize resource utilization, elastic scaling, security isolation...
 
 ### 9.11.2. Let's create a microservice
 
@@ -7075,7 +7184,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: helloworld
-```      
+```
 
 for our `helloworld` application.  A namespace is used to provide application scope.
 
@@ -7133,7 +7242,7 @@ spec:
           containerPort: 3000
 ```
 
-A `Deployment` is used to define the desired state of our `helloworld` application. 
+A `Deployment` is used to define the desired state of our `helloworld` application.
 
 `imagePullPolicy` being set to `Always` is needed otherwise Docker will use the prior pulled image, if it exists.
 
@@ -7300,13 +7409,13 @@ watch kubectl --namespace=helloworld get all
 
 What you see above is the cluster is managing 1 pod of the `192.168.0.10:5000/nemonik/helloworld-web:latest` container.
 
-You can retrieve more information about this pod with 
+You can retrieve more information about this pod with
 
 ```bash
 kubectl --namespace=helloworld get pods -o wide
 ```
 
-Whose output will resemble.  
+Whose output will resemble.
 
 ```
 [vagrant@development helloworld-web]$ kubectl --namespace=helloworld get pods -o wide
@@ -7357,7 +7466,7 @@ deployment.apps/helloworld-deployment scaled
 
 And you'll see additional back-ends come into service in the Traefik Dashboard.
 
-Re-running 
+Re-running
 
 ```bash
 kubectl --namespace=helloworld get all
@@ -7382,7 +7491,7 @@ NAME                                              DESIRED   CURRENT   READY   AG
 replicaset.apps/helloworld-deployment-cf4667475   4         4         4       16m
 ```
 
-And running 
+And running
 
 ```bash
 kubectl --namespace=helloworld get pods -o wide
@@ -7398,7 +7507,7 @@ helloworld-deployment-6879449688-cq55w   1/1     Running   0          32s     10
 helloworld-deployment-6879449688-26xsv   1/1     Running   0          32s     10.42.0.34   toolchain     <none>           <none>
 ```
 
-It usually is immaterial where in the cluster a Pod is running, but the point here is to show you that the replicas are spread across the cluster thereby increasing the application's availability. 
+It usually is immaterial where in the cluster a Pod is running, but the point here is to show you that the replicas are spread across the cluster thereby increasing the application's availability.
 
 So, the cluster is now running 4 replicas.  Let's explore the ramifications of this by running `curl` hitting the Traefik ingress several times in a row via
 
@@ -7409,7 +7518,7 @@ curl --no-progress-meter http://192.168.0.206/helloworld
 done
 ```
 
-The output will resemble 
+The output will resemble
 
 ```
 Hello world! helloworld-deployment-cf4667475-vvhqn

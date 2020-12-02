@@ -35,7 +35,7 @@ module ConfigurationVars
     # The Vagrant box to base our DevOps box on.  Pick just one.
 
     base_box: 'centos/7',
-    base_box_version: '2004.01', 
+    base_box_version: '2004.01',
 
 #    base_box: 'ubuntu/bionic64',
 #    base_box_version: '20200304.0.0',
@@ -43,7 +43,7 @@ module ConfigurationVars
 #    base_box: 'nemonik/alpine310',
 #    base_box_version: '0',
 
-    vagrant_root_drive_size: '80GB', 
+    vagrant_root_drive_size: '80GB',
 
     ansible_version: '2.10.3',
 
@@ -57,8 +57,10 @@ module ConfigurationVars
     k3s_version: 'v1.19.4+k3s1',
     k3s_cluster_secret: 'kluster_secret',
 
-    kubectl_version: 'v1.19.0',
-    kubectl_checksum: 'sha256:6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c',
+    retrieve_kubeconfig: 'true',
+
+    kubectl_version: 'v1.19.4',
+    kubectl_checksum: 'sha256:7df333f1fc1207d600139fe8196688303d05fbbc6836577808cda8fe1e3ea63f',
 
     kubernetes_dashboard: 'yes',
     kubernetes_dashboard_version: 'v2.0.0',
@@ -70,7 +72,7 @@ module ConfigurationVars
     traefik_host: '192.168.0.206',
 
     metallb: 'yes',
-    metallb_version: 'v0.9',
+    metallb_version: 'v0.9.5',
 
     kompose_version: '1.18.0',
 
@@ -114,7 +116,7 @@ module ConfigurationVars
     taiga_port: '80',
 
     sonarqube: 'yes',
-    sonarqube_version: '8.4.1-community',
+    sonarqube_version: '8.5.1-community',
     sonarqube_host: '192.168.0.205',
     sonarqube_port: '9000',
 
@@ -122,12 +124,12 @@ module ConfigurationVars
 
     inspec_version: '4.18.39',
 
-    python_container_image: 'yes', 
-    python_version: '2.7.17',
+    python_container_image: 'yes',
+    python_version: '2.7.18',
 
     golang_container_image: 'yes',
     golang_sonarqube_scanner_image: 'yes',
-    golang_version: '1.13.7',  
+    golang_version: '1.15',
 
     selenium_standalone_chrome_version: '3.141',
 
@@ -174,7 +176,7 @@ module ConfigurationVars
 
     vars = VARS
 
-    vars[:http_proxy] = (!http_proxy ? "" : http_proxy) 
+    vars[:http_proxy] = (!http_proxy ? "" : http_proxy)
     vars[:https_proxy] = (!https_proxy ? "" : https_proxy)
     vars[:ftp_proxy] = (!ftp_proxy ? "" : ftp_proxy)
     vars[:no_proxy] = (!no_proxy ? "" : no_proxy)
@@ -198,7 +200,7 @@ module ConfigurationVars
         if (value.is_a? Integer)
           value = value.to_s
         end
-      
+
         vars_string = vars_string + "\\\"#{key}\\\":\\\"#{value}\\\","
       end
     end
@@ -210,17 +212,17 @@ module ConfigurationVars
     echo Determining OS...
 
     os=""
-    if [[ $(command -v lsb_release | wc -l) == *"1"* ]]; then 
+    if [[ $(command -v lsb_release | wc -l) == *"1"* ]]; then
       os="$(lsb_release -is)-$(lsb_release -cs)"
     elif [ -f "/etc/os-release" ]; then
-      if [[ $(cat /etc/os-release | grep -i alpine | wc -l) -gt "0" ]]; then 
+      if [[ $(cat /etc/os-release | grep -i alpine | wc -l) -gt "0" ]]; then
         os="Alpine"
       elif [[ $(cat /etc/os-release | grep -i "CentOS Linux 7" | wc -l) -gt "0" ]]; then
         os="CentOS 7"
       fi
-    else 
+    else
       echo -n "Cannot determine OS."
-      exit -1    
+      exit -1
     fi
   SHELL
 
@@ -285,7 +287,7 @@ module ConfigurationVars
             *)
               echo "${os} not supported." 1>&2
               exit -1
-              ;;              
+              ;;
           esac
         fi
 
@@ -313,7 +315,7 @@ module ConfigurationVars
         ;;
       "CentOS 7")
         yum update -y
-        yum install -y epel-release 
+        yum install -y epel-release
         yum install -y python-pip python-devel make gcc python-cffi
 #        pip uninstall -y bcrypt
 #        yum --enablerepo=epel install -y python2-bcrypt
@@ -327,7 +329,7 @@ module ConfigurationVars
 
   USER_INSTALL_DEPENDENCIES_TEMPLATE = <<~SHELL
     echo User installing ansible dependencies...
- 
+
     #{ConfigurationVars::VARS[:ansible_python_version]} -m pip install --user --upgrade pip
     /home/vagrant/.local/bin/pip install --user --upgrade setuptools
     /home/vagrant/.local/bin/pip install --user paramiko ansible==#{ConfigurationVars::VARS[:ansible_version]}
