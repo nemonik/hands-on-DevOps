@@ -357,7 +357,7 @@ Unit testing is a software development process where the smallest testable compo
 
 The practice of authoring compliance-as-code thereby turning compliance, security, and other policy requirements into automated tests
 
--- 
+--
 
 ## What's integration testing?
 
