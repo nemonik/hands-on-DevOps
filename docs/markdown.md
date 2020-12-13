@@ -319,15 +319,75 @@ Is achieved through delivering applications into production via individual repea
 
 --
 
-A pipeline automates the various stages/steps (e.g., Static Application Security Testing (SAST), build, unit testing, Dynamic Application Security Testing (DAST), secure configuration acceptance compliance, integration, function and non-functional testing, delivery, and deployment) to enforce quality conformance.
-
----
-
-## How is a pipeline manifested?
+A pipeline automates the various stages/steps (e.g., Static Application Security Testing (SAST), complexity testing, build, unit testing, Dynamic Application Security Testing (DAST), compliance to configuration guidance and policy testing, integration, function and non-functional testing, delivery, and deployment to enforce quality conformance.
 
 --
 
-Each delivery pipeline is manifested as **Pipeline as Code** (i.e., software automation) accompanying software's source code in its version control repository.
+Let's unpack what somec of these non-obvious activities are
+
+---
+
+## What's Static Application Security Testing (SAST)?
+
+--
+
+SAST is testing methodology that analyzes source code to find security vulnerabilities
+
+---
+
+## What's complexity testing?
+
+--
+
+Complexity testing essentially test for the complexity of one's code (e.g., the number of paths through the code, how difficult the code is to understand, the resources required to run)
+
+---
+
+## What's unit testing?
+
+--
+
+Unit testing is a software development process where the smallest testable components of an application are individually tested for proper operation
+
+---
+
+## What's compliance to configuration guidance and policy testing?
+
+--
+
+The practice of authoring compliance-as-code thereby turning compliance, security, and other policy requirements into automated tests.
+
+--- 
+
+## What's integration testing?
+
+--
+
+Integration testing is a form software testing where individual units are combined and tested as a group.
+
+---
+
+## What's funtional testing?
+
+--
+
+Functional testing validates a software system against the functional requirements.
+
+---
+
+## What's Dynamic Application Security Testing (DAST)?
+
+--
+
+DAST is used to detect security vulnerabilities in an application while it is running
+
+---
+
+## How is a pipeline manifested
+
+--
+
+Each delivery pipeline is manifested as **Pipeline as Code** (i.e., software automation) accompanying software's source code in its version control repository
 
 ---
 
