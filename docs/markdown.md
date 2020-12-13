@@ -44,7 +44,7 @@ DevOps (a clipped compound of the words `development` and `operations`) is [a so
 
 --
 
-With an emphasis on a more reliable release pipeline, automation, and stronger collaboration across all stakeholders 
+With an emphasis on a more stronger collaboration across all stakeholders and a reliable release pipeline including automation
 
 --
 
@@ -148,7 +148,7 @@ quality assurance, and
 
 --
 
-technology operations
+technology operations (to include security)
 
 --
 
