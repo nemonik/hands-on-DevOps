@@ -116,7 +116,7 @@ The effort again will likely fail.
 
 I say this because the culture is the largest influencer over the success of both Agile and DevOps and ultimately the path taken (i.e., plans made.)
 
----
+--
 
 Also, DevOps will **not** entirely stop all bugs nor all vulnerabilities from making it into production, but that's not really the point.
 
@@ -144,11 +144,15 @@ development,
 
 --
 
-quality assurance, and
+quality assurance, 
 
 --
 
-technology operations (to include security)
+security, and
+
+--
+
+technology operations
 
 --
 
