@@ -13,4 +13,6 @@
   roles:
     - common
     - k3s-agent
+    - helm
+#    - longhorn
     - create-cache

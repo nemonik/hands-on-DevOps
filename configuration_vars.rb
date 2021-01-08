@@ -34,8 +34,11 @@ module ConfigurationVars
 
     # The Vagrant box to base our DevOps box on.  Pick just one.
 
-    base_box: 'centos/7',
-    base_box_version: '2004.01',
+    base_box: 'generic/centos7',
+    base_box_version: '3.1.20',
+
+#    base_box: 'centos/7',
+#    base_box_version: '2004.01',
 
 #    base_box: 'ubuntu/bionic64',
 #    base_box_version: '20200304.0.0',
