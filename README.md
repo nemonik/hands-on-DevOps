@@ -6,7 +6,7 @@
 
 # 1. Preface
 
-This class is under near constant development.  It's backlog is here https://github.com/nemonik/hands-on-DevOps/projects/1
+This class is under near constant development.  It's backlog is here https://github.com/nemonik/hands-on-DevOps/projects/1  I'm also presently focused on a new version that removes of significant amount of the factory configuration... Portions of this class IaC will fail at this time.
 
 # 2. DevOps
 
