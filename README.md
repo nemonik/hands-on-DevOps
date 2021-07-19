@@ -6,7 +6,7 @@
 
 # 1. Preface
 
-*I'm presently focused on developing a new version of this class that significantly modifies the factory's configuration... It is very likely portions of this class IaC will fail at this time. I cannot create the new content while also supporting the prior.  The new class is under development at https://github.com/nemonik/hands-on-DevOps-gen2.*
+This Vagrant-based version of my Hands-on DevOps class is DEPRECATED.  I suggest you hop over to the new version of this class that significantly modifies the factory's configuration... It is very likely portions of this class IaC will fail at this time. I cannot create the new content while also supporting the prior.  The new class can be found at https://github.com/nemonik/hands-on-DevOps-gen2.
 
 # 2. DevOps
 
