@@ -3,6 +3,7 @@
 [![GitHub Forks](https://img.shields.io/github/forks/nemonik/hands-on-DevOps?style=social)](https://github.com/nemonik/hands-on-DevOps/network/members)
 [![Github Stars](https://img.shields.io/github/stars/nemonik/hands-on-DevOps?style=social)](https://github.com/nemonik/hands-on-DevOps/stargazers)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fnemonik%2Fhands-on-DevOps)](https://twitter.com/intent/tweet?text=I%27ve%20found%20a%20nifty%20hands-on%20DevOps%20course%20developed%20by%20%40nemonik%20at%20https%3A%2F%2Fgithub.com%2Fnemonik%2Fhands-on-DevOps)
+<a href="https://www.buymeacoffee.com/nemonik" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="20" width="85"></a>
 
 # 1. Preface
 
@@ -7582,3 +7583,6 @@ And they're gone.
 ## 9.14. That's it
 
 That's a wrap.
+
+This project is a labor of love (i.e., I'm not paid to develop nor maintain it). Please, consider buying me a coffee if it has helpded you in any way. <a href="https://www.buymeacoffee.com/nemonik" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="20" width="85"></a>
+
